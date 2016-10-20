@@ -2,7 +2,7 @@ body {
     margin-top: 0px;
     margin-bottom: 0px;
     color: #000000;
-    font-family: tahoma,arial,helvetica,sans-serif;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
     background: url(./bg.jpg) #e3e3e3 repeat-x 0px 0px;
     background-position: center top;
 }
@@ -1119,3 +1119,26 @@ button, input, optgroup, select, textarea {
 #browsecat{
     margin: 6px;
 }
+
+#info_block{
+    /*font-size: small;*/
+    padding: 5px;
+    margin-bottom: 0;
+    background-color: #e0e0e0;
+    width: 97%;
+    font-size: 17px;
+}
+
+.medium{
+    font-size: 14px;
+    line-height: 21px;
+}
+
+.medium a{
+    color: #3e8ce7;
+    margin: 5px;
+}
+
+/*a:hover{*/
+    /*text-decoration: none;*/
+/*}*/

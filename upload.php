@@ -54,7 +54,7 @@ stdhead($lang_upload['head_upload']);
 <b>".$lang_upload['text_chinese_title']."</b>&nbsp;<input type=\"text\" style=\"width: 250px\" name=\"cnname\"><br /><font class=\"medium\">".$lang_upload['text_titles_note']."</font>", 1);
 				}
 				else
-					tr($lang_upload['row_torrent_name'], "<input type=\"text\" style=\"width: 650px;\" id=\"name\" name=\"name\" /><br />", 1);
+					tr($lang_upload['row_torrent_name'], "<input type=\"text\" class=\"input tip-focus fullwidth\"  id=\"name\" name=\"name\" /><br />", 1);
 				if ($smalldescription_main == 'yes')
 				tr($lang_upload['row_small_description'], "<input type=\"text\" style=\"width: 650px;\" name=\"small_descr\" /><br /><font class=\"medium\">".$lang_upload['text_small_description_note']."</font>", 1);
 				

@@ -2064,7 +2064,7 @@ function menu ($selected = "home") {
 
 //	navbar  start
 	echo "
-<nav class=\"navbar navbar-inverse\" role=\"navigation\">
+<nav class=\"navbar navbar-inverse navbar-static-top navbar-custom\" role=\"navigation\">
 <div class='col-xs-12 col-md-12'>
 	<div class=\"container-fluid\">
     <div class=\"navbar-header\">
@@ -2242,20 +2242,30 @@ $cssupdatedate=($cssupdatedate ? "?".htmlspecialchars($cssupdatedate) : "");
 <link rel="stylesheet" href="<?php echo get_font_css_uri().$cssupdatedate?>" type="text/css" />
 <link rel="stylesheet" href="styles/sprites.css<?php echo $cssupdatedate?>" type="text/css" />
 <link rel="stylesheet" href="<?php echo get_forum_pic_folder()."/forumsprites.css".$cssupdatedate?>" type="text/css" />
-<link rel="stylesheet" href="<?php echo $css_uri."theme1.css".$cssupdatedate?>" type="text/css" />
 <link rel="stylesheet" href="<?php echo $css_uri."DomTT1.css".$cssupdatedate?>" type="text/css" />
+<link rel="stylesheet" href="<?php echo $css_uri."theme1.css".$cssupdatedate?>" type="text/css" />
 <link rel="stylesheet" href="styles/curtain_imageresizer.css<?php echo $cssupdatedate?>" type="text/css" />
 <!--	add my style-->
 <!--<link rel="stylesheet" href="styles/bootstrap/css/bootstrap-theme.css" type="text/css">-->
 <!--<link rel="stylesheet" href="styles/bootstrap/css/bootstrap-theme.min.css" type="text/css">-->
-
+<!--<link rel="stylesheet" href="--><?php //echo $css_uri."main.css".$cssupdatedate?><!--" type="text/css" />-->
 <!--	CDN bootstrap-->
-<link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
-<script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
-<script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<!--<link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">-->
+<!--<script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>-->
+<!--<script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
+
+
+
+<link rel="stylesheet" href="./styles/bootstrap/css/bootstrap.min.css">
+<!--<script src="./styles/j/jquery/2.1.1/jquery.min.js"></script>-->
+<script src="./styles/bootstrap/js/bootstrap.min.js"></script>
 <!--		CDN awosome-->
-<link href="http://cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
-<?php
+<!--<link href="http://cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">-->
+<!--<link href="//netdna.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">-->
+<
+<link href="./styles/awesome/css/font-awesome.min.css" rel="stylesheet">
+
+	<?php
 if ($CURUSER){
 	$caticonrow = get_category_icon_row($CURUSER['caticon']);
 	if($caticonrow['cssfile']){
@@ -2275,7 +2285,7 @@ if ($CURUSER){
 <script type="text/javascript" src="fadomatic.js<?php echo $cssupdatedate?>"></script>
 <script type="text/javascript" src="styles/js/js.js"></script>
 </head>
-<body>
+<body class="container-fluid">
 <span class="glyphicon glyphicon-log-out"></span>
 <table class="head" cellspacing="0" cellpadding="0" align="center">
 	<tr>
@@ -2370,16 +2380,16 @@ else {
 		$Cache->cache_value('user_'.$CURUSER["id"].'_unread_message_count', $unread, 60);
 	}
 	
-	$inboxpic = "<img class=\"".($unread ? "inboxnew" : "inbox")."\" src=\"pic/trans.gif\" alt=\"inbox\" title=\"".($unread ? $lang_functions['title_inbox_new_messages'] : $lang_functions['title_inbox_no_new_messages'])."\" />";
+	$inboxpic = "<span class='icon-envelope' title=\"".($unread ? $lang_functions['title_inbox_new_messages'] : $lang_functions['title_inbox_no_new_messages'])."\"></span>";
 ?>
 
-<table id="info_block" cellpadding="4" cellspacing="0" border="0" width="100%"><tr>
+<table id="info_block" class="table table-noborder zeromp"  cellpadding="4" cellspacing="0" border="0" width="100%"><tr>
 	<td><table width="100%" cellspacing="0" cellpadding="0" border="0"><tr>
-		<td class="bottom" align="left"><span class="medium"><?php echo $lang_functions['text_welcome_back'] ?>, <?php echo get_username($CURUSER['id'])?>  [<a href="logout.php"><?php echo $lang_functions['text_logout'] ?></a>]<?php if (get_user_class() >= UC_MODERATOR) { ?> [<a href="staffpanel.php"><?php echo $lang_functions['text_staff_panel'] ?></a>] <?php }?> <?php if (get_user_class() >= UC_SYSOP) { ?> [<a href="settings.php"><?php echo $lang_functions['text_site_settings'] ?></a>]<?php } ?> [<a href="torrents.php?inclbookmarked=1&amp;allsec=1&amp;incldead=0"><?php echo $lang_functions['text_bookmarks'] ?></a>] <font class = 'color_bonus'><?php echo $lang_functions['text_bonus'] ?></font>[<a href="mybonus.php"><?php echo $lang_functions['text_use'] ?></a>]: <?php echo number_format($CURUSER['seedbonus'], 1)?> <font class = 'color_invite'><?php echo $lang_functions['text_invite'] ?></font>[<a href="invite.php?id=<?php echo $CURUSER['id']?>"><?php echo $lang_functions['text_send'] ?></a>]: <?php echo $CURUSER['invites']?><br />
+		<td class="bottom" align="left"><span class="medium"><?php echo $lang_functions['text_welcome_back'] ?>, <span class="icon-user"></span><?php echo get_username($CURUSER['id'])?> <span class="icon-signout"></span><a href="logout.php"><?php echo $lang_functions['text_logout'] ?></a><?php if (get_user_class() >= UC_MODERATOR) { ?> <span class="icon-cogs"></span><a href="staffpanel.php"><?php echo $lang_functions['text_staff_panel'] ?></a> <?php }?> <?php if (get_user_class() >= UC_SYSOP) { ?> <span class="icon-wrench"></span><a href="settings.php"><?php echo $lang_functions['text_site_settings'] ?></a><?php } ?> <span class="icon-star"></span><a href="torrents.php?inclbookmarked=1&amp;allsec=1&amp;incldead=0"><?php echo $lang_functions['text_bookmarks'] ?></a> <font class = 'color_bonus'><?php echo $lang_functions['text_bonus'] ?></font><span class=" icon-pinterest"></span><a href="mybonus.php"><?php echo $lang_functions['text_use'] ?></a>: <?php echo number_format($CURUSER['seedbonus'], 1)?> <font class = 'color_invite'><?php echo $lang_functions['text_invite'] ?></font><span class="icon-share-alt"></span><a href="invite.php?id=<?php echo $CURUSER['id']?>"><?php echo $lang_functions['text_send'] ?></a>: <?php echo $CURUSER['invites']?><br />
 
-	<font class="color_ratio"><?php echo $lang_functions['text_ratio'] ?></font> <?php echo $ratio?>  <font class='color_uploaded'><?php echo $lang_functions['text_uploaded'] ?></font> <?php echo mksize($CURUSER['uploaded'])?><font class='color_downloaded'> <?php echo $lang_functions['text_downloaded'] ?></font> <?php echo mksize($CURUSER['downloaded'])?>  <font class='color_active'><?php echo $lang_functions['text_active_torrents'] ?></font> <img class="arrowup" alt="Torrents seeding" title="<?php echo $lang_functions['title_torrents_seeding'] ?>" src="pic/trans.gif" /><?php echo $activeseed?>  <img class="arrowdown" alt="Torrents leeching" title="<?php echo $lang_functions['title_torrents_leeching'] ?>" src="pic/trans.gif" /><?php echo $activeleech?>&nbsp;&nbsp;<font class='color_connectable'><?php echo $lang_functions['text_connectable'] ?></font><?php echo $connectable?> <?php echo maxslots();?></span></td>
+	<font class="color_ratio"><?php echo $lang_functions['text_ratio'] ?></font> <?php echo $ratio?>  <font class='color_uploaded'><?php echo $lang_functions['text_uploaded'] ?></font> <?php echo mksize($CURUSER['uploaded'])?><font class='color_downloaded'> <?php echo $lang_functions['text_downloaded'] ?></font> <?php echo mksize($CURUSER['downloaded'])?>  <font class='color_active'><?php echo $lang_functions['text_active_torrents'] ?></font><span class="icon-circle-arrow-up" title="<?php echo $lang_functions['title_torrents_seeding'] ?>"></span><?php echo $activeseed?>  <span class="icon-circle-arrow-down" title="<?php echo $lang_functions['title_torrents_leeching'] ?>"></span><?php echo $activeleech?>&nbsp;&nbsp;<font class='color_connectable'><?php echo $lang_functions['text_connectable'] ?></font><?php echo $connectable?> <?php echo maxslots();?></span></td>
 
-	<td class="bottom" align="right"><span class="medium"><?php echo $lang_functions['text_the_time_is_now'] ?><?php echo $datum[hours].":".$datum[minutes]?><br />
+	<td class="bottom" align="right"><span class="medium"><span class="icon-time"></span>  <?php echo $lang_functions['text_the_time_is_now'] ?><?php echo $datum[hours].":".$datum[minutes]?><br />
 
 <?php
 	if (get_user_class() >= $staffmem_class){
@@ -2398,13 +2408,13 @@ else {
 		$totalcheaters = get_row_count("cheaters");
 		$Cache->cache_value('staff_cheater_count', $totalcheaters, 900);
 	}
-	print("<a href=\"cheaterbox.php\"><img class=\"cheaterbox\" alt=\"cheaterbox\" title=\"".$lang_functions['title_cheaterbox']."\" src=\"pic/trans.gif\" />  </a>".$totalcheaters."  <a href=\"reports.php\"><img class=\"reportbox\" alt=\"reportbox\" title=\"".$lang_functions['title_reportbox']."\" src=\"pic/trans.gif\" />  </a>".$totalreports."  <a href=\"staffbox.php\"><img class=\"staffbox\" alt=\"staffbox\" title=\"".$lang_functions['title_staffbox']."\" src=\"pic/trans.gif\" />  </a>".$totalsm."  ");
+	print("<a href=\"cheaterbox.php\"><span class='icon-ban-circle' title=\"".$lang_functions['title_cheaterbox']."\"></span>  </a>".$totalcheaters."  <a href=\"reports.php\"><span class='icon-exclamation-sign' title=\"".$lang_functions['title_reportbox']."\"></span>  </a>".$totalreports."  <a href=\"staffbox.php\"><span class='icon-envelope-alt' title=\"".$lang_functions['title_staffbox']."\"></span>  </a>".$totalsm."  ");
 	}
 
 	print("<a href=\"messages.php\">".$inboxpic."</a> ".($messages ? $messages." (".$unread.$lang_functions['text_message_new'].")" : "0"));
-	print("  <a href=\"messages.php?action=viewmailbox&amp;box=-1\"><img class=\"sentbox\" alt=\"sentbox\" title=\"".$lang_functions['title_sentbox']."\" src=\"pic/trans.gif\" /></a> ".($outmessages ? $outmessages : "0"));
-	print(" <a href=\"friends.php\"><img class=\"buddylist\" alt=\"Buddylist\" title=\"".$lang_functions['title_buddylist']."\" src=\"pic/trans.gif\" /></a>");
-	print(" <a href=\"getrss.php\"><img class=\"rss\" alt=\"RSS\" title=\"".$lang_functions['title_get_rss']."\" src=\"pic/trans.gif\" /></a>");
+	print("  <a href=\"messages.php?action=viewmailbox&amp;box=-1\"><span class='icon-comment-alt' title=\"".$lang_functions['title_sentbox']."\"></span></a> ".($outmessages ? $outmessages : "0"));
+	print(" <a href=\"friends.php\"><span class='icon-group' title=\"".$lang_functions['title_buddylist']."\"></span></a>");
+	print(" <a href=\"getrss.php\"><span class='icon-rss' title=\"".$lang_functions['title_get_rss']."\"></span></a>");
 ?>
 
 	</span></td>
