@@ -32,13 +32,13 @@ $showaudiocodec = (($allowtorrents && get_searchbox_value($brsectiontype, 'showa
 stdhead($lang_upload['head_upload']);
 ?>
 	<form id="compose" enctype="multipart/form-data" action="takeupload.php" method="post" name="upload">
-			<?php
-			print("<p align=\"center\">".$lang_upload['text_red_star_required']."</p>");
-			?>
-			<table border="1" cellspacing="0" cellpadding="5" width="940">
+<!--			--><?php
+//			print("<p align=\"center\">".$lang_upload['text_red_star_required']."</p>");
+//			?>
+			<table class="table table-striped" border="0" cellspacing="0" cellpadding="5" width="940">
 				<tr>
 					<td class='colhead' colspan='2' align='center'>
-						<?php echo $lang_upload['text_tracker_url'] ?>: &nbsp;&nbsp;&nbsp;&nbsp;<b><?php echo  get_protocol_prefix() . $announce_urls[0]?></b>
+						<?php echo "<div style='font-size: 17px;color: #00ccff'>".$lang_upload['text_tracker_url'] ?>: &nbsp;&nbsp;&nbsp;&nbsp;<b><?php echo  get_protocol_prefix() . $announce_urls[0]?></b></div>
 						<?php
 						if(!is_writable($torrent_dir))
 						print("<br /><br /><b>ATTENTION</b>: Torrent directory isn't writable. Please contact the administrator about this problem!");
@@ -149,7 +149,7 @@ stdhead($lang_upload['head_upload']);
 					tr($lang_upload['row_show_uploader'], "<input style='margin: 10px'  type=\"checkbox\" name=\"uplver\" value=\"yes\" />".$lang_upload['checkbox_hide_uploader_note'], 1);
 				}
 				?>
-				<tr><td class="toolbox" align="center" colspan="2"><b><?php echo $lang_upload['text_read_rules']?></b> <input id="qr" type="submit" class="btn" value="<?php echo $lang_upload['submit_upload']?>" /></td></tr>
+				<tr><td class="toolbox" align="center" colspan="2"> <input id="qr" type="submit" class="btn btn-success" value="<?php echo $lang_upload['submit_upload']."(".$lang_upload['text_read_rules'].")"?>" /></td></tr>
 		</table>
 	</form>
 <?php

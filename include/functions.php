@@ -852,10 +852,10 @@ function simpletag(thetag)
 //]]>
 </script>
 <table width="100%" cellspacing="0" cellpadding="5" border="0">
-<tr><td align="left" colspan="2">
+<tr style="border: 0px"><td align="left" colspan="2" style="border: 0px">
 <table cellspacing="1" cellpadding="2" border="0">
 <tr>
-<td class="embedded"><input class="btn btn-info" style="font-weight: bold;font-size:11px; margin-right:3px" type="button" name="b" value="B" onclick="javascript: simpletag('b')" /></td>
+<td class="embedded"><input class="btn btn-info" style="font-weight: bold;font-size:11px; margin:7px" type="button" name="b" value="B" onclick="javascript: simpletag('b')" /></td>
 <td class="embedded"><input class="btn btn-info" style="font-style: italic;font-size:11px;margin-right:3px" type="button" name="i" value="I" onclick="javascript: simpletag('i')" /></td>
 <td class="embedded"><input class="btn btn-info" style="text-decoration: underline;font-size:11px;margin-right:3px" type="button" name="u" value="U" onclick="javascript: simpletag('u')" /></td>
 <?php
@@ -933,7 +933,7 @@ print("<td class=\"embedded\"><input class=\"btn btn-info\" type=\"button\" styl
 <option value="Verdana">Verdana</option>
 </select>
 </td>
-<td class="embedded">
+<td class="embedded" style="border: 0px">
 <select  class="med btn btn-info" name='size' onchange="alterfont(this.options[this.selectedIndex].value, 'size')">
 <option value="0">--- <?php echo $lang_functions['select_size'] ?> ---</option>
 <option value="1">1</option>
@@ -951,17 +951,17 @@ print("<td class=\"embedded\"><input class=\"btn btn-info\" type=\"button\" styl
 if ($enableattach_attachment == 'yes'){
 ?>
 <tr>
-<td colspan="5" valign="middle">
+<td colspan="5" valign="middle" style="border: 0px">
 <iframe src="<?php echo get_protocol_prefix() . $BASEURL?>/attachment.php" width="100%" height="50" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
 </td>
 </tr>
 <?php
 }
 print("<tr>");
-print("<td align=\"left\"><textarea class=\"bbcode\" cols=\"100\" style=\"width: 800px;\" name=\"".$text."\" id=\"".$text."\" rows=\"20\" onkeydown=\"ctrlenter(event,'compose','qr')\">".$content."</textarea>");
+print("<td align=\"left\" style=\"border: 0px\"><textarea class='bbcode form-control inputor' cols=\"100\" style=\"width: 115%;\" name=\"".$text."\" id=\"".$text."\" rows=\"20\" onkeydown=\"ctrlenter(event,'compose','qr')\">".$content."</textarea>");
 ?>
 </td>
-<td align="center" width="99%">
+<td align="center" width="99%" style="border: 0px">
 <table cellspacing="1" cellpadding="3">
 <tr>
 <?php
