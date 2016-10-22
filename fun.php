@@ -3,6 +3,15 @@ require_once("include/bittorrent.php");
 dbconn();
 require_once(get_langfile_path());
 require_once(get_langfile_path("",true));
+echo "<style>
+.shoutrow{
+    font-family: \"Helvetica Neue\",Helvetica,Arial,sans-serif;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #333;
+}
+
+</style>";
 $action=$_GET["action"];
 if (!$action)
 {

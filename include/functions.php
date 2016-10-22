@@ -497,6 +497,12 @@ function panel_start(){
 					<div id=\"main\" class=\"well no-border-radius\">
 						<div class=\"row\">";
 						}
+function panel_start_block(){
+	echo "
+<div id=main class=well no - border - radius>
+						<div class=row>
+";
+}
 function panel_end(){
 	echo "</div>";
 }
@@ -2276,7 +2282,7 @@ $cssupdatedate=($cssupdatedate ? "?".htmlspecialchars($cssupdatedate) : "");
 <!--<link rel="stylesheet" href="--><?php //echo $css_uri."main.css".$cssupdatedate?><!--" type="text/css" />-->
 <!--	CDN bootstrap-->
 <!--<link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">-->
-<!--<script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>-->
+<script src="./styles/js/jquery-3.1.1.min.js"></script>
 <!--<script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
 
 
@@ -2291,6 +2297,7 @@ $cssupdatedate=($cssupdatedate ? "?".htmlspecialchars($cssupdatedate) : "");
 <
 <link href="./styles/awesome/css/font-awesome.min.css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="./styles/BambooGreen/main.css">
+
 	<?php
 if ($CURUSER){
 	$caticonrow = get_category_icon_row($CURUSER['caticon']);
@@ -2460,9 +2467,38 @@ if ($msgalert)
 {
 	function msgalert($url, $text, $bgcolor = "red")
 	{
-		print("<p><table border=\"0\" cellspacing=\"0\" cellpadding=\"10\"><tr><td style='border: none; padding: 10px; background: ".$bgcolor."'>\n");
-		print("<b><a href=\"".$url."\"><font color=\"white\">".$text."</font></a></b>");
-		print("</td></tr></table></p><br />");
+		echo "
+			<style>
+			.alert, .alert h4 {
+    			color: #c09853;
+			}
+			.alert {
+				padding: 8px 35px 8px 14px;
+				margin-bottom: 20px;
+				text-shadow: 0 1px 0 rgba(255,255,255,0.5);
+				color: #3a87ad;
+    			background-color: #d9edf7;
+    			border-color: #bce8f1;
+				-webkit-border-radius: 4px;
+				-moz-border-radius: 4px;
+				border-radius: 4px;
+			}
+			a:hover{
+				text-decoration: none;
+			}
+		</style>
+		<script>
+		$(\".alert\").alert('close');
+		</script>
+		";
+		print("<p><table border=\"0\" cellspacing=\"0\" cellpadding=\"10\"><tr>\n");
+		print("<b>
+			<div class=\"alert alert-info\" style='width: 20%'>
+			<button type=\"button\" class=\"close\" data-dismiss=\"alert\">&times;</button>
+			<a href=\"".$url."\">".$text."</a>
+			</div>
+				</b>");
+		print("</tr></table></p><br />");
 	}
 	if($CURUSER['leechwarn'] == 'yes')
 	{

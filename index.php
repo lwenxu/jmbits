@@ -58,19 +58,19 @@ if (mysql_num_rows($res) > 0)
 		$Cache->add_row();
 		$Cache->add_part();
 		if ($news_flag < 1) {
-			print("<a href=\"javascript: klappe_news('a".$array['id']."')\"><img class=\"minus\" src=\"pic/trans.gif\" id=\"pica".$array['id']."\" alt=\"Show/Hide\" title=\"".$lang_index['title_show_or_hide']."\" />&nbsp;" . date("Y.m.d",strtotime($array['added'])) . " - " ."<b>". $array['title'] . "</b></a>");
-			print("<div id=\"ka".$array['id']."\" style=\"display: block;\"> ".format_comment($array["body"],0)." </div> ");
+			print("<h4><a href=\"javascript: klappe_news('a".$array['id']."')\"><span class='icon-tags'></span>&nbsp;"."<b>". $array['title'] . "</b>(".date("Y.m.d",strtotime($array['added'])).")</a></h4>");
+			print("<div class='kas' id=\"ka".$array['id']."\" style=\"display: block;\"> ".format_comment($array["body"],0)." </div> ");
 			$news_flag = $news_flag + 1;
 		}
 		else
 		{
-			print("<a href=\"javascript: klappe_news('a".$array['id']."')\"><br /><img class=\"plus\" src=\"pic/trans.gif\" id=\"pica".$array['id']."\" alt=\"Show/Hide\" title=\"".$lang_index['title_show_or_hide']."\" />&nbsp;" . date("Y.m.d",strtotime($array['added'])) . " - " ."<b>". $array['title'] . "</b></a>");
-			print("<div id=\"ka".$array['id']."\" style=\"display: none;\"> ".format_comment($array["body"],0)." </div> ");
+			print("<h4><a href=\"javascript: klappe_news('a".$array['id']."')\"><br /><span class='icon-tags'></span>&nbsp;"."<b>". $array['title'] . "</b>(".date("Y.m.d",strtotime($array['added'])).")</a></h4>");
+			print("<div class='kas' id=\"ka".$array['id']."\" style=\"display: none;\"> ".format_comment($array["body"],0)." </div> ");
 		}
 		$Cache->end_part();
 		$Cache->add_part();
-		print("  &nbsp; [<a class=\"faqlink\" href=\"news.php?action=edit&amp;newsid=" . $array['id'] . "\"><b>".$lang_index['text_e']."</b></a>]");
-		print(" [<a class=\"faqlink\" href=\"news.php?action=delete&amp;newsid=" . $array['id'] . "\"><b>".$lang_index['text_d']."</b></a>]");
+		print("  &nbsp;<span class='icon-edit'></span> <a class=\"faqlink\" href=\"news.php?action=edit&amp;newsid=" . $array['id'] . "\"><b>".$lang_index['text_e']."</b></a>");
+		print("  &nbsp;<span class='icon-trash'></span> <a class=\"faqlink\" href=\"news.php?action=delete&amp;newsid=" . $array['id'] . "\"><b>".$lang_index['text_d']."</b></a>");
 		$Cache->end_part();
 		$Cache->end_row();
 	}
@@ -202,7 +202,8 @@ if ($showfunbox_main == "yes" && (!isset($CURUSER) || $CURUSER['showfb'] == "yes
 panel_col_end();
 panel_end();
 // ------------- end: funbox ------------------//
-panel_start();
+//panel_start();
+panel_start_block();
 panel_col_7_start();
 // ------------- start: shoutbox ------------------//
 if ($showshoutbox_main == "yes") {
@@ -447,6 +448,9 @@ if ($showstats_main == "yes")
 panel_col_end();
 panel_end();
 // ------------- end: stats ------------------//
+
+panel_start();
+panel_col_7_start();
 // ------------- start: polls ------------------//
 if ($CURUSER && $showpolls_main == "yes")
 {
@@ -460,20 +464,20 @@ if ($CURUSER && $showpolls_main == "yes")
 		$pollexists = false;
 	else $pollexists = true;
 
-	print("<h2>".$lang_index['text_polls']);
+	print("<h4 style='float: left'><sapn class='icon-bookmark'></sapn>".$lang_index['text_polls']);
 
 	if (get_user_class() >= $pollmanage_class)
 	{
-		print("<font class=\"small\"> - [<a class=\"altlink\" href=\"makepoll.php?returnto=main\"><b>".$lang_index['text_new']."</b></a>]\n");
+		print("&nbsp;<sapn class='icon-pencil'></sapn><a class=\"altlink\" href=\"makepoll.php?returnto=main\"><b>".$lang_index['text_new']."</b></a></h>\n");
 		if ($pollexists)
 		{
-			print(" - [<a class=\"altlink\" href=\"makepoll.php?action=edit&amp;pollid=".$arr[id]."&amp;returnto=main\"><b>".$lang_index['text_edit']."</b></a>]\n");
-			print(" - [<a class=\"altlink\" href=\"log.php?action=poll&amp;do=delete&amp;pollid=".$arr[id]."&amp;returnto=main\"><b>".$lang_index['text_delete']."</b></a>]");
-			print(" - [<a class=\"altlink\" href=\"polloverview.php?id=".$arr[id]."\"><b>".$lang_index['text_detail']."</b></a>]");
+			print("&nbsp;<sapn class='icon-edit'></sapn><a class=\"altlink\" href=\"makepoll.php?action=edit&amp;pollid=".$arr[id]."&amp;returnto=main\"><b>".$lang_index['text_edit']."</b></a>\n");
+			print("&nbsp;<span class='icon-trash'></span><a class=\"altlink\" href=\"log.php?action=poll&amp;do=delete&amp;pollid=".$arr[id]."&amp;returnto=main\"><b>".$lang_index['text_delete']."</b></a>");
+			print("&nbsp;<span class='icon-spinner'></span><a class=\"altlink\" href=\"polloverview.php?id=".$arr[id]."\"><b>".$lang_index['text_detail']."</b></a>");
 		}
 		print("</font>");
 	}
-	print("</h2>");
+	print("</h4>");
 	if ($pollexists)
 	{
 		$pollid = 0+$arr["id"];
@@ -484,9 +488,9 @@ if ($CURUSER && $showpolls_main == "yes")
 			$arr["option10"], $arr["option11"], $arr["option12"], $arr["option13"], $arr["option14"],
 			$arr["option15"], $arr["option16"], $arr["option17"], $arr["option18"], $arr["option19"]);
 
-		print("<table width=\"100%\"><tr><td class=\"text\" align=\"center\">\n");
-		print("<table width=\"59%\" class=\"main\" border=\"1\" cellspacing=\"0\" cellpadding=\"5\"><tr><td class=\"text\" align=\"left\">");
-		print("<p align=\"center\"><b>".$question."</b></p>\n");
+		print("<table width=\"100%\" ><tr style='border: 0px'><td style='border: 0px'>\n");
+		print("<table width=\"100%\" class=\"main\" border=\"0\" cellspacing=\"0\" cellpadding=\"5\">");
+		print("<h4 style='text-align: center'>".$question."</h4>\n");
 
 		// Check if user has already voted
 		$res = sql_query("SELECT selection FROM pollanswers WHERE pollid=".sqlesc($pollid)." AND userid=".sqlesc($CURUSER["id"])) or sqlerr();
@@ -547,7 +551,7 @@ if ($CURUSER && $showpolls_main == "yes")
 				$Cache->add_whole_row();
 				print("</table>\n");
 				$tvotes = number_format($tvotes);
-				print("<p align=\"center\">".$lang_index['text_votes']." ".$tvotes."</p>\n");
+//				print("<p align=\"center\">".$lang_index['text_votes']." ".$tvotes."</p>\n");
 				$Cache->end_whole_row();
 				$Cache->cache_page();
 			}
@@ -570,96 +574,81 @@ if ($CURUSER && $showpolls_main == "yes")
 			$i = 0;
 			while ($a = $o[$i])
 			{
-				print("<input type=\"radio\" name=\"choice\" value=\"".$i."\">".$a."<br />\n");
+				print("<label class=\"checkbox\"><input style='margin-left: 20%' type=\"radio\" name=\"choice\" value=\"".$i."\">".$a."<br /></label>\n");
 				++$i;
 			}
 			print("<br />");
-			print("<input type=\"radio\" name=\"choice\" value=\"255\">".$lang_index['radio_blank_vote']."<br />\n");
-			print("<p align=\"center\"><input type=\"submit\" class=\"btn\" value=\"".$lang_index['submit_vote']."\" /></p>");
+			print("<label class=\"checkbox\"><input style='margin-left: 20%' type=\"radio\" name=\"choice\" value=\"255\">".$lang_index['radio_blank_vote']."<br />\n");
+			print("<p align=\"center\"><input  type=\"submit\" class=\"btn\" value=\"".$lang_index['submit_vote']."\" /></p></label>");
 		}
-		print("</td></tr></table>");
+		print("</table>");
 
 		if ($voted && get_user_class() >= $log_class)
 			print("<p align=\"center\"><a href=\"log.php?action=poll\">".$lang_index['text_previous_polls']."</a></p>\n");
-		print("</td></tr></table>");
+
+		print("	</table>");
 	}
 }
-panel_end();
+panel_col_end();
 // ------------- end: polls ------------------//
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+panel_col_5_start();
 // ------------- start: tracker load ------------------//
 if ($showtrackerload == "yes") {
-	$uptimeresult=exec('uptime');
-	if ($uptimeresult){
+$uptimeresult=exec('uptime');
+if ($uptimeresult){
 ?>
 <h2><?php echo $lang_index['text_tracker_load'] ?></h2>
 <table width="100%" border="1" cellspacing="0" cellpadding="10"><tr><td class="text" align="center">
-<?php
-	//uptime, work in *nix system
-	print ("<div align=\"center\">" . trim($uptimeresult) . "</div>");
-	print("</td></tr></table>");
-	}
-}
-// ------------- end: tracker load ------------------//
+			<?php
+			//uptime, work in *nix system
+			print ("<div align=\"center\">" . trim($uptimeresult) . "</div>");
+			print("</td></tr></table>");
+			}
+			}
+			// ------------- end: tracker load ------------------//
 
-// ------------- start: disclaimer ------------------//
-?>
-<h2><?php echo $lang_index['text_disclaimer'] ?></h2>
-<table width="100%"><tr><td class="text">
-  <?php echo $lang_index['text_disclaimer_content'] ?></td></tr></table>
-<?php
-// ------------- end: disclaimer ------------------//
-// ------------- start: links ------------------//
-	print("<h2>".$lang_index['text_links']);
-	if (get_user_class() >= $applylink_class)
-		print("<font class=\"small\"> - [<a class=\"altlink\" href=\"linksmanage.php?action=apply\"><b>".$lang_index['text_apply_for_link']."</b></a>]</font>");
-	if (get_user_class() >= $linkmanage_class)
-	{
-		print("<font class=\"small\">");
-		print(" - [<a class=\"altlink\" href=\"linksmanage.php\"><b>".$lang_index['text_manage_links']."</b></a>]\n");
-		print("</font>");
-	}
-	print("</h2>");
-	$Cache->new_page('links', 86400, false);
-	if (!$Cache->get_page()){
-	$Cache->add_whole_row();
-	$res = sql_query("SELECT * FROM links ORDER BY id ASC") or sqlerr(__FILE__, __LINE__);
-	if (mysql_num_rows($res) > 0)
-	{
-		$links = "";
-		while($array = mysql_fetch_array($res))
-		{
-			$links .= "<a href=\"" . $array['url'] . "\" title=\"" . $array['title'] . "\" target=\"_blank\">" . $array['name'] . "</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-		}
-		print("<table width=\"100%\"><tr><td class=\"text\">".trim($links)."</td></tr></table>");
-	}
-	$Cache->end_whole_row();
-	$Cache->cache_page();
-	}
-	echo $Cache->next_row();
-// ------------- end: links ------------------//
+			// ------------- start: disclaimer ------------------//
+			?>
+			<h4 style="float: left"><span class=" icon-tasks"></span><?php echo $lang_index['text_disclaimer'] ?></h4>
+			<table width="100%"><tr><td style="border: 0px">
+						<?php echo "<blockquote style='font-size: 12px'>".$lang_index['text_disclaimer_content']."</blockquote>" ?></td></tr></table>
+			<?php
+			// ------------- end: disclaimer ------------------//
+			// ------------- start: links ------------------//
+			print("<h4 style='float: left;margin-top: 15px'><span class='icon-link'></span>".$lang_index['text_links']);
+			if (get_user_class() >= $applylink_class)
+				print("<font > - [<a class=\"altlink\" href=\"linksmanage.php?action=apply\"><b>".$lang_index['text_apply_for_link']."</b></a>]</font>");
+			if (get_user_class() >= $linkmanage_class)
+			{
+				print("<font class=\"small\">");
+				print(" - [<a class=\"altlink\" href=\"linksmanage.php\"><b>".$lang_index['text_manage_links']."</b></a>]\n");
+				print("</font>");
+			}
+			print("</h4>");
+			$Cache->new_page('links', 86400, false);
+			if (!$Cache->get_page()){
+				$Cache->add_whole_row();
+				$res = sql_query("SELECT * FROM links ORDER BY id ASC") or sqlerr(__FILE__, __LINE__);
+				if (mysql_num_rows($res) > 0)
+				{
+					$links = "";
+					while($array = mysql_fetch_array($res))
+					{
+						$links .= "<a href=\"" . $array['url'] . "\" title=\"" . $array['title'] . "\" target=\"_blank\">" . $array['name'] . "</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+					}
+					print("<table width=\"100%\"><tr><td class=\"text\" >".trim($links)."</td></tr></table>");
+				}
+				$Cache->end_whole_row();
+				$Cache->cache_page();
+			}
+			echo $Cache->next_row();
+			// ------------- end: links ------------------//
+			panel_col_end();
 // ------------- start: browser, client and code note ------------------//
 ?>
 <table width="100%" class="main" border="0" cellspacing="0" cellpadding="0"><tr><td class="embedded">
 <div align="center"><br /><font class="medium"><?php echo $lang_index['text_browser_note'] ?></font></div>
-<div align="center"><a href="http://www.nexusphp.com" title="<?php echo PROJECTNAME?>" target="_blank"><img src="pic/nexus.png" alt="<?php echo PROJECTNAME?>" /></a></div>
+<!--<div align="center"><a href="http://www.nexusphp.com" title="--><?php //echo PROJECTNAME?><!--" target="_blank"><img src="pic/nexus.png" alt="--><?php //echo PROJECTNAME?><!--" /></a></div>-->
 </td></tr></table>
 <?php
 // ------------- end: browser, client and code note ------------------//
