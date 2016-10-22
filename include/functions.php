@@ -489,6 +489,31 @@ function begin_main_frame($caption = "", $center = false, $width = 100)
 
 	print("<table class=\"main\" width=\"97%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">" .
 	"<tr><td class=\"embedded\" $tdextra>");
+
+}
+
+function panel_start(){
+	echo "<div id=\"main_content\" class=\"container\">
+					<div id=\"main\" class=\"well no-border-radius\">
+						<div class=\"row\">";
+						}
+function panel_end(){
+	echo "</div>";
+}
+function panel_col_5_start(){
+	echo "<div class=\"col-md-5\">
+								<div class=\"panel panel-default\">
+									<div class=\"panel-heading\">";
+}
+
+function panel_col_7_start(){
+	echo "<div class=\"col-md-7\">
+        <div class=\"panel panel-default\">
+            <div class=\"panel-heading\">";
+}
+
+function panel_col_end(){
+	echo "</div></div></div>";
 }
 
 function end_main_frame()
@@ -2259,12 +2284,13 @@ $cssupdatedate=($cssupdatedate ? "?".htmlspecialchars($cssupdatedate) : "");
 <link rel="stylesheet" href="./styles/bootstrap/css/bootstrap.min.css">
 <!--<script src="./styles/j/jquery/2.1.1/jquery.min.js"></script>-->
 <script src="./styles/bootstrap/js/bootstrap.min.js"></script>
+<script src="./styles/js/js.js"></script>
 <!--		CDN awosome-->
 <!--<link href="http://cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">-->
 <!--<link href="//netdna.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">-->
 <
 <link href="./styles/awesome/css/font-awesome.min.css" rel="stylesheet">
-
+<link rel="stylesheet" type="text/css" href="./styles/BambooGreen/main.css">
 	<?php
 if ($CURUSER){
 	$caticonrow = get_category_icon_row($CURUSER['caticon']);
@@ -3305,7 +3331,7 @@ function get_username($id, $big = false, $link = true, $bold = true, $target = f
 		else
 			$pics .= "<img class=\"".$disabledpic."\" src=\"pic/trans.gif\" alt=\"Disabled\" ".$style." />\n";
 
-		$username = ($underline == true ? "<u>" . $arr['username'] . "</u>" : $arr['username']);
+		$username = ($underline == false ? "<u>" . $arr['username'] . "</u>" : $arr['username']);
 		$username = ($bold == true ? "<b>" . $username . "</b>" : $username);
 		$username = ($link == true ? "<a ". $link_ext . " href=\"userdetails.php?id=" . $id . "\"" . ($target == true ? " target=\"_blank\"" : "") . " class='". get_user_class_name($arr['class'],true) . "_Name'>" . $username . "</a>" : $username) . $pics . ($withtitle == true ? " (" . ($arr['title'] == "" ?  get_user_class_name($arr['class'],false,true,true) : "<span class='".get_user_class_name($arr['class'],true) . "_Name'><b>".htmlspecialchars($arr['title'])) . "</b></span>)" : "");
 

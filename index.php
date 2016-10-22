@@ -37,9 +37,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 
 stdhead($lang_index['head_home']);
 begin_main_frame();
-
+//panel_one
+panel_start();
 // ------------- start: recent news ------------------//
-print("<h2>".$lang_index['text_recent_news'].(get_user_class() >= $newsmanage_class ? " - <font class=\"small\">[<a class=\"altlink\" href=\"news.php\"><b>".$lang_index['text_news_page']."</b></a>]</font>" : "")."</h2>");
+panel_col_5_start();
+print("<h4 class=\"panel-title\"><span class='glyphicon glyphicon-bell'></span>".$lang_index['text_recent_news'].(get_user_class() >= $newsmanage_class ? "&nbsp;&nbsp;&nbsp;&nbsp;<a class=\"altlink\" href=\"news.php\"><span class=' icon-edit'></span>".$lang_index['text_news_page']."</a></font>" : "")."</h4>");
 
 $Cache->new_page('recent_news', 86400, true);
 if (!$Cache->get_page()){
@@ -47,7 +49,8 @@ $res = sql_query("SELECT * FROM news ORDER BY added DESC LIMIT ".(int)$maxnewsnu
 if (mysql_num_rows($res) > 0)
 {
 	$Cache->add_whole_row();
-	print("<table width=\"100%\"><tr><td class=\"text\"><div style=\"margin-left: 16pt;\">\n");
+	echo  "<div class=\"slimScrollDiv\" style=\"position: relative; overflow: hidden; width: auto;height: 390px\"><div class=\"panel-body indexpanel scroll\" id=\"newspanel\" style=\"overflow: auto; width: auto;height: 400px\">";
+	print("<table class=\"table table-striped\" id=\"newstable\" style='height: 400px'  width=\"100%\"><tr><td class=\"text\"><div style=\"margin-left: 16pt;\">\n");
 	$Cache->end_whole_row();
 	$news_flag = 0;
 	while($array = mysql_fetch_array($res))
@@ -73,7 +76,13 @@ if (mysql_num_rows($res) > 0)
 	}
 	$Cache->break_loop();
 	$Cache->add_whole_row();
+//	echo "
+//	<div class=\"slimScrollBar\" style=\"background: rgb(0, 0, 0); width: 8px; position: absolute; top: 17px; opacity: 0.4; display: block; border-radius: 7px; z-index: 99; right: 1px; height: 249.231px;\"></div>
+//	<div class=\"slimScrollRail\" style=\"width: 8px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;\"></div>
+//	";
 	print("</div></td></tr></table>\n");
+	echo "</div></div>";
+	//panel_col_end();
 	$Cache->end_whole_row();
 }
 	$Cache->cache_page();
@@ -85,6 +94,7 @@ while($Cache->next_row()){
 	echo $Cache->next_part();
 }
 echo $Cache->next_row();
+panel_col_end();
 // ------------- end: recent news ------------------//
 // ------------- start: hot and classic movies ------------------//
 if ($showextinfo['imdb'] == 'yes' && ($showmovies['hot'] == "yes" || $showmovies['classic'] == "yes"))
@@ -141,8 +151,10 @@ if ($showextinfo['imdb'] == 'yes' && ($showmovies['hot'] == "yes" || $showmovies
 		}
 	}
 }
+
 // ------------- end: hot and classic movies ------------------//
 // ------------- start: funbox ------------------//
+panel_col_7_start();
 if ($showfunbox_main == "yes" && (!isset($CURUSER) || $CURUSER['showfb'] == "yes")){
 	// Get the newest fun stuff
 	if (!$row = $Cache->get_value('current_fun_content')){
@@ -152,7 +164,7 @@ if ($showfunbox_main == "yes" && (!isset($CURUSER) || $CURUSER['showfb'] == "yes
 	}
 	if (!$row) //There is no funbox item
 	{
-		print("<h2>".$lang_index['text_funbox'].(get_user_class() >= $newfunitem_class ? "<font class=\"small\"> - [<a class=\"altlink\" href=\"fun.php?action=new\"><b>".$lang_index['text_new_fun']."</b></a>]</font>" : "")."</h2>");
+		print("<h4>".$lang_index['text_funbox'].(get_user_class() >= $newfunitem_class ? "<font class=\"small\"> - [<a class=\"altlink\" href=\"fun.php?action=new\"><b>".$lang_index['text_new_fun']."</b></a>]</font>" : "")."</h4>");
 	}
 	else
 	{
@@ -168,16 +180,15 @@ if ($showfunbox_main == "yes" && (!isset($CURUSER) || $CURUSER['showfb'] == "yes
 	}
 //check whether current user has voted
 	$funvoted = get_row_count("funvotes", "WHERE funid = ".sqlesc($row['id'])." AND userid=".sqlesc($CURUSER[id]));
-
-	print ("<h2>".$lang_index['text_funbox']);
+	print ("<h4><span class='icon-trophy'></span>".$lang_index['text_funbox']);
 	if ($CURUSER)
 	{
-		print("<font class=\"small\">".(get_user_class() >= $log_class ? " - [<a class=\"altlink\" href=\"log.php?action=funbox\"><b>".$lang_index['text_more_fun']."</b></a>]": "").($row['neednew'] && get_user_class() >= $newfunitem_class ? " - [<a class=altlink href=\"fun.php?action=new\"><b>".$lang_index['text_new_fun']."</b></a>]" : "" ).( ($CURUSER['id'] == $row['userid'] || get_user_class() >= $funmanage_class) ? " - [<a class=\"altlink\" href=\"fun.php?action=edit&amp;id=".$row['id']."&amp;returnto=index.php\"><b>".$lang_index['text_edit']."</b></a>]" : "").(get_user_class() >= $funmanage_class ? " - [<a class=\"altlink\" href=\"fun.php?action=delete&amp;id=".$row['id']."&amp;returnto=index.php\"><b>".$lang_index['text_delete']."</b></a>] - [<a class=\"altlink\" href=\"fun.php?action=ban&amp;id=".$row['id']."&amp;returnto=index.php\"><b>".$lang_index['text_ban']."</b></a>]" : "")."</font>");
+		print("<font class=\"small\">".(get_user_class() >= $log_class ? " &nbsp;&nbsp;&nbsp;<a class=\"altlink\" href=\"log.php?action=funbox\"><b><span class='icon-quote-left'></span>".$lang_index['text_more_fun']."</b></a>": "").($row['neednew'] && get_user_class() >= $newfunitem_class ? " &nbsp;<a class=altlink href=\"fun.php?action=new\"><b>".$lang_index['text_new_fun']."</b></a>" : "" ).( ($CURUSER['id'] == $row['userid'] || get_user_class() >= $funmanage_class) ? " &nbsp;<a class=\"altlink\" href=\"fun.php?action=edit&amp;id=".$row['id']."&amp;returnto=index.php\"><b><span class='icon-edit'></span>".$lang_index['text_edit']."</b></a>" : "").(get_user_class() >= $funmanage_class ? " &nbsp;<a class=\"altlink\" href=\"fun.php?action=delete&amp;id=".$row['id']."&amp;returnto=index.php\"><b ><sapn class='icon-trash'></sapn>".$lang_index['text_delete']."</b></a>&nbsp;&nbsp;<a class=\"altlink\" href=\"fun.php?action=ban&amp;id=".$row['id']."&amp;returnto=index.php\"><b><sapn class='icon-ban-circle'></sapn>".$lang_index['text_ban']."</b></a>" : "")."</font>") ;
 	}
 	print("</h2>");
 
 	print("<table width=\"100%\"><tr><td class=\"text\">");
-	print("<iframe src=\"fun.php?action=view\" width='900' height='300' frameborder='0' name='funbox' marginwidth='0' marginheight='0'></iframe><br /><br />\n");
+	print("<iframe src=\"fun.php?action=view\" width='100%' height='300' frameborder='0' name='funbox' marginwidth='0' marginheight='0'></iframe><br /><br />\n");
 
 	if ($CURUSER)
 	{
@@ -188,19 +199,27 @@ if ($showfunbox_main == "yes" && (!isset($CURUSER) || $CURUSER['showfb'] == "yes
 	print("</td></tr></table>");
 	}
 }
+panel_col_end();
+panel_end();
 // ------------- end: funbox ------------------//
+panel_start();
+panel_col_7_start();
 // ------------- start: shoutbox ------------------//
 if ($showshoutbox_main == "yes") {
 ?>
-<h2><?php echo $lang_index['text_shoutbox'] ?> - <font class="small"><?php echo $lang_index['text_auto_refresh_after']?></font><font class='striking' id="countdown"></font><font class="small"><?php echo $lang_index['text_seconds']?></font></h2>
+<h4><sapn class="icon-comments"></sapn><?php echo $lang_index['text_shoutbox'] ?></h4>
 <?php
-	print("<table width=\"100%\"><tr><td class=\"text\">\n");
-	print("<iframe src='shoutbox.php?type=shoutbox' width='900' height='180' frameborder='0' name='sbox' marginwidth='0' marginheight='0'></iframe><br /><br />\n");
+	print("<table style='width: 100%;height: 700px;'><tr><td class=\"text\" style='width: 100px'>\n");
+	print("<iframe src='shoutbox.php?type=shoutbox' width='100%' height='520' frameborder='0' name='sbox' marginwidth='0' marginheight='0'></iframe><br /><br />\n");
 	print("<form action='shoutbox.php' method='get' target='sbox' name='shbox'>\n");
-	print("<label for='shbox_text'>".$lang_index['text_message']."</label><input type='text' name='shbox_text' id='shbox_text' size='100' style='width: 650px; border: 1px solid gray;' />  <input type='submit' id='hbsubmit' class='btn' name='shout' value=\"".$lang_index['sumbit_shout']."\" />");
+	print("<label for='shbox_text'>".$lang_index['text_message']."</label>
+	<div class=\"vtop td-fat pd5\">
+	<textarea class=\"input fullwidth inputor\" name='shbox_text' id='shbox_text' rows=\"2\" placeholder=\"请输入聊天内容\" style=\"height: 4em; background-color: rgb(255, 255, 255);width:100%\"></textarea>
+	</div>
+	<input style='margin:7px' type='submit' id='hbsubmit' class=\"btn btn-success\" name='shout' value=\"".$lang_index['sumbit_shout']."\" />");
 	if ($CURUSER['hidehb'] != 'yes' && $showhelpbox_main =='yes')
 		print("<input type='submit' class='btn' name='toguest' value=\"".$lang_index['sumbit_to_guest']."\" />");
-	print("<input type='reset' class='btn' value=\"".$lang_index['submit_clear']."\" /> <input type='hidden' name='sent' value='yes' /><input type='hidden' name='type' value='shoutbox' /><br />\n");
+	print("<input type='reset' class=\"btn btn-danger\" value=\"".$lang_index['submit_clear']."\" /> <input type='hidden' name='sent' value='yes' /><input type='hidden' name='type' value='shoutbox' /><br />\n");
 	print(smile_row("shbox","shbox_text"));
 	print("</form></td></tr></table>");
 }
@@ -241,151 +260,17 @@ if ($showlastxtorrents_main == "yes") {
 		}
 }
 // ------------- end: latest torrents ------------------//
-// ------------- start: polls ------------------//
-if ($CURUSER && $showpolls_main == "yes")
-{
-		// Get current poll
-		if (!$arr = $Cache->get_value('current_poll_content')){
-			$res = sql_query("SELECT * FROM polls ORDER BY id DESC LIMIT 1") or sqlerr(__FILE__, __LINE__);
-			$arr = mysql_fetch_array($res);
-			$Cache->cache_value('current_poll_content', $arr, 7226);
-		}
-		if (!$arr)
-			$pollexists = false;
-		else $pollexists = true;
 
-		print("<h2>".$lang_index['text_polls']);
+panel_col_end();
+panel_col_5_start();
 
-			if (get_user_class() >= $pollmanage_class)
-			{
-				print("<font class=\"small\"> - [<a class=\"altlink\" href=\"makepoll.php?returnto=main\"><b>".$lang_index['text_new']."</b></a>]\n");
-				if ($pollexists)
-				{
-					print(" - [<a class=\"altlink\" href=\"makepoll.php?action=edit&amp;pollid=".$arr[id]."&amp;returnto=main\"><b>".$lang_index['text_edit']."</b></a>]\n");
-					print(" - [<a class=\"altlink\" href=\"log.php?action=poll&amp;do=delete&amp;pollid=".$arr[id]."&amp;returnto=main\"><b>".$lang_index['text_delete']."</b></a>]");
-					print(" - [<a class=\"altlink\" href=\"polloverview.php?id=".$arr[id]."\"><b>".$lang_index['text_detail']."</b></a>]");
-				}
-				print("</font>");
-			}
-			print("</h2>");
-		if ($pollexists)
-		{
-			$pollid = 0+$arr["id"];
-			$userid = 0+$CURUSER["id"];
-			$question = $arr["question"];
-			$o = array($arr["option0"], $arr["option1"], $arr["option2"], $arr["option3"], $arr["option4"],
-			$arr["option5"], $arr["option6"], $arr["option7"], $arr["option8"], $arr["option9"],
-			$arr["option10"], $arr["option11"], $arr["option12"], $arr["option13"], $arr["option14"],
-			$arr["option15"], $arr["option16"], $arr["option17"], $arr["option18"], $arr["option19"]);
-
-			print("<table width=\"100%\"><tr><td class=\"text\" align=\"center\">\n");
-			print("<table width=\"59%\" class=\"main\" border=\"1\" cellspacing=\"0\" cellpadding=\"5\"><tr><td class=\"text\" align=\"left\">");
-			print("<p align=\"center\"><b>".$question."</b></p>\n");
-
-			// Check if user has already voted
-			$res = sql_query("SELECT selection FROM pollanswers WHERE pollid=".sqlesc($pollid)." AND userid=".sqlesc($CURUSER["id"])) or sqlerr();
-			$voted = mysql_fetch_assoc($res);
-			if ($voted) //user has already voted
-			{
-				$uservote = $voted["selection"];
-				$Cache->new_page('current_poll_result', 3652, true);
-				if (!$Cache->get_page())
-				{
-				// we reserve 255 for blank vote.
-				$res = sql_query("SELECT selection FROM pollanswers WHERE pollid=".sqlesc($pollid)." AND selection < 20") or sqlerr();
-
-				$tvotes = mysql_num_rows($res);
-
-				$vs = array();
-				$os = array();
-
-				// Count votes
-				while ($arr2 = mysql_fetch_row($res))
-				$vs[$arr2[0]] ++;
-
-				reset($o);
-				for ($i = 0; $i < count($o); ++$i){
-					if ($o[$i])
-						$os[$i] = array($vs[$i], $o[$i], $i);
-				}
-
-				function srt($a,$b)
-				{
-					if ($a[0] > $b[0]) return -1;
-					if ($a[0] < $b[0]) return 1;
-					return 0;
-				}
-
-				// now os is an array like this: array(array(123, "Option 1", 1), array(45, "Option 2", 2))
-				$Cache->add_whole_row();
-				print("<table class=\"main\" width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n");
-				$Cache->end_whole_row();
-				$i = 0;
-				while ($a = $os[$i])
-				{
-					if ($tvotes == 0)
-						$p = 0;
-					else
-						$p = round($a[0] / $tvotes * 100);
-					$Cache->add_row();
-					$Cache->add_part();
-					print("<tr><td width=\"1%\" class=\"embedded nowrap\">" . $a[1] . "&nbsp;&nbsp;</td><td width=\"99%\" class=\"embedded nowrap\"><img class=\"bar_end\" src=\"pic/trans.gif\" alt=\"\" /><img ");
-					$Cache->end_part();
-					$Cache->add_part();
-					print(" src=\"pic/trans.gif\" style=\"width: " . ($p * 3) ."px;\" alt=\"\" /><img class=\"bar_end\" src=\"pic/trans.gif\" alt=\"\" /> $p%</td></tr>\n");
-					$Cache->end_part();
-					$Cache->end_row();
-					++$i;
-				}
-				$Cache->break_loop();
-				$Cache->add_whole_row();
-				print("</table>\n");
-				$tvotes = number_format($tvotes);
-				print("<p align=\"center\">".$lang_index['text_votes']." ".$tvotes."</p>\n");
-				$Cache->end_whole_row();
-				$Cache->cache_page();
-				}
-				echo $Cache->next_row();
-				$i = 0;
-				while($Cache->next_row()){
-					echo $Cache->next_part();
-					if ($i == $uservote)
-						echo "class=\"sltbar\"";
-					else
-						echo "class=\"unsltbar\"";
-					echo $Cache->next_part();
-					$i++;
-				}
-				echo $Cache->next_row();
-			}
-			else //user has not voted yet
-			{
-				print("<form method=\"post\" action=\"index.php\">\n");
-				$i = 0;
-				while ($a = $o[$i])
-				{
-					print("<input type=\"radio\" name=\"choice\" value=\"".$i."\">".$a."<br />\n");
-					++$i;
-				}
-				print("<br />");
-				print("<input type=\"radio\" name=\"choice\" value=\"255\">".$lang_index['radio_blank_vote']."<br />\n");
-				print("<p align=\"center\"><input type=\"submit\" class=\"btn\" value=\"".$lang_index['submit_vote']."\" /></p>");
-			}
-			print("</td></tr></table>");
-
-			if ($voted && get_user_class() >= $log_class)
-				print("<p align=\"center\"><a href=\"log.php?action=poll\">".$lang_index['text_previous_polls']."</a></p>\n");
-			print("</td></tr></table>");
-		}
-}
-// ------------- end: polls ------------------//
 // ------------- start: stats ------------------//
 if ($showstats_main == "yes")
 {
 ?>
-<h2><?php echo $lang_index['text_tracker_statistics'] ?></h2>
-<table width="100%" class="table"><tr><td class="text" align="center">
-<table width="60%" class="table" border="1" cellspacing="0" cellpadding="10">
+<h4><sapn class=" icon-dashboard"></sapn><?php echo $lang_index['text_tracker_statistics'] ?></h4>
+<table width="100%" class="table table-bordered" id="statustable"><tr>
+<!--<table width="60%" class="table table-bordered" border="1" cellspacing="0" cellpadding="10">-->
 <?php
 	$Cache->new_page('stats_users', 3000, true);
 	if (!$Cache->get_page()){
@@ -416,13 +301,13 @@ if ($showstats_main == "yes")
 <tr>
 <?php
 	twotd(get_user_class_name(UC_VIP,false,false,true),$VIP);
-	twotd($lang_index['row_donors']." <img class=\"star\" src=\"pic/trans.gif\" alt=\"Donor\" />",$donated);
+	twotd($lang_index['row_donors'],$donated);
 ?>
 </tr>
 <tr>
 <?php
-	twotd($lang_index['row_warned_users']." <img class=\"warned\" src=\"pic/trans.gif\" alt=\"warned\" />",$warned);
-	twotd($lang_index['row_banned_users']." <img class=\"disabled\" src=\"pic/trans.gif\" alt=\"disabled\" />",$disabled);
+	twotd($lang_index['row_warned_users'],$warned);
+	twotd($lang_index['row_banned_users'],$disabled);
 ?>
 </tr>
 <tr>
@@ -521,7 +406,7 @@ if ($showstats_main == "yes")
 ?>
 <tr>
 <?php
-	twotd(get_user_class_name(UC_PEASANT,false,false,true)." <img class=\"leechwarned\" src=\"pic/trans.gif\" alt=\"leechwarned\" />",$peasants);
+	twotd(get_user_class_name(UC_PEASANT,false,false,true),$peasants);
 	twotd(get_user_class_name(UC_USER,false,false,true),$users);
 ?>
 </tr>
@@ -559,7 +444,166 @@ if ($showstats_main == "yes")
 </td></tr></table>
 <?php
 }
+panel_col_end();
+panel_end();
 // ------------- end: stats ------------------//
+// ------------- start: polls ------------------//
+if ($CURUSER && $showpolls_main == "yes")
+{
+	// Get current poll
+	if (!$arr = $Cache->get_value('current_poll_content')){
+		$res = sql_query("SELECT * FROM polls ORDER BY id DESC LIMIT 1") or sqlerr(__FILE__, __LINE__);
+		$arr = mysql_fetch_array($res);
+		$Cache->cache_value('current_poll_content', $arr, 7226);
+	}
+	if (!$arr)
+		$pollexists = false;
+	else $pollexists = true;
+
+	print("<h2>".$lang_index['text_polls']);
+
+	if (get_user_class() >= $pollmanage_class)
+	{
+		print("<font class=\"small\"> - [<a class=\"altlink\" href=\"makepoll.php?returnto=main\"><b>".$lang_index['text_new']."</b></a>]\n");
+		if ($pollexists)
+		{
+			print(" - [<a class=\"altlink\" href=\"makepoll.php?action=edit&amp;pollid=".$arr[id]."&amp;returnto=main\"><b>".$lang_index['text_edit']."</b></a>]\n");
+			print(" - [<a class=\"altlink\" href=\"log.php?action=poll&amp;do=delete&amp;pollid=".$arr[id]."&amp;returnto=main\"><b>".$lang_index['text_delete']."</b></a>]");
+			print(" - [<a class=\"altlink\" href=\"polloverview.php?id=".$arr[id]."\"><b>".$lang_index['text_detail']."</b></a>]");
+		}
+		print("</font>");
+	}
+	print("</h2>");
+	if ($pollexists)
+	{
+		$pollid = 0+$arr["id"];
+		$userid = 0+$CURUSER["id"];
+		$question = $arr["question"];
+		$o = array($arr["option0"], $arr["option1"], $arr["option2"], $arr["option3"], $arr["option4"],
+			$arr["option5"], $arr["option6"], $arr["option7"], $arr["option8"], $arr["option9"],
+			$arr["option10"], $arr["option11"], $arr["option12"], $arr["option13"], $arr["option14"],
+			$arr["option15"], $arr["option16"], $arr["option17"], $arr["option18"], $arr["option19"]);
+
+		print("<table width=\"100%\"><tr><td class=\"text\" align=\"center\">\n");
+		print("<table width=\"59%\" class=\"main\" border=\"1\" cellspacing=\"0\" cellpadding=\"5\"><tr><td class=\"text\" align=\"left\">");
+		print("<p align=\"center\"><b>".$question."</b></p>\n");
+
+		// Check if user has already voted
+		$res = sql_query("SELECT selection FROM pollanswers WHERE pollid=".sqlesc($pollid)." AND userid=".sqlesc($CURUSER["id"])) or sqlerr();
+		$voted = mysql_fetch_assoc($res);
+		if ($voted) //user has already voted
+		{
+			$uservote = $voted["selection"];
+			$Cache->new_page('current_poll_result', 3652, true);
+			if (!$Cache->get_page())
+			{
+				// we reserve 255 for blank vote.
+				$res = sql_query("SELECT selection FROM pollanswers WHERE pollid=".sqlesc($pollid)." AND selection < 20") or sqlerr();
+
+				$tvotes = mysql_num_rows($res);
+
+				$vs = array();
+				$os = array();
+
+				// Count votes
+				while ($arr2 = mysql_fetch_row($res))
+					$vs[$arr2[0]] ++;
+
+				reset($o);
+				for ($i = 0; $i < count($o); ++$i){
+					if ($o[$i])
+						$os[$i] = array($vs[$i], $o[$i], $i);
+				}
+
+				function srt($a,$b)
+				{
+					if ($a[0] > $b[0]) return -1;
+					if ($a[0] < $b[0]) return 1;
+					return 0;
+				}
+
+				// now os is an array like this: array(array(123, "Option 1", 1), array(45, "Option 2", 2))
+				$Cache->add_whole_row();
+				print("<table class=\"main\" width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n");
+				$Cache->end_whole_row();
+				$i = 0;
+				while ($a = $os[$i])
+				{
+					if ($tvotes == 0)
+						$p = 0;
+					else
+						$p = round($a[0] / $tvotes * 100);
+					$Cache->add_row();
+					$Cache->add_part();
+					print("<tr><td width=\"1%\" class=\"embedded nowrap\">" . $a[1] . "&nbsp;&nbsp;</td><td width=\"99%\" class=\"embedded nowrap\"><img class=\"bar_end\" src=\"pic/trans.gif\" alt=\"\" /><img ");
+					$Cache->end_part();
+					$Cache->add_part();
+					print(" src=\"pic/trans.gif\" style=\"width: " . ($p * 3) ."px;\" alt=\"\" /><img class=\"bar_end\" src=\"pic/trans.gif\" alt=\"\" /> $p%</td></tr>\n");
+					$Cache->end_part();
+					$Cache->end_row();
+					++$i;
+				}
+				$Cache->break_loop();
+				$Cache->add_whole_row();
+				print("</table>\n");
+				$tvotes = number_format($tvotes);
+				print("<p align=\"center\">".$lang_index['text_votes']." ".$tvotes."</p>\n");
+				$Cache->end_whole_row();
+				$Cache->cache_page();
+			}
+			echo $Cache->next_row();
+			$i = 0;
+			while($Cache->next_row()){
+				echo $Cache->next_part();
+				if ($i == $uservote)
+					echo "class=\"sltbar\"";
+				else
+					echo "class=\"unsltbar\"";
+				echo $Cache->next_part();
+				$i++;
+			}
+			echo $Cache->next_row();
+		}
+		else //user has not voted yet
+		{
+			print("<form method=\"post\" action=\"index.php\">\n");
+			$i = 0;
+			while ($a = $o[$i])
+			{
+				print("<input type=\"radio\" name=\"choice\" value=\"".$i."\">".$a."<br />\n");
+				++$i;
+			}
+			print("<br />");
+			print("<input type=\"radio\" name=\"choice\" value=\"255\">".$lang_index['radio_blank_vote']."<br />\n");
+			print("<p align=\"center\"><input type=\"submit\" class=\"btn\" value=\"".$lang_index['submit_vote']."\" /></p>");
+		}
+		print("</td></tr></table>");
+
+		if ($voted && get_user_class() >= $log_class)
+			print("<p align=\"center\"><a href=\"log.php?action=poll\">".$lang_index['text_previous_polls']."</a></p>\n");
+		print("</td></tr></table>");
+	}
+}
+panel_end();
+// ------------- end: polls ------------------//
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // ------------- start: tracker load ------------------//
 if ($showtrackerload == "yes") {
 	$uptimeresult=exec('uptime');

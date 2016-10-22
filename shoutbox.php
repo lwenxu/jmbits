@@ -1,4 +1,99 @@
 <?php
+echo "
+<style>
+.bubble {
+    background-color: lightseagreen;
+    border-radius: 5px;
+    box-shadow: 0 0 6px #b2b2b2;
+    display: table-cell;
+    padding: 10px 18px;
+    position: relative;
+    max-width: 350px;
+    min-width: 100px;
+    word-break: break-all;
+    vertical-align: middle;
+    text-align: left
+}
+
+.bubble-betbox {
+    padding: 5px 9px;
+    max-width: 250px;
+    min-width: 100px;
+    font-size: 14px
+}
+
+.bubble::before {
+    background-color: lightseagreen;
+    content: \"\00a0\";
+    display: block;
+    height: 16px;
+    position: absolute;
+    top: 11px;
+    transform: rotate(29deg) skew(-35deg);
+    -moz-transform: rotate(29deg) skew(-35deg);
+    -ms-transform: rotate(29deg) skew(-35deg);
+    -o-transform: rotate(29deg) skew(-35deg);
+    -webkit-transform: rotate(29deg) skew(-35deg);
+    width: 20px
+}
+
+.bubble-betbox::before {
+    height: 8px;
+    width: 10px
+}
+
+.bubble-left {
+    margin: 5px 45px 5px 20px
+}
+
+.bubble-left::before {
+    box-shadow: -2px 2px 2px 0 rgba(178,178,178,.4);
+    left: -9px
+}
+
+.bubble-right {
+    margin: 5px 20px 5px 45px
+}
+
+.bubble-right::before {
+    box-shadow: 2px -2px 2px 0 rgba(178,178,178,.4);
+    right: -9px
+}
+
+.bubble-left-betbox::before {
+    left: -5px
+}
+
+.bubble-right-betbox::before {
+    right: -5px
+}
+
+.bubble-time {
+    margin: 10px;
+    font-size: 10px;
+    background-color: #F19483;
+    font-weight: normal
+}
+
+.bubble-time-outer {
+    display: table-cell;
+    vertical-align: middle
+}
+
+.bubble-time-outer-betbox {
+    display: inline-block;
+    margin-bottom: 15px
+}
+a{
+	text-decoration: none;
+}
+#dellink{
+	color: crimson;
+}
+</style>
+
+";
+
 require_once("include/bittorrent.php");
 dbconn();
 require_once(get_langfile_path());
@@ -21,6 +116,7 @@ $refresh = ($CURUSER['sbrefresh'] ? $CURUSER['sbrefresh'] : 120)
 <link rel="stylesheet" href="<?php echo get_font_css_uri()?>" type="text/css">
 <link rel="stylesheet" href="<?php echo get_css_uri()."theme.css"?>" type="text/css">
 <link rel="stylesheet" href="styles/curtain_imageresizer.css" type="text/css">
+<link href="./styles/awesome/css/font-awesome.min.css" rel="stylesheet">
 <script src="curtain_imageresizer.js" type="text/javascript"></script><style type="text/css">body {overflow-y:scroll; overflow-x: hidden}</style>
 <?php
 print(get_style_addicode());
@@ -118,7 +214,7 @@ else
 	while ($arr = mysql_fetch_assoc($res))
 	{
 		if (get_user_class() >= $sbmanage_class) {
-			$del="[<a href=\"shoutbox.php?del=".$arr[id]."\">".$lang_shoutbox['text_del']."</a>]";
+			$del="<a id=dellink href=\"shoutbox.php?del=".$arr[id]."\">".$lang_shoutbox['text_del']."</a>";
 		}
 		if ($arr["userid"]) {
 			$username = get_username($arr["userid"],false,true,true,true,false,false,"",true);
@@ -129,9 +225,21 @@ else
 		if ($CURUSER['timetype'] != 'timealive')
 			$time = strftime("%m.%d %H:%M",$arr["date"]);
 		else $time = get_elapsed_time($arr["date"]).$lang_shoutbox['text_ago'];
-		print("<tr><td class=\"shoutrow\"><span class='date'>[".$time."]</span> ".
-$del ." ". $username." " . format_comment($arr["text"],true,false,true,true,600,true,false)."
-</td></tr>\n");
+		$rand=rand(1,2);
+		if ($rand!=1) {
+			print("<tr><td>
+			<img src=./pic/default_avatar.png height='30px' style='float: right'/>
+			<div style='float: right' class=\"bubble bubble-right bubble-shoutbox bubble-right-shoutbox\">
+			<span class='date'><span class='icon-time'></span>&nbsp;" . $time . "</span> " . "<span class=' icon-trash'></span>&nbsp;" . $del . "&nbsp;<span class=' icon-user'></span>&nbsp; " . $username . "<br><hr>" . format_comment($arr["text"], true, false, true, true, 600, true, false) . "
+			</td></tr>\n");
+		}
+		else {
+			print("<tr><td>
+			<img src=./pic/default_avatar.png height='30px' style='float: left'/>
+			<div style='float: left' class=\"bubble bubble-left bubble-shoutbox bubble-right-shoutbox\">
+			<span class='date'><span class='icon-time'></span>&nbsp;" . $time . "</span> " . "<span class=' icon-trash'></span>&nbsp;" . $del . "&nbsp;<span class=' icon-user'></span>&nbsp; " . $username . "<br><hr>" . format_comment($arr["text"], true, false, true, true, 600, true, false) . "
+			</td></tr>\n");
+		}
 	}
 	print("</table>");
 }
