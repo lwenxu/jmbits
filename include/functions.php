@@ -527,14 +527,23 @@ function end_main_frame()
 	print("</td></tr></table>\n");
 }
 
+function noborder($class){
+	echo "
+		<style>
+			.$class{
+   				 border: 0px;
+			}
+		</style>
+	";
+}
 function begin_frame($caption = "", $center = false, $padding = 10, $width="100%", $caption_center="left")
 {
 	$tdextra = "";
 
 	if ($center)
 	$tdextra .= " align=\"center\"";
-
-	print(($caption ? "<h2 align=\"".$caption_center."\">".$caption."</h2>" : "") . "<table width=\"".$width."\" border=\"1\" cellspacing=\"0\" cellpadding=\"".$padding."\">" . "<tr><td class=\"text\" $tdextra>\n");
+//	panel_start();
+	print(($caption ? "<h3 style='float: left' align=\"".$caption_center."\"><sapn class='icon-beaker'></sapn>".$caption."</h3>" : "") . "<table width=\"".$width."\" border=\"1\" cellspacing=\"0\" cellpadding=\"".$padding."\">" . "<tr><td class=\"text\" $tdextra>\n");
 
 }
 

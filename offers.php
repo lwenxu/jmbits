@@ -37,23 +37,32 @@ if ($_GET["add_offer"]){
 
 	stdhead($lang_offers['head_offer']);
 
-	print("<p>".$lang_offers['text_red_star_required']."</p>");
-
+//	print("<p>".$lang_offers['text_red_star_required']."</p>");
+	echo "
+		<style>
+				#compose *{
+					    font-family: \"Helvetica Neue\",Helvetica,Arial,sans-serif;
+						font-size: 14px;
+						line-height: 1.42857143;
+						color: #333;
+				}
+		</style>
+	";
 	print("<div align=\"center\"><form id=\"compose\" action=\"?new_offer=1\" name=\"compose\" method=\"post\">".
-	"<table width=940 border=0 cellspacing=0 cellpadding=5><tr><td class=colhead align=center colspan=2>".$lang_offers['text_offers_open_to_all']."</td></tr>\n");
+	"<table class='table table-striped'  border=0 cellspacing=0 cellpadding=5><tr><td class=colhead align=center colspan=2>".$lang_offers['text_offers_open_to_all']."</td></tr>\n");
 
-	$s = "<select name=type>\n<option value=0>".$lang_offers['select_type_select']."</option>\n";
+	$s = "<select name=type class='med btn btn-info'>\n<option value=0>".$lang_offers['select_type_select']."</option>\n";
 	$cats = genrelist($browsecatmode);
 	foreach ($cats as $row)
 	$s .= "<option value=".$row["id"].">" . htmlspecialchars($row["name"]) . "</option>\n";
 	$s .= "</select>\n";
 	print("<tr><td class=rowhead align=right><b>".$lang_offers['row_type']."<font color=red>*</font></b></td><td class=rowfollow align=left> $s</td></tr>".
-	"<tr><td class=rowhead align=right><b>".$lang_offers['row_title']."<font color=red>*</font></b></td><td class=rowfollow align=left><input type=text name=name style=\"width: 650px;\" />".
+	"<tr><td class=rowhead align=right><b>".$lang_offers['row_title']."<font color=red>*</font></b></td><td class=rowfollow align=left><input class='input tip-focus fullwidth' type=text name=name  />".
 	"</td></tr><tr><td class=rowhead align=right><b>".$lang_offers['row_post_or_photo']."</b></td><td class=rowfollow align=left>".
-	"<input type=text name=picture style=\"width: 650px;\"><br />".$lang_offers['text_link_to_picture']."</td></tr>".
+	"<input class='input tip-focus fullwidth' type=text name=picture ><br />".$lang_offers['text_link_to_picture']."</td></tr>".
 	"<tr><td class=rowhead align=right valign=top><b>".$lang_offers['row_description']."<b><font color=red>*</font></td><td class=rowfollow align=left>\n");
 	textbbcode("compose","body",$body,false);
-	print("</td></tr><tr><td class=toolbox align=center colspan=2><input id=qr type=submit class=btn value=".$lang_offers['submit_add_offer']." ></td></tr></table></form><br />\n");
+	print("</td></tr><tr><td class=toolbox align=center colspan=2><input class='med btn btn-success' id=qr type=submit class=btn value=".$lang_offers['submit_add_offer']." ></td></tr></table></form>\n");
 	stdfoot();
 	die;
 }
@@ -696,10 +705,11 @@ $num = mysql_num_rows($res);
 stdhead($lang_offers['head_offers']);
 begin_main_frame();
 begin_frame($lang_offers['text_offers_section'], true,10,"100%","center");
-
-print("<p align=\"left\"><b><font size=\"5\">".$lang_offers['text_rules']."</font></b></p>\n");
-print("<div align=\"left\"><ul>");
-print("<li>".$lang_offers['text_rule_one_one'].get_user_class_name($upload_class, false, true, true).$lang_offers['text_rule_one_two'].get_user_class_name($addoffer_class, false, true, true).$lang_offers['text_rule_one_three']."</li>\n");
+panel_start();
+//noborder("text");
+print("<p align=\"left\"><b><font size=\"5\"><h4><span class='icon-bullhorn'></span>&nbsp;".$lang_offers['text_rules']."</h4></font></b></p>\n");
+print("<div align=\"left\"><ul style='margin-left: 22%;font-size: 15px'>");
+print("<li >".$lang_offers['text_rule_one_one'].get_user_class_name($upload_class, false, true, true).$lang_offers['text_rule_one_two'].get_user_class_name($addoffer_class, false, true, true).$lang_offers['text_rule_one_three']."</li>\n");
 print("<li>".$lang_offers['text_rule_two_one']."<b>".$minoffervotes."</b>".$lang_offers['text_rule_two_two']."</li>\n");
 if ($offervotetimeout_main)
 	print("<li>".$lang_offers['text_rule_three_one']."<b>".($offervotetimeout_main / 3600)."</b>".$lang_offers['text_rule_three_two']."</li>\n");
@@ -707,16 +717,16 @@ if ($offeruptimeout_main)
 	print("<li>".$lang_offers['text_rule_four_one']."<b>".($offeruptimeout_main / 3600)."</b>".$lang_offers['text_rule_four_two']."</li>\n");
 print("</ul></div>");
 if (get_user_class() >= $addoffer_class)
-print("<div align=\"center\" style=\"margin-bottom: 8px;\"><a href=\"?add_offer=1\">".
+print("<div align=\"center\" style=\"margin-bottom: 8px;\"><a class='btn btn-success' href=\"?add_offer=1\"><span class='icon-upload-alt'></span>".
 "<b>".$lang_offers['text_add_offer']."</b></a></div>");
-print("<div align=\"center\"><form method=\"get\" action=\"?\">".$lang_offers['text_search_offers']."&nbsp;&nbsp;<input type=\"text\" id=\"specialboxg\" name=\"search\" />&nbsp;&nbsp;");
+print("<div align=\"center\"><form method=\"get\" action=\"?\">"."<input class='input tip-focus' style='width:70%' type=\"text\" id=\"specialboxg\" name=\"search\" placeholder=".$lang_offers['text_search_offers']." />&nbsp;&nbsp;");
 $cats = genrelist($browsecatmode);
 $catdropdown = "";
 foreach ($cats as $cat) {
 	$catdropdown .= "<option value=\"" . $cat["id"] . "\"";
 	$catdropdown .= ">" . htmlspecialchars($cat["name"]) . "</option>\n";
 }
-print("<select name=\"category\"><option value=\"0\">".$lang_offers['select_show_all']."</option>".$catdropdown."</select>&nbsp;&nbsp;<input type=\"submit\" class=\"btn\" value=\"".$lang_offers['submit_search']."\" /></form></div>");
+print("<select class='med btn btn-success'><option value=\"0\">".$lang_offers['select_show_all']."</option>".$catdropdown."</select>&nbsp;&nbsp;<input style='margin-top:5px' type=\"submit\" class=\"med btn btn-success\" value=\"".$lang_offers['submit_search']."\" /></form></div>");
 end_frame();
 print("<br /><br />");
 
@@ -834,6 +844,7 @@ print("<td class=\"colhead\">".$lang_offers['col_offered_by']."</td>".
 if(!isset($CURUSER) || $CURUSER['showlastcom'] == 'yes')
 create_tooltip_container($lastcom_tooltip, 400);
 }
+panel_end();
 end_main_frame();
 $USERUPDATESET[] = "last_offer = ".sqlesc(date("Y-m-d H:i:s"));
 stdfoot();

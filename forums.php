@@ -26,7 +26,7 @@ function forum_stats ()
 	else
 		$forumusers = $lang_forums['text_no_active_users'];
 ?>
-<h2 align="left"><?php echo $lang_forums['text_stats'] ?></h2>
+<h4 align="left"><span class=''></span><?php echo $lang_forums['text_stats'] ?></h4>
 <table width="100%"><tr><td class="text">
 <?php
 	if (!$postcount = $Cache->get_value('total_posts_count')){
