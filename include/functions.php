@@ -487,20 +487,20 @@ function begin_main_frame($caption = "", $center = false, $width = 100)
 
 	$width = 940 * $width /100;
 
-	print("<table class=\"main\" width=\"97%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">" .
+	print("<table class=\"main\" width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">" .
 	"<tr><td class=\"embedded\" $tdextra>");
 
 }
 
 function panel_start(){
-	echo "<div id=\"main_content\" class=\"container\">
-					<div id=\"main\" class=\"well no-border-radius\">
+	echo "<div id=\"main_content\" >
+					
 						<div class=\"row\">";
 						}
 function panel_start_block(){
 	echo "
 <div id=main class=well no - border - radius>
-						<div class=row>
+						
 ";
 }
 function panel_end(){
@@ -2364,7 +2364,7 @@ if ($enabledonation == 'yes'){?>
 	</tr>
 </table>
 
-<table class="mainouter" width="95%" cellspacing="0" cellpadding="5" align="center">
+<table class="mainouter" id="bannerdown" width="100%" cellspacing="0" cellpadding="5" align="center">
 	<tr><td id="nav_block" class="text" align="center">
 <?php if (!$CURUSER) { ?>
 			<a href="login.php"><font class="big"><b><?php echo $lang_functions['text_login'] ?></b></font></a> / <a href="signup.php"><font class="big"><b><?php echo $lang_functions['text_signup'] ?></b></font></a>
@@ -2465,7 +2465,7 @@ else {
 
 </td></tr>
 
-<tr><td id="outer" align="center" class="outer" style="padding-top: 20px; padding-bottom: 20px">
+<tr><td id="outer" align="center" class="outer" style=" padding-bottom: 20px">
 <?php
 	if ($Advertisement->enable_ad()){
 			$belownavad=$Advertisement->get_ad('belownav');
@@ -2507,7 +2507,7 @@ if ($msgalert)
 			<a href=\"".$url."\">".$text."</a>
 			</div>
 				</b>");
-		print("</tr></table></p><br />");
+//		print("</tr></table></p>");
 	}
 	if($CURUSER['leechwarn'] == 'yes')
 	{

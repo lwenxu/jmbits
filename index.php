@@ -38,62 +38,55 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 stdhead($lang_index['head_home']);
 begin_main_frame();
 //panel_one
-panel_start();
-// ------------- start: recent news ------------------//
-panel_col_5_start();
-print("<h4 class=\"panel-title\"><span class='glyphicon glyphicon-bell'></span>".$lang_index['text_recent_news'].(get_user_class() >= $newsmanage_class ? "&nbsp;&nbsp;&nbsp;&nbsp;<a class=\"altlink\" href=\"news.php\"><span class=' icon-edit'></span>".$lang_index['text_news_page']."</a></font>" : "")."</h4>");
+//panel_start();
+panel_start_block();
 
-$Cache->new_page('recent_news', 86400, true);
-if (!$Cache->get_page()){
-$res = sql_query("SELECT * FROM news ORDER BY added DESC LIMIT ".(int)$maxnewsnum_main) or sqlerr(__FILE__, __LINE__);
-if (mysql_num_rows($res) > 0)
-{
-	$Cache->add_whole_row();
-	echo  "<div class=\"slimScrollDiv\" style=\"position: relative; overflow: hidden; width: auto;height: 390px\"><div class=\"panel-body indexpanel scroll\" id=\"newspanel\" style=\"overflow: auto; width: auto;height: 400px\">";
-	print("<table class=\"table table-striped\" id=\"newstable\" style='height: 400px'  width=\"100%\"><tr><td class=\"text\"><div style=\"margin-left: 16pt;\">\n");
-	$Cache->end_whole_row();
-	$news_flag = 0;
-	while($array = mysql_fetch_array($res))
-	{
-		$Cache->add_row();
-		$Cache->add_part();
-		if ($news_flag < 1) {
-			print("<h4><a href=\"javascript: klappe_news('a".$array['id']."')\"><span class='icon-tags'></span>&nbsp;"."<b>". $array['title'] . "</b>(".date("Y.m.d",strtotime($array['added'])).")</a></h4>");
-			print("<div class='kas' id=\"ka".$array['id']."\" style=\"display: block;\"> ".format_comment($array["body"],0)." </div> ");
-			$news_flag = $news_flag + 1;
-		}
-		else
-		{
-			print("<h4><a href=\"javascript: klappe_news('a".$array['id']."')\"><br /><span class='icon-tags'></span>&nbsp;"."<b>". $array['title'] . "</b>(".date("Y.m.d",strtotime($array['added'])).")</a></h4>");
-			print("<div class='kas' id=\"ka".$array['id']."\" style=\"display: none;\"> ".format_comment($array["body"],0)." </div> ");
-		}
-		$Cache->end_part();
-		$Cache->add_part();
-		print("  &nbsp;<span class='icon-edit'></span> <a class=\"faqlink\" href=\"news.php?action=edit&amp;newsid=" . $array['id'] . "\"><b>".$lang_index['text_e']."</b></a>");
-		print("  &nbsp;<span class='icon-trash'></span> <a class=\"faqlink\" href=\"news.php?action=delete&amp;newsid=" . $array['id'] . "\"><b>".$lang_index['text_d']."</b></a>");
-		$Cache->end_part();
-		$Cache->end_row();
+// ------------- start: recent news ------------------//
+panel_col_7_start();
+if ($showfunbox_main == "yes" && (!isset($CURUSER) || $CURUSER['showfb'] == "yes")){
+	// Get the newest fun stuff
+	if (!$row = $Cache->get_value('current_fun_content')){
+		$result = sql_query("SELECT fun.*, IF(ADDTIME(added, '1 0:0:0') < NOW(),true,false) AS neednew FROM fun WHERE status != 'banned' AND status != 'dull' ORDER BY added DESC LIMIT 1") or sqlerr(__FILE__,__LINE__);
+		$row = mysql_fetch_array($result);
+		$Cache->cache_value('current_fun_content', $row, 1043);
 	}
-	$Cache->break_loop();
-	$Cache->add_whole_row();
-//	echo "
-//	<div class=\"slimScrollBar\" style=\"background: rgb(0, 0, 0); width: 8px; position: absolute; top: 17px; opacity: 0.4; display: block; border-radius: 7px; z-index: 99; right: 1px; height: 249.231px;\"></div>
-//	<div class=\"slimScrollRail\" style=\"width: 8px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;\"></div>
-//	";
-	print("</div></td></tr></table>\n");
-	echo "</div></div>";
-	//panel_col_end();
-	$Cache->end_whole_row();
+	if (!$row) //There is no funbox item
+	{
+		print("<h4>".$lang_index['text_funbox'].(get_user_class() >= $newfunitem_class ? "<font class=\"small\"> - [<a class=\"altlink\" href=\"fun.php?action=new\"><b>".$lang_index['text_new_fun']."</b></a>]</font>" : "")."</h4>");
+	}
+	else
+	{
+		$totalvote = $Cache->get_value('current_fun_vote_count');
+		if ($totalvote == ""){
+			$totalvote = get_row_count("funvotes", "WHERE funid = ".sqlesc($row['id']));
+			$Cache->cache_value('current_fun_vote_count', $totalvote, 756);
+		}
+		$funvote = $Cache->get_value('current_fun_vote_funny_count');
+		if ($funvote == ""){
+			$funvote = get_row_count("funvotes", "WHERE funid = ".sqlesc($row['id'])." AND vote='fun'");
+			$Cache->cache_value('current_fun_vote_funny_count', $funvote, 756);
+		}
+//check whether current user has voted
+		$funvoted = get_row_count("funvotes", "WHERE funid = ".sqlesc($row['id'])." AND userid=".sqlesc($CURUSER[id]));
+		print ("<h4><span class='icon-trophy'></span>".$lang_index['text_funbox']);
+		if ($CURUSER)
+		{
+			print("<font class=\"small\">".(get_user_class() >= $log_class ? " &nbsp;&nbsp;&nbsp;<a class=\"altlink\" href=\"log.php?action=funbox\"><b><span class='icon-quote-left'></span>".$lang_index['text_more_fun']."</b></a>": "").($row['neednew'] && get_user_class() >= $newfunitem_class ? " &nbsp;<a class=altlink href=\"fun.php?action=new\"><b>".$lang_index['text_new_fun']."</b></a>" : "" ).( ($CURUSER['id'] == $row['userid'] || get_user_class() >= $funmanage_class) ? " &nbsp;<a class=\"altlink\" href=\"fun.php?action=edit&amp;id=".$row['id']."&amp;returnto=index.php\"><b><span class='icon-edit'></span>".$lang_index['text_edit']."</b></a>" : "").(get_user_class() >= $funmanage_class ? " &nbsp;<a class=\"altlink\" href=\"fun.php?action=delete&amp;id=".$row['id']."&amp;returnto=index.php\"><b ><sapn class='icon-trash'></sapn>".$lang_index['text_delete']."</b></a>&nbsp;&nbsp;<a class=\"altlink\" href=\"fun.php?action=ban&amp;id=".$row['id']."&amp;returnto=index.php\"><b><sapn class='icon-ban-circle'></sapn>".$lang_index['text_ban']."</b></a>" : "")."</font>") ;
+		}
+		print("</h2>");
+
+		print("<table width=\"100%\"><tr><td class=\"text\">");
+		print("<iframe src=\"fun.php?action=view\" width='100%' height='300' frameborder='0' name='funbox' marginwidth='0' marginheight='0'></iframe><br /><br />\n");
+
+		if ($CURUSER)
+		{
+			$funonclick = " onclick=\"funvote(".$row['id'].",'fun'".")\"";
+			$dullonclick = " onclick=\"funvote(".$row['id'].",'dull'".")\"";
+			print("<span id=\"funvote\"><b>".$funvote."</b>".$lang_index['text_out_of'].$totalvote.$lang_index['text_people_found_it'].($funvoted ? "" : "<font class=\"striking\">".$lang_index['text_your_opinion']."</font>&nbsp;&nbsp;<input type=\"button\" class='btn' name='fun' id='fun' ".$funonclick." value=\"".$lang_index['submit_fun']."\" />&nbsp;<input type=\"button\" class='btn' name='dull' id='dull' ".$dullonclick." value=\"".$lang_index['submit_dull']."\" />")."</span><span id=\"voteaccept\" style=\"display: none;\">".$lang_index['text_vote_accepted']."</span>");
+		}
+		print("</td></tr></table>");
+	}
 }
-	$Cache->cache_page();
-}
-echo $Cache->next_row();
-while($Cache->next_row()){
-	echo $Cache->next_part();
-	if (get_user_class() >= $newsmanage_class)
-	echo $Cache->next_part();
-}
-echo $Cache->next_row();
 panel_col_end();
 // ------------- end: recent news ------------------//
 // ------------- start: hot and classic movies ------------------//
@@ -154,56 +147,65 @@ if ($showextinfo['imdb'] == 'yes' && ($showmovies['hot'] == "yes" || $showmovies
 
 // ------------- end: hot and classic movies ------------------//
 // ------------- start: funbox ------------------//
-panel_col_7_start();
-if ($showfunbox_main == "yes" && (!isset($CURUSER) || $CURUSER['showfb'] == "yes")){
-	// Get the newest fun stuff
-	if (!$row = $Cache->get_value('current_fun_content')){
-		$result = sql_query("SELECT fun.*, IF(ADDTIME(added, '1 0:0:0') < NOW(),true,false) AS neednew FROM fun WHERE status != 'banned' AND status != 'dull' ORDER BY added DESC LIMIT 1") or sqlerr(__FILE__,__LINE__);
-		$row = mysql_fetch_array($result);
-		$Cache->cache_value('current_fun_content', $row, 1043);
-	}
-	if (!$row) //There is no funbox item
-	{
-		print("<h4>".$lang_index['text_funbox'].(get_user_class() >= $newfunitem_class ? "<font class=\"small\"> - [<a class=\"altlink\" href=\"fun.php?action=new\"><b>".$lang_index['text_new_fun']."</b></a>]</font>" : "")."</h4>");
-	}
-	else
-	{
-	$totalvote = $Cache->get_value('current_fun_vote_count');
-	if ($totalvote == ""){
-		$totalvote = get_row_count("funvotes", "WHERE funid = ".sqlesc($row['id']));
-		$Cache->cache_value('current_fun_vote_count', $totalvote, 756);
-	}
-	$funvote = $Cache->get_value('current_fun_vote_funny_count');
-	if ($funvote == ""){
-		$funvote = get_row_count("funvotes", "WHERE funid = ".sqlesc($row['id'])." AND vote='fun'");
-		$Cache->cache_value('current_fun_vote_funny_count', $funvote, 756);
-	}
-//check whether current user has voted
-	$funvoted = get_row_count("funvotes", "WHERE funid = ".sqlesc($row['id'])." AND userid=".sqlesc($CURUSER[id]));
-	print ("<h4><span class='icon-trophy'></span>".$lang_index['text_funbox']);
-	if ($CURUSER)
-	{
-		print("<font class=\"small\">".(get_user_class() >= $log_class ? " &nbsp;&nbsp;&nbsp;<a class=\"altlink\" href=\"log.php?action=funbox\"><b><span class='icon-quote-left'></span>".$lang_index['text_more_fun']."</b></a>": "").($row['neednew'] && get_user_class() >= $newfunitem_class ? " &nbsp;<a class=altlink href=\"fun.php?action=new\"><b>".$lang_index['text_new_fun']."</b></a>" : "" ).( ($CURUSER['id'] == $row['userid'] || get_user_class() >= $funmanage_class) ? " &nbsp;<a class=\"altlink\" href=\"fun.php?action=edit&amp;id=".$row['id']."&amp;returnto=index.php\"><b><span class='icon-edit'></span>".$lang_index['text_edit']."</b></a>" : "").(get_user_class() >= $funmanage_class ? " &nbsp;<a class=\"altlink\" href=\"fun.php?action=delete&amp;id=".$row['id']."&amp;returnto=index.php\"><b ><sapn class='icon-trash'></sapn>".$lang_index['text_delete']."</b></a>&nbsp;&nbsp;<a class=\"altlink\" href=\"fun.php?action=ban&amp;id=".$row['id']."&amp;returnto=index.php\"><b><sapn class='icon-ban-circle'></sapn>".$lang_index['text_ban']."</b></a>" : "")."</font>") ;
-	}
-	print("</h2>");
+panel_col_5_start();
+print("<h4 class=\"panel-title\"><span class='glyphicon glyphicon-bell'></span>".$lang_index['text_recent_news'].(get_user_class() >= $newsmanage_class ? "&nbsp;&nbsp;&nbsp;&nbsp;<a class=\"altlink\" href=\"news.php\"><span class=' icon-edit'></span>".$lang_index['text_news_page']."</a></font>" : "")."</h4>");
 
-	print("<table width=\"100%\"><tr><td class=\"text\">");
-	print("<iframe src=\"fun.php?action=view\" width='100%' height='300' frameborder='0' name='funbox' marginwidth='0' marginheight='0'></iframe><br /><br />\n");
-
-	if ($CURUSER)
+$Cache->new_page('recent_news', 86400, true);
+if (!$Cache->get_page()){
+	$res = sql_query("SELECT * FROM news ORDER BY added DESC LIMIT ".(int)$maxnewsnum_main) or sqlerr(__FILE__, __LINE__);
+	if (mysql_num_rows($res) > 0)
 	{
-		$funonclick = " onclick=\"funvote(".$row['id'].",'fun'".")\"";
-		$dullonclick = " onclick=\"funvote(".$row['id'].",'dull'".")\"";
-		print("<span id=\"funvote\"><b>".$funvote."</b>".$lang_index['text_out_of'].$totalvote.$lang_index['text_people_found_it'].($funvoted ? "" : "<font class=\"striking\">".$lang_index['text_your_opinion']."</font>&nbsp;&nbsp;<input type=\"button\" class='btn' name='fun' id='fun' ".$funonclick." value=\"".$lang_index['submit_fun']."\" />&nbsp;<input type=\"button\" class='btn' name='dull' id='dull' ".$dullonclick." value=\"".$lang_index['submit_dull']."\" />")."</span><span id=\"voteaccept\" style=\"display: none;\">".$lang_index['text_vote_accepted']."</span>");
+		$Cache->add_whole_row();
+		echo  "<div class=\"slimScrollDiv\" style=\"position: relative; overflow: hidden; width: auto;height: 390px\"><div class=\"panel-body indexpanel scroll\" id=\"newspanel\" style=\"overflow: auto; width: auto;height: 400px\">";
+		print("<table class=\"table table-striped\" id=\"newstable\" style='height: 400px'  width=\"100%\"><tr><td class=\"text\"><div style=\"margin-left: 16pt;\">\n");
+		$Cache->end_whole_row();
+		$news_flag = 0;
+		while($array = mysql_fetch_array($res))
+		{
+			$Cache->add_row();
+			$Cache->add_part();
+			if ($news_flag < 1) {
+				print("<h4><a href=\"javascript: klappe_news('a".$array['id']."')\"><span class='icon-tags'></span>&nbsp;"."<b>". $array['title'] . "</b>(".date("Y.m.d",strtotime($array['added'])).")</a></h4>");
+				print("<div class='kas' id=\"ka".$array['id']."\" style=\"display: block;\"> ".format_comment($array["body"],0)." </div> ");
+				$news_flag = $news_flag + 1;
+			}
+			else
+			{
+				print("<h4><a href=\"javascript: klappe_news('a".$array['id']."')\"><br /><span class='icon-tags'></span>&nbsp;"."<b>". $array['title'] . "</b>(".date("Y.m.d",strtotime($array['added'])).")</a></h4>");
+				print("<div class='kas' id=\"ka".$array['id']."\" style=\"display: none;\"> ".format_comment($array["body"],0)." </div> ");
+			}
+			$Cache->end_part();
+			$Cache->add_part();
+			print("  &nbsp;<span class='icon-edit'></span> <a class=\"faqlink\" href=\"news.php?action=edit&amp;newsid=" . $array['id'] . "\"><b>".$lang_index['text_e']."</b></a>");
+			print("  &nbsp;<span class='icon-trash'></span> <a class=\"faqlink\" href=\"news.php?action=delete&amp;newsid=" . $array['id'] . "\"><b>".$lang_index['text_d']."</b></a>");
+			$Cache->end_part();
+			$Cache->end_row();
+		}
+		$Cache->break_loop();
+		$Cache->add_whole_row();
+//	echo "
+//	<div class=\"slimScrollBar\" style=\"background: rgb(0, 0, 0); width: 8px; position: absolute; top: 17px; opacity: 0.4; display: block; border-radius: 7px; z-index: 99; right: 1px; height: 249.231px;\"></div>
+//	<div class=\"slimScrollRail\" style=\"width: 8px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;\"></div>
+//	";
+		print("</div></td></tr></table>\n");
+		echo "</div></div>";
+		//panel_col_end();
+		$Cache->end_whole_row();
 	}
-	print("</td></tr></table>");
-	}
+	$Cache->cache_page();
 }
+echo $Cache->next_row();
+while($Cache->next_row()){
+	echo $Cache->next_part();
+	if (get_user_class() >= $newsmanage_class)
+		echo $Cache->next_part();
+}
+echo $Cache->next_row();
+
 panel_col_end();
-panel_end();
 // ------------- end: funbox ------------------//
 //panel_start();
-panel_start_block();
+echo "<div class='row'>";
 panel_col_7_start();
 // ------------- start: shoutbox ------------------//
 if ($showshoutbox_main == "yes") {
@@ -441,15 +443,15 @@ if ($showstats_main == "yes")
 	}
 	echo $Cache->next_row();
 ?>
-</table>
+
 </td></tr></table>
 <?php
 }
 panel_col_end();
-panel_end();
+
 // ------------- end: stats ------------------//
 
-panel_start();
+echo "<div class='row'>";
 panel_col_7_start();
 // ------------- start: polls ------------------//
 if ($CURUSER && $showpolls_main == "yes")
@@ -644,6 +646,7 @@ if ($uptimeresult){
 			echo $Cache->next_row();
 			// ------------- end: links ------------------//
 			panel_col_end();
+			panel_end();
 // ------------- start: browser, client and code note ------------------//
 ?>
 <table width="100%" class="main" border="0" cellspacing="0" cellpadding="0"><tr><td class="embedded">

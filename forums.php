@@ -1101,7 +1101,7 @@ if ($action == "viewforum")
 	$numtopics = mysql_num_rows($topicsres);
 	stdhead($lang_forums['head_forum']." ".$forumname);
 	begin_main_frame("",true);
-	print("<h1 align=\"center\"><a class=\"faqlink\" href=\"forums.php\">".$SITENAME."&nbsp;".$lang_forums['text_forums'] ."</a>--><a class=\"faqlink\" href=\"".htmlspecialchars("forums.php?action=viewforum&forumid=".$forumid)."\">".$forumname."</a></h1>\n");
+	print("<h2 align=\"center\"><a  href=\"forums.php\"><span class='icon-laptop'></span>&nbsp;&nbsp;&nbsp;<a class=\"faqlink\" href=\"".htmlspecialchars("forums.php?action=viewforum&forumid=".$forumid)."\">".$forumname."</a></h2>\n");
 	end_main_frame();
 	print("<br />");
 	$maypost = get_user_class() >= $row["minclasswrite"] && get_user_class() >= $row["minclasscreate"] && $CURUSER["forumpost"] == 'yes';
@@ -1114,14 +1114,14 @@ if ($action == "viewforum")
 	print($forummoderators ? "&nbsp;&nbsp;<img class=\"forum_mod\" src=\"pic/trans.gif\" alt=\"Moderator\" title=\"".$lang_forums['col_moderator']."\">&nbsp;".$forummoderators : "");
 	print("</td><td class=\"embedded nowrap\" width=\"1%\">");
 	if ($maypost)
-		print("<a href=\"".htmlspecialchars("?action=newtopic&forumid=".$forumid)."\"><img class=\"f_new\" src=\"pic/trans.gif\" alt=\"New Topic\" title=\"".$lang_forums['title_new_topic']."\" /></a>&nbsp;&nbsp;");
+		print("<a style='float:right;' href=\"".htmlspecialchars("?action=newtopic&forumid=".$forumid)."\"><button  class='btn btn-success '><span class=icon-pencil>&nbsp;".$lang_forums['new_topic']."</span></button></a>&nbsp;&nbsp;");
 	print("</td>");
 	print("</tr></table>\n");
 	if ($numtopics > 0)
 	{
-		print("<table border=\"1\" cellspacing=\"0\" cellpadding=\"5\" width=\"940\">");
+		print("<table style='margin-top: 10px' class='table table-striped ' border=\"1\" cellspacing=\"0\" cellpadding=\"5\" width=\"98%\">");
 
-		print("<tr><td class=\"colhead\" align=\"center\" width=\"99%\">".$lang_forums['col_topic']."</td><td class=\"colhead\" align=\"center\"><a href=\"".htmlspecialchars("?action=viewforum&forumid=".$forumid.$addparam."&sort=".($_GET["sort"] == 'firstpostdesc' ? "firstpostasc" : "firstpostdesc"))."\" title=\"".($_GET["sort"] == 'firstpostdesc' ?  $lang_forums['title_order_topic_asc'] : $lang_forums['title_order_topic_desc'])."\">".$lang_forums['col_author']."</a></td><td class=\"colhead\" align=\"center\">".$lang_forums['col_replies']."/".$lang_forums['col_views']."</td><td class=\"colhead\" align=\"center\"><a href=\"".htmlspecialchars("?action=viewforum&forumid=".$forumid.$addparam."&sort=".($_GET["sort"] == 'lastpostasc' ? "lastpostdesc" : "lastpostasc"))."\" title=\"".($_GET["sort"] == 'lastpostasc' ? $lang_forums['title_order_post_desc'] : $lang_forums['title_order_post_asc'])."\">".$lang_forums['col_last_post']."</a></td>\n");
+		print("<tr><td class=\"colhead\" align=\"center\" width=\"70%\">".$lang_forums['col_topic']."</td><td class=\"colhead\" align=\"center\"><a href=\"".htmlspecialchars("?action=viewforum&forumid=".$forumid.$addparam."&sort=".($_GET["sort"] == 'firstpostdesc' ? "firstpostasc" : "firstpostdesc"))."\" title=\"".($_GET["sort"] == 'firstpostdesc' ?  $lang_forums['title_order_topic_asc'] : $lang_forums['title_order_topic_desc'])."\">".$lang_forums['col_author']."</a></td><td class=\"colhead\" align=\"center\" >".$lang_forums['col_replies']."/".$lang_forums['col_views']."</td><td class=\"colhead\" align=\"center\"><a href=\"".htmlspecialchars("?action=viewforum&forumid=".$forumid.$addparam."&sort=".($_GET["sort"] == 'lastpostasc' ? "lastpostdesc" : "lastpostasc"))."\" title=\"".($_GET["sort"] == 'lastpostasc' ? $lang_forums['title_order_post_desc'] : $lang_forums['title_order_post_asc'])."\">".$lang_forums['col_last_post']."</a></td>\n");
 
 		print("</tr>\n");
 		$counter = 0;
@@ -1213,14 +1213,14 @@ if ($action == "viewforum")
 			
 			$topictime = substr($arr['added'],0,10);
 			if (strtotime($arr['added']) +  86400 > TIMENOW)
-				$topictime = "<font class=\"new small\">".$topictime."</font>";
+				$topictime = "<font >".$topictime."</font>";
 			else
 				$topictime = "<font color=\"gray\" class=\"small\">".$topictime."</font>";
 
 			print("<tr><td class=\"rowfollow\" align=\"left\"><table border=\"0\" cellspacing=\"0\" cellpadding=\"0\"><tr>" .
 			"<td class=\"embedded\" style='padding-right: 10px'>".$img .
 			"</td><td class=\"embedded\" align=\"left\">\n" .
-			$subject."</td></tr></table></td><td class=\"rowfollow\" align=\"center\">".get_username($fpuserid)."<br />".$topictime."</td><td class=\"rowfollow\" align=\"center\">".$replies." / <font color=\"gray\">".$views."</font></td>\n" .
+			$subject."</td></tr></table></td><td class=\"rowfollow\" align=\"center\">".get_username($fpuserid)."<br />".$topictime."</td><td class=\"rowfollow\" align=\"center\" style='font-size:19px'>".$replies." / <font color=\"gray\">".$views."</font></td>\n" .
 			"<td class=\"rowfollow nowrap\" align=\"center\">".$lpadded."<br />".$lpusername."</td>\n");
 
 			print("</tr>\n");
@@ -1231,11 +1231,11 @@ if ($action == "viewforum")
 		//print("</table>\n");
 		//print("<table border=\"0\" cellspacing=\"0\" cellpadding=\"5\" width=\"940\">");
 		print("<tr><td align=\"left\">\n");
-		print("<form method=\"get\" action=\"forums.php\"><b>".$lang_forums['text_fast_search']."</b><input type=\"hidden\" name=\"action\" value=\"viewforum\" /><input type=\"hidden\" name=\"forumid\" value=\"".$forumid."\" /><input type=\"text\" style=\"width: 180px\" name=\"search\" />&nbsp;<input type=\"submit\" value=\"".$lang_forums['text_go']."\" /></form>");
+		print("<form method=\"get\" action=\"forums.php\">".$lang_forums['text_fast_search']."<input type=\"hidden\" name=\"action\" value=\"viewforum\" /><input type=\"hidden\" name=\"forumid\" value=\"".$forumid."\" /><input class='input tip-focus ' type=\"text\" style=\"width: 40%\" name=\"search\" /><br> <input class='btn btn-success icon-search' type=\"submit\" value=\"".$lang_forums['text_go']."\" /></form>");
 		print("</td>");
 ?>
 <td align="left" colspan="3">
-<span id="order" onclick="dropmenu(this);"><span style="cursor: pointer;"><b><?php echo $lang_forums['text_order']?></b></span>
+<span id="order" onclick="dropmenu(this);"><span style="cursor: pointer;margin-top: 7%" class="btn btn-success " > <span class="icon-exchange"></span>&nbsp;<?php echo $lang_forums['text_order']?></span>
 <span id="orderlist" class="dropmenu" style="display: none"><ul>
 <li><a href="?action=viewforum&amp;forumid=<?php echo $forumid.$addparam?>&amp;sort=firstpostdesc"><?php echo $lang_forums['text_topic_desc']?></a></li>
 <li><a href="?action=viewforum&amp;forumid=<?php echo $forumid.$addparam?>&amp;sort=firstpostasc"><?php echo $lang_forums['text_topic_asc']?></a></li>
@@ -1424,9 +1424,9 @@ if ($CURUSER)
 
 stdhead($lang_forums['head_forums']);
 begin_main_frame();
-print("<h1 align=\"center\">".$SITENAME."&nbsp;".$lang_forums['text_forums']."</h1>");
-print("<p align=\"center\"><a href=\"?action=search\"><b>".$lang_forums['text_search']."</b></a> | <a href=\"?action=viewunread\"><b>".$lang_forums['text_view_unread']."</b></a> | <a href=\"?catchup=1\"><b>".$lang_forums['text_catch_up']."</b></a> ".(get_user_class() >= $forummanage_class ? "| <a href=\"forummanage.php\"><b>".$lang_forums['text_forum_manager']."</b></a>":"")."</p>");
-print("<table border=\"1\" cellspacing=\"0\" cellpadding=\"5\" width=\"100%\">\n");
+//print("<h1 align=\"center\">".$SITENAME."&nbsp;".$lang_forums['text_forums']."</h1>");
+print("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class='icon-ok-sign' style='color: #00bfbf;font-size: 20px'></span><a style='font-size: 16px' href=\"?catchup=1\"><b>".$lang_forums['text_catch_up']."</b></a> ".(get_user_class() >= $forummanage_class ? "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<sapn class='icon-wrench' style='color: red;font-size: 20px'></sapn> <a style='font-size: 16px' href=\"forummanage.php\"><b>".$lang_forums['text_forum_manager']."</b></a>":""));
+print("<table class='table table-striped' border=\"0\" cellspacing=\"0\" cellpadding=\"5\" width=\"100%\" style='margin-top: 10px'>\n");
 
 if (!$overforums = $Cache->get_value('overforums_list')){
 	$overforums = array();
@@ -1451,9 +1451,9 @@ foreach ($overforums as $a)
 	$forid = $a["id"];
 	$overforumname = $a["name"];
 
-	print("<tr><td align=\"left\" class=\"colhead\" width=\"99%\">".htmlspecialchars($overforumname)."</td><td align=\"center\" class=\"colhead\">".$lang_forums['col_topics']."</td>" .
-	"<td align=\"center\" class=\"colhead\">".$lang_forums['col_posts']."</td>" .
-	"<td align=\"left\" class=\"colhead\">".$lang_forums['col_last_post']."</td><td class=\"colhead\" align=\"left\">".$lang_forums['col_moderator']."</td></tr>\n");
+	print("<tr><td align=\"left\" class=\"colhead\" width=\"50%\" style='font-size: 16px;text-align: center'><span class='icon-list-alt' ></span>&nbsp;&nbsp;".htmlspecialchars($overforumname)."</td><td align=\"center\" class=\"colhead\" width='10%'>".$lang_forums['col_topics']."</td>" .
+	"<td align=\"center\" class=\"colhead\" width='10%'>".$lang_forums['col_posts']."</td>" .
+	"<td align=\"left\" class=\"colhead\" width='10%'>".$lang_forums['col_last_post']."</td><td class=\"colhead\" align=\"left\" width='10%'>".$lang_forums['col_moderator']."</td></tr>\n");
 
 	$forums = get_forum_row();
 	foreach ($forums as $forums_arr)
