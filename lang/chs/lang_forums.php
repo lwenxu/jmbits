@@ -198,7 +198,8 @@ $lang_forums = array
 	'text_topic_asc' => "发布时间升序",
 	'text_post_asc' => "最近回复升序",
 	'text_post_desc' => "最近回复降序",
-	'new_topic' => '新主题'
+	'new_topic' => '新主题',
+	'replay' => 回复
 );
 
 ?>

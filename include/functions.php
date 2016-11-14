@@ -70,10 +70,10 @@ function stdmsg($heading, $text, $htmlstrip = false)
 		$heading = htmlspecialchars(trim($heading));
 		$text = htmlspecialchars(trim($text));
 	}
-	print("<table align=\"center\" class=\"main\" width=\"500\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tr><td class=\"embedded\">\n");
+	print("<table align=\"center\" class=\"alert alert-block\" width=\"60%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tr><td class=\"embedded\">\n");
 	if ($heading)
-	print("<h2>".$heading."</h2>\n");
-	print("<table width=\"100%\" border=\"1\" cellspacing=\"0\" cellpadding=\"10\"><tr><td class=\"text\">");
+	print("<h2 style='text-align: center'>".$heading."</h2>\n");
+	print("<table width=\"100%\" border=\"1\" cellspacing=\"0\" cellpadding=\"10\"><tr><td class=\"text\" style='text-align: center;font-size: 17px;font-family: Arial Black, arial-black'>");
 	print($text . "</td></tr></table></td></tr></table>\n");
 }
 
@@ -487,7 +487,7 @@ function begin_main_frame($caption = "", $center = false, $width = 100)
 
 	$width = 940 * $width /100;
 
-	print("<table class=\"main\" width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">" .
+	print("<table  class=\"main\" width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">" .
 	"<tr><td class=\"embedded\" $tdextra>");
 
 }
@@ -1023,7 +1023,7 @@ function begin_compose($title = "",$type="new", $body="", $hassubject=true, $sub
 		}
 	}
 	begin_frame($framename, true);
-	print("<table class=\"main\" width=\"100%\" border=\"1\" cellspacing=\"0\" cellpadding=\"5\">\n");
+	print("<table class='table table-striped' width=\"100%\" border=\"1\" cellspacing=\"0\" cellpadding=\"5\">\n");
 	if ($hassubject)
 		print("<tr><td class=\"rowhead\">".$lang_functions['row_subject']."</td>" .
 "<td class=\"rowfollow\" align=\"left\"><input type=\"text\" style=\"width: 650px;\" name=\"subject\" maxlength=\"".$maxsubjectlength."\" value=\"".$subject."\" /></td></tr>\n");
@@ -2125,7 +2125,7 @@ function menu ($selected = "home") {
 	if ($enablerequest == 'yes')
 	print ("<li" . ($selected == "requests" ? " class=\"active\"" : "") . "><a href=\"viewrequests.php\">".$lang_functions['text_request']."</a></li>");
 	print ("<li" . ($selected == "upload" ? " class=\"active\"" : "") . "><a href=\"upload.php\">".$lang_functions['text_upload']."</a></li>");
-	print ("<li" . ($selected == "subtitles" ? " class=\"active\"" : "") . "><a href=\"subtitles.php\">".$lang_functions['text_subtitles']."</a></li>");
+//	print ("<li" . ($selected == "subtitles" ? " class=\"active\"" : "") . "><a href=\"subtitles.php\">".$lang_functions['text_subtitles']."</a></li>");
 	print ("<li" . ($selected == "usercp" ? " class=\"active\"" : "") . "><a href=\"usercp.php\">".$lang_functions['text_user_cp']."</a></li>");
 	print ("<li" . ($selected == "topten" ? " class=\"active\"" : "") . "><a href=\"topten.php\">".$lang_functions['text_top_ten']."</a></li>");
 	print ("<li" . ($selected == "log" ? " class=\"active\"" : "") . "><a href=\"log.php\">".$lang_functions['text_log']."</a></li>");
@@ -3710,10 +3710,10 @@ $smallth
 }
 
 function quickreply($formname, $taname,$submit){
-	print("<textarea name='".$taname."' cols=\"100\" rows=\"8\" style=\"width: 450px\" onkeydown=\"ctrlenter(event,'compose','qr')\"></textarea>");
+	print("<textarea class='input fullwidth inputor' name='".$taname."' cols=\"100\" rows=\"8\" style=\"width: 80%\" onkeydown=\"ctrlenter(event,'compose','qr')\"></textarea>");
 	print(smile_row($formname, $taname));
 	print("<br />");
- 	print("<input type=\"submit\" id=\"qr\" class=\"btn\" value=\"".$submit."\" />");
+ 	print("<input type=\"submit\" id=\"qr\" class=\"btn btn-success\" value=\"".$submit."\" />");
 }
 
 function smile_row($formname, $taname){
@@ -4409,7 +4409,7 @@ function valid_class_name($filename)
 function return_avatar_image($url)
 {
 	global $CURLANGDIR;
-	return "<img src=\"".$url."\" alt=\"avatar\" width=\"150px\" onload=\"check_avatar(this, '".$CURLANGDIR."');\" />";
+	return "<img src=\"".$url."\" style='border-radius:5px;margin:4px' alt=\"avatar\" width=\"140px\" onload=\"check_avatar(this, '".$CURLANGDIR."');\" />";
 }
 function return_category_image($categoryid, $link="")
 {

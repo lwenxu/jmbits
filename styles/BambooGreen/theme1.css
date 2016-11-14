@@ -335,7 +335,8 @@ form {
 
 font.gray {
     color: #aca899;
-    text-decoration: underline
+    text-decoration: none;
+    font-family: "Arial Black", arial-black;
 }
 
 .attach img {
@@ -1161,4 +1162,30 @@ u{
     text-decoration: none;
     color: #00a2d4;
     font-size: 18px;
+}
+
+b{
+    text-decoration: none;
+}
+
+.replay{
+    margin-left: 0px;
+}
+.links{
+    color: #00a2d4;
+}
+
+.forums_ico{
+    font-size: 32px;
+    color: #5cb85c;
+}
+
+.forumname{
+    font-size: 20px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif
+}
+
+.topicitem{
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 15px;
 }
