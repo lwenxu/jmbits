@@ -1189,3 +1189,27 @@ b{
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 15px;
 }
+
+.nav-settings-item{
+    font-size: 15px;
+    font-family: "ff-tisa-web-pro-1", "ff-tisa-web-pro-2", "Lucida Grande", "Helvetica Neue", Helvetica, Arial, "Hiragino Sans GB", "Hiragino Sans GB W3", "Microsoft YaHei UI", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+}
+
+#usercpnav{
+    margin-left: 30%;
+    margin-bottom: 25px;
+}
+
+.rowfollow{
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 15px;
+}
+
+
+.small{
+    color: tomato;
+}
+
+.nowrap{
+    font-size: 17px;
+}
