@@ -1498,9 +1498,9 @@ function remaining ($type = 'login') {
 	list($total) = mysql_fetch_array($Query);
 	$remaining = $maxloginattempts - $total;
 	if ($remaining <= 2 )
-	$remaining = "<font color=\"red\" size=\"2\">[".$remaining."]</font>";
+	$remaining = "<font color=\"red\" style='font-size: 17px'>".$remaining."</font>";
 	else
-	$remaining = "<font color=\"green\" size=\"2\">[".$remaining."]</font>";
+	$remaining = "<font color=\"green\" style='font-size: 17px'>".$remaining."</font>";
 
 	return $remaining;
 }
@@ -2369,8 +2369,11 @@ if ($enabledonation == 'yes'){?>
 <table class="mainouter" id="bannerdown" width="100%" cellspacing="0" cellpadding="5" align="center">
 	<tr><td id="nav_block" class="text" align="center">
 <?php if (!$CURUSER) { ?>
-			<a href="login.php"><font class="big"><b><?php echo $lang_functions['text_login'] ?></b></font></a> / <a href="signup.php"><font class="big"><b><?php echo $lang_functions['text_signup'] ?></b></font></a>
-<?php } 
+	<ul class="nav nav-pills" style="margin-left: 45%">
+		<li><a href="login.php" class="loginreg"><?php echo $lang_functions['text_login'] ?></a></li>
+		<li><a class="loginreg" href="signup.php"><?php echo $lang_functions['text_signup'] ?></a></li>
+	</ul>
+<?php }
 else {
 	begin_main_frame();
 	menu ();

@@ -29,7 +29,7 @@ foreach ($langs as $row)
 }
 $s .= "\n</select>";
 ?>
-<form method="get" action="<?php echo $_SERVER['PHP_SELF'] ?>">
+<form method="get" action="<?php echo $_SERVER['PHP_SELF'] ?>" xmlns="http://www.w3.org/1999/html">
 <?php
 print("<div align=\"right\">".$lang_login['text_select_lang']. $s . "</div>");
 ?>
@@ -46,8 +46,13 @@ if (!empty($_GET["returnto"])) {
 }
 ?>
 <form method="post" action="takelogin.php">
-<p><?php echo $lang_login['p_need_cookies_enables']?><br /> [<b><?php echo $maxloginattempts;?></b>] <?php echo $lang_login['p_fail_ban']?></p>
-<p><?php echo $lang_login['p_you_have']?> <b><?php echo remaining ();?></b> <?php echo $lang_login['p_remaining_tries']?></p>
+<p><?php echo "<span style='font-size: 17px;color: tomato'>".$lang_login['p_warning']."</span><span style='color: #00a2d4;font-size: 16px'>".$maxloginattempts."</span>";?> <?php echo "<sapn style='font-size: 17px'>".$lang_login['p_fail_ban']."</sapn>"?></p>
+<p><?php echo "<span style='font-size: 16px'>".$lang_login['p_you_have']?> <span style="color: #00c500"><?php echo remaining ();?></span> <?php echo $lang_login['p_remaining_tries']?></span></p>
+
+<!--login	tables  here-->
+
+
+
 <table border="0" cellpadding="5">
 <tr><td class="rowhead"><?php echo $lang_login['rowhead_username']?></td><td class="rowfollow" align="left"><input type="text" name="username" style="width: 180px; border: 1px solid gray" /></td></tr>
 <tr><td class="rowhead"><?php echo $lang_login['rowhead_password']?></td><td class="rowfollow" align="left"><input type="password" name="password" style="width: 180px; border: 1px solid gray"/></td></tr>

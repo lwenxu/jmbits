@@ -5,6 +5,7 @@ $lang_login = array
 	'h1_not_logged_in' => "未登录!",
 	'p_error' => "错误:",
 	'p_after_logged_in' => "该页面必须在登录后才能访问",
+	'p_warning' => '注意: ',
 	'p_need_cookies_enables' => "<b>注意</b>: 你需要启用cookies才能登录或切换语言",
 	'p_fail_ban' => "次连续登录失败将导致你的IP地址被禁用!",
 	'p_you_have' => "你还有",
