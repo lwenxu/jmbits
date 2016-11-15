@@ -71,8 +71,8 @@ function goback ($where = "-1") {
 }
 $action = isset($_POST['action']) ? htmlspecialchars($_POST['action']) : (isset($_GET['action']) ? htmlspecialchars($_GET['action']) : '');
 $type = isset($_POST['type']) ? htmlspecialchars($_POST['type']) : (isset($_GET['type']) ? htmlspecialchars($_GET['type']) : '');
-
-$allowed_actions = array("personal","tracker","forum","security");
+//  delete tacker by lwenxu
+$allowed_actions = array("personal","forum","security");
 if ($action){
 	if (!in_array($action, $allowed_actions))
 		stderr($lang_usercp['std_error'], $lang_usercp['std_invalid_action']);

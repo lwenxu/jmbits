@@ -69,7 +69,7 @@ stdhead($lang_userdetails['head_details_for']. $user["username"]);
 $enabled = $user["enabled"] == 'yes';
 $moviepicker = $user["picker"] == 'yes';
 
-print("<h1 style='margin:0px'>" . get_username($user[id], true,false) . $country."</h1>");
+//print("<h1 style='margin:0px'>" . get_username($user[id], true,false) . $country."</h1>");
 
 if (!$enabled)
 print("<p><b>".$lang_userdetails['text_account_disabled_note']."</b></p>");
@@ -92,9 +92,9 @@ elseif ($CURUSER["id"] <> $user["id"])
 }
 begin_main_frame();
 if ($CURUSER[id] == $user[id] || get_user_class() >= $cruprfmanage_class)
-	print("<h2>".$lang_userdetails['text_flush_ghost_torrents']."<a class=\"altlink\" href=\"takeflush.php?id=".$id."\">".$lang_userdetails['text_here']."</a></h2>\n");
+	print("<center style='margin-bottom: 18px'><a class=\"btn btn-success\" href=\"takeflush.php?id=".$id."\">".$lang_userdetails['text_here']."</a></center>\n");
 ?>
-<table width="100%" border="1" cellspacing="0" cellpadding="5">
+<table width="100%" border="1" cellspacing="0" cellpadding="5" class="table table-striped">
 <?php
 if (($user["privacy"] != "strong") OR (get_user_class() >= $prfmanage_class) || $CURUSER[id] == $user[id]){
 //Xia Zuojie: Taste compatibility is extremely slow. It can takes thounsands of datebase queries. It is disabled until someone makes it fast.
@@ -238,12 +238,12 @@ tr_small($lang_userdetails['row_transfer'], "<table border=\"0\" cellspacing=\"0
 if ($user["leechtime"] > 0)
 {
 	$slr = floor($user["seedtime"] / $user["leechtime"] * 1000) / 1000;
-	$slr = "<tr><td class=\"embedded\"><strong>" . $lang_userdetails['text_seeding_leeching_time_ratio'] . "</strong>:  <font color=\"" . get_ratio_color($slr) . "\">" . number_format($slr, 3) . "</font></td><td class=\"embedded\">&nbsp;&nbsp;" . get_ratio_img($slr) . "</td></tr>";
+	$slr = "<tr><td class=\"embedded\">" . $lang_userdetails['text_seeding_leeching_time_ratio'] . ":  <font color=\"" . get_ratio_color($slr) . "\">" . number_format($slr, 3) . "</font></td><td class=\"\">&nbsp;&nbsp;" . get_ratio_img($slr) . "</td></tr>";
 }
 
 $slt = "<tr><td class=\"embedded\"><strong>" . $lang_userdetails['text_seeding_time'] . "</strong>:  ". mkprettytime($user["seedtime"]) . "</td><td class=\"embedded\">&nbsp;&nbsp;<strong>" . $lang_userdetails['text_leeching_time'] . "</strong>:  " . mkprettytime($user["leechtime"]) . "</td></tr>";
 
-	tr_small($lang_userdetails['row_sltime'], "<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">" . $slr . $slt . "</table>", 1);
+	tr_small($lang_userdetails['row_sltime'], "<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\" >" . $slr . $slt . "</table>", 1);
 
 if ($user["download"] && $user["upload"])
 tr_small($lang_userdetails['row_internet_speed'], $download."&nbsp;&nbsp;&nbsp;&nbsp;".$upload."&nbsp;&nbsp;&nbsp;&nbsp;".$isp, 1);
@@ -317,7 +317,7 @@ if (get_user_class() >= $prfmanage_class && $user["class"] < get_user_class())
 	print("<input type=\"hidden\" name=\"action\" value=\"edituser\" />");
 	print("<input type=\"hidden\" name=\"userid\" value=\"".$id."\" />");
 	print("<input type=\"hidden\" name=\"returnto\" value=\"".htmlspecialchars("userdetails.php?id=$id")."\" />");
-	print("<table width=\"100%\" class=\"main\" border=\"1\" cellspacing=\"0\" cellpadding=\"5\">\n");
+	print("<table width=\"100%\" class=\"main\" border=\"1\" cellspacing=\"0\" cellpadding=\"5\" >\n");
 	tr($lang_userdetails['row_title'], "<input type=\"text\" size=\"60\" name=\"title\" value=\"" . htmlspecialchars(trim($user[title])) . "\" />", 1);
 	$avatar = htmlspecialchars(trim($user["avatar"]));
 
@@ -361,7 +361,7 @@ if (get_user_class() >= $prfmanage_class && $user["class"] < get_user_class())
 	}
 	$warned = $user["warned"] == "yes";
 
-	print("<tr><td class=\"rowhead\">".$lang_userdetails['row_warning_system']."</td><td class=\"rowfollow\" align=\"left\" ><table class=\"main\" cellspacing=\"0\" cellpadding=\"5\"><tr><td class=\"rowfollow\">" . ($warned ? "<input name=\"warned\" value=\"yes\" type=\"radio\" checked=\"checked\" />".$lang_userdetails['radio_yes']."<input name=\"warned\" value=\"no\" type=\"radio\" />".$lang_userdetails['radio_no'] : $lang_userdetails['text_not_warned'] ) ."</td>");
+	print("<tr><td class=\"rowhead\">".$lang_userdetails['row_warning_system']."</td><td class=\"rowfollow\" align=\"left\" ><table class=\"main\" cellspacing=\"0\" cellpadding=\"5\" class=\"table table-striped\"><tr><td class=\"rowfollow\">" . ($warned ? "<input name=\"warned\" value=\"yes\" type=\"radio\" checked=\"checked\" />".$lang_userdetails['radio_yes']."<input name=\"warned\" value=\"no\" type=\"radio\" />".$lang_userdetails['radio_no'] : $lang_userdetails['text_not_warned'] ) ."</td>");
 
 	if ($warned)
 	{

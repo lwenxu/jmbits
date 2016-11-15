@@ -1205,11 +1205,38 @@ b{
     font-size: 15px;
 }
 
+.colhead{
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 15px;
+}
 
 .small{
     color: tomato;
 }
 
+
 .nowrap{
     font-size: 17px;
+}
+
+td .text{
+    font-size: 16px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    line-height: 27px;
+    padding-left: 2%;
+}
+
+.embedded-add{
+    font-size: 16px;
+    font-family: "Microsoft JhengHei";
+}
+
+.navmess{
+    margin-left: 40%;
+}
+
+.nomessage{
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 15px;
+    color: goldenrod;
 }

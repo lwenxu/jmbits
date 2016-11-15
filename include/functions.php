@@ -543,7 +543,7 @@ function begin_frame($caption = "", $center = false, $padding = 10, $width="100%
 	if ($center)
 	$tdextra .= " align=\"center\"";
 //	panel_start();
-	print(($caption ? "<h3 style='float: left' align=\"".$caption_center."\"><sapn class='icon-beaker'></sapn>".$caption."</h3>" : "") . "<table width=\"".$width."\" border=\"1\" cellspacing=\"0\" cellpadding=\"".$padding."\">" . "<tr><td class=\"text\" $tdextra>\n");
+	print(($caption ? "<h3 style='float: left;margin-left:1%' align=\"".$caption_center."\"><sapn class='icon-tags' style='color: #5cb85c '></sapn>".$caption."</h3>" : "") . "<table width=\"".$width."\" border=\"1\" cellspacing=\"0\" cellpadding=\"".$padding."\">" . "<tr><td class=\"text\" $tdextra>\n");
 
 }
 
@@ -864,17 +864,17 @@ function simpletag(thetag)
 <tr style="border: 0px"><td align="left" colspan="2" style="border: 0px">
 <table cellspacing="1" cellpadding="2" border="0">
 <tr>
-<td class="embedded"><input class="btn btn-info" style="font-weight: bold;font-size:11px; margin:7px" type="button" name="b" value="B" onclick="javascript: simpletag('b')" /></td>
-<td class="embedded"><input class="btn btn-info" style="font-style: italic;font-size:11px;margin-right:3px" type="button" name="i" value="I" onclick="javascript: simpletag('i')" /></td>
-<td class="embedded"><input class="btn btn-info" style="text-decoration: underline;font-size:11px;margin-right:3px" type="button" name="u" value="U" onclick="javascript: simpletag('u')" /></td>
+<td class="embedded-add"><input class="btn btn-info" style="font-weight: bold;font-size:11px; margin:7px" type="button" name="b" value="B" onclick="javascript: simpletag('b')" /></td>
+<td class="embedded-add"><input class="btn btn-info" style="font-style: italic;font-size:11px;margin-right:3px" type="button" name="i" value="I" onclick="javascript: simpletag('i')" /></td>
+<td class="embedded-add"><input class="btn btn-info" style="text-decoration: underline;font-size:11px;margin-right:3px" type="button" name="u" value="U" onclick="javascript: simpletag('u')" /></td>
 <?php
 print("<td class=\"embedded\"><input class=\"btn btn-info\" style=\"font-size:11px;margin-right:3px\" type=\"button\" name='url' value='URL' onclick=\"javascript:tag_url('" . $lang_functions['js_prompt_enter_url'] . "','" . $lang_functions['js_prompt_enter_title'] . "','" . $lang_functions['js_prompt_error'] . "')\" /></td>");
 print("<td class=\"embedded\"><input class=\"btn btn-info\" style=\"font-size:11px;margin-right:3px\" type=\"button\" name=\"IMG\" value=\"IMG\" onclick=\"javascript: tag_image('" . $lang_functions['js_prompt_enter_image_url'] . "','" . $lang_functions['js_prompt_error'] . "')\" /></td>");
 print("<td class=\"embedded\"><input class=\"btn btn-info\" type=\"button\" style=\"font-size:11px;margin-right:3px\" name=\"list\" value=\"List\" onclick=\"tag_list('" . addslashes($lang_functions['js_prompt_enter_item']) . "','" . $lang_functions['js_prompt_error'] . "')\" /></td>");
 ?>
-<td class="embedded"><input class="btn btn-info" style="font-size:11px;margin-right:3px" type="button" name="quote" value="QUOTE" onclick="javascript: simpletag('quote')" /></td>
-<td class="embedded"><input class="btn btn-info" style="font-size:11px;margin-right:3px" type="button" onclick='javascript:closeall();' name='tagcount' value="Close all tags" /></td>
-<td class="embedded"><select class="med btn btn-info" style="margin-right:3px" name='color' onchange="alterfont(this.options[this.selectedIndex].value, 'color')">
+<td class="embedded-add"><input class="btn btn-info" style="font-size:11px;margin-right:3px" type="button" name="quote" value="QUOTE" onclick="javascript: simpletag('quote')" /></td>
+<td class="embedded-add"><input class="btn btn-info" style="font-size:11px;margin-right:3px" type="button" onclick='javascript:closeall();' name='tagcount' value="Close all tags" /></td>
+<td class="embedded-add"><select class="med btn btn-info" style="margin-right:3px" name='color' onchange="alterfont(this.options[this.selectedIndex].value, 'color')">
 <option value='0'>--- <?php echo $lang_functions['select_color'] ?> ---</option>
 <option style="background-color: black" value="Black">Black</option>
 <option style="background-color: sienna" value="Sienna">Sienna</option>
@@ -917,7 +917,7 @@ print("<td class=\"embedded\"><input class=\"btn btn-info\" type=\"button\" styl
 <option style="background-color: plum" value="Plum">Plum</option>
 <option style="background-color: white" value="White">White</option>
 </select></td>
-<td class="embedded">
+<td class="embedded-add">
 <select class="med btn btn-info" name='font' onchange="alterfont(this.options[this.selectedIndex].value, 'font')">
 <option value="0">--- <?php echo $lang_functions['select_font'] ?> ---</option>
 <option value="Arial">Arial</option>
@@ -942,7 +942,7 @@ print("<td class=\"embedded\"><input class=\"btn btn-info\" type=\"button\" styl
 <option value="Verdana">Verdana</option>
 </select>
 </td>
-<td class="embedded" style="border: 0px">
+<td class="embedded-add" style="border: 0px">
 <select  class="med btn btn-info" name='size' onchange="alterfont(this.options[this.selectedIndex].value, 'size')">
 <option value="0">--- <?php echo $lang_functions['select_size'] ?> ---</option>
 <option value="1">1</option>
@@ -2127,8 +2127,10 @@ function menu ($selected = "home") {
 	print ("<li" . ($selected == "upload" ? " class=\"active\"" : "") . "><a href=\"upload.php\">".$lang_functions['text_upload']."</a></li>");
 //	print ("<li" . ($selected == "subtitles" ? " class=\"active\"" : "") . "><a href=\"subtitles.php\">".$lang_functions['text_subtitles']."</a></li>");
 	print ("<li" . ($selected == "usercp" ? " class=\"active\"" : "") . "><a href=\"usercp.php\">".$lang_functions['text_user_cp']."</a></li>");
-	print ("<li" . ($selected == "topten" ? " class=\"active\"" : "") . "><a href=\"topten.php\">".$lang_functions['text_top_ten']."</a></li>");
-	print ("<li" . ($selected == "log" ? " class=\"active\"" : "") . "><a href=\"log.php\">".$lang_functions['text_log']."</a></li>");
+//	print ("<li" . ($selected == "topten" ? " class=\"active\"" : "") . "><a href=\"topten.php\">".$lang_functions['text_top_ten']."</a></li>");
+
+	//delete logs by lwenxu
+//	print ("<li" . ($selected == "log" ? " class=\"active\"" : "") . "><a href=\"log.php\">".$lang_functions['text_log']."</a></li>");
 	print ("<li" . ($selected == "rules" ? " class=\"active\"" : "") . "><a href=\"rules.php\">".$lang_functions['text_rules']."</a></li>");
 	print ("<li" . ($selected == "faq" ? " class=\"active\"" : "") . "><a href=\"faq.php\">".$lang_functions['text_faq']."</a></li>");
 	print ("<li" . ($selected == "staff" ? " class=\"active\"" : "") . "><a href=\"staff.php\">".$lang_functions['text_staff']."</a></li>");
@@ -2456,7 +2458,7 @@ else {
 	print("<a href=\"messages.php\">".$inboxpic."</a> ".($messages ? $messages." (".$unread.$lang_functions['text_message_new'].")" : "0"));
 	print("  <a href=\"messages.php?action=viewmailbox&amp;box=-1\"><span class='icon-comment-alt' title=\"".$lang_functions['title_sentbox']."\"></span></a> ".($outmessages ? $outmessages : "0"));
 	print(" <a href=\"friends.php\"><span class='icon-group' title=\"".$lang_functions['title_buddylist']."\"></span></a>");
-	print(" <a href=\"getrss.php\"><span class='icon-rss' title=\"".$lang_functions['title_get_rss']."\"></span></a>");
+//	print(" <a href=\"getrss.php\"><span class='icon-rss' title=\"".$lang_functions['title_get_rss']."\"></span></a>");
 ?>
 
 	</span></td>
