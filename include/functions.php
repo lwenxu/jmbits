@@ -970,7 +970,7 @@ print("<tr>");
 print("<td align=\"left\" style=\"border: 0px\"><textarea class='bbcode form-control inputor' cols=\"100\" style=\"width: 115%;\" name=\"".$text."\" id=\"".$text."\" rows=\"20\" onkeydown=\"ctrlenter(event,'compose','qr')\">".$content."</textarea>");
 ?>
 </td>
-<td align="center" width="99%" style="border: 0px">
+<td align="center" width="90%" style="border: 0px">
 <table cellspacing="1" cellpadding="3">
 <tr>
 <?php
@@ -2012,7 +2012,7 @@ function tr($x,$y,$noesc=0,$relation='') {
 		$a = htmlspecialchars($y);
 		$a = str_replace("\n", "<br />\n", $a);
 	}
-	print("<tr".( $relation ? " relation = \"$relation\"" : "")."><td class=\"embedded-head\" valign=\"top\" align=\"right\">$x</td><td class=\"rowfollow\" valign=\"top\" align=\"left\">".$a."</td></tr>\n");
+	print("<tr".( $relation ? " relation = \"$relation\"" : "")."><td class=\"embedded-head\" style='width:100px;margin-left:2%'  align=\"left\" >$x</td><td class=\"embedded-head\" valign=\"top\" >".$a."</td></tr>\n");
 }
 
 function tr_small($x,$y,$noesc=0,$relation='') {
@@ -2022,7 +2022,7 @@ function tr_small($x,$y,$noesc=0,$relation='') {
 		$a = htmlspecialchars($y);
 		//$a = str_replace("\n", "<br />\n", $a);
 	}
-	print("<tr".( $relation ? " relation = \"$relation\"" : "")."><td width=\"1%\" class=\"embedded-head\" valign=\"top\" align=\"right\">".$x."</td><td width=\"99%\" class=\"rowfollow\" valign=\"top\" align=\"left\">".$a."</td></tr>\n");
+	print("<tr".( $relation ? " relation = \"$relation\"" : "")."><td width=\"10%\" class=\"embedded-head\" valign=\"top\" align=\"right\">".$x."</td><td width=\"90%\" class=\"rowfollow\" valign=\"top\" align=\"left\">".$a."</td></tr>\n");
 }
 
 function twotd($x,$y,$nosec=0){
@@ -2287,25 +2287,10 @@ $cssupdatedate=($cssupdatedate ? "?".htmlspecialchars($cssupdatedate) : "");
 <link rel="stylesheet" href="<?php echo $css_uri."DomTT1.css".$cssupdatedate?>" type="text/css" />
 <link rel="stylesheet" href="<?php echo $css_uri."theme1.css".$cssupdatedate?>" type="text/css" />
 <link rel="stylesheet" href="styles/curtain_imageresizer.css<?php echo $cssupdatedate?>" type="text/css" />
-<!--	add my style-->
-<!--<link rel="stylesheet" href="styles/bootstrap/css/bootstrap-theme.css" type="text/css">-->
-<!--<link rel="stylesheet" href="styles/bootstrap/css/bootstrap-theme.min.css" type="text/css">-->
-<!--<link rel="stylesheet" href="--><?php //echo $css_uri."main.css".$cssupdatedate?><!--" type="text/css" />-->
-<!--	CDN bootstrap-->
-<!--<link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">-->
 <script src="./styles/js/jquery-3.1.1.min.js"></script>
-<!--<script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
-
-
-
 <link rel="stylesheet" href="./styles/bootstrap/css/bootstrap.min.css">
-<!--<script src="./styles/j/jquery/2.1.1/jquery.min.js"></script>-->
 <script src="./styles/bootstrap/js/bootstrap.min.js"></script>
 <script src="./styles/js/js.js"></script>
-<!--		CDN awosome-->
-<!--<link href="http://cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">-->
-<!--<link href="//netdna.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">-->
-<
 <link href="./styles/awesome/css/font-awesome.min.css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="./styles/BambooGreen/main.css">
 
@@ -2330,7 +2315,6 @@ if ($CURUSER){
 <script type="text/javascript" src="styles/js/js.js"></script>
 </head>
 <body class="container-fluid">
-<span class="glyphicon glyphicon-log-out"></span>
 <table class="head" cellspacing="0" cellpadding="0" align="center">
 	<tr>
 		<td class="clear">
@@ -2338,7 +2322,9 @@ if ($CURUSER){
 if ($logo_main == "")
 {
 ?>
-			<div class="logo"><?php echo htmlspecialchars($SITENAME)?></div>
+
+<!--	logo-->
+			<div class="logo""><?php echo htmlspecialchars($SITENAME)?></div>
 			<div class="slogan"><?php echo htmlspecialchars($SLOGAN)?></div>
 <?php
 }
@@ -2358,7 +2344,7 @@ else
 		}
 }
 if ($enabledonation == 'yes'){?>
-			<a href="donate.php"><img width="100px"  src="<?php echo get_forum_pic_folder()?>/donate.jpg" alt="Make a donation" style="margin-left: 5px; margin-top: 50px;border-radius: 5px" /></a>
+<!--			<a href="donate.php"><img width="100px"  src="--><?php //echo get_forum_pic_folder()?><!--/donate.jpg" alt="Make a donation" style="margin-left: 5px; margin-top: 50px;border-radius: 5px" /></a>-->
 <?php
 }
 ?>
@@ -2616,6 +2602,7 @@ if ($msgalert)
 
 
 function stdfoot() {
+
 	global $SITENAME,$BASEURL,$Cache,$datefounded,$tstart,$icplicense_main,$add_key_shortcut,$query_name, $USERUPDATESET, $CURUSER, $enablesqldebug_tweak, $sqldebug_tweak, $Advertisement, $analyticscode_tweak;
 	print("</td></tr></table>");
 	print("<div id=\"footer\">");
@@ -2623,7 +2610,19 @@ function stdfoot() {
 			$footerad=$Advertisement->get_ad('footer');
 			if ($footerad)
 			echo "<div align=\"center\" style=\"margin-top: 10px\" id=\"ad_footer\">".$footerad[0]."</div>";
+
 	}
+	echo "
+	<script>
+		function pageScroll(){
+			window.scrollBy(0,-10);
+			scrolldelay=setTimeout('pageScroll()',100);
+		}
+		if(document.documentElement.scrollTop==0)clearTimeout(scrolldelay);
+	</script>
+	";
+	echo "<a href='pageScroll();'>ad</a>";
+	echo "<a id=\"gotop\" class=\"fa fa-arrow-circle-up\" href=\"gotop();\" style=\"display: none; visibility: visible; color: black;\">casdc</a>";
 	print("<div style=\"margin-top: 10px; margin-bottom: 30px;\" align=\"center\">");
 	if ($CURUSER){
 		sql_query("UPDATE users SET " . join(",", $USERUPDATESET) . " WHERE id = ".$CURUSER['id']);
@@ -2898,10 +2897,10 @@ function commenttable($rows, $type, $parent_id, $review = false)
 				echo "<div align=\"center\" style=\"margin-top: 10px\" id=\"ad_comment_".$count."\">".$commentad[$count-1]."</div>";
 			}
 		}
-		print("<div style=\"margin-top: 8pt; margin-bottom: 8pt;\"><table id=\"cid".$row["id"]."\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" width=\"100%\"><tr><td class=\"embedded\" width=\"99%\">#" . $row["id"] . "&nbsp;&nbsp;<font color=\"gray\">".$lang_functions['text_by']."</font>");
+		print("<div style=\"margin-top: 8pt; margin-bottom: 8pt;\"><table id=\"cid".$row["id"]."\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" width=\"100%\"><tr><td class=\"embedded\" width=\"90%\">#" . $row["id"] . "&nbsp;&nbsp;<font color=\"gray\">".$lang_functions['text_by']."</font>");
 		print(get_username($row["user"],false,true,true,false,false,true));
 		print("&nbsp;&nbsp;<font color=\"gray\">".$lang_functions['text_at']."</font>".gettime($row["added"]).
-		($row["editedby"] && get_user_class() >= $commanage_class ? " - [<a href=\"comment.php?action=vieworiginal&amp;cid=".$row[id]."&amp;type=".$type."\">".$lang_functions['text_view_original']."</a>]" : "") . "</td><td class=\"embedded nowrap\" width=\"1%\"><a href=\"#top\"><img class=\"top\" src=\"pic/trans.gif\" alt=\"Top\" title=\"Top\" /></a>&nbsp;&nbsp;</td></tr></table></div>");
+		($row["editedby"] && get_user_class() >= $commanage_class ? " - [<a href=\"comment.php?action=vieworiginal&amp;cid=".$row[id]."&amp;type=".$type."\">".$lang_functions['text_view_original']."</a>]" : "") . "</td><td class=\"embedded nowrap\" width=\"10%\"><a href=\"#top\"><img class=\"top\" src=\"pic/trans.gif\" alt=\"Top\" title=\"Top\" /></a>&nbsp;&nbsp;</td></tr></table></div>");
 		$avatar = ($CURUSER["avatars"] == "yes" ? htmlspecialchars(trim($userRow["avatar"])) : "");
 		if (!$avatar)
 			$avatar = "pic/default_avatar.png";

@@ -4,8 +4,10 @@ body {
     margin-bottom: 0px;
     color: #000000;
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-    background: url(bg.jpg) no-repeat,url(bg.jpg) repeat center;
-    background-position: center top;
+    background: url(bg.jpg) ;
+    background-size: 100%;
+    /*background-image: url("bg.jpg") ;*/
+    /*background-position: center top;*/
     /*background-color: mediumaquamarine;*/
 }
 
@@ -1274,4 +1276,14 @@ td .text{
     font-size: 20px;
     color: burlywood;
 
+}
+
+#top {
+    visibility: hidden;
+    position: fixed;
+    right: 50px;
+    bottom: 50px;
+    opacity: .5;
+    font-size: 72px;
+    color: black;
 }

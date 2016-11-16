@@ -58,7 +58,7 @@ $res = sql_query("SELECT * FROM users WHERE users.picker='yes' AND users.status=
 while ($arr = mysql_fetch_assoc($res))
 {
 	$countryrow = get_country_row($arr['country']);
-	$ppl .= "<tr height=15><td class=embedded-add>". get_username($arr['id']) ."</td><td class=embedded-add ><img width=24 height=15 src=\"pic/flag/".$countryrow['flagpic']."\" title=\"".$countryrow['name']."\" style=\"padding-bottom:1px;\"></td>
+	$ppl .= "<tr height=15><td class=embedded-add>". get_username($arr['id']) ."</td class=embedded-add> <td class=embedded-add style='text-align:center'><span style='text-align:center'><img  width=24 height=15 src=\"pic/flag/".$countryrow['flagpic']."\" title=\"".$countryrow['name']."\" style=\"padding-bottom:1px;\"></span></td>
  <td class=embedded-add> ".(strtotime($arr['last_access']) > $dt ? $onlineimg : $offlineimg)."</td>".
  "<td class=embedded-add><a href=sendmessage.php?receiver=".$arr['id']." title=\"".$lang_staff['title_send_pm']."\">".$sendpmimg."</a></td>".
  "<td class=embedded-add>".$arr['pickfor']."</td></tr>\n";
