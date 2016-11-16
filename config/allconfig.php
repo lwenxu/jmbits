@@ -150,8 +150,8 @@ $AUTHORITY=array(
 );
 $BASIC=array(
 	'SITENAME' => 'NWU  PT',
-	'BASEURL' => '111.114.113.178/nwupt',
-	'announce_url' => '111.114.113.178/nwupt/announce.php',
+	'BASEURL' => '219.245.31.198/nwupt',
+	'announce_url' => '219.245.31.198/nwupt/announce.php',
 	'mysql_host' => '127.0.0.1',
 	'mysql_user' => 'root',
 	'mysql_pass' => '',

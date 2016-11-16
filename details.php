@@ -43,13 +43,13 @@ else {
 		elseif ($_GET["edited"]) {
 			print("<h1 align=\"center\">".$lang_details['text_successfully_edited']."</h1>");
 			if (isset($_GET["returnto"]))
-				print("<p><b>".$lang_details['text_go_back'] . "<a href=\"".htmlspecialchars($_GET["returnto"])."\">" . $lang_details['text_whence_you_came']."</a></b></p>");
+				print("<p>".$lang_details['text_go_back'] . "<a href=\"".htmlspecialchars($_GET["returnto"])."\">" . $lang_details['text_whence_you_came']."</a></p>");
 		}
 		$sp_torrent = get_torrent_promotion_append($row[sp_state],'word');
 
 		$s=htmlspecialchars($row["name"]).($sp_torrent ? "&nbsp;&nbsp;&nbsp;".$sp_torrent : "");
 		print("<h1 align=\"center\" id=\"top\">".$s."</h1>\n");
-		print("<table width=\"940\" cellspacing=\"0\" cellpadding=\"5\">\n");
+		print("<table width=\"97%\" cellspacing=\"0\" cellpadding=\"5\" class='table table-striped'>\n");
 
 		$url = "edit.php?id=" . $row["id"];
 		if (isset($_GET["returnto"])) {
@@ -72,7 +72,7 @@ else {
 			$CURUSER["downloadpos"] = "yes";
 		if ($CURUSER["downloadpos"] != "no")
 		{
-			print("<tr><td class=\"rowhead\" width=\"13%\">".$lang_details['row_download']."</td><td class=\"rowfollow\" width=\"87%\" align=\"left\">");
+			print("<tr><td class=\"embedded-head\" width=\"5%\">".$lang_details['row_download']."</td><td class=\"rowfollow\" width=\"95%\" align=\"left\">");
 			if ($CURUSER['timetype'] != 'timealive')
 				$uploadtime = $lang_details['text_at'].$row['added'];
 			else $uploadtime = $lang_details['text_blank'].gettime($row['added'],true,false);
@@ -84,33 +84,33 @@ else {
 		if ($smalldescription_main == 'yes')
 			tr($lang_details['row_small_description'],htmlspecialchars(trim($row["small_descr"])),true);
 
-		$size_info =  "<b>".$lang_details['text_size']."</b>" . mksize($row["size"]);
-		$type_info = "&nbsp;&nbsp;&nbsp;<b>".$lang_details['row_type'].":</b>&nbsp;".$row["cat_name"];
+		$size_info =  "".$lang_details['text_size']."" . mksize($row["size"]);
+		$type_info = "&nbsp;&nbsp;&nbsp;".$lang_details['row_type'].":&nbsp;".$row["cat_name"];
 		if (isset($row["source_name"]))
-			$source_info = "&nbsp;&nbsp;&nbsp;<b>".$lang_details['text_source']."&nbsp;</b>".$row[source_name];
+			$source_info = "&nbsp;&nbsp;&nbsp;".$lang_details['text_source']."&nbsp;".$row[source_name];
 		if (isset($row["medium_name"]))
-			$medium_info = "&nbsp;&nbsp;&nbsp;<b>".$lang_details['text_medium']."&nbsp;</b>".$row[medium_name];
+			$medium_info = "&nbsp;&nbsp;&nbsp;".$lang_details['text_medium']."&nbsp;".$row[medium_name];
 		if (isset($row["codec_name"]))
-			$codec_info = "&nbsp;&nbsp;&nbsp;<b>".$lang_details['text_codec']."&nbsp;</b>".$row[codec_name];
+			$codec_info = "&nbsp;&nbsp;&nbsp;".$lang_details['text_codec']."&nbsp;".$row[codec_name];
 		if (isset($row["standard_name"]))
-			$standard_info = "&nbsp;&nbsp;&nbsp;<b>".$lang_details['text_stardard']."&nbsp;</b>".$row[standard_name];
+			$standard_info = "&nbsp;&nbsp;&nbsp;".$lang_details['text_stardard']."&nbsp;".$row[standard_name];
 		if (isset($row["processing_name"]))
-			$processing_info = "&nbsp;&nbsp;&nbsp;<b>".$lang_details['text_processing']."&nbsp;</b>".$row[processing_name];
+			$processing_info = "&nbsp;&nbsp;&nbsp;".$lang_details['text_processing']."&nbsp;".$row[processing_name];
 		if (isset($row["team_name"]))
-			$team_info = "&nbsp;&nbsp;&nbsp;<b>".$lang_details['text_team']."&nbsp;</b>".$row[team_name];
+			$team_info = "&nbsp;&nbsp;&nbsp;".$lang_details['text_team']."&nbsp;".$row[team_name];
 		if (isset($row["audiocodec_name"]))
-			$audiocodec_info = "&nbsp;&nbsp;&nbsp;<b>".$lang_details['text_audio_codec']."&nbsp;</b>".$row[audiocodec_name];
+			$audiocodec_info = "&nbsp;&nbsp;&nbsp;".$lang_details['text_audio_codec']."&nbsp;".$row[audiocodec_name];
 
 		tr($lang_details['row_basic_info'], $size_info.$type_info.$source_info . $medium_info. $codec_info . $audiocodec_info. $standard_info . $processing_info . $team_info, 1);
 		if ($CURUSER["downloadpos"] != "no")
-			$download = "<a title=\"".$lang_details['title_download_torrent']."\" href=\"download.php?id=".$id."\"><img class=\"dt_download\" src=\"pic/trans.gif\" alt=\"download\" />&nbsp;<b><font class=\"small\">".$lang_details['text_download_torrent']."</font></b></a>&nbsp;|&nbsp;";
+			$download = "<a title=\"".$lang_details['title_download_torrent']."\" href=\"download.php?id=".$id."\"><img class=\"dt_download\" src=\"pic/trans.gif\" alt=\"download\" />&nbsp;<font class=\"small\">".$lang_details['text_download_torrent']."</font></a>&nbsp;|&nbsp;";
 		else $download = "";
 
-		tr($lang_details['row_action'], $download. ($owned == 1 ? "<$editlink><img class=\"dt_edit\" src=\"pic/trans.gif\" alt=\"edit\" />&nbsp;<b><font class=\"small\">".$lang_details['text_edit_torrent'] . "</font></b></a>&nbsp;|&nbsp;" : "").  (get_user_class() >= $askreseed_class && $row[seeders] == 0 ? "<a title=\"".$lang_details['title_ask_for_reseed']."\" href=\"takereseed.php?reseedid=$id\"><img class=\"dt_reseed\" src=\"pic/trans.gif\" alt=\"reseed\">&nbsp;<b><font class=\"small\">".$lang_details['text_ask_for_reseed'] ."</font></b></a>&nbsp;|&nbsp;" : "") . "<a title=\"".$lang_details['title_report_torrent']."\" href=\"report.php?torrent=$id\"><img class=\"dt_report\" src=\"pic/trans.gif\" alt=\"report\" />&nbsp;<b><font class=\"small\">".$lang_details['text_report_torrent']."</font></b></a>", 1);
+		tr($lang_details['row_action'], $download. ($owned == 1 ? "<$editlink><img class=\"dt_edit\" src=\"pic/trans.gif\" alt=\"edit\" />&nbsp;<font class=\"small\">".$lang_details['text_edit_torrent'] . "</font></a>&nbsp;|&nbsp;" : "").  (get_user_class() >= $askreseed_class && $row[seeders] == 0 ? "<a title=\"".$lang_details['title_ask_for_reseed']."\" href=\"takereseed.php?reseedid=$id\"><img class=\"dt_reseed\" src=\"pic/trans.gif\" alt=\"reseed\">&nbsp;<font class=\"small\">".$lang_details['text_ask_for_reseed'] ."</font></a>&nbsp;|&nbsp;" : "") . "<a title=\"".$lang_details['title_report_torrent']."\" href=\"report.php?torrent=$id\"><img class=\"dt_report\" src=\"pic/trans.gif\" alt=\"report\" />&nbsp;<font class=\"small\">".$lang_details['text_report_torrent']."</font></a>", 1);
 
 		// ---------------- start subtitle block -------------------//
 		$r = sql_query("SELECT subs.*, language.flagpic, language.lang_name FROM subs LEFT JOIN language ON subs.lang_id=language.id WHERE torrent_id = " . sqlesc($row["id"]). " ORDER BY subs.lang_id ASC") or sqlerr(__FILE__, __LINE__);
-		print("<tr><td class=\"rowhead\" valign=\"top\">".$lang_details['row_subtitles']."</td>");
+		print("<tr><td class=\"embedded-head\" valign=\"top\">".$lang_details['row_subtitles']."</td>");
 		print("<td class=\"rowfollow\" align=\"left\" valign=\"top\">");
 		print("<table border=\"0\" cellspacing=\"0\">");
 		if (mysql_num_rows($r) > 0)
@@ -125,30 +125,30 @@ else {
 		else
 			print("<tr><td class=\"embedded\">".$lang_details['text_no_subtitles']."</td></tr>");
 		print("</table>");
-		print("<table border=\"0\" cellspacing=\"0\"><tr>");
-		if($CURUSER['id']==$row['owner']  ||  get_user_class() >= $uploadsub_class)
-		{
-			print("<td class=\"embedded\"><form method=\"post\" action=\"subtitles.php\"><input type=\"hidden\" name=\"torrent_name\" value=\"" . $row["name"]. "\" /><input type=\"hidden\" name=\"detail_torrent_id\" value=\"" . $row["id"]. "\" /><input type=\"hidden\" name=\"in_detail\" value=\"in_detail\" /><input type=\"submit\" value=\"".$lang_details['submit_upload_subtitles']."\" /></form></td>");
-		}
-		$moviename = "";
-		$imdb_id = parse_imdb_id($row["url"]);
-		if ($imdb_id && $showextinfo['imdb'] == 'yes')
-		{
-			$thenumbers = $imdb_id;
-			if (!$moviename = $Cache->get_value('imdb_id_'.$thenumbers.'_movie_name')){
-				$movie = new imdb ($thenumbers);
-				$target = array('Title');
-				switch ($movie->cachestate($target)){
-					case "1":{
-						$moviename = $movie->title (); break;
-						$Cache->cache_value('imdb_id_'.$thenumbers.'_movie_name', $moviename, 1296000);
-					}
-					default: break;
-				}
-			}
-		}
-		print("<td class=\"embedded\"><form method=\"get\" action=\"http://shooter.cn/sub/\" target=\"_blank\"><input type=\"text\" name=\"searchword\" id=\"keyword\" style=\"width: 250px\" value=\"".$moviename."\" /><input type=\"submit\" value=\"".$lang_details['submit_search_at_shooter']."\" /></form></td><td class=\"embedded\"><form method=\"get\" action=\"http://www.opensubtitles.org/en/search2/\" target=\"_blank\"><input type=\"hidden\" id=\"moviename\" name=\"MovieName\" /><input type=\"hidden\" name=\"action\" value=\"search\" /><input type=\"hidden\" name=\"SubLanguageID\" value=\"all\" /><input onclick=\"document.getElementById('moviename').value=document.getElementById('keyword').value;\" type=\"submit\" value=\"".$lang_details['submit_search_at_opensubtitles']."\" /></form></td>\n");
-		print("</tr></table>");
+//		print("<table border=\"0\" cellspacing=\"0\"><tr>");
+//		if($CURUSER['id']==$row['owner']  ||  get_user_class() >= $uploadsub_class)
+//		{
+//			print("<td class=\"embedded\"><form method=\"post\" action=\"subtitles.php\"><input type=\"hidden\" name=\"torrent_name\" value=\"" . $row["name"]. "\" /><input type=\"hidden\" name=\"detail_torrent_id\" value=\"" . $row["id"]. "\" /><input type=\"hidden\" name=\"in_detail\" value=\"in_detail\" /><input type=\"submit\" value=\"".$lang_details['submit_upload_subtitles']."\" /></form></td>");
+//		}
+//		$moviename = "";
+//		$imdb_id = parse_imdb_id($row["url"]);
+//		if ($imdb_id && $showextinfo['imdb'] == 'yes')
+//		{
+//			$thenumbers = $imdb_id;
+//			if (!$moviename = $Cache->get_value('imdb_id_'.$thenumbers.'_movie_name')){
+//				$movie = new imdb ($thenumbers);
+//				$target = array('Title');
+//				switch ($movie->cachestate($target)){
+//					case "1":{
+//						$moviename = $movie->title (); break;
+//						$Cache->cache_value('imdb_id_'.$thenumbers.'_movie_name', $moviename, 1296000);
+//					}
+//					default: break;
+//				}
+//			}
+//		}
+//		print("<td class=\"embedded\"><form method=\"get\" action=\"http://shooter.cn/sub/\" target=\"_blank\"><input type=\"text\" name=\"searchword\" id=\"keyword\" style=\"width: 250px\" value=\"".$moviename."\" /><input type=\"submit\" value=\"".$lang_details['submit_search_at_shooter']."\" /></form></td><td class=\"embedded\"><form method=\"get\" action=\"http://www.opensubtitles.org/en/search2/\" target=\"_blank\"><input type=\"hidden\" id=\"moviename\" name=\"MovieName\" /><input type=\"hidden\" name=\"action\" value=\"search\" /><input type=\"hidden\" name=\"SubLanguageID\" value=\"all\" /><input onclick=\"document.getElementById('moviename').value=document.getElementById('keyword').value;\" type=\"submit\" value=\"".$lang_details['submit_search_at_opensubtitles']."\" /></form></td>\n");
+//		print("</tr></table>");
 		print("</td></tr>\n");
 		// ---------------- end subtitle block -------------------//
 
@@ -345,7 +345,7 @@ else {
 
 						$Cache->add_whole_row();
 						print("<tr>");
-						print("<td class=\"rowhead\"><a href=\"javascript: klappe_ext('imdb')\"><span class=\"nowrap\"><img class=\"minus\" src=\"pic/trans.gif\" alt=\"Show/Hide\" id=\"picimdb\" title=\"".$lang_detail['title_show_or_hide']."\" /> ".$lang_details['text_imdb'] . $lang_details['row_info'] ."</span></a><div id=\"posterimdb\">".  $smallth."</div></td>");
+						print("<td class=\"embedded-head\"><a href=\"javascript: klappe_ext('imdb')\"><span class=\"nowrap\"><img class=\"minus\" src=\"pic/trans.gif\" alt=\"Show/Hide\" id=\"picimdb\" title=\"".$lang_detail['title_show_or_hide']."\" /> ".$lang_details['text_imdb'] . $lang_details['row_info'] ."</span></a><div id=\"posterimdb\">".  $smallth."</div></td>");
 						$Cache->end_whole_row();
 						$Cache->add_row();
 						$Cache->add_part();
@@ -432,21 +432,21 @@ else {
 					"</tr>\n";
 				}
 				$s .= "</table>\n";
-				tr("<a href=\"javascript: klappe_news('othercopy')\"><span class=\"nowrap\"><img class=\"".($copies_count > 5 ? "plus" : "minus")."\" src=\"pic/trans.gif\" alt=\"Show/Hide\" id=\"picothercopy\" title=\"".$lang_detail['title_show_or_hide']."\" /> ".$lang_details['row_other_copies']."</span></a>", "<b>".$copies_count.$lang_details['text_other_copies']." </b><br /><div id='kothercopy' style=\"".($copies_count > 5 ? "display: none;" : "display: block;")."\">".$s."</div>",1);
+				tr("<a href=\"javascript: klappe_news('othercopy')\"><span class=\"nowrap\"><img class=\"".($copies_count > 5 ? "plus" : "minus")."\" src=\"pic/trans.gif\" alt=\"Show/Hide\" id=\"picothercopy\" title=\"".$lang_detail['title_show_or_hide']."\" /> ".$lang_details['row_other_copies']."</span></a>", "".$copies_count.$lang_details['text_other_copies']." <br /><div id='kothercopy' style=\"".($copies_count > 5 ? "display: none;" : "display: block;")."\">".$s."</div>",1);
 			}
 		}
 
 		if ($row["type"] == "multi")
 		{
-			$files_info = "<b>".$lang_details['text_num_files']."</b>". $row["numfiles"] . $lang_details['text_files'] . "<br />";
+			$files_info = "".$lang_details['text_num_files']."". $row["numfiles"] . $lang_details['text_files'] . "<br />";
 			$files_info .= "<span id=\"showfl\"><a href=\"javascript: viewfilelist(".$id.")\" >".$lang_details['text_see_full_list']."</a></span><span id=\"hidefl\" style=\"display: none;\"><a href=\"javascript: hidefilelist()\">".$lang_details['text_hide_list']."</a></span>";
 		}
 		function hex_esc($matches) {
 			return sprintf("%02x", ord($matches[0]));
 		}
 		if ($enablenfo_main=='yes')
-			tr($lang_details['row_torrent_info'], "<table><tr>" . ($files_info != "" ? "<td class=\"no_border_wide\">" . $files_info . "</td>" : "") . "<td class=\"no_border_wide\"><b>".$lang_details['row_info_hash'].":</b>&nbsp;".preg_replace_callback('/./s', "hex_esc", hash_pad($row["info_hash"]))."</td>". (get_user_class() >= $torrentstructure_class ? "<td class=\"no_border_wide\"><b>" . $lang_details['text_torrent_structure'] . "</b><a href=\"torrent_info.php?id=".$id."\">".$lang_details['text_torrent_info_note']."</a></td>" : "") . "</tr></table><span id='filelist'></span>",1);
-		tr($lang_details['row_hot_meter'], "<table><tr><td class=\"no_border_wide\"><b>" . $lang_details['text_views']."</b>". $row["views"] . "</td><td class=\"no_border_wide\"><b>" . $lang_details['text_hits']. "</b>" . $row["hits"] . "</td><td class=\"no_border_wide\"><b>" .$lang_details['text_snatched'] . "</b><a href=\"viewsnatches.php?id=".$id."\"><b>" . $row["times_completed"]. $lang_details['text_view_snatches'] . "</td><td class=\"no_border_wide\"><b>" . $lang_details['row_last_seeder']. "</b>" . gettime($row["last_action"]) . "</td></tr></table>",1);
+			tr($lang_details['row_torrent_info'], "<table><tr>" . ($files_info != "" ? "<td class=\"no_border_wide\">" . $files_info . "</td>" : "") . "<td class=\"no_border_wide\">".$lang_details['row_info_hash'].":&nbsp;".preg_replace_callback('/./s', "hex_esc", hash_pad($row["info_hash"]))."</td>". (get_user_class() >= $torrentstructure_class ? "<td class=\"no_border_wide\">" . $lang_details['text_torrent_structure'] . "<a href=\"torrent_info.php?id=".$id."\">".$lang_details['text_torrent_info_note']."</a></td>" : "") . "</tr></table><span id='filelist'></span>",1);
+		tr($lang_details['row_hot_meter'], "<table><tr><td class=\"no_border_wide\">" . $lang_details['text_views']."". $row["views"] . "</td><td class=\"no_border_wide\">" . $lang_details['text_hits']. "" . $row["hits"] . "</td><td class=\"no_border_wide\">" .$lang_details['text_snatched'] . "<a href=\"viewsnatches.php?id=".$id."\">" . $row["times_completed"]. $lang_details['text_view_snatches'] . "</td><td class=\"no_border_wide\">" . $lang_details['row_last_seeder']. "" . gettime($row["last_action"]) . "</td></tr></table>",1);
 		$bwres = sql_query("SELECT uploadspeed.name AS upname, downloadspeed.name AS downname, isp.name AS ispname FROM users LEFT JOIN uploadspeed ON users.upload = uploadspeed.id LEFT JOIN downloadspeed ON users.download = downloadspeed.id LEFT JOIN isp ON users.isp = isp.id WHERE users.id=".$row['owner']);
 		$bwrow = mysql_fetch_array($bwres);
 		if ($bwrow['upname'] && $bwrow['downname'])
@@ -493,18 +493,18 @@ else {
 				}
 			}
 
-			$avgspeed = $lang_details['text_average_speed']."<b>" . mksize($totalspeed/($seedersTmp+$leechersTmp)) . "/s</b>";
-			$totalspeed = $lang_details['text_total_speed']."<b>" . mksize($totalspeed) . "/s</b> ".$lang_details['text_health_note'];
-			$health = $lang_details['text_avprogress'] . get_percent_completed_image(floor($progressTotal))." (".round($progressTotal)."%)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>".$lang_details['text_traffic']."</b>" . $avgspeed ."&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;". $totalspeed;
+			$avgspeed = $lang_details['text_average_speed']."" . mksize($totalspeed/($seedersTmp+$leechersTmp)) . "/s";
+			$totalspeed = $lang_details['text_total_speed']."" . mksize($totalspeed) . "/s ".$lang_details['text_health_note'];
+			$health = $lang_details['text_avprogress'] . get_percent_completed_image(floor($progressTotal))." (".round($progressTotal)."%)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;".$lang_details['text_traffic']."" . $avgspeed ."&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;". $totalspeed;
 		}
 		else
-			$health = "<b>".$lang_details['text_traffic']. "</b>" . $lang_details['text_no_traffic'];
+			$health = "".$lang_details['text_traffic']. "" . $lang_details['text_no_traffic'];
 
 		if ($row["visible"] == "no")
-			$health = "<b>".$lang_details['text_status']."</b>" . $lang_details['text_dead'] ."&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;". $health;
+			$health = "".$lang_details['text_status']."" . $lang_details['text_dead'] ."&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;". $health;
 
 		tr($lang_details['row_health'], $health, 1);*/
-		tr("<span id=\"seeders\"></span><span id=\"leechers\"></span>".$lang_details['row_peers']."<br /><span id=\"showpeer\"><a href=\"javascript: viewpeerlist(".$row['id'].");\" class=\"sublink\">".$lang_details['text_see_full_list']."</a></span><span id=\"hidepeer\" style=\"display: none;\"><a href=\"javascript: hidepeerlist();\" class=\"sublink\">".$lang_details['text_hide_list']."</a></span>", "<div id=\"peercount\"><b>".$row['seeders'].$lang_details['text_seeders'].add_s($row['seeders'])."</b> | <b>".$row['leechers'].$lang_details['text_leechers'].add_s($row['leechers'])."</b></div><div id=\"peerlist\"></div>" , 1);
+		tr("<span id=\"seeders\"></span><span id=\"leechers\"></span>".$lang_details['row_peers']."<br /><span id=\"showpeer\"><a href=\"javascript: viewpeerlist(".$row['id'].");\" class=\"sublink\">".$lang_details['text_see_full_list']."</a></span><span id=\"hidepeer\" style=\"display: none;\"><a href=\"javascript: hidepeerlist();\" class=\"sublink\">".$lang_details['text_hide_list']."</a></span>", "<div id=\"peercount\">".$row['seeders'].$lang_details['text_seeders'].add_s($row['seeders'])." | ".$row['leechers'].$lang_details['text_leechers'].add_s($row['leechers'])."</div><div id=\"peerlist\"></div>" , 1);
 		if ($_GET['dllist'] == 1)
 		{
 			$scronload = "viewpeerlist(".$row['id'].")";
@@ -575,7 +575,7 @@ if ($CURUSER['showcomment'] != 'no'){
 	}
 }
 print("<br /><br />");
-print ("<table style='border:1px solid #000000;'><tr><td class=\"text\" align=\"center\"><b>".$lang_details['text_quick_comment']."</b><br /><br /><form id=\"compose\" name=\"comment\" method=\"post\" action=\"".htmlspecialchars("comment.php?action=add&type=torrent")."\" onsubmit=\"return postvalid(this);\"><input type=\"hidden\" name=\"pid\" value=\"".$id."\" /><br />");
+print ("<table style='border:1px solid #000000;'><tr><td class=\"text\" align=\"center\">".$lang_details['text_quick_comment']."<br /><br /><form id=\"compose\" name=\"comment\" method=\"post\" action=\"".htmlspecialchars("comment.php?action=add&type=torrent")."\" onsubmit=\"return postvalid(this);\"><input type=\"hidden\" name=\"pid\" value=\"".$id."\" /><br />");
 quickreply('comment', 'body', $lang_details['submit_add_comment']);
 print("</form></td></tr></table>");
 print("<p align=\"center\"><a class=\"index\" href=\"".htmlspecialchars("comment.php?action=add&pid=".$id."&type=torrent")."\">".$lang_details['text_add_a_comment']."</a></p>\n");
