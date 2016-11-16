@@ -2012,7 +2012,7 @@ function tr($x,$y,$noesc=0,$relation='') {
 		$a = htmlspecialchars($y);
 		$a = str_replace("\n", "<br />\n", $a);
 	}
-	print("<tr".( $relation ? " relation = \"$relation\"" : "")."><td class=\"rowhead nowrap\" valign=\"top\" align=\"right\">$x</td><td class=\"rowfollow\" valign=\"top\" align=\"left\">".$a."</td></tr>\n");
+	print("<tr".( $relation ? " relation = \"$relation\"" : "")."><td class=\"embedded-head\" valign=\"top\" align=\"right\">$x</td><td class=\"rowfollow\" valign=\"top\" align=\"left\">".$a."</td></tr>\n");
 }
 
 function tr_small($x,$y,$noesc=0,$relation='') {
@@ -2022,7 +2022,7 @@ function tr_small($x,$y,$noesc=0,$relation='') {
 		$a = htmlspecialchars($y);
 		//$a = str_replace("\n", "<br />\n", $a);
 	}
-	print("<tr".( $relation ? " relation = \"$relation\"" : "")."><td width=\"1%\" class=\"rowhead nowrap\" valign=\"top\" align=\"right\">".$x."</td><td width=\"99%\" class=\"rowfollow\" valign=\"top\" align=\"left\">".$a."</td></tr>\n");
+	print("<tr".( $relation ? " relation = \"$relation\"" : "")."><td width=\"1%\" class=\"embedded-head\" valign=\"top\" align=\"right\">".$x."</td><td width=\"99%\" class=\"rowfollow\" valign=\"top\" align=\"left\">".$a."</td></tr>\n");
 }
 
 function twotd($x,$y,$nosec=0){
@@ -3017,7 +3017,7 @@ function get_torrent_bookmark_state($userid, $torrentid, $text = false)
 	if (!count($ret) || !in_array($torrentid, $ret, false)) // already bookmarked
 		$act = ($text == true ?  $lang_functions['title_bookmark_torrent']  : "<img class=\"delbookmark\" src=\"pic/trans.gif\" alt=\"Unbookmarked\" title=\"".$lang_functions['title_bookmark_torrent']."\" />");
 	else
-		$act = ($text == true ? $lang_functions['title_delbookmark_torrent'] : "<img class=\"bookmark\" src=\"pic/trans.gif\" alt=\"Bookmarked\" title=\"".$lang_functions['title_delbookmark_torrent']."\" />");
+//		$act = ($text == true ? $lang_functions['title_delbookmark_torrent'] : "<img class=\"bookmark\" src=\"pic/trans.gif\" alt=\"Bookmarked\" title=\"".$lang_functions['title_delbookmark_torrent']."\" />");
 	return $act;
 }
 
@@ -3061,7 +3061,7 @@ function torrenttable($res, $variant = "torrent") {
 		else $wait = 0;
 	}
 ?>
-<table class="torrents" cellspacing="0" cellpadding="5" width="100%">
+<table class="table table-striped" cellspacing="0" cellpadding="5" width="100%">
 <tr>
 <?php
 $count_get = 0;
@@ -3091,8 +3091,8 @@ for ($i=1; $i<=9; $i++){
 	else $link[$i] = ($i == 1 ? "asc" : "desc");
 }
 ?>
-<td class="colhead" style="padding: 0px"><?php echo $lang_functions['col_type'] ?></td>
-<td class="colhead"><a href="?<?php echo $oldlink?>sort=1&amp;type=<?php echo $link[1]?>"><?php echo $lang_functions['col_name'] ?></a></td>
+<td class="embedded-head" style="padding: 7px;"><?php echo $lang_functions['col_type'] ?></td>
+<td class="" style="text-align: center"><a class="embedded-head"  href="?<?php echo $oldlink?>sort=1&amp;type=<?php echo $link[1]?>"><?php echo $lang_functions['col_name'] ?></a></td>
 <?php
 
 if ($wait)
@@ -3100,15 +3100,15 @@ if ($wait)
 	print("<td class=\"colhead\">".$lang_functions['col_wait']."</td>\n");
 }
 if ($CURUSER['showcomnum'] != 'no') { ?>
-<td class="colhead"><a href="?<?php echo $oldlink?>sort=3&amp;type=<?php echo $link[3]?>"><img class="comments" src="pic/trans.gif" alt="comments" title="<?php echo $lang_functions['title_number_of_comments'] ?>" /></a></td>
+<td class="colhead"><a href="?<?php echo $oldlink?>sort=3&amp;type=<?php echo $link[3]?>"><span class=" icon-comments-alt icos-download"  alt="comments" title="<?php echo $lang_functions['title_number_of_comments'] ?>" ></span></a></td>
 <?php } ?>
 
-<td class="colhead"><a href="?<?php echo $oldlink?>sort=4&amp;type=<?php echo $link[4]?>"><img class="time" src="pic/trans.gif" alt="time" title="<?php echo ($CURUSER['timetype'] != 'timealive' ? $lang_functions['title_time_added'] : $lang_functions['title_time_alive'])?>" /></a></td>
-<td class="colhead"><a href="?<?php echo $oldlink?>sort=5&amp;type=<?php echo $link[5]?>"><img class="size" src="pic/trans.gif" alt="size" title="<?php echo $lang_functions['title_size'] ?>" /></a></td>
-<td class="colhead"><a href="?<?php echo $oldlink?>sort=7&amp;type=<?php echo $link[7]?>"><img class="seeders" src="pic/trans.gif" alt="seeders" title="<?php echo $lang_functions['title_number_of_seeders'] ?>" /></a></td>
-<td class="colhead"><a href="?<?php echo $oldlink?>sort=8&amp;type=<?php echo $link[8]?>"><img class="leechers" src="pic/trans.gif" alt="leechers" title="<?php echo $lang_functions['title_number_of_leechers'] ?>" /></a></td>
-<td class="colhead"><a href="?<?php echo $oldlink?>sort=6&amp;type=<?php echo $link[6]?>"><img class="snatched" src="pic/trans.gif" alt="snatched" title="<?php echo $lang_functions['title_number_of_snatched']?>" /></a></td>
-<td class="colhead"><a href="?<?php echo $oldlink?>sort=9&amp;type=<?php echo $link[9]?>"><?php echo $lang_functions['col_uploader']?></a></td>
+<td class="colhead"><a href="?<?php echo $oldlink?>sort=4&amp;type=<?php echo $link[4]?>"><span class=" icon-time icos-download" alt="time" title="<?php echo ($CURUSER['timetype'] != 'timealive' ? $lang_functions['title_time_added'] : $lang_functions['title_time_alive'])?>" ></span></a></td>
+<td class="colhead"><a href="?<?php echo $oldlink?>sort=5&amp;type=<?php echo $link[5]?>"><span class="icon-hdd icos-download" alt="size" title="<?php echo $lang_functions['title_size'] ?>" /></a></td>
+<td class="colhead"><a href="?<?php echo $oldlink?>sort=7&amp;type=<?php echo $link[7]?>"><span class="icon-tasks icos-download" alt="seeders" title="<?php echo $lang_functions['title_number_of_seeders'] ?>" ></span></a></td>
+<td class="colhead"><a href="?<?php echo $oldlink?>sort=8&amp;type=<?php echo $link[8]?>"><span class="icon-cloud-download icos-download" alt="leechers" title="<?php echo $lang_functions['title_number_of_leechers'] ?>" ></span></a></td>
+<td class="colhead"><a href="?<?php echo $oldlink?>sort=6&amp;type=<?php echo $link[6]?>"><span class="icon-check  icos-download" alt="snatched" title="<?php echo $lang_functions['title_number_of_snatched']?>" ></span></a></td>
+<td class="embedded-head"><a href="?<?php echo $oldlink?>sort=9&amp;type=<?php echo $link[9]?>"><?php echo $lang_functions['col_uploader']?></a></td>
 <?php
 if (get_user_class() >= $torrentmanage_class) { ?>
 	<td class="colhead"><?php echo $lang_functions['col_action'] ?></td>
@@ -3228,7 +3228,7 @@ while ($row = mysql_fetch_assoc($res))
 
 		$act = "";
 		if ($CURUSER["dlicon"] != 'no' && $CURUSER["downloadpos"] != "no")
-		$act .= "<a href=\"download.php?id=".$id."\"><img class=\"download\" src=\"pic/trans.gif\" style='padding-bottom: 2px;' alt=\"download\" title=\"".$lang_functions['title_download_torrent']."\" /></a>" ;
+		$act .= "<a href=\"download.php?id=".$id."\"><span class=\"icon-download-alt icos-download\" style='padding-bottom: 2px;' alt=\"download\" title=\"".$lang_functions['title_download_torrent']."\" ></span></a>" ;
 		if ($CURUSER["bmicon"] == 'yes'){
 			$bookmark = " href=\"javascript: bookmark(".$id.",".$counter.");\"";
 			$act .= ($act ? "<br />" : "")."<a id=\"bookmark".$counter."\" ".$bookmark." >".get_torrent_bookmark_state($CURUSER['id'], $id)."</a>";
@@ -3332,8 +3332,8 @@ while ($row = mysql_fetch_assoc($res))
 
 	if (get_user_class() >= $torrentmanage_class)
 	{
-		print("<td class=\"rowfollow\"><a href=\"".htmlspecialchars("fastdelete.php?id=".$row[id])."\"><img class=\"staff_delete\" src=\"pic/trans.gif\" alt=\"D\" title=\"".$lang_functions['text_delete']."\" /></a>");
-		print("<br /><a href=\"edit.php?returnto=" . rawurlencode($_SERVER["REQUEST_URI"]) . "&amp;id=" . $row["id"] . "\"><img class=\"staff_edit\" src=\"pic/trans.gif\" alt=\"E\" title=\"".$lang_functions['text_edit']."\" /></a></td>\n");
+		print("<td class=\"rowfollow\"><a href=\"".htmlspecialchars("fastdelete.php?id=".$row[id])."\"><span class=\"icon-ban-circle\"  alt=\"D\" title=\"".$lang_functions['text_delete']."\" ></span></a></a>");
+		print("<br /><a href=\"edit.php?returnto=" . rawurlencode($_SERVER["REQUEST_URI"]) . "&amp;id=" . $row["id"] . "\"><span class=\"icon-pencil\" alt=\"E\" title=\"".$lang_functions['text_edit']."\" ></span></a></td>\n");
 	}
 	print("</tr>\n");
 	$counter++;
@@ -4416,6 +4416,9 @@ function return_avatar_image($url)
 	global $CURLANGDIR;
 	return "<img src=\"".$url."\" style='border-radius:5px;margin:4px' alt=\"avatar\" width=\"140px\" onload=\"check_avatar(this, '".$CURLANGDIR."');\" />";
 }
+
+
+
 function return_category_image($categoryid, $link="")
 {
 	static $catImg = array();

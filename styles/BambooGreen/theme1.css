@@ -1245,3 +1245,33 @@ td .text{
     font-family:"Microsoft YaHei";
     font-size: 20px;
 }
+
+.embedded-head{
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 16px;
+
+}
+
+.icos-download{
+    font-size: 20px;
+    color: #00c9c9;
+
+}
+
+.icon-green{
+    font-size: 20px;
+    color: #1c8f5f;
+
+}
+
+.icon-red{
+    font-size: 20px;
+    color: tomato;
+
+}
+
+.icon-yellow{
+    font-size: 20px;
+    color: burlywood;
+
+}

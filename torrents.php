@@ -350,7 +350,7 @@ if (!$all)
 		{
 			$all &= $medium[id];
 			$mystring = $CURUSER['notifs'];
-			$findme  = '[med'.$medium['id'].']';
+			$findme  = '[btn btn-warning'.$medium['id'].']';
 			$search = strpos($mystring, $findme);
 			if ($search === false)
 			$mediumcheck = false;
@@ -864,9 +864,16 @@ if (isset($searchstr))
 elseif ($sectiontype == $browsecatmode)
 	stdhead($lang_torrents['head_torrents']);
 else stdhead($lang_torrents['head_music']);
-print("<table width=\"940\" class=\"main\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\"><tr><td class=\"embedded\">");
+print("<table width=\"97%\" class=\"main\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\"><tr><td class=\"embedded\">");
 if ($allsec != 1 || $enablespecial != 'yes'){ //do not print searchbox if showing bookmarked torrents from all sections;
 ?>
+	<style>
+		td{
+			font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+			font-size: 15px;
+
+		}
+	</style>
 <form method="get" name="searchbox" action="?">
 	<table border="1" class="searchbox" cellspacing="0" cellpadding="5" width="100%">
 		<tbody>
@@ -886,10 +893,11 @@ if ($allsec != 1 || $enablespecial != 'yes'){ //do not print searchbox if showin
 								if ($i && $i % $catsperrow == 0){
 									print("</tr><tr>");
 								}
+//								return_category_image  修改图片的函数
 								print("<td align=\"left\" class=\"bottom\" style=\"padding-bottom: 4px; padding-left: ".$catpadding."px;\"><input type=\"checkbox\" id=\"".$cbname.$list[id]."\" name=\"".$cbname.$list[id]."\"" . (in_array($list[id],$wherelistina) ? " checked=\"checked\"" : "") . " value=\"1\" />".($showimg ? return_category_image($list[id], "?") : "<a title=\"" .$list[name] . "\" href=\"?".$cbname."=".$list[id]."\">".$list[name]."</a>")."</td>\n");
 								$i++;
 							}
-							$checker = "<input name=\"".$btname."\" value='" .  $lang_torrents['input_check_all'] . "' class=\"btn medium\" type=\"button\" onclick=\"javascript:SetChecked('".$cbname."','".$btname."','". $lang_torrents['input_check_all'] ."','" . $lang_torrents['input_uncheck_all'] . "',-1,10)\" />";
+							$checker = "<input name=\"".$btname."\" value='" .  $lang_torrents['input_check_all'] . "' class=\"btn btn-success\" type=\"button\" onclick=\"javascript:SetChecked('".$cbname."','".$btname."','". $lang_torrents['input_check_all'] ."','" . $lang_torrents['input_uncheck_all'] . "',-1,10)\" />";
 							print("<td colspan=\"2\" class=\"bottom\" align=\"left\" style=\"padding-left: 15px\">".$checker."</td>\n");
 							print("</tr>");
 						}
@@ -916,59 +924,40 @@ if ($allsec != 1 || $enablespecial != 'yes'){ //do not print searchbox if showin
 			</td>
 			
 			<td class="rowfollow" valign="middle">
-				<table>
-					<tr>
-						<td class="bottom" style="padding: 1px;padding-left: 10px">
-							<font class="medium"><?php echo $lang_torrents['text_show_dead_active'] ?></font>
-						</td>
-				 	</tr>				
-					<tr>
-						<td class="bottom" style="padding: 1px;padding-left: 10px">
-							<select class="med" name="incldead" style="width: 100px;">
-								<option value="0"><?php echo $lang_torrents['select_including_dead'] ?></option>
-								<option value="1"<?php print($include_dead == 1 ? " selected=\"selected\"" : ""); ?>><?php echo $lang_torrents['select_active'] ?> </option>
-								<option value="2"<?php print($include_dead == 2 ? " selected=\"selected\"" : ""); ?>><?php echo $lang_torrents['select_dead'] ?></option>
-							</select>
-						</td>
-				 	</tr>
-				 	<tr>
-						<td class="bottom" style="padding: 1px;padding-left: 10px">
-							<br />
-						</td>
-				 	</tr>
-					<tr>
-						<td class="bottom" style="padding: 1px;padding-left: 10px">
-							<font class="medium"><?php echo $lang_torrents['text_show_special_torrents'] ?></font>
-						</td>
-				 	</tr>
-				 	<tr>
-						<td class="bottom" style="padding: 1px;padding-left: 10px">
-							<select class="med" name="spstate" style="width: 100px;">
-								<option value="0"><?php echo $lang_torrents['select_all'] ?></option>
-<?php echo promotion_selection($special_state, 0)?>
-							</select>
-						</td>
-					</tr>
-				 	<tr>
-						<td class="bottom" style="padding: 1px;padding-left: 10px">
-							<br />
-						</td>
-					</tr>
-					<tr>
-						<td class="bottom" style="padding: 1px;padding-left: 10px">
-							<font class="medium"><?php echo $lang_torrents['text_show_bookmarked'] ?></font>
-						</td>
-				 	</tr>
-				 	<tr>
-						<td class="bottom" style="padding: 1px;padding-left: 10px">
-							<select class="med" name="inclbookmarked" style="width: 100px;">
-								<option value="0"><?php echo $lang_torrents['select_all'] ?></option>
-								<option value="1"<?php print($inclbookmarked == 1 ? " selected=\"selected\"" : ""); ?>><?php echo $lang_torrents['select_bookmarked'] ?></option>
-								<option value="2"<?php print($inclbookmarked == 2 ? " selected=\"selected\"" : ""); ?>><?php echo $lang_torrents['select_bookmarked_exclude'] ?></option>
-							</select>
-						</td>
-					</tr>
-				</table>
+<!--				<table>-->
+
+			<div>
+				<div style="margin-bottom: 20px">
+					<font class="medium"><?php echo $lang_torrents['text_show_dead_active'] ?></font>
+					<select class="btn btn-warning" name="incldead" style="width: 120px;">
+						<option value="0"><?php echo $lang_torrents['select_including_dead'] ?></option>
+						<option value="1"<?php print($include_dead == 1 ? " selected=\"selected\"" : ""); ?>><?php echo $lang_torrents['select_active'] ?> </option>
+						<option value="2"<?php print($include_dead == 2 ? " selected=\"selected\"" : ""); ?>><?php echo $lang_torrents['select_dead'] ?></option>
+					</select>
+				</div>
+				<div style="margin-bottom: 20px">
+					<font class="medium"><?php echo $lang_torrents['text_show_special_torrents'] ?></font>
+					<select class="btn btn-warning" name="spstate" style="width: 120px;">
+						<option value="0"><?php echo $lang_torrents['select_all'] ?></option>
+						<?php echo promotion_selection($special_state, 0)?>
+					</select>
+				</div>
+				<div>
+					<font class="medium"><?php echo $lang_torrents['text_show_bookmarked'] ?></font>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<select class="btn btn-warning" name="inclbookmarked" style="width: 120px;">
+						<option value="0"><?php echo $lang_torrents['select_all'] ?></option>
+						<option value="1"<?php print($inclbookmarked == 1 ? " selected=\"selected\"" : ""); ?>><?php echo $lang_torrents['select_bookmarked'] ?></option>
+						<option value="2"<?php print($inclbookmarked == 2 ? " selected=\"selected\"" : ""); ?>><?php echo $lang_torrents['select_bookmarked_exclude'] ?></option>
+					</select>
+				</div>
+			</div>
+<!--				</table>-->
+
+
+
+
+
+
 			</td>
 		</tr>
 		</tbody>
@@ -984,7 +973,7 @@ if ($allsec != 1 || $enablespecial != 'yes'){ //do not print searchbox if showin
 							<table>
 								<tr>
 									<td class="embedded">
-										<input id="searchinput" name="search" type="text" value="<?php echo  $searchstr_ori ?>" autocomplete="off" style="width: 200px" ondblclick="suggest(event.keyCode,this.value);" onkeyup="suggest(event.keyCode,this.value);" onkeypress="return noenter(event.keyCode);"/>
+										<input id="searchinput" class="input tip-focus" name="search" type="text" value="<?php echo  $searchstr_ori ?>" autocomplete="off" style="width: 200px" ondblclick="suggest(event.keyCode,this.value);" onkeyup="suggest(event.keyCode,this.value);" onkeypress="return noenter(event.keyCode);"/>
 										<script src="suggest.js" type="text/javascript"></script>
 										<div id="suggcontainer" style="text-align: left; width:100px;  display: none;">
 											<div id="suggestions" style="width:204px; border: 1px solid rgb(119, 119, 119); cursor: default; position: absolute; color: rgb(0,0,0); background-color: rgb(255, 255, 255);"></div>
@@ -996,7 +985,7 @@ if ($allsec != 1 || $enablespecial != 'yes'){ //do not print searchbox if showin
 						<td class="embedded">
 							<?php echo "&nbsp;" . $lang_torrents['text_in'] ?>
 
-							<select name="search_area">
+							<select name="search_area" class="btn btn-warning">
 								<option value="0"><?php echo $lang_torrents['select_title'] ?></option>
 								<option value="1"<?php print($_GET["search_area"] == 1 ? " selected=\"selected\"" : ""); ?>><?php echo $lang_torrents['select_description'] ?></option>
 								<?php
@@ -1012,7 +1001,7 @@ if ($allsec != 1 || $enablespecial != 'yes'){ //do not print searchbox if showin
 
 							<?php echo $lang_torrents['text_with'] ?>
 
-							<select name="search_mode" style="width: 60px;">
+							<select name="search_mode" class="btn btn-warning" style="width: 90px;">
 								<option value="0"><?php echo $lang_torrents['select_and'] ?></option>
 								<option value="1"<?php echo $_GET["search_mode"] == 1 ? " selected=\"selected\"" : "" ?>><?php echo $lang_torrents['select_or'] ?></option>
 								<option value="2"<?php echo $_GET["search_mode"] == 2 ? " selected=\"selected\"" : "" ?>><?php echo $lang_torrents['select_exact'] ?></option>
@@ -1049,7 +1038,7 @@ echo $Cache->next_row();
 				</table>
 			</td>
 			<td class="rowfollow" align="center">
-				<input type="submit" class="btn" value="<?php echo $lang_torrents['submit_go'] ?>" />
+				<input type="submit" class="btn btn-success" value="<?php echo $lang_torrents['submit_go'] ?>" />
 			</td>
 		</tr>
 		</tbody>
@@ -1072,6 +1061,7 @@ elseif($inclbookmarked == 2)
 
 if ($count) {
 	print($pagertop);
+	print("<p align=\"center\"> ".$lang_functions['text_promoted_torrents_note']."</p>\n");
 	if ($sectiontype == $browsecatmode)
 		torrenttable($res, "torrents");
 	elseif ($sectiontype == $specialcatmode) 
