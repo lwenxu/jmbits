@@ -2369,10 +2369,10 @@ if ($enabledonation == 'yes'){?>
 <table class="mainouter" id="bannerdown" width="100%" cellspacing="0" cellpadding="5" align="center">
 	<tr><td id="nav_block" class="text" align="center">
 <?php if (!$CURUSER) { ?>
-	<ul class="nav nav-pills" style="margin-left: 45%">
-		<li><a href="login.php" class="loginreg"><?php echo $lang_functions['text_login'] ?></a></li>
-		<li><a class="loginreg" href="signup.php"><?php echo $lang_functions['text_signup'] ?></a></li>
-	</ul>
+<!--	<ul class="nav nav-pills" style="margin-left: 45%">-->
+<!--		<li><a href="login.php" class="loginreg">--><?php //echo $lang_functions['text_login'] ?><!--</a></li>-->
+<!--		<li><a class="loginreg" href="signup.php">--><?php //echo $lang_functions['text_signup'] ?><!--</a></li>-->
+<!--	</ul>-->
 <?php }
 else {
 	begin_main_frame();
@@ -4430,5 +4430,22 @@ function return_category_image($categoryid, $link="")
 		$catimg = "<a href=\"".$link."cat=" . $categoryid . "\">".$catimg."</a>";
 	}
 	return $catimg;
+}
+function login_head(){
+echo "
+	<!DOCTYPE html>
+	<html>
+		<head>
+		";
+
+echo "
+<link href=\"http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&amp;subset=all\" rel=\"stylesheet\" type=\"text/css\">
+<link type='text/css' rel='stylesheet' href='./styles/BambooGreen/components.css'>
+<link type='text/css' rel='stylesheet' href='./styles/BambooGreen/login.css'>
+<link type='text/css' rel='stylesheet' href='./styles/bootstrap/css/bootstrap.min.css'>
+";
+echo "</head>
+		<body class='login'>
+	";
 }
 ?>

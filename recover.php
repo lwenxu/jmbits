@@ -110,7 +110,8 @@ EOD;
 }
 else
 {
-	stdhead();
+	login_head();
+
 	$s = "<select name=\"sitelanguage\" onchange='submit()'>\n";
 	
 	$langs = langlist("site_lang");
@@ -122,25 +123,44 @@ else
 	}
 	$s .= "\n</select>";
 	?>
-	<form method="get" action="<?php echo $_SERVER['PHP_SELF'] ?>">
-	<?php
-	print("<div align=\"right\">".$lang_recover['text_select_lang']. $s . "</div>");
-	?>
-	</form>
-	<h1><?php echo $lang_recover['text_recover_user'] ?></h1>
-	<p><?php echo $lang_recover['text_use_form_below'] ?></p>
- 	<p><?php echo $lang_recover['text_reply_to_confirmation_email'] ?></p>
-  	<p><b><?php echo $lang_recover['text_note'] ?><?php echo $maxloginattempts;?></b><?php echo $lang_recover['text_ban_ip'] ?></p>
-	<p><?php echo $lang_recover['text_you_have'] ?><b><?php echo remaining ();?></b><?php echo $lang_recover['text_remaining_tries'] ?></p>
-	<form method="post" action="recover.php">
-	<table border="1" cellspacing="0" cellpadding="10">
-	<tr><td class="rowhead"><?php echo $lang_recover['row_registered_email'] ?></td>
-	<td class="rowfollow"><input type="text" style="width: 150px" name="email" /></td></tr>
-	<?php
-	show_image_code ();
-	?>
-	<tr><td class="toolbox" colspan="2" align="center"><input type="submit" value="<?php echo $lang_recover['submit_recover_it'] ?>" class="btn" /></td></tr>
-	</table></form>
+<!--	<form method="get" action="--><?php //echo $_SERVER['PHP_SELF'] ?><!--">-->
+<!--	--><?php
+////	print("<div align=\"right\">".$lang_recover['text_select_lang']. $s . "</div>");
+////	?>
+<!--	</form>-->
+	<div class="logo">
+		<a href="index.html">
+			<img src="./styles/BambooGreen/logo-big.png" alt=""> </a>
+	</div>
+	<div class="content">
+
+
+		<form class="forget-form" method="post" action="recover.php"novalidate="novalidate" style="display: block;">
+			<h3 class="font-green">忘记 密码 ?</h3>
+			<p> 在下面的输入框输入你的注册邮箱 重置密码 </p>
+			<div class="form-group">
+				<input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="Email"
+				       name="email"></div>
+			<div class="form-actions">
+				<button type="button" id="back-btn" class="btn green btn-outline"><a href="login.php">登录</a></button>
+				<button type="submit" class="btn btn-success uppercase pull-right">Submit</button>
+			</div>
+		</form>
+<!--	<h1>--><?php //echo $lang_recover['text_recover_user'] ?><!--</h1>-->
+<!--	<p>--><?php //echo $lang_recover['text_use_form_below'] ?><!--</p>-->
+<!-- 	<p>--><?php //echo $lang_recover['text_reply_to_confirmation_email'] ?><!--</p>-->
+<!--  	<p><b>--><?php //echo $lang_recover['text_note'] ?><!----><?php //echo $maxloginattempts;?><!--</b>--><?php //echo $lang_recover['text_ban_ip'] ?><!--</p>-->
+<!--	<p>--><?php //echo $lang_recover['text_you_have'] ?><!--<b>--><?php //echo remaining ();?><!--</b>--><?php //echo $lang_recover['text_remaining_tries'] ?><!--</p>-->
+<!--	<form method="post" action="recover.php">-->
+<!--	<table border="1" cellspacing="0" cellpadding="10">-->
+<!--	<tr><td class="rowhead">--><?php //echo $lang_recover['row_registered_email'] ?><!--</td>-->
+<!--	<td class="rowfollow"><input type="text" style="width: 150px" name="email" /></td></tr>-->
+<!--	--><?php
+//	show_image_code ();
+//	?>
+<!--	<tr><td class="toolbox" colspan="2" align="center"><input type="submit" value="--><?php //echo $lang_recover['submit_recover_it'] ?><!--" class="btn" /></td></tr>-->
+<!--	</table></form>-->
+	</div>
 	<?php
 	stdfoot();
 }
