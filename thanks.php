@@ -7,7 +7,7 @@ loggedinorreturn();
 if ($_GET['id'])
 	stderr("Party is over!", "This trick doesn't work anymore. You need to click the button!");
 $userid = $CURUSER["id"];
-$torrentid = $_POST["id"];
+$torrentid = 0 + $_POST["id"];
 $tsql = sql_query("SELECT owner FROM torrents where id=".sqlesc($torrentid));
 $arr = mysql_fetch_array($tsql);
 if (!$arr)

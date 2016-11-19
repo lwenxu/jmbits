@@ -12,11 +12,21 @@ $id = 0 + $_GET["id"];
 int_check($id);
 if (!isset($id) || !$id)
 die();
+//  在线直播的sql 未修正
+$res = sql_query("SELECT torrents.cache_stamp,torrents.category, torrents.sp_state, torrents.url, torrents.small_descr, torrents.seeders, torrents.banned, torrents.leechers, torrents.info_hash, torrents.filename, nfo, LENGTH(torrents.nfo) AS nfosz, torrents.last_action, torrents.name, torrents.owner, torrents.save_as, torrents.descr, torrents.visible, torrents.size, torrents.added, torrents.views, torrents.hits, torrents.times_completed, torrents.id, torrents.type, torrents.numfiles, torrents.anonymous, categories.name AS cat_name, sources.name AS source_name, media.name AS medium_name, codecs.name AS codec_name, standards.name AS standard_name, processings.name AS processing_name, teams.name AS team_name, audiocodecs.name AS audiocodec_name FROM torrents LEFT JOIN categories ON torrents.category = categories.id LEFT JOIN sources ON torrents.source = sources.id LEFT JOIN media ON torrents.medium = media.id LEFT JOIN codecs ON torrents.codec = codecs.id LEFT JOIN standards ON torrents.standard = standards.id LEFT JOIN processings ON torrents.processing = processings.id LEFT JOIN teams ON torrents.team = teams.id LEFT JOIN audiocodecs ON torrents.audiocodec = audiocodecs.id WHERE torrents.id = $id LIMIT 1") or sqlerr();
 
-$res = sql_query("SELECT torrents.cache_stamp, torrents.sp_state, torrents.url, torrents.small_descr, torrents.seeders, torrents.banned, torrents.leechers, torrents.info_hash, torrents.filename, nfo, LENGTH(torrents.nfo) AS nfosz, torrents.last_action, torrents.name, torrents.owner, torrents.save_as, torrents.descr, torrents.visible, torrents.size, torrents.added, torrents.views, torrents.hits, torrents.times_completed, torrents.id, torrents.type, torrents.numfiles, torrents.anonymous, categories.name AS cat_name, sources.name AS source_name, media.name AS medium_name, codecs.name AS codec_name, standards.name AS standard_name, processings.name AS processing_name, teams.name AS team_name, audiocodecs.name AS audiocodec_name FROM torrents LEFT JOIN categories ON torrents.category = categories.id LEFT JOIN sources ON torrents.source = sources.id LEFT JOIN media ON torrents.medium = media.id LEFT JOIN codecs ON torrents.codec = codecs.id LEFT JOIN standards ON torrents.standard = standards.id LEFT JOIN processings ON torrents.processing = processings.id LEFT JOIN teams ON torrents.team = teams.id LEFT JOIN audiocodecs ON torrents.audiocodec = audiocodecs.id WHERE torrents.id = $id LIMIT 1")
-or sqlerr();
+//$res = sql_query("SELECT torrents.category,torrents.temp+torrents.mod_temp as final_temp,torrents.title_image,torrents.ygp,torrents.editlock,torrents.editlockid,torrents.cache_stamp, torrents.sp_state, torrents.url, torrents.dburl, torrents.small_descr, torrents.seeders, torrents.banned, torrents.leechers, torrents.info_hash, torrents.filename, nfo, LENGTH(torrents.nfo) AS nfosz, torrents.last_action, torrents.name, torrents.owner, torrents.save_as, torrents.descr, torrents.visible, torrents.size, torrents.added, torrents.views, torrents.hits, torrents.times_completed, torrents.id, torrents.type, torrents.numfiles, torrents.anonymous, categories.name AS cat_name, sources.name AS source_name, media.name AS medium_name, codecs.name AS codec_name, standards.name AS standard_name, processings.name AS processing_name, teams.name AS team_name, audiocds.name AS audiocd_name FROM torrents LEFT JOIN categories ON torrents.category = categories.id LEFT JOIN sources ON torrents.source = sources.id LEFT JOIN media ON torrents.medium = media.id LEFT JOIN codecs ON torrents.codec = codecs.id LEFT JOIN standards ON torrents.standard = standards.id LEFT JOIN processings ON torrents.processing = processings.id LEFT JOIN teams ON torrents.team = teams.id LEFT JOIN audiocds ON torrents.audiocd = audiocds.id WHERE torrents.id = $id LIMIT 1") or sqlerr();
 $row = mysql_fetch_array($res);
+if (get_user_class() >= UC_STAFFLEADER)
+{
 
+	if ($row['category'] == '401' || $row['category'] == '408') {
+		$v6button = "| " .
+			"<script type=\"text/javascript\">function play(){window.location.href='6xvod://{$id}&ty=1&ro=1&id={$id}&ua={$CURUSER['passkey']}';}</script>" . "<span class= 'icon-play-circle icon-green'></span>" . "<a href=\"v6player.php?id={$id}&u={$CURUSER['passkey']}\" target=\"_blank\"> 直接播放</a>";
+	} else {
+		$v6button = "";
+	}
+}
 if (get_user_class() >= $torrentmanage_class || $CURUSER["id"] == $row["owner"])
 $owned = 1;
 else $owned = 0;
@@ -106,7 +116,11 @@ else {
 			$download = "<a title=\"".$lang_details['title_download_torrent']."\" href=\"download.php?id=".$id."\"><img class=\"dt_download\" src=\"pic/trans.gif\" alt=\"download\" />&nbsp;<font class=\"small\">".$lang_details['text_download_torrent']."</font></a>&nbsp;|&nbsp;";
 		else $download = "";
 
-		tr($lang_details['row_action'], $download. ($owned == 1 ? "<$editlink><img class=\"dt_edit\" src=\"pic/trans.gif\" alt=\"edit\" />&nbsp;<font class=\"small\">".$lang_details['text_edit_torrent'] . "</font></a>&nbsp;|&nbsp;" : "").  (get_user_class() >= $askreseed_class && $row[seeders] == 0 ? "<a title=\"".$lang_details['title_ask_for_reseed']."\" href=\"takereseed.php?reseedid=$id\"><img class=\"dt_reseed\" src=\"pic/trans.gif\" alt=\"reseed\">&nbsp;<font class=\"small\">".$lang_details['text_ask_for_reseed'] ."</font></a>&nbsp;|&nbsp;" : "") . "<a title=\"".$lang_details['title_report_torrent']."\" href=\"report.php?torrent=$id\"><img class=\"dt_report\" src=\"pic/trans.gif\" alt=\"report\" />&nbsp;<font class=\"small\">".$lang_details['text_report_torrent']."</font></a>" . $v6button . $wybutton, 1);
+		tr(
+			$lang_details['row_action'], $download. ($owned == 1 ? "<$editlink><img class=\"dt_edit\" src=\"pic/trans.gif\" alt=\"edit\" />&nbsp;<font class=\"small\">"           .$lang_details['text_edit_torrent'] . "</font></a>&nbsp;|&nbsp;" : "").  (get_user_class() >= $askreseed_class && $row[seeders] == 0 ? "<a title=\""                    .$lang_details['title_ask_for_reseed']."\" href=\"takereseed.php?reseedid=$id\"><img class=\"dt_reseed\" src=\"pic/trans.gif\" alt=\"reseed\">&nbsp;<font class=\"small\">"
+			 .$lang_details['text_ask_for_reseed'] ."</font></a>&nbsp;|&nbsp;" : "") . "<a title=\""
+			.$lang_details['title_report_torrent']."\" href=\"report.php?torrent=$id\"><img class=\"dt_report\" src=\"pic/trans.gif\" alt=\"report\" />&nbsp;<font class=\"small\">"
+			.$lang_details['text_report_torrent']."</font></a>" . $v6button , 1);
 
 
 		// add play online  by lwenxu

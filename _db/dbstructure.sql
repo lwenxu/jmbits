@@ -473,27 +473,152 @@ INSERT INTO `codecs` (`id`, `name`, `sort_index`) VALUES
 (4, 'MPEG-2', 0),
 (5, 'Other', 0);
 
--- --------------------------------------------------------
+-- ---------------------------------------------------------- ----------------------------
+-- Table structure for `resreq`
+-- ----------------------------
+DROP TABLE IF EXISTS `resreq`;
+CREATE TABLE `resreq` (
+  `id` int(11) NOT NULL auto_increment,
+  `reqid` int(11) NOT NULL default '0',
+  `torrentid` int(11) NOT NULL default '0',
+  `chosen` enum('yes','no') NOT NULL default 'no',
+  PRIMARY KEY  (`id`),
+  KEY `reqid` (`reqid`,`chosen`)
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
---
--- Table structure for table `comments`
---
+-- ----------------------------
+-- Records of resreq
+-- ----------------------------
 
-CREATE TABLE IF NOT EXISTS `comments` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `user` mediumint(8) unsigned NOT NULL DEFAULT '0',
-  `torrent` mediumint(8) unsigned NOT NULL DEFAULT '0',
-  `added` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+
+
+-- ----------------------------
+-- Table structure for `givebonus`
+-- ----------------------------
+DROP TABLE IF EXISTS `givebonus`;
+CREATE TABLE `givebonus` (
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `bonusfromuserid` mediumint(8) unsigned NOT NULL,
+  `bonustotorrentid` mediumint(8) unsigned NOT NULL,
+  `bonus` decimal(10,1) unsigned NOT NULL,
+  `type` int(1) unsigned NOT NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Records of givebonus
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `messages`
+-- ----------------------------
+DROP TABLE IF EXISTS `messages`;
+CREATE TABLE `messages` (
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `sender` mediumint(8) unsigned NOT NULL default '0',
+  `receiver` mediumint(8) unsigned NOT NULL default '0',
+  `added` datetime NOT NULL default '0000-00-00 00:00:00',
+  `subject` varchar(128) NOT NULL default '',
+  `msg` text,
+  `unread` enum('yes','no') NOT NULL default 'yes',
+  `location` smallint(6) NOT NULL default '1',
+  `saved` enum('no','yes') NOT NULL default 'no',
+  `goto` tinyint(1) unsigned zerofill NOT NULL default '0',
+  PRIMARY KEY  (`id`),
+  KEY `receiver` (`receiver`),
+  KEY `sender` (`sender`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of messages
+-- ----------------------------
+
+
+-- ----------------------------
+-- Table structure for `requests`
+-- ----------------------------
+DROP TABLE IF EXISTS `requests`;
+CREATE TABLE `requests` (
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `request` char unsigned NOT NULL default '',
+  `userid` int(10) unsigned NOT NULL default 0,
+  `comments` char NOT NULL default 0,
+  PRIMARY KEY  (`id`),
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of requests
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `req`
+-- ----------------------------
+DROP TABLE IF EXISTS `req`;
+CREATE TABLE `req` (
+  `id` int(11) NOT NULL auto_increment,
+  `catid` int(11) NOT NULL default '401',
+  `name` varchar(255) default NULL,
+  `added` datetime NOT NULL default '0000-00-00 00:00:00',
+  `introduce` text,
+  `ori_introduce` text,
+  `amount` int(11) NOT NULL default '0',
+  `userid` int(11) NOT NULL default '0',
+  `ori_amount` int(11) NOT NULL default '0',
+  `comments` int(11) NOT NULL default '0',
+  `finish` enum('yes','no','cancel') NOT NULL default 'no',
+  `finished_time` datetime NOT NULL default '0000-00-00 00:00:00',
+  `resetdate` datetime default NULL,
+  PRIMARY KEY  (`id`),
+  KEY `finish` (`finish`,`name`,`added`,`amount`,`introduce`(10))
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of req
+-- ----------------------------
+
+
+-- ----------------------------
+-- Table structure for `givebonus`
+-- ----------------------------
+DROP TABLE IF EXISTS `givebonus`;
+CREATE TABLE `givebonus` (
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `bonusfromuserid` mediumint(8) unsigned NOT NULL,
+  `bonustotorrentid` mediumint(8) unsigned NOT NULL,
+  `bonus` decimal(10,1) unsigned NOT NULL,
+  `type` int(1) unsigned NOT NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Records of givebonus
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `comments`
+-- ----------------------------
+DROP TABLE IF EXISTS `comments`;
+CREATE TABLE `comments` (
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `user` mediumint(8) unsigned NOT NULL default '0',
+  `torrent` mediumint(8) unsigned NOT NULL default '0',
+  `added` datetime NOT NULL default '0000-00-00 00:00:00',
   `text` text,
   `ori_text` text,
-  `editedby` mediumint(8) unsigned NOT NULL DEFAULT '0',
-  `editdate` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `offer` mediumint(8) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`),
+  `editedby` mediumint(8) unsigned NOT NULL default '0',
+  `editdate` datetime NOT NULL default '0000-00-00 00:00:00',
+  `offer` mediumint(8) unsigned NOT NULL default '0',
+  `request` mediumint(9) NOT NULL default '0',
+  PRIMARY KEY  (`id`),
   KEY `user` (`user`),
   KEY `torrent_id` (`torrent`,`id`),
-  KEY `offer_id` (`offer`,`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  KEY `offer_id` (`offer`,`id`),
+  FULLTEXT KEY `text` (`text`)
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of comments
+-- ----------------------------
 
 --
 -- Dumping data for table `comments`

@@ -3,6 +3,7 @@
 $lang_functions = array
 (
 	'std_access_denied' => "访问拒绝！",
+	'title_top' => "回到顶端",
 	'std_fake_account' => "我们怀疑你在使用伪造账户，因此记录了本次行为！",
 	'std_permission_denied' => "你没有该权限！",
 	'std_already_logged_in' => "你已经登录！",

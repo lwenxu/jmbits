@@ -46,13 +46,15 @@ if ($type == 'new'){
 	$invitation_body =  $lang_invite['text_invitation_body'].$CURUSER[username];
 	//$invitation_body_insite = str_replace("<br />","\n",$invitation_body);
 	print("<form method=post action=takeinvite.php?id=".htmlspecialchars($id).">".
-	"<table border=1 width=737 cellspacing=0 cellpadding=5>".
-	"<tr align=center><td colspan=2><b>".$lang_invite['text_invite_someone']."$SITENAME ($inv[invites]".$lang_invite['text_invitation'].$_s.$lang_invite['text_left'] .")</b></td></tr>".
+	"<table border=1 width=737 cellspacing=0 cellpadding=5>");
+	// 邀请时快速点击会出现65535的邀请数 ，关于session的两行
+	$_SESSION['inviterand'] = time();
+	echo "<input type=hidden name='inviterand' value=.\"$_SESSION[inviterand]\"><tr align=center><td colspan=2><b>".$lang_invite['text_invite_someone']."$SITENAME ($inv[invites]".$lang_invite['text_invitation'].$_s.$lang_invite['text_left'] .")</b></td></tr>".
 	"<tr><td class=\"rowhead nowrap\" valign=\"top\" align=\"right\">".$lang_invite['text_email_address']."</td><td align=left><input type=text size=40 name=email><br /><font align=left class=small>".$lang_invite['text_email_address_note']."</font>".($restrictemaildomain == 'yes' ? "<br />".$lang_invite['text_email_restriction_note'].allowedemails() : "")."</td></tr>".
 	"<tr><td class=\"rowhead nowrap\" valign=\"top\" align=\"right\">".$lang_invite['text_message']."</td><td align=left><textarea name=body rows=8 cols=120>" .$invitation_body.
 	"</textarea></td></tr>".
 	"<tr><td align=center colspan=2><input type=submit value='".$lang_invite['submit_invite']."'></td></tr>".
-	"</form></table></td></tr></table>");
+	"</form></table></td></tr></table>";
 
 } else {
 

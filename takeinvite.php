@@ -1,5 +1,10 @@
 <?php
 require_once("include/bittorrent.php");
+if (isset($_SESSION['inviterand']) && isset($_POST['inviterand']) && $_POST['inviterand'] == $_SESSION['inviterand']) {
+	unset($_SESSION['inviterand']);
+} else {
+	stderr($lang_takeinvite['std_error'], $lang_takeinvite['std_no_invite']);
+}
 dbconn();
 require_once(get_langfile_path());
 registration_check('invitesystem', true, false);

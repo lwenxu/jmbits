@@ -309,7 +309,9 @@ function check_client($peer_id, $agent, &$agent_familyid)
 			{
 				foreach ($clients_exp as $row_allowed_ua_exp)
 				{
-					if($row_allowed_ua_exp['agent'] == $agent && preg_match("/^" . $row_allowed_ua_exp['peer_id'] . "/", $peer_id))
+//					if($row_allowed_ua_exp['agent'] == $agent && preg_match("/^" . $row_allowed_ua_exp['peer_id'] . "/", $peer_id))
+						//  修复禁用UTorrent 3.1版本
+					if (($row_allowed_ua_exp['agent'] == $agent || !$row_allowed_ua_exp['agent']) && preg_match("/^" . $row_allowed_ua_exp['peer_id'] . "/", $peer_id))
 					return "Client " . $row_allowed_ua_exp['name'] . " is banned due to: " . $row_allowed_ua_exp['comment'] . ".";
 				}
 			}

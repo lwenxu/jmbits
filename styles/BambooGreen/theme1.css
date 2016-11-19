@@ -1293,3 +1293,36 @@ td .text{
     font-size: 14px;
     color: #337ab7;
 }
+
+#gotop {
+    background: url("/styles/totop.png") no-repeat scroll 5px 5px rgba(0, 0, 0, 0.7);
+    border-radius: 3px;
+    bottom: 60px;
+    height: 50px;
+    position: fixed;
+    right: 0;
+    width: 50px;
+
+}
+
+#gotop span {
+    display: none;
+    width: 25px;
+    color: #dddddd;
+    font-size: 20px;
+    text-align: center;
+    margin-top: 5px;
+    -moz-transition: background 1s;
+    -webkit-transition: background 1s;
+    -o-transition: background 1s;
+
+}
+
+#gotop span:hover {
+    color: #cccccc;
+}
+
+.icon-green{
+    color: #3CB371;
+    font-size:17px;
+}

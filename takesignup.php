@@ -156,8 +156,10 @@ $res_check_user = sql_query("SELECT * FROM users WHERE username = " . $wantusern
 
 if(mysql_num_rows($res_check_user) == 1)
   bark($lang_takesignup['std_username_exists']);
+//  重大漏洞修复，ip注册
+//$ret = sql_query("INSERT INTO users (username, passhash, secret, editsecret, email, country, gender, status, class, invites, ".($type == 'invite' ? "invited_by," : "")." added, last_access, lang, stylesheet".($showschool == 'yes' ? ", school" : "").", uploaded) VALUES (" . $wantusername . "," . $wantpasshash . "," . $secret . "," . $editsecret . "," . $email . "," . $country . "," . $gender . ", 'pending', ".$defaultclass_class.",". $invite_count .", ".($type == 'invite' ? "'$inviter'," : "") ." '". date("Y-m-d H:i:s") ."' , " . " '". date("Y-m-d H:i:s") ."' , ".$sitelangid . ",".$defcss.($showschool == 'yes' ? ",".$school : "").",".($iniupload_main > 0 ? $iniupload_main : 0).")") or sqlerr(__FILE__, __LINE__);
 
-$ret = sql_query("INSERT INTO users (username, passhash, secret, editsecret, email, country, gender, status, class, invites, ".($type == 'invite' ? "invited_by," : "")." added, last_access, lang, stylesheet".($showschool == 'yes' ? ", school" : "").", uploaded) VALUES (" . $wantusername . "," . $wantpasshash . "," . $secret . "," . $editsecret . "," . $email . "," . $country . "," . $gender . ", 'pending', ".$defaultclass_class.",". $invite_count .", ".($type == 'invite' ? "'$inviter'," : "") ." '". date("Y-m-d H:i:s") ."' , " . " '". date("Y-m-d H:i:s") ."' , ".$sitelangid . ",".$defcss.($showschool == 'yes' ? ",".$school : "").",".($iniupload_main > 0 ? $iniupload_main : 0).")") or sqlerr(__FILE__, __LINE__);
+$ret = sql_query("INSERT INTO users (username, passhash, secret, editsecret, email, country, gender, status, class, invites, " . ($type == 'invite' ? "invited_by," : "") . " added, last_access, lang, stylesheet" . ($showschool == 'yes' ? ", school" : "") . ", uploaded,ip) VALUES (" . $wantusername . "," . $wantpasshash . "," . $secret . "," . $editsecret . "," . $email . "," . $country . "," . $gender . ", 'pending', " . $defaultclass_class . "," . $invite_count . ", " . ($type == 'invite' ? "'$inviter'," : "") . " '" . date("Y-m-d H:i:s") . "' , " . " '" . date("Y-m-d H:i:s") . "' , " . $sitelangid . "," . $defcss . ($showschool == 'yes' ? "," . $school : "") . "," . ($iniupload_main > 0 ? $iniupload_main : 0) . ",'" . getip() . "')") or sqlerr(__FILE__, __LINE__);
 $id = mysql_insert_id();
 $dt = sqlesc(date("Y-m-d H:i:s"));
 $subject = sqlesc($lang_takesignup['msg_subject'].$SITENAME."!");
@@ -185,15 +187,19 @@ EOD;
 
 if ($type == 'invite')
 {
-//don't forget to delete confirmed invitee's hash code from table invites
-sql_query("DELETE FROM invites WHERE hash = '".mysql_real_escape_string($code)."'");
-$dt = sqlesc(date("Y-m-d H:i:s"));
-$subject = sqlesc($lang_takesignup_target[get_user_lang($inviter)]['msg_invited_user_has_registered']);
-$msg = sqlesc($lang_takesignup_target[get_user_lang($inviter)]['msg_user_you_invited'].$usern.$lang_takesignup_target[get_user_lang($inviter)]['msg_has_registered']);
+	//  判断在invite表中的hash是否有与本邮件的code相同的值，防止伪造邀请码
+	if (sql_query("select mysql_real_escape_string($code) from invites")){
+		//don't forget to delete confirmed invitee's hash code from table invites
+		sql_query("DELETE FROM invites WHERE hash = '" . mysql_real_escape_string($code) . "'");
+		$dt = sqlesc(date("Y-m-d H:i:s"));
+		$subject = sqlesc($lang_takesignup_target[get_user_lang($inviter)]['msg_invited_user_has_registered']);
+		$msg = sqlesc($lang_takesignup_target[get_user_lang($inviter)]['msg_user_you_invited'] . $usern . $lang_takesignup_target[get_user_lang($inviter)]['msg_has_registered']);
 //sql_query("UPDATE users SET uploaded = uploaded + 10737418240 WHERE id = $inviter"); //add 10GB to invitor's uploading credit
-sql_query("INSERT INTO messages (sender, receiver, subject, added, msg) VALUES(0, $inviter, $subject, $dt, $msg)") or sqlerr(__FILE__, __LINE__);
-$Cache->delete_value('user_'.$inviter.'_unread_message_count');
-$Cache->delete_value('user_'.$inviter.'_inbox_count');
+		sql_query("INSERT INTO messages (sender, receiver, subject, added, msg) VALUES(0, $inviter, $subject, $dt, $msg)") or sqlerr(__FILE__, __LINE__);
+		$Cache->delete_value('user_' . $inviter . '_unread_message_count');
+		$Cache->delete_value('user_' . $inviter . '_inbox_count');
+	}
+
 }
 
 if ($verification == 'admin'){

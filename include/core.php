@@ -9,7 +9,7 @@ $Cache->setLanguageFolderArray(get_langfolder_list());
 define('TIMENOW', time());
 $USERUPDATESET = array();
 $query_name=array();
-
+//  用户等级定义
 define ("UC_PEASANT", 0);
 define ("UC_USER", 1);
 define ("UC_POWER_USER", 2);
