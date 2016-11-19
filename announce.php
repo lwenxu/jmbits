@@ -350,13 +350,31 @@ elseif(isset($self))
 }
 else
 {
-	$sockres = @pfsockopen($ip, $port, $errno, $errstr, 5);
-	if (!$sockres)
-	{
-		$connectable = "no";
-	}
+
+// 只能 ipv4   原生
+//	$sockres = @pfsockopen($ip, $port, $errno, $errstr, 5);
+//	if (!$sockres)
+//	{
+//		$connectable = "no";
+//	}
+//	else
+//	{
+//		$connectable = "yes";
+//		@fclose($sockres);
+//	}
+
+
+//	增加双栈协议
+	if (strlen($ip) > 15) $protocol == 6;
+	if ($protocol == 6)     //判断是否为ipv6地址
+	$sockres = @pfsockopen("tcp://[" . $ip . "]", $port, $errno, $errstr, 5);
 	else
 	{
+		$sockres = @pfsockopen($ip, $port, $errno, $errstr, 5);
+	}
+	if (!$sockres) {
+		$connectable = "no";
+	} else {
 		$connectable = "yes";
 		@fclose($sockres);
 	}

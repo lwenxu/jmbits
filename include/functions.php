@@ -969,6 +969,17 @@ if ($enableattach_attachment == 'yes'){
 print("<tr>");
 print("<td align=\"left\" style=\"border: 0px\"><textarea class='bbcode form-control inputor' cols=\"100\" style=\"width: 115%;\" name=\"".$text."\" id=\"".$text."\" rows=\"20\" onkeydown=\"ctrlenter(event,'compose','qr')\">".$content."</textarea>");
 ?>
+
+<!--	// add module @ someone by lwenxu-->
+	<link rel="stylesheet" href="userAutoTips.css" type="text/css">
+	<script type="text/javascript" src="userAutoTips.js"></script>
+	<script type="text/javascript">userAutoTips({id: '<?php  echo $text?>'});
+		$(window).bind('scroll resize', function (e) {
+			userAutoTips({id: '<?php  echo $text?>'})
+		})
+	</script>
+<!--	// end of moudle-->
+
 </td>
 <td align="center" width="90%" style="border: 0px">
 <table cellspacing="1" cellpadding="3">
@@ -1603,8 +1614,9 @@ function get_ip_location($ip)
 			$ret[] = $row;
 		$Cache->cache_value('location_list', $ret, 152800);
 	}
-	$location = array($lang_functions['text_unknown'],"");
-
+//	$location = array($lang_functions['text_unknown'],"");
+	// 添加显示用户所在地理位置  by lwenxu
+	$location = array(getUserAddrss($ip), "");
 	foreach($ret AS $arr)
 	{
 		if(in_ip_range(false, $ip, $arr["start_ip"], $arr["end_ip"]))
@@ -3714,10 +3726,15 @@ $smallth
 }
 
 function quickreply($formname, $taname,$submit){
-	print("<textarea class='input fullwidth inputor' name='".$taname."' cols=\"100\" rows=\"8\" style=\"width: 80%\" onkeydown=\"ctrlenter(event,'compose','qr')\"></textarea>");
+	print("<textarea id=qrbody class='input fullwidth inputor' name='".$taname."' cols=\"100\" rows=\"8\" style=\"width: 80%\" onkeydown=\"ctrlenter(event,'compose','qr')\"></textarea>");
 	print(smile_row($formname, $taname));
 	print("<br />");
  	print("<input type=\"submit\" id=\"qr\" class=\"btn btn-success\" value=\"".$submit."\" />");
+	// add @ module by lwenxu
+	echo "<link rel=\"stylesheet\" href=\"userAutoTips.css\" type=\"text/css\">
+ <script type=\"text/javascript\" src=\"userAutoTips.js\"></script>
+ <script type=\"text/javascript\">userAutoTips({id:'qrbody'});$(window).bind('scroll resize', function(e){userAutoTips({id:'qrbody'})})</script>";
+	// end
 }
 
 function smile_row($formname, $taname){

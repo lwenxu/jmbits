@@ -9,6 +9,22 @@ if ($enableextforum == 'yes') //check whether internal forum is disabled
 	permissiondenied();
 
 // ------------- start: functions ------------------//
+//@ someone
+function at_user_message($topicid, $body, $postid)
+{
+		    global $Cache;
+			$subject = "有关于你的论坛消息啦！";
+            $url = "forums.php?action=viewtopic&topicid=" . $topicid . "&page=p" . $postid . "#pid" . ($postid);
+            $address = "[url=$url]" . "点击查看详情" . "[/url]";
+                         preg_match_all("/\[@([0-9]+?)\]/ei", $body, $useridget);
+                         $useridget[1] = array_unique($useridget[1]);
+                        for ($i = 0; $i < min(10, count($useridget[1])); $i++) {
+                         sql_query("INSERT INTO messages (sender, receiver, subject, msg, added) VALUES(0, " . $useridget[1][$i] . ",'$subject','$address', " . sqlesc(date("Y-m-d H:i:s")) . ")");
+                        $Cache->delete_value('user_' . $useridget[1][$i] . '_unread_message_count');
+                         $Cache->delete_value('user_' . $useridget[1][$i] . '_inbox_count');
+                         }
+ }
+
 //print forum stats
 function forum_stats ()
 {
@@ -444,7 +460,9 @@ if ($action == "post")
 		}
 
 		sql_query("INSERT INTO posts (topicid, userid, added, body, ori_body) VALUES ($topicid, $userid, ".sqlesc($date).", ".sqlesc($body).", ".sqlesc($body).")") or sqlerr(__FILE__, __LINE__);
-		$postid = mysql_insert_id() or die($lang_forums['std_post_id_not_available']);
+		$postid = mysql_insert_id() or die;
+		at_user_message($topicid, $body, $postid) ;
+		($lang_forums['std_post_id_not_available']);
 		$Cache->delete_value('forum_'.$forumid.'_post_'.$today_date.'_count');
 		$Cache->delete_value('today_'.$today_date.'_posts_count');
 		$Cache->delete_value('forum_'.$forumid.'_last_replied_topic_content');
