@@ -875,7 +875,7 @@ if ($allsec != 1 || $enablespecial != 'yes'){ //do not print searchbox if showin
 		}
 	</style>
 <form method="get" name="searchbox" action="?">
-	<table border="1" class="searchbox" cellspacing="0" cellpadding="5" width="100%">
+	<table  class="searchbox" cellspacing="0" cellpadding="5" width="100%">
 		<tbody>
 		<tr>
 		<td class="colhead" align="center" colspan="2"><a href="javascript: klappe_news('searchboxmain')"><span class="icon-search" style="font-size: 33px;color: #00a2d4">&nbsp;&nbsp;<?php echo $lang_torrents['text_search_box'] ?></a></span></td>

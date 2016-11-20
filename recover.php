@@ -152,7 +152,7 @@ else
 <!--  	<p><b>--><?php //echo $lang_recover['text_note'] ?><!----><?php //echo $maxloginattempts;?><!--</b>--><?php //echo $lang_recover['text_ban_ip'] ?><!--</p>-->
 <!--	<p>--><?php //echo $lang_recover['text_you_have'] ?><!--<b>--><?php //echo remaining ();?><!--</b>--><?php //echo $lang_recover['text_remaining_tries'] ?><!--</p>-->
 <!--	<form method="post" action="recover.php">-->
-<!--	<table border="1" cellspacing="0" cellpadding="10">-->
+<!--	<table  cellspacing="0" cellpadding="10">-->
 <!--	<tr><td class="rowhead">--><?php //echo $lang_recover['row_registered_email'] ?><!--</td>-->
 <!--	<td class="rowfollow"><input type="text" style="width: 150px" name="email" /></td></tr>-->
 <!--	--><?php

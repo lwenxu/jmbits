@@ -27,7 +27,7 @@ else
 {
 	stdhead($lang_mailtest['head_mail_test']);
 	print("<h1 align=\"center\">".$lang_mailtest['text_mail_test']."</h1>");
-	print("<table border=\"1\" cellspacing=\"0\" cellpadding=\"5\">\n");
+	print("<table  cellspacing=\"0\" cellpadding=\"5\">\n");
 	print("<form method='post' action='mailtest.php'>");
 	print("<input type='hidden' name='action' value='sendmail'>");
 	tr($lang_mailtest['row_enter_email'], "<input type='text' name='email' size=35><br />".$lang_mailtest['text_enter_email_note'], 1);

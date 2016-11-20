@@ -8,7 +8,7 @@ print ("<h1>".PROJECTNAME."</h1>");
 begin_main_frame();
 begin_frame("<span id=\"version\">".$lang_aboutnexus['text_version']."</span>");
 print ($lang_aboutnexus['text_version_note']);
-print ("<br /><br /><table class=\"main\" border=\"1\" cellspacing=\"0\" cellpadding=\"5\" align=\"center\">");
+print ("<br /><br /><table class=\"main\"  cellspacing=\"0\" cellpadding=\"5\" align=\"center\">");
 tr($lang_aboutnexus['text_main_version'],$mainversion_code,1);
 tr($lang_aboutnexus['text_sub_version'],$subversion_code,1);
 tr($lang_aboutnexus['text_release_date'],$releasedate_code,1);
@@ -33,7 +33,7 @@ while ($arr = mysql_fetch_assoc($res))
 }
 begin_frame("<span id=\"translation\">".$lang_aboutnexus['text_translation']."</span>");
 print (PROJECTNAME.$lang_aboutnexus['text_translation_note']);
-print ("<br /><br /><table class=\"main\" border=\"1\" cellspacing=\"0\" cellpadding=\"5\" align=\"center\"><tr><td class=\"colhead\">".$lang_aboutnexus['text_flag']."</td><td class=\"colhead\">".$lang_aboutnexus['text_language']."</td><td class=\"colhead\">".$lang_aboutnexus['text_state']."</td></tr>");
+print ("<br /><br /><table class=\"main\"  cellspacing=\"0\" cellpadding=\"5\" align=\"center\"><tr><td class=\"colhead\">".$lang_aboutnexus['text_flag']."</td><td class=\"colhead\">".$lang_aboutnexus['text_language']."</td><td class=\"colhead\">".$lang_aboutnexus['text_state']."</td></tr>");
 print ($ppl);
 print ("</table>");
 print ("<br /><br />");
@@ -48,14 +48,14 @@ while ($arr = mysql_fetch_assoc($res))
 }
 begin_frame("<span id=\"stylesheet\">".$lang_aboutnexus['text_stylesheet']."</span>");
 print ($lang_aboutnexus['text_stylesheet_note']);
-print ("<br /><br /><table class=\"main\" border=\"1\" cellspacing=\"0\" cellpadding=\"5\" align=\"center\"><tr><td class=\"colhead\">".$lang_aboutnexus['text_name']."</td><td class=\"colhead\">".$lang_aboutnexus['text_designer']."</td><td class=\"colhead\">".$lang_aboutnexus['text_comment']."</td></tr>");
+print ("<br /><br /><table class=\"main\"  cellspacing=\"0\" cellpadding=\"5\" align=\"center\"><tr><td class=\"colhead\">".$lang_aboutnexus['text_name']."</td><td class=\"colhead\">".$lang_aboutnexus['text_designer']."</td><td class=\"colhead\">".$lang_aboutnexus['text_comment']."</td></tr>");
 print ($ppl);
 print ("</table>");
 print ("<br /><br />");
 end_frame();
 begin_frame("<span id=\"contact\">".$lang_aboutnexus['text_contact'].PROJECTNAME."</span>");
 print ($lang_aboutnexus['text_contact_note']);
-print ("<br /><br /><table class=\"main\" border=\"1\" cellspacing=\"0\" cellpadding=\"5\" align=\"center\">");
+print ("<br /><br /><table class=\"main\"  cellspacing=\"0\" cellpadding=\"5\" align=\"center\">");
 tr($lang_aboutnexus['text_web_site'],$website_code ? $website_code : "N/A",1);
 print ("</table>");
 print ("<br /><br />");

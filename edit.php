@@ -47,7 +47,7 @@ else {
 	print("<input type=\"hidden\" name=\"id\" value=\"$id\" />");
 	if (isset($_GET["returnto"]))
 	print("<input type=\"hidden\" name=\"returnto\" value=\"" . htmlspecialchars($_GET["returnto"]) . "\" />");
-	print("<table border=\"1\" cellspacing=\"0\" cellpadding=\"5\" width=\"940\">\n");
+	print("<table  cellspacing=\"0\" cellpadding=\"5\" width=\"940\">\n");
 	print("<tr><td class='colhead' colspan='2' align='center'>".htmlspecialchars($row["name"])."</td></tr>");
 	tr($lang_edit['row_torrent_name']."<font color=\"red\">*</font>", "<input type=\"text\" style=\"width: 650px;\" name=\"name\" value=\"" . htmlspecialchars($row["name"]) . "\" />", 1);
 	if ($smalldescription_main == 'yes')
@@ -160,7 +160,7 @@ else {
 	print("<input type=\"hidden\" name=\"id\" value=\"$id\" />\n");
 	if (isset($_GET["returnto"]))
 	print("<input type=\"hidden\" name=\"returnto\" value=\"" . htmlspecialchars($_GET["returnto"]) . "\" />\n");
-	print("<table border=\"1\" cellspacing=\"0\" cellpadding=\"5\">\n");
+	print("<table  cellspacing=\"0\" cellpadding=\"5\">\n");
 	print("<tr><td class=\"colhead\" align=\"left\" style='padding-bottom: 3px' colspan=\"2\">".$lang_edit['text_delete_torrent']."</td></tr>");
 	tr("<input name=\"reasontype\" type=\"radio\" value=\"1\" />&nbsp;".$lang_edit['radio_dead'], $lang_edit['text_dead_note'], 1);
 	tr("<input name=\"reasontype\" type=\"radio\" value=\"2\" />&nbsp;".$lang_edit['radio_dupe'], "<input type=\"text\" style=\"width: 200px\" name=\"reason[]\" />", 1);

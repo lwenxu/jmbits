@@ -169,7 +169,7 @@ if ($showextinfo['imdb'] == 'yes' && ($showmovies['hot'] == "yes" || $showmovies
 					}
 ?>
 <h2><?php echo $lang_index['text_' . $type_each . 'movies'] ?></h2>
-<table width="100%" border="1" cellspacing="0" cellpadding="5"><tr><td class="text nowrap" align="center">
+<table width="100%"  cellspacing="0" cellpadding="5"><tr><td class="text nowrap" align="center">
 <?php echo $movies_list ?></td></tr></table>
 <?php
 				}
@@ -250,7 +250,7 @@ if ($showlastxtorrents_main == "yes") {
 	$result = sql_query("SELECT * FROM torrents where visible='yes' ORDER BY added DESC LIMIT 5") or sqlerr(__FILE__, __LINE__);
 	if (mysql_num_rows($result) != 0) {
 		print ("<h2 class='panel-title'>" . $lang_index['text_last_five_torrent'] . "</h2>");
-		print ("<table style='margin-top: 10px' class='table table-striped' width=\"100%\" border=\"1\" cellspacing=\"0\" cellpadding=\"5\">
+		print ("<table style='margin-top: 10px' class='table table-striped' width=\"100%\"  cellspacing=\"0\" cellpadding=\"5\">
 <tr><td class=\"colhead\" width=\"100%\">" . $lang_index['col_name'] . "</td><td class=\"colhead\" align=\"center\">" . $lang_index['col_seeder'] . "</td><td class=\"colhead\" align=\"center\">" . $lang_index['col_leecher'] . "</td></tr>");
 
 		while ($row = mysql_fetch_assoc($result)) {
@@ -301,7 +301,7 @@ if ($showstats_main == "yes") {
 		<sapn class=" icon-dashboard"></sapn><?php echo $lang_index['text_tracker_statistics'] ?></h4>
 	<table width="100%" class="table table-bordered" id="statustable">
 		<tr>
-			<!--<table width="60%" class="table table-bordered" border="1" cellspacing="0" cellpadding="10">-->
+			<!--<table width="60%" class="table table-bordered"  cellspacing="0" cellpadding="10">-->
 			<?php
 			$Cache->new_page('stats_users', 3000, true);
 			if (!$Cache->get_page()){
@@ -624,7 +624,7 @@ panel_col_5_start();
 	if (mysql_num_rows($res) != 0) {
 		print("<h4 class='panel-title'>" . $lang_index['text_last_five_posts'] . "</h4>");
 		print("
-<table style='margin-top: 10px' class='table table-striped'  width=\"100%\" border=\"1\" cellspacing=\"0\" cellpadding=\"5\">
+<table style='margin-top: 10px' class='table table-striped'  width=\"100%\"  cellspacing=\"0\" cellpadding=\"5\">
 <tr>
 <td class=\"colhead\" align=\"left\">" . $lang_index['col_topic_title'] . "</td>
 <td class=\"colhead\" align=\"center\">" . $lang_index['col_view'] . "</td>
@@ -666,7 +666,7 @@ panel_col_end();
 //if ($uptimeresult){
 //?>
 <!--<h2>--><?php //echo $lang_index['text_tracker_load'] ?><!--</h2>-->
-<!--<!--<table width="100%" border="1" cellspacing="0" cellpadding="10"><tr><td class="text" align="center">-->
+<!--<!--<table width="100%"  cellspacing="0" cellpadding="10"><tr><td class="text" align="center">-->
 <?php
 //			//uptime, work in *nix system
 //			print ("<div align=\"center\">" . trim($uptimeresult) . "</div>");

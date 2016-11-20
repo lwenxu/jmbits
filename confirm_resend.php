@@ -107,7 +107,7 @@ else
 	<?php echo $lang_confirm_resend['text_resend_confirmation_mail_note']?>
 	<p><?php echo $lang_confirm_resend['text_you_have'] ?><b><?php echo remaining ();?></b><?php echo $lang_confirm_resend['text_remaining_tries'] ?></p>
 	<form method="post" action="confirm_resend.php">
-	<table border="1" cellspacing="0" cellpadding="10">
+	<table  cellspacing="0" cellpadding="10">
 	<tr><td class="rowhead nowrap"><?php echo $lang_confirm_resend['row_registered_email'] ?></td>
 	<td class="rowfollow"><input type="text" style="width: 200px" name="email" /></td></tr>
 	<tr><td class="rowhead nowrap"><?php echo $lang_confirm_resend['row_new_password'] ?></td><td align="left"><input type="password" style="width: 200px" name="wantpassword" /><br />

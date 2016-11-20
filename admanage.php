@@ -122,7 +122,7 @@ function print_ad_editor($position, $row = "")
 <h1 align="center"><a class="faqlink" href="admanage.php"><?php echo $lang_admanage['text_ad']?></a> - <?php echo get_position_name($position)?></h1>
 <div><p align="center"><?php echo $note?></p></div>
 <h2 align="left"><?php echo $lang_admanage['text_ad_detail']?></h2>
-<table border="1" cellspacing="0" cellpadding="10" width="100%">
+<table  cellspacing="0" cellpadding="10" width="100%">
 <?php
 tr($lang_admanage['row_name']."<font color=\"red\">*</font>", "<input type=\"text\" name=\"ad[name]\" value=\"".htmlspecialchars($name)."\" style=\"width: 300px\" /> " . $lang_admanage['text_name_note'], 1);
 tr($lang_admanage['row_start_time'], "<input type=\"text\" name=\"ad[starttime]\" value=\"".$starttime."\" style=\"width: 300px\" /> " . $lang_admanage['text_start_time_note'], 1);
@@ -134,7 +134,7 @@ tr($lang_admanage['row_type']."<font color=\"red\">*</font>", "<select name=\"ad
 </table>
 <div id="type_image"<?php echo $type == 'image' ? "" : " style=\"display: none;\""?>>
 <h2 align="left"><?php echo $lang_admanage['text_image']?></h2>
-<table border="1" cellspacing="0" cellpadding="10" width="100%">
+<table  cellspacing="0" cellpadding="10" width="100%">
 <?php
 tr($lang_admanage['row_image_url']."<font color=\"red\">*</font>", "<input type=\"text\" name=\"ad[image][url]\"".($type == 'image' ? " value=\"".$pararow['url']."\"" : "")." style=\"width: 300px\" /> ".$lang_admanage['text_image_url_note'], 1);
 tr($lang_admanage['row_image_link']."<font color=\"red\">*</font>", "<input type=\"text\" name=\"ad[image][link]\"".($type == 'image' ? " value=\"".$pararow['link']."\"" : "")." style=\"width: 300px\" /> ".$lang_admanage['text_image_link_note'], 1);
@@ -146,7 +146,7 @@ tr($lang_admanage['row_image_tooltip'], "<input type=\"text\" name=\"ad[image][t
 </div>
 <div id="type_text"<?php echo $type == 'text' ? "" : " style=\"display: none;\""?>>
 <h2 align="left"><?php echo $lang_admanage['text_text']?></h2>
-<table border="1" cellspacing="0" cellpadding="10" width="100%">
+<table  cellspacing="0" cellpadding="10" width="100%">
 <?php
 tr($lang_admanage['row_text_content']."<font color=\"red\">*</font>", "<input type=\"text\" name=\"ad[text][content]\"".($type == 'text' ? " value=\"".$pararow['content']."\"" : "")." style=\"width: 300px\" /> ".$lang_admanage['text_text_content_note'], 1);
 tr($lang_admanage['row_text_link']."<font color=\"red\">*</font>", "<input type=\"text\" name=\"ad[text][link]\"".($type == 'text' ? " value=\"".$pararow['link']."\"" : "")." style=\"width: 300px\" /> ".$lang_admanage['text_text_link_note'], 1);
@@ -156,7 +156,7 @@ tr($lang_admanage['row_text_size'], "<input type=\"text\" name=\"ad[text][size]\
 </div>
 <div id="type_bbcodes"<?php echo $type == 'bbcodes' ? "" : " style=\"display: none;\""?>>
 <h2 align="left"><?php echo $lang_admanage['text_bbcodes']?></h2>
-<table border="1" cellspacing="0" cellpadding="10" width="100%">
+<table  cellspacing="0" cellpadding="10" width="100%">
 <?php
 tr($lang_admanage['row_bbcodes_code']."<font color=\"red\">*</font>", "<textarea name=\"ad[bbcodes][code]\" cols=\"50\" rows=\"6\" style=\"width: 300px\">".($type == 'bbcodes' ? $pararow['code'] : "")."</textarea><br />".$lang_admanage['text_bbcodes_code_note']."<a class=\"altlink\" href=\"tags.php\"><b>".$lang_admanage['text_here']."</b></a>", 1);
 ?>
@@ -164,7 +164,7 @@ tr($lang_admanage['row_bbcodes_code']."<font color=\"red\">*</font>", "<textarea
 </div>
 <div id="type_xhtml"<?php echo $type == 'xhtml' ? "" : " style=\"display: none;\""?>>
 <h2 align="left"><?php echo $lang_admanage['text_xhtml']?></h2>
-<table border="1" cellspacing="0" cellpadding="10" width="100%">
+<table  cellspacing="0" cellpadding="10" width="100%">
 <?php
 tr($lang_admanage['row_xhtml_code']."<font color=\"red\">*</font>", "<textarea name=\"ad[xhtml][code]\" cols=\"50\" rows=\"6\" style=\"width: 300px\">".($type == 'xhtml' ? $pararow['code'] : "")."</textarea><br />".$lang_admanage['text_xhmtl_code_note'], 1);
 ?>
@@ -172,7 +172,7 @@ tr($lang_admanage['row_xhtml_code']."<font color=\"red\">*</font>", "<textarea n
 </div>
 <div id="type_flash"<?php echo $type == 'flash' ? "" : " style=\"display: none;\""?>>
 <h2 align="left"><?php echo $lang_admanage['text_flash']?></h2>
-<table border="1" cellspacing="0" cellpadding="10" width="100%">
+<table  cellspacing="0" cellpadding="10" width="100%">
 <?php
 tr($lang_admanage['row_flash_url']."<font color=\"red\">*</font>", "<input type=\"text\" name=\"ad[flash][url]\"".($type == 'flash' ? " value=\"".$pararow['url']."\"" : "")." style=\"width: 300px\" /> ".$lang_admanage['text_flash_url_note'], 1);
 tr($lang_admanage['row_flash_width']."<font color=\"red\">*</font>", "<input type=\"text\" name=\"ad[flash][width]\"".($type == 'flash' ? " value=\"".$pararow['width']."\"" : "")." style=\"width: 100px\" /> ".$lang_admanage['text_flash_width_note'], 1);
@@ -382,7 +382,7 @@ begin_main_frame();
 		list($pagertop, $pagerbottom, $limit) = pager($perpage, $num, "?");
 		$res = sql_query("SELECT * FROM advertisements ORDER BY id DESC ".(int)$limit) or sqlerr(__FILE__, __LINE__);
 ?>
-<table border="1" cellspacing="0" cellpadding="5" width="940">
+<table  cellspacing="0" cellpadding="5" width="940">
 <tr>
 <td class="colhead"><?php echo $lang_admanage['col_enabled']?></td>
 <td class="colhead"><?php echo $lang_admanage['col_name']?></td>

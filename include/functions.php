@@ -73,7 +73,7 @@ function stdmsg($heading, $text, $htmlstrip = false)
 	print("<table align=\"center\" class=\"alert alert-block\" width=\"60%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tr><td class=\"embedded\">\n");
 	if ($heading)
 	print("<h2 style='text-align: center'>".$heading."</h2>\n");
-	print("<table width=\"100%\" border=\"1\" cellspacing=\"0\" cellpadding=\"10\"><tr><td class=\"text\" style='text-align: center;font-size: 17px;font-family: Arial Black, arial-black'>");
+	print("<table width=\"100%\"  cellspacing=\"0\" cellpadding=\"10\"><tr><td class=\"text\" style='text-align: center;font-size: 17px;font-family: Arial Black, arial-black'>");
 	print($text . "</td></tr></table></td></tr></table>\n");
 }
 
@@ -456,7 +456,7 @@ function int_check($value,$stdhead = false, $stdfood = true, $die = true, $log =
 				stderr($lang_functions['std_error'],$lang_functions['std_invalid_id']);
 			else
 			{
-				print ("<h2>".$lang_functions['std_error']."</h2><table width=\"100%\" border=\"1\" cellspacing=\"0\" cellpadding=\"10\"><tr><td class=\"text\">");
+				print ("<h2>".$lang_functions['std_error']."</h2><table width=\"100%\"  cellspacing=\"0\" cellpadding=\"10\"><tr><td class=\"text\">");
 				print ($lang_functions['std_invalid_id']."</td></tr></table>");
 			}
 			if ($stdfood)
@@ -543,7 +543,7 @@ function begin_frame($caption = "", $center = false, $padding = 10, $width="100%
 	if ($center)
 	$tdextra .= " align=\"center\"";
 //	panel_start();
-	print(($caption ? "<h3 style='float: left;margin-left:1%' align=\"".$caption_center."\"><sapn class='icon-tags' style='color: #5cb85c '></sapn>".$caption."</h3>" : "") . "<table width=\"".$width."\" border=\"1\" cellspacing=\"0\" cellpadding=\"".$padding."\">" . "<tr><td class=\"text\" $tdextra>\n");
+	print(($caption ? "<h3 style='float: left;margin-left:1%' align=\"".$caption_center."\"><sapn class='icon-tags' style='color: #5cb85c '></sapn>".$caption."</h3>" : "") . "<table width=\"".$width."\"  cellspacing=\"0\" cellpadding=\"".$padding."\">" . "<tr><td class=\"text\" $tdextra>\n");
 
 }
 
@@ -558,7 +558,7 @@ function begin_table($fullwidth = false, $padding = 5)
 
 	if ($fullwidth)
 	$width .= " width=50%";
-	print("<table class=\"main".$width."\" border=\"1\" cellspacing=\"0\" cellpadding=\"".$padding."\">");
+	print("<table class=\"main".$width."\"  cellspacing=\"0\" cellpadding=\"".$padding."\">");
 }
 
 function end_table()
@@ -1034,7 +1034,7 @@ function begin_compose($title = "",$type="new", $body="", $hassubject=true, $sub
 		}
 	}
 	begin_frame($framename, true);
-	print("<table class='table table-striped' width=\"100%\" border=\"1\" cellspacing=\"0\" cellpadding=\"5\">\n");
+	print("<table class='table table-striped' width=\"100%\"  cellspacing=\"0\" cellpadding=\"5\">\n");
 	if ($hassubject)
 		print("<tr><td class=\"rowhead\">".$lang_functions['row_subject']."</td>" .
 "<td class=\"rowfollow\" align=\"left\"><input type=\"text\" style=\"width: 650px;\" name=\"subject\" maxlength=\"".$maxsubjectlength."\" value=\"".$subject."\" /></td></tr>\n");
@@ -2653,7 +2653,7 @@ if ($msgalert)
 }
 		if ($offlinemsg)
 		{
-			print("<p><table width=\"737\" border=\"1\" cellspacing=\"0\" cellpadding=\"10\"><tr><td style='padding: 10px; background: red' class=\"text\" align=\"center\">\n");
+			print("<p><table width=\"737\"  cellspacing=\"0\" cellpadding=\"10\"><tr><td style='padding: 10px; background: red' class=\"text\" align=\"center\">\n");
 			print("<font color=\"white\">".$lang_functions['text_website_offline_warning']."</font>");
 			print("</td></tr></table></p><br />\n");
 		}

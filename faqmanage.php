@@ -53,7 +53,7 @@ if (isset($faq_categ))
 	{
 		foreach ($temp2 as $id => $temp)
 		{
-			print("<br />\n<table border=\"1\" cellspacing=\"0\" cellpadding=\"5\" align=\"center\" width=\"95%\">\n");
+			print("<br />\n<table  cellspacing=\"0\" cellpadding=\"5\" align=\"center\" width=\"95%\">\n");
 			print("<tr><td class=\"colhead\" align=\"center\" colspan=\"2\">Position</td><td class=\"colhead\" align=\"left\">Section/Item Title</td><td class=\"colhead\" align=\"center\">Language</td><td class=\"colhead\" align=\"center\">Status</td><td class=\"colhead\" align=\"center\">Actions</td></tr>\n");
 
 			print("<tr><td align=\"center\" width=\"40px\"><select name=\"order[". $id ."]\">");
@@ -91,7 +91,7 @@ if (isset($faq_categ))
 
 // print the orphaned items table
 if (isset($faq_orphaned)) {
-	print("<br />\n<table border=\"1\" cellspacing=\"0\" cellpadding=\"5\" align=\"center\" width=\"95%\">\n");
+	print("<br />\n<table  cellspacing=\"0\" cellpadding=\"5\" align=\"center\" width=\"95%\">\n");
 	print("<tr><td align=\"center\" colspan=\"3\"><b style=\"color: #FF0000\">Orphaned Items</b></td>\n");
 	print("<tr><td class=\"colhead\" align=\"left\">Item Title</td><td class=\"colhead\" align=\"center\">Status</td><td class=\"colhead\" align=\"center\">Actions</td></tr>\n");
 	foreach ($faq_orphaned as $lang => $temp2){
@@ -107,7 +107,7 @@ if (isset($faq_orphaned)) {
 	print("</table>\n");
 }
 
-print("<br />\n<table border=\"1\" cellspacing=\"0\" cellpadding=\"5\" align=\"center\" width=\"95%\">\n<tr><td align=\"center\"><a href=\"faqactions.php?action=addsection\">Add new section</a></td></tr>\n</table>\n");
+print("<br />\n<table  cellspacing=\"0\" cellpadding=\"5\" align=\"center\" width=\"95%\">\n<tr><td align=\"center\"><a href=\"faqactions.php?action=addsection\">Add new section</a></td></tr>\n</table>\n");
 print("<p align=\"center\"><input type=\"submit\" name=\"reorder\" value=\"Reorder\"></p>\n");
 print("</form>\n");
 print("<p>When the position numbers don't reflect the position in the table, it means the order id is bigger than the total number of sections/items and you should check all the order id's in the table and click \"reorder\"</p>");

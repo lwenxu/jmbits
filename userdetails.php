@@ -94,7 +94,7 @@ begin_main_frame();
 if ($CURUSER[id] == $user[id] || get_user_class() >= $cruprfmanage_class)
 	print("<center style='margin-bottom: 18px'><a class=\"btn btn-success\" href=\"takeflush.php?id=".$id."\">".$lang_userdetails['text_here']."</a></center>\n");
 ?>
-<table width="100%" border="1" cellspacing="0" cellpadding="5" class="table table-striped">
+<table width="100%"  cellspacing="0" cellpadding="5" class="table table-striped">
 <?php
 if (($user["privacy"] != "strong") OR (get_user_class() >= $prfmanage_class) || $CURUSER[id] == $user[id]){
 //Xia Zuojie: Taste compatibility is extremely slow. It can takes thounsands of datebase queries. It is disabled until someone makes it fast.
@@ -317,7 +317,7 @@ if (get_user_class() >= $prfmanage_class && $user["class"] < get_user_class())
 	print("<input type=\"hidden\" name=\"action\" value=\"edituser\" />");
 	print("<input type=\"hidden\" name=\"userid\" value=\"".$id."\" />");
 	print("<input type=\"hidden\" name=\"returnto\" value=\"".htmlspecialchars("userdetails.php?id=$id")."\" />");
-	print("<table width=\"100%\" class=\"main\" border=\"1\" cellspacing=\"0\" cellpadding=\"5\" >\n");
+	print("<table width=\"100%\" class=\"main\"  cellspacing=\"0\" cellpadding=\"5\" >\n");
 	tr($lang_userdetails['row_title'], "<input type=\"text\" size=\"60\" name=\"title\" value=\"" . htmlspecialchars(trim($user[title])) . "\" />", 1);
 	$avatar = htmlspecialchars(trim($user["avatar"]));
 

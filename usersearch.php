@@ -46,7 +46,7 @@ $highlight = " bgcolor=#BBAF9B";
 ?>
 
 <form method=get action=<?php echo $_SERVER["PHP_SELF"]?>>
-<table border="1" cellspacing="0" cellpadding="5">
+<table  cellspacing="0" cellpadding="5">
 <tr>
 
   <td valign="middle" class=rowhead>Name:</td>
@@ -836,7 +836,7 @@ if (count($_GET) > 0 && !$_GET['h'])
 	/*
     <br /><br />
     <form method=post action=/sendmessage.php>
-      <table border="1" cellpadding="5" cellspacing="0">
+      <table  cellpadding="5" cellspacing="0">
         <tr>
           <td>
             <div align="center">

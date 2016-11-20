@@ -152,7 +152,7 @@ while ($ct_a = mysql_fetch_array($ct_r))
 
 <!--<form method="post" action="takesignup.php">-->
 <?php //if ($type == 'invite') print("<input type=\"hidden\" name=\"inviter\" value=\"".$inviter."\"><input type=hidden name=type value='invite'");?>
-<!--<table border="1" cellspacing="0" cellpadding="10">-->
+<!--<table  cellspacing="0" cellpadding="10">-->
 <?php
 //print("<tr><td class=text align=center colspan=2>".$lang_signup['text_cookies_note']."</td></tr>");
 //?>

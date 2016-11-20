@@ -149,7 +149,7 @@ $row = mysql_fetch_row($res);
 //echo sprintf("Server Status Uptime", timespanFormat($serverStatus['Uptime']), localisedDate($row[0])) . "\n";
 ?>
 
-	<table id="torrenttable" border="1"><tr><td>
+	<table id="torrenttable" ><tr><td>
 
 <?php
 print("This MySQL server has been running for ". timespanFormat($serverStatus['Uptime']) .". It started up on ". localisedDate($row[0])) . "\n";

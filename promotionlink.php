@@ -43,7 +43,7 @@ else
 	begin_frame($lang_promotionlink['text_promotion_link']);
 ?>
 <div><p align="left"><?php echo $lang_promotionlink['text_promotion_link_note_one']?></p><p align="left"><?php echo $lang_promotionlink['text_promotion_link_note_two']?></p><p align="left"><?php echo $lang_promotionlink['text_you_would_get'].$prolinkpoint_bonus.$lang_promotionlink['text_bonus_points'].$prolinktime_bonus.$lang_promotionlink['text_seconds']?></p><p align="left"><?php echo "<b>".$lang_promotionlink['text_your_promotion_link_is']."</b><a href=\"".$yourlink."\">".$yourlink."</a>"?></p><p align="left"><?php echo $lang_promotionlink['text_promotion_link_note_four']?></p></div>
-<table border="1" cellspacing="0" cellpadding="10" width="100%">
+<table  cellspacing="0" cellpadding="10" width="100%">
 <tr>
 <td class="colhead"><?php echo $lang_promotionlink['col_type']?></td>
 <td class="colhead"><?php echo $lang_promotionlink['col_code']?></td>

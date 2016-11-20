@@ -39,7 +39,7 @@ stdhead($lang_viewnfo['head_view_nfo']);
 print($lang_viewnfo['text_nfo_for']."<a href=details.php?id=$id>".htmlspecialchars($a["name"])."</a>\n");
 
 ?>
-<table border="1" cellspacing="0" cellpadding="10" align="center">
+<table  cellspacing="0" cellpadding="10" align="center">
 <tr>
 <?php /*<td align="center" width="25%">
 <a href="viewnfo.php?id=<?php echo $id?>&view=fonthack"

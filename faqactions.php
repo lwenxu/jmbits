@@ -50,7 +50,7 @@ elseif ($_GET[action] == "edit" && isset($_GET[id])) {
 		if ($arr[type] == "item") {
 			$lang_id = $arr['lang_id'];
 			print("<form method=\"post\" action=\"faqactions.php?action=edititem\">");
-			print("<table border=\"1\" cellspacing=\"0\" cellpadding=\"10\" align=\"center\">\n");
+			print("<table  cellspacing=\"0\" cellpadding=\"10\" align=\"center\">\n");
 			print("<tr><td>ID:</td><td>$arr[id] <input type=\"hidden\" name=\"id\" value=\"$arr[id]\" /></td></tr>\n");
 			print("<tr><td>Question:</td><td><input style=\"width: 600px;\" type=\"text\" name=\"question\" value=\"$arr[question]\" /></td></tr>\n");
 			print("<tr><td style=\"vertical-align: top;\">Answer:</td><td><textarea rows=20 style=\"width: 600px; height=600px;\" name=\"answer\">$arr[answer]</textarea></td></tr>\n");
@@ -73,7 +73,7 @@ elseif ($_GET[action] == "edit" && isset($_GET[id])) {
 			if ($lang_arr = mysql_fetch_array($lang_res))
 				$lang_name = $lang_arr['lang_name'];
 			print("<form method=\"post\" action=\"faqactions.php?action=editsect\">");
-			print("<table border=\"1\" cellspacing=\"0\" cellpadding=\"10\" align=\"center\">\n");
+			print("<table  cellspacing=\"0\" cellpadding=\"10\" align=\"center\">\n");
 			print("<tr><td>ID:</td><td>$arr[id] <input type=\"hidden\" name=\"id\" value=\"$arr[id]\" /></td></tr>\n");
 			print("<tr><td>Language:</td><td>$lang_name</td></tr>\n");
 			print("<tr><td>Title:</td><td><input style=\"width: 300px;\" type=\"text\" name=\"title\" value=\"$arr[question]\" /></td></tr>\n");
@@ -116,7 +116,7 @@ elseif ($_GET[action] == "delete" && isset($_GET[id])) {
 		stdhead("FAQ Management");
 		begin_main_frame();
 		print("<h1 align=\"center\">Confirmation required</h1>");
-		print("<table border=\"1\" cellspacing=\"0\" cellpadding=\"5\" align=\"center\" width=\"95%\">\n<tr><td align=\"center\">Please click <a href=\"faqactions.php?action=delete&id=$_GET[id]&confirm=yes\">here</a> to confirm.</td></tr>\n</table>\n");
+		print("<table  cellspacing=\"0\" cellpadding=\"5\" align=\"center\" width=\"95%\">\n<tr><td align=\"center\">Please click <a href=\"faqactions.php?action=delete&id=$_GET[id]&confirm=yes\">here</a> to confirm.</td></tr>\n</table>\n");
 		end_main_frame();
 		stdfoot();
 	}
@@ -128,7 +128,7 @@ elseif ($_GET[action] == "additem" && $_GET[inid] && $_GET[langid]) {
 	begin_main_frame();
 	print("<h1 align=\"center\">Add Item</h1>");
 	print("<form method=\"post\" action=\"faqactions.php?action=addnewitem\">");
-	print("<table border=\"1\" cellspacing=\"0\" cellpadding=\"10\" align=\"center\">\n");
+	print("<table  cellspacing=\"0\" cellpadding=\"10\" align=\"center\">\n");
 	print("<tr><td>Question:</td><td><input style=\"width: 600px;\" type=\"text\" name=\"question\" value=\"\" /></td></tr>\n");
 	print("<tr><td style=\"vertical-align: top;\">Answer:</td><td><textarea rows=20 style=\"width: 600px; height=600px;\" name=\"answer\"></textarea></td></tr>\n");
 	print("<tr><td>Status:</td><td><select name=\"flag\" style=\"width: 110px;\"><option value=\"0\" style=\"color: #FF0000;\">Hidden</option><option value=\"1\" style=\"color: #000000;\">Normal</option><option value=\"2\" style=\"color: #0000FF;\">Updated</option><option value=\"3\" style=\"color: #008000;\" selected=\"selected\">New</option></select></td></tr>");
@@ -146,7 +146,7 @@ elseif ($_GET[action] == "addsection") {
 	begin_main_frame();
 	print("<h1 align=\"center\">Add Section</h1>");
 	print("<form method=\"post\" action=\"faqactions.php?action=addnewsect\">");
-	print("<table border=\"1\" cellspacing=\"0\" cellpadding=\"10\" align=\"center\">\n");
+	print("<table  cellspacing=\"0\" cellpadding=\"10\" align=\"center\">\n");
 	print("<tr><td>Title:</td><td><input style=\"width: 300px;\" type=\"text\" name=\"title\" value=\"\" /></td></tr>\n");
 	$s = "<select name=language>";
 	$langs = langlist("rule_lang");

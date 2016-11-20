@@ -13,7 +13,7 @@ header("Content-Type: text/xml; charset=utf-8");
 $id = 0 + $_GET['id'];
 if(isset($CURUSER))
 {
-	$s = "<table class=\"main\" border=\"1\" cellspacing=0 cellpadding=\"5\">\n";
+	$s = "<table class=\"main\"  cellspacing=0 cellpadding=\"5\">\n";
 
 	$subres = sql_query("SELECT * FROM files WHERE torrent = ".sqlesc($id)." ORDER BY id");
 	$s.="<tr><td class=colhead>".$lang_viewfilelist['col_path']."</td><td class=colhead align=center><img class=\"size\" src=\"pic/trans.gif\" alt=\"size\" /></td></tr>\n";

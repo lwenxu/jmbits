@@ -13,7 +13,7 @@ if ($_GET["act"] == "newsect")
 	//begin_main_frame();
 	print("<h1 align=center>Add Rules</h1>");
 	print("<form method=\"post\" action=\"modrules.php?act=addsect\">");
-	print("<table border=\"1\" cellspacing=\"0\" cellpadding=\"10\" align=\"center\">\n");
+	print("<table  cellspacing=\"0\" cellpadding=\"10\" align=\"center\">\n");
 	print("<tr><td>Title:</td><td align=left><input style=\"width: 400px;\" type=\"text\" name=\"title\"/></td></tr>\n");
 	print("<tr><td style=\"vertical-align: top;\">Rules:</td><td><textarea cols=90 rows=20 name=\"text\"></textarea></td></tr>\n");
 	$s = "<select name=language>";
@@ -45,7 +45,7 @@ elseif ($_GET["act"] == "edit"){
 	//begin_main_frame();
 	print("<h1 align=center>Edit Rules</h1>");
 	print("<form method=\"post\" action=\"modrules.php?act=edited\">");
-	print("<table border=\"1\" cellspacing=\"0\" cellpadding=\"10\" align=\"center\">\n");
+	print("<table  cellspacing=\"0\" cellpadding=\"10\" align=\"center\">\n");
 	print("<tr><td>Title:</td><td align=left><input style=\"width: 400px;\" type=\"text\" name=\"title\" value=\"".htmlspecialchars($res[title])."\" /></td></tr>\n");
 	print("<tr><td style=\"vertical-align: top;\">Rules:</td><td><textarea cols=90 rows=20 name=\"text\">$res[text]</textarea></td></tr>\n");
 	$s = "<select name=language>";
