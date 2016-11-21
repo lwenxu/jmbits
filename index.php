@@ -229,7 +229,7 @@ if ($showlastxtorrents_main == "yes") {
 		panel_head_start();
 		print ("<h3 class='panel-title'><span class='icon-cloud-upload' ></span>&nbsp;" . $lang_index['text_last_five_torrent'] . "</h3>");
 		panel_head_end();
-		print ("<table style='margin-top: 10px' class='table table-striped' width=\"100%\"  cellspacing=\"0\" cellpadding=\"5\">
+		print ("<table  class='table table-striped' width=\"100%\"  cellspacing=\"0\" cellpadding=\"5\">
 <tr><td class=\"colhead\" >" . $lang_index['col_name'] . "</td><td class=\"colhead\" align=\"center\">" . $lang_index['col_seeder'] . "</td><td class=\"colhead\" align=\"center\">" . $lang_index['col_leecher'] . "</td></tr>");
 
 		while ($row = mysql_fetch_assoc($result)) {
@@ -244,7 +244,7 @@ eve_block_end();
 // ------------- start: links ------------------//-->
 eve_block_start();
 panel_head_start();
-print("<h3 class='panel-title' style='float: left;margin-top: 15px'><span class='icon-link'></span>&nbsp;" . $lang_index['text_links']);
+print("<h3 class='panel-title' ><span class='icon-link'></span>&nbsp;" . $lang_index['text_links']);
 if (get_user_class() >= $applylink_class)
 	print("&nbsp;<a class=\"altlink\"  href=\"linksmanage.php?action=apply\">" . $lang_index['text_apply_for_link'] . "</a>");
 if (get_user_class() >= $linkmanage_class) {
@@ -281,7 +281,7 @@ if ($showshoutbox_main == "yes") {
 	<h3 class="panel-title"><sapn class="icon-comments"></sapn><?php echo $lang_index['text_shoutbox'] ?></h3>
 	<?php
 	panel_head_end();
-	print("<table style='width: 100%;height: 815px;'><tr><td class=\"text\" style='width: 100px'>\n");
+	print("<table style='width: 100%;height: 805px;'><tr><td class=\"text\" style='width: 100px'>\n");
 	print("<iframe src='shoutbox.php?type=shoutbox' width='100%' height='520' frameborder='0' name='sbox' marginwidth='0' marginheight='0'></iframe><br /><br />\n");
 	print("<form action='shoutbox.php' method='get' target='sbox' name='shbox'>\n");
 	print("<label for='shbox_text'>" . $lang_index['text_message'] . "</label>
