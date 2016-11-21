@@ -342,7 +342,7 @@ function format_comment($text, $strip_html = true, $xssclean = false, $newtab = 
 		}
 		$j++;
 	}
-	return "<span style='word-wrap: break-word;word-break: break-all'>" .$s. "</span>";
+	return "<span class='alttext' style='word-wrap: break-word;word-break: break-all'>" .$s. "</span>";
 }
 
 function highlight($search,$subject,$hlstart='<b><font class="striking">',$hlend="</font></b>") 
@@ -492,36 +492,78 @@ function begin_main_frame($caption = "", $center = false, $width = 100)
 
 }
 
-function panel_start(){
-	echo "<div id=\"main_content\" >
-					
-						<div class=\"row\">";
-						}
-function panel_start_block(){
-	echo "
-<div id=main class=well no - border - radius>
-						
-";
+//function panel_start(){
+//	echo "<div id=\"main_content\" >
+//
+//						<div class=\"row\">";
+//						}
+//function panel_start_block(){
+//	echo "
+//<div id=main class=well no - border - radius>
+//
+//";
+//}
+//function panel_end(){
+//	echo "</div>";
+//}
+//function panel_col_5_start(){
+//	echo "<div class=\"col-md-5\">
+//								<div class=\"panel panel-default\">
+//									<div class=\"panel-heading\">";
+//}
+//
+//function panel_col_7_start(){
+//	echo "<div class=\"col-md-7\">
+//        <div class=\"panel panel-default\">
+//            <div class=\"panel-heading\">";
+//}
+//
+//function panel_col_end(){
+//	echo "</div></div></div>";
+//}
+
+function main_content_start(){
+	echo "<div id=\"main_content\" class=\"container\">
+<div id=\"main\" class=\"well no-border-radius\">";
 }
-function panel_end(){
+
+
+function main_content_end(){
+	echo "</div></div>";
+}
+function block_start(){
+	echo "<div class='row'>";
+}
+
+function block_end()
+{
 	echo "</div>";
 }
-function panel_col_5_start(){
-	echo "<div class=\"col-md-5\">
-								<div class=\"panel panel-default\">
-									<div class=\"panel-heading\">";
+
+function eve_block_start(){
+	echo "	<div class=\"panel panel-default\">";
 }
 
-function panel_col_7_start(){
-	echo "<div class=\"col-md-7\">
-        <div class=\"panel panel-default\">
-            <div class=\"panel-heading\">";
+function eve_block_end(){
+	echo "</div>";
+}
+function col_start($col){
+	echo "<div class='col-md-$col'>
+";
 }
 
-function panel_col_end(){
-	echo "</div></div></div>";
+function col_end(){
+	echo "</div>";
+
 }
 
+function panel_head_start(){
+	echo "<div class='panel-heading'>";
+}
+
+function panel_head_end(){
+	echo "</div>";
+}
 function end_main_frame()
 {
 	print("</td></tr></table>\n");

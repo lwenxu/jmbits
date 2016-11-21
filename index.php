@@ -40,8 +40,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 // ------------------------------------------  index strat ---------------------------------------------------------------
 stdhead($lang_index['head_home']);
 begin_main_frame();
-panel_start_block();
-
 echo "
 <style>
 a {
@@ -99,14 +97,191 @@ a {
 //}
 // ------------- end: fun box ------------------//
 
+
+
+// ------------- start: hot and classic movies ------------------//
+//
+//if ($showextinfo['imdb'] == 'yes' && ($showmovies['hot'] == "yes" || $showmovies['classic'] == "yes"))
+//{
+//	$type = array('hot', 'classic');
+//	foreach($type as $type_each)
+//	{
+//		if($showmovies[$type_each] == 'yes' && (!isset($CURUSER) || $CURUSER['show' . $type_each] == 'yes'))
+//		{
+//			$Cache->new_page($type_each.'_resources', 900, true);
+//			if (!$Cache->get_page())
+//			{
+//				$Cache->add_whole_row();
+//
+//				$imdbcfg = new imdb_config();
+//				$res = sql_query("SELECT * FROM torrents WHERE picktype = " . sqlesc($type_each) . " AND seeders > 0 AND url != '' ORDER BY id DESC LIMIT 30") or sqlerr(__FILE__, __LINE__);
+//				if (mysql_num_rows($res) > 0)
+//				{
+//					$movies_list = "";
+//					$count = 0;
+//					$allImdb = array();
+//					while($array = mysql_fetch_array($res))
+//					{
+//						$pro_torrent = get_torrent_promotion_append($array[sp_state],'word');
+//						if ($imdb_id = parse_imdb_id($array["url"]))
+//						{
+//							if (array_search($imdb_id, $allImdb) !== false) { //a torrent with the same IMDb url already exists
+//								continue;
+//							}
+//							$allImdb[]=$imdb_id;
+//							$photo_url = $imdbcfg->photodir . $imdb_id. $imdbcfg->imageext;
+//
+//							if (file_exists($photo_url))
+//								$thumbnail = "<img width=\"101\" height=\"140\" src=\"".$photo_url."\" border=\"0\" alt=\"poster\" />";
+//							else continue;
+//						}
+//						else continue;
+//						$thumbnail = "<a href=\"details.php?id=" . $array['id'] . "&amp;hit=1\" onmouseover=\"domTT_activate(this, event, 'content', '" . htmlspecialchars("<font class=\'big\'><b>" . (addslashes($array['name'] . $pro_torrent)) . "</b></font><br /><font class=\'medium\'>".(addslashes($array['small_descr'])) ."</font>"). "', 'trail', true, 'delay', 0,'lifetime',5000,'styleClass','niceTitle','maxWidth', 600);\">" . $thumbnail . "</a>";
+//						$movies_list .= $thumbnail;
+//						$count++;
+//						if ($count >= 9)
+//							break;
+//					}
+//?>
+<!--<h2>--><?php //echo $lang_index['text_' . $type_each . 'movies'] ?><!--</h2>-->
+<!--<table width="100%"  cellspacing="0" cellpadding="5"><tr><td class="text nowrap" align="center">-->
+<?php //echo $movies_list ?><!--</td></tr></table>-->
+<?php
+//				}
+//				$Cache->end_whole_row();
+//				$Cache->cache_page();
+//			}
+//			echo $Cache->next_row();
+//		}
+//	}
+//}
+//
+// ------------- end: hot and classic movies ------------------//
+
+main_content_start();
+//  first  block
+block_start();
+col_start(5);
+eve_block_start();
+// ------------- start: new-boxes ------------------//
+panel_head_start();
+print("<h3 class=\"panel-title\"><span class=' glyphicon glyphicon-bell '></span>&nbsp;".$lang_index['text_recent_news'].(get_user_class() >= $newsmanage_class ? "&nbsp;&nbsp;&nbsp;&nbsp;<a class=\"altlink\" href=\"news.php\"><span class='icon-edit'></span>".$lang_index['text_news_page']."</a></font>" : "")."</h3>");
+panel_head_end();
+$Cache->new_page('recent_news', 86400, true);
+if (!$Cache->get_page()){
+	$res = sql_query("SELECT * FROM news ORDER BY added DESC LIMIT ".(int)$maxnewsnum_main) or sqlerr(__FILE__, __LINE__);
+	if (mysql_num_rows($res) > 0)
+	{
+		$Cache->add_whole_row();
+		echo  "<div class=\"panel-body scroll\" style=\"overflow: auto; width: auto;height: 400px\">";
+		print("<table class=\"table table-striped\">");
+		$Cache->end_whole_row();
+		$news_flag = 0;
+		while($array = mysql_fetch_array($res))
+		{
+			$Cache->add_row();
+			$Cache->add_part();
+			if ($news_flag < 1) {
+				print("<h4><a href=\"javascript: klappe_news('a".$array['id']."')\"><span class='icon-tags' style='color:#2DCB70'></span>&nbsp;"."<b>". $array['title'] . "</b>(".date("Y.m.d",strtotime($array['added'])).")</a></h4>");
+				print("<div class='kas' id=\"ka".$array['id']."\" style=\"display: block;\"> ".format_comment($array["body"],0)." </div> ");
+				$news_flag = $news_flag + 1;
+			}
+			else
+			{
+				print("<h4><a href=\"javascript: klappe_news('a".$array['id']."')\"><br /><span class='icon-tags' style='color:#2DCB70'></span>&nbsp;"."<b>". $array['title'] . "</b>(".date("Y.m.d",strtotime($array['added'])).")</a></h4>");
+				print("<div class='alttext' id=\"ka".$array['id']."\" style=\"display: none;\"> ".format_comment($array["body"],0)." </div> ");
+			}
+			$Cache->end_part();
+			$Cache->add_part();
+			print("  &nbsp;<span class='icon-edit' style='color:#2DCB70'></span> <a class=\"faqlink\" href=\"news.php?action=edit&amp;newsid=" . $array['id'] . "\">".$lang_index['text_e']."</a>");
+			print("  &nbsp;<span class='icon-trash' style='color: tomato'></span> <a class=\"faqlink\" href=\"news.php?action=delete&amp;newsid=" . $array['id'] . "\">".$lang_index['text_d']."</a>");
+			$Cache->end_part();
+			$Cache->end_row();
+		}
+		$Cache->break_loop();
+		$Cache->add_whole_row();
+//	echo "
+//	<div class=\"slimScrollBar\" style=\"background: rgb(0, 0, 0); width: 8px; position: absolute; top: 17px; opacity: 0.4; display: block; border-radius: 7px; z-index: 99; right: 1px; height: 249.231px;\"></div>
+//	<div class=\"slimScrollRail\" style=\"width: 8px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;\"></div>
+//	";
+		print("</div></td></tr></table>\n");
+		echo "</div>";
+		//
+		$Cache->end_whole_row();
+	}
+	$Cache->cache_page();
+}
+echo $Cache->next_row();
+while($Cache->next_row()){
+	echo $Cache->next_part();
+	if (get_user_class() >= $newsmanage_class)
+		echo $Cache->next_part();
+}
+echo $Cache->next_row();
+eve_block_end();
+// ------------- end : new box  ------------------//
+
+// ------------- start: latest torrents ------------------//
+eve_block_start();
+if ($showlastxtorrents_main == "yes") {
+	$result = sql_query("SELECT * FROM torrents where visible='yes' ORDER BY added DESC LIMIT 5") or sqlerr(__FILE__, __LINE__);
+	if (mysql_num_rows($result) != 0) {
+		panel_head_start();
+		print ("<h3 class='panel-title'><span class='icon-cloud-upload' ></span>&nbsp;" . $lang_index['text_last_five_torrent'] . "</h3>");
+		panel_head_end();
+		print ("<table style='margin-top: 10px' class='table table-striped' width=\"100%\"  cellspacing=\"0\" cellpadding=\"5\">
+<tr><td class=\"colhead\" >" . $lang_index['col_name'] . "</td><td class=\"colhead\" align=\"center\">" . $lang_index['col_seeder'] . "</td><td class=\"colhead\" align=\"center\">" . $lang_index['col_leecher'] . "</td></tr>");
+
+		while ($row = mysql_fetch_assoc($result)) {
+			print ("<tr><a href=\"details.php?id=" . $row['id'] . "&amp;hit=1\"><td><a class='sans' href=\"details.php?id=" . $row['id'] . "&amp;hit=1\">" . htmlspecialchars($row['name']) . "</td></a><td align=\"center\" class='sans'>" . $row['seeders'] . "</td><td align=\"center\" class='sans'>" . $row['leechers'] . "</td></tr>");
+		}
+		print ("</table>");
+	}
+}
+eve_block_end();
+// ------------- end: latest torrents ------------------//
+
+// ------------- start: links ------------------//-->
+eve_block_start();
+panel_head_start();
+print("<h3 class='panel-title' style='float: left;margin-top: 15px'><span class='icon-link'></span>&nbsp;" . $lang_index['text_links']);
+if (get_user_class() >= $applylink_class)
+	print("&nbsp;<a class=\"altlink\"  href=\"linksmanage.php?action=apply\">" . $lang_index['text_apply_for_link'] . "</a>");
+if (get_user_class() >= $linkmanage_class) {
+	print("  &nbsp;<a class=\"altlink\" href=\"linksmanage.php\">" . $lang_index['text_manage_links'] . "</a>");
+}
+print("</h3>");
+panel_head_end();
+
+$Cache->new_page('links', 86400, false);
+if (!$Cache->get_page()) {
+	$Cache->add_whole_row();
+	$res = sql_query("SELECT * FROM links ORDER BY id ASC") or sqlerr(__FILE__, __LINE__);
+	if (mysql_num_rows($res) > 0) {
+		$links = "";
+		while ($array = mysql_fetch_array($res)) {
+			$links .= "&nbsp;&nbsp;&nbsp;<a class='altlink' href=\"" . $array['url'] . "\" title=\"" . $array['title'] . "\" target=\"_blank\">" . $array['name'] . "</a>&nbsp;&nbsp;&nbsp;";
+		}
+		print("<table class='table table-striped' width=\"100%\"><tr><td class=\"text\" >" . trim($links) . "</td></tr></table>");
+	}
+	$Cache->end_whole_row();
+	$Cache->cache_page();
+}
+echo $Cache->next_row();
+col_end();
+eve_block_end();
+// ------------- end: links ------------------//
+
 // ------------- start: shut box box ------------------//
-panel_col_7_start();
+col_start(7);
+eve_block_start();
 if ($showshoutbox_main == "yes") {
+	panel_head_start();
 	?>
-	<h4>
-		<sapn class="icon-comments"></sapn><?php echo $lang_index['text_shoutbox'] ?></h4>
+	<h3 class="panel-title"><sapn class="icon-comments"></sapn><?php echo $lang_index['text_shoutbox'] ?></h3>
 	<?php
-	print("<table style='width: 100%;height: 700px;'><tr><td class=\"text\" style='width: 100px'>\n");
+	panel_head_end();
+	print("<table style='width: 100%;height: 815px;'><tr><td class=\"text\" style='width: 100px'>\n");
 	print("<iframe src='shoutbox.php?type=shoutbox' width='100%' height='520' frameborder='0' name='sbox' marginwidth='0' marginheight='0'></iframe><br /><br />\n");
 	print("<form action='shoutbox.php' method='get' target='sbox' name='shbox'>\n");
 	print("<label for='shbox_text'>" . $lang_index['text_message'] . "</label>
@@ -120,181 +295,15 @@ if ($showshoutbox_main == "yes") {
 	print(smile_row("shbox", "shbox_text"));
 	print("</form></td></tr></table>");
 }
-panel_col_end();
+
 // ------------- end: shut box ------------------//
+col_end();
+block_end();
 
-
-// ------------- start: hot and classic movies ------------------//
-panel_col_5_start();
-if ($showextinfo['imdb'] == 'yes' && ($showmovies['hot'] == "yes" || $showmovies['classic'] == "yes"))
-{
-	$type = array('hot', 'classic');
-	foreach($type as $type_each)
-	{
-		if($showmovies[$type_each] == 'yes' && (!isset($CURUSER) || $CURUSER['show' . $type_each] == 'yes'))
-		{
-			$Cache->new_page($type_each.'_resources', 900, true);
-			if (!$Cache->get_page())
-			{
-				$Cache->add_whole_row();
-
-				$imdbcfg = new imdb_config();
-				$res = sql_query("SELECT * FROM torrents WHERE picktype = " . sqlesc($type_each) . " AND seeders > 0 AND url != '' ORDER BY id DESC LIMIT 30") or sqlerr(__FILE__, __LINE__);
-				if (mysql_num_rows($res) > 0)
-				{
-					$movies_list = "";
-					$count = 0;
-					$allImdb = array();
-					while($array = mysql_fetch_array($res))
-					{
-						$pro_torrent = get_torrent_promotion_append($array[sp_state],'word');
-						if ($imdb_id = parse_imdb_id($array["url"]))
-						{
-							if (array_search($imdb_id, $allImdb) !== false) { //a torrent with the same IMDb url already exists
-								continue;
-							}
-							$allImdb[]=$imdb_id;
-							$photo_url = $imdbcfg->photodir . $imdb_id. $imdbcfg->imageext;
-
-							if (file_exists($photo_url))
-								$thumbnail = "<img width=\"101\" height=\"140\" src=\"".$photo_url."\" border=\"0\" alt=\"poster\" />";
-							else continue;
-						}
-						else continue;
-						$thumbnail = "<a href=\"details.php?id=" . $array['id'] . "&amp;hit=1\" onmouseover=\"domTT_activate(this, event, 'content', '" . htmlspecialchars("<font class=\'big\'><b>" . (addslashes($array['name'] . $pro_torrent)) . "</b></font><br /><font class=\'medium\'>".(addslashes($array['small_descr'])) ."</font>"). "', 'trail', true, 'delay', 0,'lifetime',5000,'styleClass','niceTitle','maxWidth', 600);\">" . $thumbnail . "</a>";
-						$movies_list .= $thumbnail;
-						$count++;
-						if ($count >= 9)
-							break;
-					}
-?>
-<h2><?php echo $lang_index['text_' . $type_each . 'movies'] ?></h2>
-<table width="100%"  cellspacing="0" cellpadding="5"><tr><td class="text nowrap" align="center">
-<?php echo $movies_list ?></td></tr></table>
-<?php
-				}
-				$Cache->end_whole_row();
-				$Cache->cache_page();
-			}
-			echo $Cache->next_row();
-		}
-	}
-}
-panel_col_end();
-// ------------- end: hot and classic movies ------------------//
-
-
-
-
-// ------------- start: new-boxes ------------------//
-panel_col_5_start();
-print("<h4 class=\"panel-title\"><span class='glyphicon glyphicon-bell'></span>".$lang_index['text_recent_news'].(get_user_class() >= $newsmanage_class ? "&nbsp;&nbsp;&nbsp;&nbsp;<a class=\"altlink\" href=\"news.php\"><span class=' icon-edit'></span>".$lang_index['text_news_page']."</a></font>" : "")."</h4>");
-
-$Cache->new_page('recent_news', 86400, true);
-if (!$Cache->get_page()){
-	$res = sql_query("SELECT * FROM news ORDER BY added DESC LIMIT ".(int)$maxnewsnum_main) or sqlerr(__FILE__, __LINE__);
-	if (mysql_num_rows($res) > 0)
-	{
-		$Cache->add_whole_row();
-		echo  "<div class=\"slimScrollDiv\" style=\"position: relative; overflow: hidden; width: auto;height: 390px\"><div class=\"panel-body indexpanel scroll\" id=\"newspanel\" style=\"overflow: auto; width: auto;height: 400px\">";
-		print("<table class=\"table table-striped\" id=\"newstable\" style='height: 400px'  width=\"100%\"><tr><td class=\"text\"><div style=\"margin-left: 16pt;\">\n");
-		$Cache->end_whole_row();
-		$news_flag = 0;
-		while($array = mysql_fetch_array($res))
-		{
-			$Cache->add_row();
-			$Cache->add_part();
-			if ($news_flag < 1) {
-				print("<h4><a href=\"javascript: klappe_news('a".$array['id']."')\"><span class='icon-tags'></span>&nbsp;"."<b>". $array['title'] . "</b>(".date("Y.m.d",strtotime($array['added'])).")</a></h4>");
-				print("<div class='kas' id=\"ka".$array['id']."\" style=\"display: block;\"> ".format_comment($array["body"],0)." </div> ");
-				$news_flag = $news_flag + 1;
-			}
-			else
-			{
-				print("<h4><a href=\"javascript: klappe_news('a".$array['id']."')\"><br /><span class='icon-tags'></span>&nbsp;"."<b>". $array['title'] . "</b>(".date("Y.m.d",strtotime($array['added'])).")</a></h4>");
-				print("<div class='kas' id=\"ka".$array['id']."\" style=\"display: none;\"> ".format_comment($array["body"],0)." </div> ");
-			}
-			$Cache->end_part();
-			$Cache->add_part();
-			print("  &nbsp;<span class='icon-edit'></span> <a class=\"faqlink\" href=\"news.php?action=edit&amp;newsid=" . $array['id'] . "\"><b>".$lang_index['text_e']."</b></a>");
-			print("  &nbsp;<span class='icon-trash'></span> <a class=\"faqlink\" href=\"news.php?action=delete&amp;newsid=" . $array['id'] . "\"><b>".$lang_index['text_d']."</b></a>");
-			$Cache->end_part();
-			$Cache->end_row();
-		}
-		$Cache->break_loop();
-		$Cache->add_whole_row();
-//	echo "
-//	<div class=\"slimScrollBar\" style=\"background: rgb(0, 0, 0); width: 8px; position: absolute; top: 17px; opacity: 0.4; display: block; border-radius: 7px; z-index: 99; right: 1px; height: 249.231px;\"></div>
-//	<div class=\"slimScrollRail\" style=\"width: 8px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;\"></div>
-//	";
-		print("</div></td></tr></table>\n");
-		echo "</div></div>";
-		//panel_col_end();
-		$Cache->end_whole_row();
-	}
-	$Cache->cache_page();
-}
-echo $Cache->next_row();
-while($Cache->next_row()){
-	echo $Cache->next_part();
-	if (get_user_class() >= $newsmanage_class)
-		echo $Cache->next_part();
-}
-echo $Cache->next_row();
-panel_col_end();
-
-panel_col_5_start();
-// ------------- start: latest torrents ------------------//
-
-if ($showlastxtorrents_main == "yes") {
-	$result = sql_query("SELECT * FROM torrents where visible='yes' ORDER BY added DESC LIMIT 5") or sqlerr(__FILE__, __LINE__);
-	if (mysql_num_rows($result) != 0) {
-		print ("<h2 class='panel-title'>" . $lang_index['text_last_five_torrent'] . "</h2>");
-		print ("<table style='margin-top: 10px' class='table table-striped' width=\"100%\"  cellspacing=\"0\" cellpadding=\"5\">
-<tr><td class=\"colhead\" width=\"100%\">" . $lang_index['col_name'] . "</td><td class=\"colhead\" align=\"center\">" . $lang_index['col_seeder'] . "</td><td class=\"colhead\" align=\"center\">" . $lang_index['col_leecher'] . "</td></tr>");
-
-		while ($row = mysql_fetch_assoc($result)) {
-			print ("<tr><a href=\"details.php?id=" . $row['id'] . "&amp;hit=1\"><td><a href=\"details.php?id=" . $row['id'] . "&amp;hit=1\"><b>" . htmlspecialchars($row['name']) . "</b></td></a><td align=\"center\">" . $row['seeders'] . "</td><td align=\"center\">" . $row['leechers'] . "</td></tr>");
-		}
-		print ("</table>");
-	}
-}
-panel_col_end();
-// ------------- end: latest torrents ------------------//
-
-// ------------- start: links ------------------//-->
-
-panel_col_5_start();
-print("<h4 style='float: left;margin-top: 15px'><span class='icon-link'></span>" . $lang_index['text_links']);
-if (get_user_class() >= $applylink_class)
-	print("<font > - [<a class=\"altlink\" href=\"linksmanage.php?action=apply\"><b>" . $lang_index['text_apply_for_link'] . "</b></a>]</font>");
-if (get_user_class() >= $linkmanage_class) {
-	print("<font class=\"small\">");
-	print(" - [<a class=\"altlink\" href=\"linksmanage.php\"><b>" . $lang_index['text_manage_links'] . "</b></a>]\n");
-	print("</font>");
-}
-print("</h4>");
-$Cache->new_page('links', 86400, false);
-if (!$Cache->get_page()) {
-	$Cache->add_whole_row();
-	$res = sql_query("SELECT * FROM links ORDER BY id ASC") or sqlerr(__FILE__, __LINE__);
-	if (mysql_num_rows($res) > 0) {
-		$links = "";
-		while ($array = mysql_fetch_array($res)) {
-			$links .= "<a href=\"" . $array['url'] . "\" title=\"" . $array['title'] . "\" target=\"_blank\">" . $array['name'] . "</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-		}
-		print("<table width=\"100%\"><tr><td class=\"text\" >" . trim($links) . "</td></tr></table>");
-	}
-	$Cache->end_whole_row();
-	$Cache->cache_page();
-}
-echo $Cache->next_row();
-panel_col_end();
-// ------------- end: links ------------------//
 
 // ------------- start: stats ------------------//
 //echo "<div class='row'>";
-panel_col_7_start();
+
 if ($showstats_main == "yes") {
 	?>
 	<h4>
@@ -479,12 +488,12 @@ if ($showstats_main == "yes") {
 		</td></tr></table>
 	<?php
 }
-panel_col_end();
+
 // ------------- end: stats ------------------//
 
 
 // ------------- start: polls ------------------//
-panel_col_5_start();
+
 if ($CURUSER && $showpolls_main == "yes") {
 	// Get current poll
 	if (!$arr = $Cache->get_value('current_poll_content')) {
@@ -614,11 +623,11 @@ if ($CURUSER && $showpolls_main == "yes") {
 		print("	</table>");
 	}
 }
-panel_col_end();
+
 // ------------- end: polls ------------------//
 
 // ------------- start: forums post ------------------//
-panel_col_5_start();
+
 //if ($showlastxforumposts_main == "yes" && $CURUSER) {
 	$res = sql_query("SELECT posts.id AS pid, posts.userid AS userpost, posts.added, topics.id AS tid, topics.subject, topics.forumid, topics.views, forums.name FROM posts, topics, forums WHERE posts.topicid = topics.id AND topics.forumid = forums.id AND minclassread <=" . sqlesc(get_user_class()) . " ORDER BY posts.id DESC LIMIT 5") or sqlerr(__FILE__, __LINE__);
 	if (mysql_num_rows($res) != 0) {
@@ -655,7 +664,7 @@ panel_col_5_start();
 		print("</table>");
 	}
 //}
-panel_col_end();
+
 // ------------- end: latest forum posts ------------------//
 
 
@@ -677,7 +686,7 @@ panel_col_end();
 <!--// ------------- end: tracker load ------------------//-->
 
 <!--// ------------- start: disclaimer  免责声明   ----------//-->
-<?php panel_col_5_start(); ?>
+<?php  ?>
 <h4 style="float: left"><span class=" icon-tasks"></span><?php echo $lang_index['text_disclaimer'] ?></h4>
 <table width="100%">
 	<tr>
@@ -685,13 +694,13 @@ panel_col_end();
 			<?php echo "<blockquote style='font-size: 12px'>" . $lang_index['text_disclaimer_content'] . "</blockquote>" ?></td>
 	</tr>
 </table>
-<?php panel_col_end(); ?>
+<?php  ?>
 <!--// ------------- end: disclaimer ------------------//
 
 
 
 <?php
-			panel_col_end();
+			
 			panel_end();
 // ------------- start: browser, client and code note ------------------//
 ?>

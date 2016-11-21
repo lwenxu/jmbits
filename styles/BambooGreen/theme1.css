@@ -380,18 +380,23 @@ a.biglink {
 
 a.altlink:link {
     font-weight: bold;
-    color: #a83838;
-    text-decoration: none
+    color: #337ab7;
+    text-decoration: none;
+    font-family: inherit;
+    font-weight: 500;
+
 }
 
 a.altlink:visited {
     font-weight: bold;
-    color: #a83838;
-    text-decoration: none
+    color: #337ab7;
+    text-decoration: none;
+    font-family: inherit;
+    font-weight: 500;
 }
 
 a.altlink:hover {
-    text-decoration: underline
+    color: #004e98;
 }
 
 a.altlink_blue:link {
@@ -1251,7 +1256,12 @@ td .text{
 .embedded-head{
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 16px;
+}
 
+.alttext{
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 15px;
+    font-weight: 200;
 }
 
 .icos-download{
@@ -1325,4 +1335,9 @@ td .text{
 .icon-green{
     color: #3CB371;
     font-size:17px;
+}
+
+.sans{
+    font-family: sans-serif;
+    font-size: 16px;
 }
