@@ -39,7 +39,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 
 // ------------------------------------------  index strat ---------------------------------------------------------------
 stdhead($lang_index['head_home']);
+
+
 begin_main_frame();
+main_content_start();
+
 echo "
 <style>
 a {
@@ -158,7 +162,6 @@ a {
 //
 // ------------- end: hot and classic movies ------------------//
 
-main_content_start();
 //  first  block
 block_start();
 col_start(5);
@@ -300,200 +303,12 @@ if ($showshoutbox_main == "yes") {
 col_end();
 block_end();
 
-
-// ------------- start: stats ------------------//
-//echo "<div class='row'>";
-
-if ($showstats_main == "yes") {
-	?>
-	<h4>
-		<sapn class=" icon-dashboard"></sapn><?php echo $lang_index['text_tracker_statistics'] ?></h4>
-	<table width="100%" class="table table-bordered" id="statustable">
-		<tr>
-			<!--<table width="60%" class="table table-bordered"  cellspacing="0" cellpadding="10">-->
-			<?php
-			$Cache->new_page('stats_users', 3000, true);
-			if (!$Cache->get_page()){
-			$Cache->add_whole_row();
-			$registered = number_format(get_row_count("users"));
-			$unverified = number_format(get_row_count("users", "WHERE status='pending'"));
-			$totalonlinetoday = number_format(get_row_count("users", "WHERE last_access >= " . sqlesc(date("Y-m-d H:i:s", (TIMENOW - 86400)))));
-			$totalonlineweek = number_format(get_row_count("users", "WHERE last_access >= " . sqlesc(date("Y-m-d H:i:s", (TIMENOW - 604800)))));
-			$VIP = number_format(get_row_count("users", "WHERE class=" . UC_VIP));
-			$donated = number_format(get_row_count("users", "WHERE donor = 'yes'"));
-			$warned = number_format(get_row_count("users", "WHERE warned='yes'"));
-			$disabled = number_format(get_row_count("users", "WHERE enabled='no'"));
-			$registered_male = number_format(get_row_count("users", "WHERE gender='Male'"));
-			$registered_female = number_format(get_row_count("users", "WHERE gender='Female'"));
-			?>
-		<tr>
-			<?php
-			twotd($lang_index['row_users_active_today'], $totalonlinetoday);
-			twotd($lang_index['row_users_active_this_week'], $totalonlineweek);
-			?>
-		</tr>
-		<tr>
-			<?php
-			twotd($lang_index['row_registered_users'], $registered . " / " . number_format($maxusers));
-			twotd($lang_index['row_unconfirmed_users'], $unverified);
-			?>
-		</tr>
-		<tr>
-			<?php
-			twotd(get_user_class_name(UC_VIP, false, false, true), $VIP);
-			twotd($lang_index['row_donors'], $donated);
-			?>
-		</tr>
-		<tr>
-			<?php
-			twotd($lang_index['row_warned_users'], $warned);
-			twotd($lang_index['row_banned_users'], $disabled);
-			?>
-		</tr>
-		<tr>
-			<?php
-			twotd($lang_index['row_male_users'], $registered_male);
-			twotd($lang_index['row_female_users'], $registered_female);
-			?>
-		</tr>
-		<?php
-		$Cache->end_whole_row();
-		$Cache->cache_page();
-		}
-		echo $Cache->next_row();
-		?>
-		<tr>
-			<td colspan="4" class="rowhead">&nbsp;</td>
-		</tr>
-		<?php
-		$Cache->new_page('stats_torrents', 1800, true);
-		if (!$Cache->get_page()) {
-			$Cache->add_whole_row();
-			$torrents = number_format(get_row_count("torrents"));
-			$dead = number_format(get_row_count("torrents", "WHERE visible='no'"));
-			$seeders = get_row_count("peers", "WHERE seeder='yes'");
-			$leechers = get_row_count("peers", "WHERE seeder='no'");
-			if ($leechers == 0)
-				$ratio = 0;
-			else
-				$ratio = round($seeders / $leechers * 100);
-			$activewebusernow = get_row_count("users", "WHERE last_access >= " . sqlesc(date("Y-m-d H:i:s", (TIMENOW - 900))));
-			$activewebusernow = number_format($activewebusernow);
-			$activetrackerusernow = number_format(get_single_value("peers", "COUNT(DISTINCT(userid))"));
-			$peers = number_format($seeders + $leechers);
-			$seeders = number_format($seeders);
-			$leechers = number_format($leechers);
-			$totaltorrentssize = mksize(get_row_sum("torrents", "size"));
-			$totaluploaded = get_row_sum("users", "uploaded");
-			$totaldownloaded = get_row_sum("users", "downloaded");
-			$totaldata = $totaldownloaded + $totaluploaded;
-			?>
-			<tr>
-				<?php
-				twotd($lang_index['row_torrents'], $torrents);
-				twotd($lang_index['row_dead_torrents'], $dead);
-				?>
-			</tr>
-			<tr>
-				<?php
-				twotd($lang_index['row_seeders'], $seeders);
-				twotd($lang_index['row_leechers'], $leechers);
-				?>
-			</tr>
-			<tr>
-				<?php
-				twotd($lang_index['row_peers'], $peers);
-				twotd($lang_index['row_seeder_leecher_ratio'], $ratio . "%");
-				?>
-			</tr>
-			<tr>
-				<?php
-				twotd($lang_index['row_active_browsing_users'], $activewebusernow);
-				twotd($lang_index['row_tracker_active_users'], $activetrackerusernow);
-				?>
-			</tr>
-			<tr>
-				<?php
-				twotd($lang_index['row_total_size_of_torrents'], $totaltorrentssize);
-				twotd($lang_index['row_total_uploaded'], mksize($totaluploaded));
-				?>
-			</tr>
-			<tr>
-				<?php
-				twotd($lang_index['row_total_downloaded'], mksize($totaldownloaded));
-				twotd($lang_index['row_total_data'], mksize($totaldata));
-				?>
-			</tr>
-			<?php
-			$Cache->end_whole_row();
-			$Cache->cache_page();
-		}
-		echo $Cache->next_row();
-		?>
-		<tr>
-			<td colspan="4" class="rowhead">&nbsp;</td>
-		</tr>
-		<?php
-		$Cache->new_page('stats_classes', 4535, true);
-		if (!$Cache->get_page()) {
-			$Cache->add_whole_row();
-			$peasants = number_format(get_row_count("users", "WHERE class=" . UC_PEASANT));
-			$users = number_format(get_row_count("users", "WHERE class=" . UC_USER));
-			$powerusers = number_format(get_row_count("users", "WHERE class=" . UC_POWER_USER));
-			$eliteusers = number_format(get_row_count("users", "WHERE class=" . UC_ELITE_USER));
-			$crazyusers = number_format(get_row_count("users", "WHERE class=" . UC_CRAZY_USER));
-			$insaneusers = number_format(get_row_count("users", "WHERE class=" . UC_INSANE_USER));
-			$veteranusers = number_format(get_row_count("users", "WHERE class=" . UC_VETERAN_USER));
-			$extremeusers = number_format(get_row_count("users", "WHERE class=" . UC_EXTREME_USER));
-			$ultimateusers = number_format(get_row_count("users", "WHERE class=" . UC_ULTIMATE_USER));
-			$nexusmasters = number_format(get_row_count("users", "WHERE class=" . UC_NEXUS_MASTER));
-			?>
-			<tr>
-				<?php
-				twotd(get_user_class_name(UC_PEASANT, false, false, true), $peasants);
-				twotd(get_user_class_name(UC_USER, false, false, true), $users);
-				?>
-			</tr>
-			<tr>
-				<?php
-				twotd(get_user_class_name(UC_POWER_USER, false, false, true), $powerusers);
-				twotd(get_user_class_name(UC_ELITE_USER, false, false, true), $eliteusers);
-				?>
-			</tr>
-			<tr>
-				<?php
-				twotd(get_user_class_name(UC_CRAZY_USER, false, false, true), $crazyusers);
-				twotd(get_user_class_name(UC_INSANE_USER, false, false, true), $insaneusers);
-				?>
-			</tr>
-			<tr>
-				<?php
-				twotd(get_user_class_name(UC_VETERAN_USER, false, false, true), $veteranusers);
-				twotd(get_user_class_name(UC_EXTREME_USER, false, false, true), $extremeusers);
-				?>
-			</tr>
-			<tr>
-				<?php
-				twotd(get_user_class_name(UC_ULTIMATE_USER, false, false, true), $ultimateusers);
-				twotd(get_user_class_name(UC_NEXUS_MASTER, false, false, true), $nexusmasters);
-				?>
-			</tr>
-			<?php
-			$Cache->end_whole_row();
-			$Cache->cache_page();
-		}
-		echo $Cache->next_row();
-		?>
-
-		</td></tr></table>
-	<?php
-}
-
-// ------------- end: stats ------------------//
+block_start();
 
 
+col_start(5);
 // ------------- start: polls ------------------//
-
+eve_block_start();
 if ($CURUSER && $showpolls_main == "yes") {
 	// Get current poll
 	if (!$arr = $Cache->get_value('current_poll_content')) {
@@ -504,9 +319,9 @@ if ($CURUSER && $showpolls_main == "yes") {
 	if (!$arr)
 		$pollexists = false;
 	else $pollexists = true;
-
-	print("<h4 style='float: left'><sapn class='icon-bookmark'></sapn>" . $lang_index['text_polls']);
-
+	panel_head_start();
+	print("<h3 class='panel-title'><sapn class='icon-bookmark'></sapn>" . $lang_index['text_polls']);
+	panel_head_end();
 	if (get_user_class() >= $pollmanage_class) {
 		print("&nbsp;<sapn class='icon-pencil'></sapn><a class=\"altlink\" href=\"makepoll.php?returnto=main\"><b>" . $lang_index['text_new'] . "</b></a></h>\n");
 		if ($pollexists) {
@@ -623,24 +438,26 @@ if ($CURUSER && $showpolls_main == "yes") {
 		print("	</table>");
 	}
 }
-
+eve_block_end();
 // ------------- end: polls ------------------//
 
 // ------------- start: forums post ------------------//
-
+eve_block_start();
 //if ($showlastxforumposts_main == "yes" && $CURUSER) {
-	$res = sql_query("SELECT posts.id AS pid, posts.userid AS userpost, posts.added, topics.id AS tid, topics.subject, topics.forumid, topics.views, forums.name FROM posts, topics, forums WHERE posts.topicid = topics.id AND topics.forumid = forums.id AND minclassread <=" . sqlesc(get_user_class()) . " ORDER BY posts.id DESC LIMIT 5") or sqlerr(__FILE__, __LINE__);
-	if (mysql_num_rows($res) != 0) {
-		print("<h4 class='panel-title'>" . $lang_index['text_last_five_posts'] . "</h4>");
-		print("
-<table style='margin-top: 10px' class='table table-striped'  width=\"100%\"  cellspacing=\"0\" cellpadding=\"5\">
+$res = sql_query("SELECT posts.id AS pid, posts.userid AS userpost, posts.added, topics.id AS tid, topics.subject, topics.forumid, topics.views, forums.name FROM posts, topics, forums WHERE posts.topicid = topics.id AND topics.forumid = forums.id AND minclassread <=" . sqlesc(get_user_class()) . " ORDER BY posts.id DESC LIMIT 5") or sqlerr(__FILE__, __LINE__);
+if (mysql_num_rows($res) != 0) {
+	panel_head_start();
+	print("<h3 class='panel-title'>" . $lang_index['text_last_five_posts'] . "</h3>");
+	panel_head_end();
+	print("
+<table  class='table table-striped'  width=\"100%\"  cellspacing=\"0\" cellpadding=\"5\">
 <tr>
 <td class=\"colhead\" align=\"left\">" . $lang_index['col_topic_title'] . "</td>
 <td class=\"colhead\" align=\"center\">" . $lang_index['col_view'] . "</td>
 <td class=\"colhead\" align=\"center\">" . $lang_index['col_author'] . "</td>
 <td class=\"colhead\" align=\"left\">" . $lang_index['col_posted_at'] . "</td>
 </tr>");
-		echo "
+	echo "
 			<style>
 				.links-blue{
 				    font-family: \"Helvetica Neue\", Helvetica, Arial, sans-serif;
@@ -649,9 +466,9 @@ if ($CURUSER && $showpolls_main == "yes") {
 					}
 			</style>
 		";
-		while ($postsx = mysql_fetch_assoc($res)) {
+	while ($postsx = mysql_fetch_assoc($res)) {
 
-			print("
+		print("
 <tr>
 <td>
 	[<a class='links-blue' href=\"forums.php ? action = viewforum & amp;forumid =  '. $postsx[forumid].\" >" . htmlspecialchars($postsx["name"]) . "</a>]
@@ -660,13 +477,12 @@ if ($CURUSER && $showpolls_main == "yes") {
 <td align=\"center\">" . $postsx["views"] . "</td><td align=\"center\">" . get_username($postsx["userpost"]) . "</td>
 <td>" . gettime($postsx["added"]) . "</td>
 </tr>");
-		}
-		print("</table>");
 	}
+	print("</table>");
+}
 //}
-
+eve_block_end();
 // ------------- end: latest forum posts ------------------//
-
 
 
 // ------------- start: tracker load   服务器负载    ---//
@@ -686,22 +502,234 @@ if ($CURUSER && $showpolls_main == "yes") {
 <!--// ------------- end: tracker load ------------------//-->
 
 <!--// ------------- start: disclaimer  免责声明   ----------//-->
-<?php  ?>
-<h4 style="float: left"><span class=" icon-tasks"></span><?php echo $lang_index['text_disclaimer'] ?></h4>
+<?php
+eve_block_start();
+panel_head_start(); ?>
+<h3 class="panel-title"><span class=" icon-tasks"></span>&nbsp;<?php echo $lang_index['text_disclaimer'] ?></h3>
+<?php panel_head_end(); ?>
 <table width="100%">
 	<tr>
 		<td style="border: 0px">
 			<?php echo "<blockquote style='font-size: 12px'>" . $lang_index['text_disclaimer_content'] . "</blockquote>" ?></td>
 	</tr>
 </table>
-<?php  ?>
-<!--// ------------- end: disclaimer ------------------//
+<?php
+eve_block_end();
+col_end();
+?>
+<!--// ------------- end: disclaimer ------------------//-->
+
+
+
+
+<!--// ------------- start: stats -------------------->
+
+<!--echo "<div class='row'>";-->
+<?php
+col_start(7);
+eve_block_start();
+if ($showstats_main == "yes") {
+	panel_head_start();
+	?>
+	<h3 class="panel-title">
+		<sapn class=" icon-dashboard"></sapn>
+		&nbsp;<?php echo $lang_index['text_tracker_statistics'] ?>
+	</h3>
+
+	<table style="margin-top: 10px" width="100%" class="table table-striped" id="statustable">
+	<tr>
+	<!--<table width="60%" class="table table-bordered"  cellspacing="0" cellpadding="10">-->
+	<?php
+	$Cache->new_page('stats_users', 3000, true);
+	if (!$Cache->get_page()) {
+		$Cache->add_whole_row();
+		$registered = number_format(get_row_count("users"));
+		$unverified = number_format(get_row_count("users", "WHERE status='pending'"));
+		$totalonlinetoday = number_format(get_row_count("users", "WHERE last_access >= " . sqlesc(date("Y-m-d H:i:s", (TIMENOW - 86400)))));
+		$totalonlineweek = number_format(get_row_count("users", "WHERE last_access >= " . sqlesc(date("Y-m-d H:i:s", (TIMENOW - 604800)))));
+		$VIP = number_format(get_row_count("users", "WHERE class=" . UC_VIP));
+		$donated = number_format(get_row_count("users", "WHERE donor = 'yes'"));
+		$warned = number_format(get_row_count("users", "WHERE warned='yes'"));
+		$disabled = number_format(get_row_count("users", "WHERE enabled='no'"));
+		$registered_male = number_format(get_row_count("users", "WHERE gender='Male'"));
+		$registered_female = number_format(get_row_count("users", "WHERE gender='Female'"));
+		?>
+		<tr>
+			<?php
+			twotd($lang_index['row_users_active_today'], $totalonlinetoday);
+			twotd($lang_index['row_users_active_this_week'], $totalonlineweek);
+			?>
+		</tr>
+		<tr>
+			<?php
+			twotd($lang_index['row_registered_users'], $registered . " / " . number_format($maxusers));
+			twotd($lang_index['row_unconfirmed_users'], $unverified);
+			?>
+		</tr>
+		<tr>
+			<?php
+			twotd(get_user_class_name(UC_VIP, false, false, true), $VIP);
+			twotd($lang_index['row_donors'], $donated);
+			?>
+		</tr>
+		<tr>
+			<?php
+			twotd($lang_index['row_warned_users'], $warned);
+			twotd($lang_index['row_banned_users'], $disabled);
+			?>
+		</tr>
+		<tr>
+			<?php
+			twotd($lang_index['row_male_users'], $registered_male);
+			twotd($lang_index['row_female_users'], $registered_female);
+			?>
+		</tr>
+		<?php
+		$Cache->end_whole_row();
+		$Cache->cache_page();
+	}
+	echo $Cache->next_row();
+	?>
+	<tr>
+		<td colspan="4" class="rowhead">&nbsp;</td>
+	</tr>
+	<?php
+	$Cache->new_page('stats_torrents', 1800, true);
+	if (!$Cache->get_page()) {
+		$Cache->add_whole_row();
+		$torrents = number_format(get_row_count("torrents"));
+		$dead = number_format(get_row_count("torrents", "WHERE visible='no'"));
+		$seeders = get_row_count("peers", "WHERE seeder='yes'");
+		$leechers = get_row_count("peers", "WHERE seeder='no'");
+		if ($leechers == 0)
+			$ratio = 0;
+		else
+			$ratio = round($seeders / $leechers * 100);
+		$activewebusernow = get_row_count("users", "WHERE last_access >= " . sqlesc(date("Y-m-d H:i:s", (TIMENOW - 900))));
+		$activewebusernow = number_format($activewebusernow);
+		$activetrackerusernow = number_format(get_single_value("peers", "COUNT(DISTINCT(userid))"));
+		$peers = number_format($seeders + $leechers);
+		$seeders = number_format($seeders);
+		$leechers = number_format($leechers);
+		$totaltorrentssize = mksize(get_row_sum("torrents", "size"));
+		$totaluploaded = get_row_sum("users", "uploaded");
+		$totaldownloaded = get_row_sum("users", "downloaded");
+		$totaldata = $totaldownloaded + $totaluploaded;
+		?>
+		<tr>
+			<?php
+			twotd($lang_index['row_torrents'], $torrents);
+			twotd($lang_index['row_dead_torrents'], $dead);
+			?>
+		</tr>
+		<tr>
+			<?php
+			twotd($lang_index['row_seeders'], $seeders);
+			twotd($lang_index['row_leechers'], $leechers);
+			?>
+		</tr>
+		<tr>
+			<?php
+			twotd($lang_index['row_peers'], $peers);
+			twotd($lang_index['row_seeder_leecher_ratio'], $ratio . "%");
+			?>
+		</tr>
+		<tr>
+			<?php
+			twotd($lang_index['row_active_browsing_users'], $activewebusernow);
+			twotd($lang_index['row_tracker_active_users'], $activetrackerusernow);
+			?>
+		</tr>
+		<tr>
+			<?php
+			twotd($lang_index['row_total_size_of_torrents'], $totaltorrentssize);
+			twotd($lang_index['row_total_uploaded'], mksize($totaluploaded));
+			?>
+		</tr>
+		<tr>
+			<?php
+			twotd($lang_index['row_total_downloaded'], mksize($totaldownloaded));
+			twotd($lang_index['row_total_data'], mksize($totaldata));
+			?>
+		</tr>
+		<?php
+		$Cache->end_whole_row();
+		$Cache->cache_page();
+	}
+	echo $Cache->next_row();
+	?>
+	<tr>
+		<td colspan="4" class="rowhead">&nbsp;</td>
+	</tr>
+	<?php
+	$Cache->new_page('stats_classes', 4535, true);
+	if (!$Cache->get_page()) {
+		$Cache->add_whole_row();
+		$peasants = number_format(get_row_count("users", "WHERE class=" . UC_PEASANT));
+		$users = number_format(get_row_count("users", "WHERE class=" . UC_USER));
+		$powerusers = number_format(get_row_count("users", "WHERE class=" . UC_POWER_USER));
+		$eliteusers = number_format(get_row_count("users", "WHERE class=" . UC_ELITE_USER));
+		$crazyusers = number_format(get_row_count("users", "WHERE class=" . UC_CRAZY_USER));
+		$insaneusers = number_format(get_row_count("users", "WHERE class=" . UC_INSANE_USER));
+		$veteranusers = number_format(get_row_count("users", "WHERE class=" . UC_VETERAN_USER));
+		$extremeusers = number_format(get_row_count("users", "WHERE class=" . UC_EXTREME_USER));
+		$ultimateusers = number_format(get_row_count("users", "WHERE class=" . UC_ULTIMATE_USER));
+		$nexusmasters = number_format(get_row_count("users", "WHERE class=" . UC_NEXUS_MASTER));
+		?>
+		<tr>
+			<?php
+			twotd(get_user_class_name(UC_PEASANT, false, false, true), $peasants);
+			twotd(get_user_class_name(UC_USER, false, false, true), $users);
+			?>
+		</tr>
+		<tr>
+			<?php
+			twotd(get_user_class_name(UC_POWER_USER, false, false, true), $powerusers);
+			twotd(get_user_class_name(UC_ELITE_USER, false, false, true), $eliteusers);
+			?>
+		</tr>
+		<tr>
+			<?php
+			twotd(get_user_class_name(UC_CRAZY_USER, false, false, true), $crazyusers);
+			twotd(get_user_class_name(UC_INSANE_USER, false, false, true), $insaneusers);
+			?>
+		</tr>
+		<tr>
+			<?php
+			twotd(get_user_class_name(UC_VETERAN_USER, false, false, true), $veteranusers);
+			twotd(get_user_class_name(UC_EXTREME_USER, false, false, true), $extremeusers);
+			?>
+		</tr>
+		<tr>
+			<?php
+			twotd(get_user_class_name(UC_ULTIMATE_USER, false, false, true), $ultimateusers);
+			twotd(get_user_class_name(UC_NEXUS_MASTER, false, false, true), $nexusmasters);
+			?>
+		</tr>
+		<?php
+		$Cache->end_whole_row();
+		$Cache->cache_page();
+	}
+	echo $Cache->next_row();
+}
+		?>
+
+		</td></tr></table>
+
+
+<?php
+eve_block_end();
+col_end();
+block_end();
+?>
+<!--// ------------- end: stats ------------------//-->
+
+
 
 
 
 <?php
 			
-			panel_end();
 // ------------- start: browser, client and code note ------------------//
 ?>
 <table width="100%" class="main" border="0" cellspacing="0" cellpadding="0"><tr><td class="embedded">

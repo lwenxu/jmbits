@@ -487,8 +487,12 @@ function begin_main_frame($caption = "", $center = false, $width = 100)
 
 	$width = 940 * $width /100;
 
-	print("<table  class=\"main\" width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">" .
-	"<tr><td class=\"embedded\" $tdextra>");
+//	print("<table  id=\"main_content\"  width='100%' border=\"0\" cellspacing=\"0\" cellpadding=\"0\">" .
+//	"<tr><td class=\"embedded\" $tdextra>");
+	echo "
+		<div class='container' id='main_content'>
+	";
+
 
 }
 
@@ -523,7 +527,8 @@ function begin_main_frame($caption = "", $center = false, $width = 100)
 //}
 
 function main_content_start(){
-	echo "<div id=\"main_content\" class=\"container\">
+//	<div id="main_content" class="container">
+	echo "
 <div id=\"main\" class=\"well no-border-radius\">";
 }
 
@@ -2454,245 +2459,161 @@ if ($enabledonation == 'yes'){?>
 	</tr>
 </table>
 
-<table class="mainouter" id="bannerdown" width="100%" cellspacing="0" cellpadding="5" align="center">
-	<tr><td id="nav_block" class="text" align="center">
-<?php if (!$CURUSER) { ?>
-<!--	<ul class="nav nav-pills" style="margin-left: 45%">-->
-<!--		<li><a href="login.php" class="loginreg">--><?php //echo $lang_functions['text_login'] ?><!--</a></li>-->
-<!--		<li><a class="loginreg" href="signup.php">--><?php //echo $lang_functions['text_signup'] ?><!--</a></li>-->
-<!--	</ul>-->
-<?php }
-else {
-	begin_main_frame();
-	menu ();
-	end_main_frame();
+<div>
+	<td id="nav_block" class="text" align="center">
+		<?php if (!$CURUSER) { ?>
+			<!--	<ul class="nav nav-pills" style="margin-left: 45%">-->
+			<!--		<li><a href="login.php" class="loginreg">--><?php //echo $lang_functions['text_login'] ?><!--</a></li>-->
+			<!--		<li><a class="loginreg" href="signup.php">--><?php //echo $lang_functions['text_signup'] ?><!--</a></li>-->
+			<!--	</ul>-->
+		<?php }
+		else {
+		begin_main_frame();
+		menu();
+		end_main_frame();
 
-	$datum = getdate();
-	$datum["hours"] = sprintf("%02.0f", $datum["hours"]);
-	$datum["minutes"] = sprintf("%02.0f", $datum["minutes"]);
-	$ratio = get_ratio($CURUSER['id']);
+		$datum = getdate();
+		$datum["hours"] = sprintf("%02.0f", $datum["hours"]);
+		$datum["minutes"] = sprintf("%02.0f", $datum["minutes"]);
+		$ratio = get_ratio($CURUSER['id']);
 
-	//// check every 15 minutes //////////////////
-	$messages = $Cache->get_value('user_'.$CURUSER["id"].'_inbox_count');
-	if ($messages == ""){
-		$messages = get_row_count("messages", "WHERE receiver=" . sqlesc($CURUSER["id"]) . " AND location<>0");
-		$Cache->cache_value('user_'.$CURUSER["id"].'_inbox_count', $messages, 900);
-	}
-	$outmessages = $Cache->get_value('user_'.$CURUSER["id"].'_outbox_count');
-	if ($outmessages == ""){
-		$outmessages = get_row_count("messages","WHERE sender=" . sqlesc($CURUSER["id"]) . " AND saved='yes'");
-		$Cache->cache_value('user_'.$CURUSER["id"].'_outbox_count', $outmessages, 900);
-	}
-	if (!$connect = $Cache->get_value('user_'.$CURUSER["id"].'_connect')){
-		$res3 = sql_query("SELECT connectable FROM peers WHERE userid=" . sqlesc($CURUSER["id"]) . " LIMIT 1");
-		if($row = mysql_fetch_row($res3))
-			$connect = $row[0];
-		else $connect = 'unknown';
-		$Cache->cache_value('user_'.$CURUSER["id"].'_connect', $connect, 900);
-	}
+		//// check every 15 minutes //////////////////
+		$messages = $Cache->get_value('user_' . $CURUSER["id"] . '_inbox_count');
+		if ($messages == "") {
+			$messages = get_row_count("messages", "WHERE receiver=" . sqlesc($CURUSER["id"]) . " AND location<>0");
+			$Cache->cache_value('user_' . $CURUSER["id"] . '_inbox_count', $messages, 900);
+		}
+		$outmessages = $Cache->get_value('user_' . $CURUSER["id"] . '_outbox_count');
+		if ($outmessages == "") {
+			$outmessages = get_row_count("messages", "WHERE sender=" . sqlesc($CURUSER["id"]) . " AND saved='yes'");
+			$Cache->cache_value('user_' . $CURUSER["id"] . '_outbox_count', $outmessages, 900);
+		}
+		if (!$connect = $Cache->get_value('user_' . $CURUSER["id"] . '_connect')) {
+			$res3 = sql_query("SELECT connectable FROM peers WHERE userid=" . sqlesc($CURUSER["id"]) . " LIMIT 1");
+			if ($row = mysql_fetch_row($res3))
+				$connect = $row[0];
+			else $connect = 'unknown';
+			$Cache->cache_value('user_' . $CURUSER["id"] . '_connect', $connect, 900);
+		}
 
-	if($connect == "yes")
-		$connectable = "<b><font color=\"green\">".$lang_functions['text_yes']."</font></b>";
-	elseif ($connect == 'no')
-		$connectable = "<a href=\"faq.php#id21\"><b><font color=\"red\">".$lang_functions['text_no']."</font></b></a>";
-	else
-		$connectable = $lang_functions['text_unknown'];
+		if ($connect == "yes")
+			$connectable = "<b><font color=\"green\">" . $lang_functions['text_yes'] . "</font></b>";
+		elseif ($connect == 'no')
+			$connectable = "<a href=\"faq.php#id21\"><b><font color=\"red\">" . $lang_functions['text_no'] . "</font></b></a>";
+		else
+			$connectable = $lang_functions['text_unknown'];
 
-	//// check every 60 seconds //////////////////
-	$activeseed = $Cache->get_value('user_'.$CURUSER["id"].'_active_seed_count');
-	if ($activeseed == ""){
-		$activeseed = get_row_count("peers","WHERE userid=" . sqlesc($CURUSER["id"]) . " AND seeder='yes'");
-		$Cache->cache_value('user_'.$CURUSER["id"].'_active_seed_count', $activeseed, 60);
-	}
-	$activeleech = $Cache->get_value('user_'.$CURUSER["id"].'_active_leech_count');
-	if ($activeleech == ""){
-		$activeleech = get_row_count("peers","WHERE userid=" . sqlesc($CURUSER["id"]) . " AND seeder='no'");
-		$Cache->cache_value('user_'.$CURUSER["id"].'_active_leech_count', $activeleech, 60);
-	}
-	$unread = $Cache->get_value('user_'.$CURUSER["id"].'_unread_message_count');
-	if ($unread == ""){
-		$unread = get_row_count("messages","WHERE receiver=" . sqlesc($CURUSER["id"]) . " AND unread='yes'");
-		$Cache->cache_value('user_'.$CURUSER["id"].'_unread_message_count', $unread, 60);
-	}
-	
-	$inboxpic = "<span class='icon-envelope' title=\"".($unread ? $lang_functions['title_inbox_new_messages'] : $lang_functions['title_inbox_no_new_messages'])."\"></span>";
-?>
+		//// check every 60 seconds //////////////////
+		$activeseed = $Cache->get_value('user_' . $CURUSER["id"] . '_active_seed_count');
+		if ($activeseed == "") {
+			$activeseed = get_row_count("peers", "WHERE userid=" . sqlesc($CURUSER["id"]) . " AND seeder='yes'");
+			$Cache->cache_value('user_' . $CURUSER["id"] . '_active_seed_count', $activeseed, 60);
+		}
+		$activeleech = $Cache->get_value('user_' . $CURUSER["id"] . '_active_leech_count');
+		if ($activeleech == "") {
+			$activeleech = get_row_count("peers", "WHERE userid=" . sqlesc($CURUSER["id"]) . " AND seeder='no'");
+			$Cache->cache_value('user_' . $CURUSER["id"] . '_active_leech_count', $activeleech, 60);
+		}
+		$unread = $Cache->get_value('user_' . $CURUSER["id"] . '_unread_message_count');
+		if ($unread == "") {
+			$unread = get_row_count("messages", "WHERE receiver=" . sqlesc($CURUSER["id"]) . " AND unread='yes'");
+			$Cache->cache_value('user_' . $CURUSER["id"] . '_unread_message_count', $unread, 60);
+		}
 
-<table id="info_block" class="table table-noborder zeromp"  cellpadding="4" cellspacing="0" border="0" width="100%"><tr>
-	<td><table width="100%" cellspacing="0" cellpadding="0" border="0"><tr>
-		<td class="bottom" align="left"><span class="medium"><?php echo $lang_functions['text_welcome_back'] ?>, <span class="icon-user"></span><?php echo get_username($CURUSER['id'])?> <span class="icon-signout"></span><a href="logout.php"><?php echo $lang_functions['text_logout'] ?></a><?php if (get_user_class() >= UC_MODERATOR) { ?> <span class="icon-cogs"></span><a href="staffpanel.php"><?php echo $lang_functions['text_staff_panel'] ?></a> <?php }?> <?php if (get_user_class() >= UC_SYSOP) { ?> <span class="icon-wrench"></span><a href="settings.php"><?php echo $lang_functions['text_site_settings'] ?></a><?php } ?> <span class="icon-star"></span><a href="torrents.php?inclbookmarked=1&amp;allsec=1&amp;incldead=0"><?php echo $lang_functions['text_bookmarks'] ?></a> <font class = 'color_bonus'><?php echo $lang_functions['text_bonus'] ?></font><span class=" icon-pinterest"></span><a href="mybonus.php"><?php echo $lang_functions['text_use'] ?></a>: <?php echo number_format($CURUSER['seedbonus'], 1)?> <font class = 'color_invite'><?php echo $lang_functions['text_invite'] ?></font><span class="icon-share-alt"></span><a href="invite.php?id=<?php echo $CURUSER['id']?>"><?php echo $lang_functions['text_send'] ?></a>: <?php echo $CURUSER['invites']?><br />
+		$inboxpic = "<span class='icon-envelope' title=\"" . ($unread ? $lang_functions['title_inbox_new_messages'] : $lang_functions['title_inbox_no_new_messages']) . "\"></span>";
+		?>
 
-	<font class="color_ratio"><?php echo $lang_functions['text_ratio'] ?></font> <?php echo $ratio?>  <font class='color_uploaded'><?php echo $lang_functions['text_uploaded'] ?></font> <?php echo mksize($CURUSER['uploaded'])?><font class='color_downloaded'> <?php echo $lang_functions['text_downloaded'] ?></font> <?php echo mksize($CURUSER['downloaded'])?>  <font class='color_active'><?php echo $lang_functions['text_active_torrents'] ?></font><span class="icon-circle-arrow-up" title="<?php echo $lang_functions['title_torrents_seeding'] ?>"></span><?php echo $activeseed?>  <span class="icon-circle-arrow-down" title="<?php echo $lang_functions['title_torrents_leeching'] ?>"></span><?php echo $activeleech?>&nbsp;&nbsp;<font class='color_connectable'><?php echo $lang_functions['text_connectable'] ?></font><?php echo $connectable?> <?php echo maxslots();?></span></td>
+		<table id="info_block" class="table table-noborder zeromp" cellpadding="4" cellspacing="0" border="0"
+		       width="100%">
+			<tr>
+				<td>
+					<table width="100%" cellspacing="0" cellpadding="0" border="0">
+						<tr>
+							<td class="bottom" align="left"><span
+									class="medium"><?php echo $lang_functions['text_welcome_back'] ?>, <span
+										class="icon-user"></span><?php echo get_username($CURUSER['id']) ?> <span
+										class="icon-signout"></span><a
+										href="logout.php"><?php echo $lang_functions['text_logout'] ?></a><?php if (get_user_class() >= UC_MODERATOR) { ?>
+										<span class="icon-cogs"></span><a
+											href="staffpanel.php"><?php echo $lang_functions['text_staff_panel'] ?></a> <?php } ?> <?php if (get_user_class() >= UC_SYSOP) { ?>
+										<span class="icon-wrench"></span><a
+											href="settings.php"><?php echo $lang_functions['text_site_settings'] ?></a><?php } ?>
+									<span class="icon-star"></span><a
+										href="torrents.php?inclbookmarked=1&amp;allsec=1&amp;incldead=0"><?php echo $lang_functions['text_bookmarks'] ?></a> <font
+										class='color_bonus'><?php echo $lang_functions['text_bonus'] ?></font><span
+										class=" icon-pinterest"></span><a
+										href="mybonus.php"><?php echo $lang_functions['text_use'] ?></a>: <?php echo number_format($CURUSER['seedbonus'], 1) ?>
+									<font class='color_invite'><?php echo $lang_functions['text_invite'] ?></font><span
+										class="icon-share-alt"></span><a
+										href="invite.php?id=<?php echo $CURUSER['id'] ?>"><?php echo $lang_functions['text_send'] ?></a>: <?php echo $CURUSER['invites'] ?>
+									<br/>
 
-	<td class="bottom" align="right"><span class="medium"><span class="icon-time"></span>  <?php echo $lang_functions['text_the_time_is_now'] ?><?php echo $datum[hours].":".$datum[minutes]?><br />
+	<font class="color_ratio"><?php echo $lang_functions['text_ratio'] ?></font> <?php echo $ratio ?> <font
+										class='color_uploaded'><?php echo $lang_functions['text_uploaded'] ?></font> <?php echo mksize($CURUSER['uploaded']) ?>
+									<font
+										class='color_downloaded'> <?php echo $lang_functions['text_downloaded'] ?></font> <?php echo mksize($CURUSER['downloaded']) ?>
+									<font
+										class='color_active'><?php echo $lang_functions['text_active_torrents'] ?></font><span
+										class="icon-circle-arrow-up"
+										title="<?php echo $lang_functions['title_torrents_seeding'] ?>"></span><?php echo $activeseed ?>
+									<span class="icon-circle-arrow-down"
+									      title="<?php echo $lang_functions['title_torrents_leeching'] ?>"></span><?php echo $activeleech ?>
+									&nbsp;&nbsp;<font
+										class='color_connectable'><?php echo $lang_functions['text_connectable'] ?></font><?php echo $connectable ?> <?php echo maxslots(); ?></span>
+							</td>
 
-<?php
-	if (get_user_class() >= $staffmem_class){
-	$totalreports = $Cache->get_value('staff_report_count');
-	if ($totalreports == ""){
-		$totalreports = get_row_count("reports");
-		$Cache->cache_value('staff_report_count', $totalreports, 900);
-	}
-	$totalsm = $Cache->get_value('staff_message_count');
-	if ($totalsm == ""){
-		$totalsm = get_row_count("staffmessages");
-		$Cache->cache_value('staff_message_count', $totalsm, 900);
-	}
-	$totalcheaters = $Cache->get_value('staff_cheater_count');
-	if ($totalcheaters == ""){
-		$totalcheaters = get_row_count("cheaters");
-		$Cache->cache_value('staff_cheater_count', $totalcheaters, 900);
-	}
-	print("<a href=\"cheaterbox.php\"><span class='icon-ban-circle' title=\"".$lang_functions['title_cheaterbox']."\"></span>  </a>".$totalcheaters."  <a href=\"reports.php\"><span class='icon-exclamation-sign' title=\"".$lang_functions['title_reportbox']."\"></span>  </a>".$totalreports."  <a href=\"staffbox.php\"><span class='icon-envelope-alt' title=\"".$lang_functions['title_staffbox']."\"></span>  </a>".$totalsm."  ");
-	}
+							<td class="bottom" align="right"><span class="medium"><span
+										class="icon-time"></span> <?php echo $lang_functions['text_the_time_is_now'] ?><?php echo $datum[hours] . ":" . $datum[minutes] ?>
+									<br/>
 
-	print("<a href=\"messages.php\">".$inboxpic."</a> ".($messages ? $messages." (".$unread.$lang_functions['text_message_new'].")" : "0"));
-	print("  <a href=\"messages.php?action=viewmailbox&amp;box=-1\"><span class='icon-comment-alt' title=\"".$lang_functions['title_sentbox']."\"></span></a> ".($outmessages ? $outmessages : "0"));
-	print(" <a href=\"friends.php\"><span class='icon-group' title=\"".$lang_functions['title_buddylist']."\"></span></a>");
-//	print(" <a href=\"getrss.php\"><span class='icon-rss' title=\"".$lang_functions['title_get_rss']."\"></span></a>");
-?>
+									<?php
+									if (get_user_class() >= $staffmem_class) {
+										$totalreports = $Cache->get_value('staff_report_count');
+										if ($totalreports == "") {
+											$totalreports = get_row_count("reports");
+											$Cache->cache_value('staff_report_count', $totalreports, 900);
+										}
+										$totalsm = $Cache->get_value('staff_message_count');
+										if ($totalsm == "") {
+											$totalsm = get_row_count("staffmessages");
+											$Cache->cache_value('staff_message_count', $totalsm, 900);
+										}
+										$totalcheaters = $Cache->get_value('staff_cheater_count');
+										if ($totalcheaters == "") {
+											$totalcheaters = get_row_count("cheaters");
+											$Cache->cache_value('staff_cheater_count', $totalcheaters, 900);
+										}
+										print("<a href=\"cheaterbox.php\"><span class='icon-ban-circle' title=\"" . $lang_functions['title_cheaterbox'] . "\"></span>  </a>" . $totalcheaters . "  <a href=\"reports.php\"><span class='icon-exclamation-sign' title=\"" . $lang_functions['title_reportbox'] . "\"></span>  </a>" . $totalreports . "  <a href=\"staffbox.php\"><span class='icon-envelope-alt' title=\"" . $lang_functions['title_staffbox'] . "\"></span>  </a>" . $totalsm . "  ");
+									}
+
+									print("<a href=\"messages.php\">" . $inboxpic . "</a> " . ($messages ? $messages . " (" . $unread . $lang_functions['text_message_new'] . ")" : "0"));
+									print("  <a href=\"messages.php?action=viewmailbox&amp;box=-1\"><span class='icon-comment-alt' title=\"" . $lang_functions['title_sentbox'] . "\"></span></a> " . ($outmessages ? $outmessages : "0"));
+									print(" <a href=\"friends.php\"><span class='icon-group' title=\"" . $lang_functions['title_buddylist'] . "\"></span></a>");
+									//	print(" <a href=\"getrss.php\"><span class='icon-rss' title=\"".$lang_functions['title_get_rss']."\"></span></a>");
+									?>
 
 	</span></td>
-	</tr></table></td>
-</tr></table>
+						</tr>
+					</table>
+				</td>
+			</tr>
+		</table>
 
-</td></tr>
+	</td>
+</div>
 
-<tr><td id="outer" align="center" class="outer" style=" padding-bottom: 20px">
+
+<!--<table class="mainouter" id="bannerdown" width="100%" cellspacing="0" cellpadding="5" align="center">-->
+<!--<div class="container">-->
+
+	<td id="outer" align="center" class="outer" style=" padding-bottom: 20px">
 <?php
 	if ($Advertisement->enable_ad()){
 			$belownavad=$Advertisement->get_ad('belownav');
 			if ($belownavad)
 			echo "<div align=\"center\" style=\"margin-bottom: 10px\" id=\"ad_belownav\">".$belownavad[0]."</div>";
 	}
-if ($msgalert)
-{
-	function msgalert($url, $text, $bgcolor = "red")
-	{
-		echo "
-			<style>
-			.alert, .alert h4 {
-    			color: #c09853;
-			}
-			.alert {
-				padding: 8px 35px 8px 14px;
-				margin-bottom: 20px;
-				text-shadow: 0 1px 0 rgba(255,255,255,0.5);
-				color: #3a87ad;
-    			background-color: #d9edf7;
-    			border-color: #bce8f1;
-				-webkit-border-radius: 4px;
-				-moz-border-radius: 4px;
-				border-radius: 4px;
-			}
-			a:hover{
-				text-decoration: none;
-			}
-		</style>
-		<script>
-		$(\".alert\").alert('close');
-		</script>
-		";
-		print("<p><table border=\"0\" cellspacing=\"0\" cellpadding=\"10\"><tr>\n");
-		print("<b>
-			<div class=\"alert alert-info\" style='width: 20%'>
-			<button type=\"button\" class=\"close\" data-dismiss=\"alert\">&times;</button>
-			<a href=\"".$url."\">".$text."</a>
-			</div>
-				</b>");
-//		print("</tr></table></p>");
-	}
-	if($CURUSER['leechwarn'] == 'yes')
-	{
-		$kicktimeout = gettime($CURUSER['leechwarnuntil'], false, false, true);
-		$text = $lang_functions['text_please_improve_ratio_within'].$kicktimeout.$lang_functions['text_or_you_will_be_banned'];
-		msgalert("faq.php#id17", $text, "orange");
-	}
-	if($deletenotransfertwo_account) //inactive account deletion notice
-	{
-		if ($CURUSER['downloaded'] == 0 && ($CURUSER['uploaded'] == 0 || $CURUSER['uploaded'] == $iniupload_main))
-		{
-			$neverdelete_account = ($neverdelete_account <= UC_VIP ? $neverdelete_account : UC_VIP);
-			if (get_user_class() < $neverdelete_account)
-			{
-				$secs = $deletenotransfertwo_account*24*60*60;
-				$addedtime = strtotime($CURUSER['added']);
-				if (TIMENOW > $addedtime+($secs/3)) // start notification if one third of the time has passed
-				{
-					$kicktimeout = gettime(date("Y-m-d H:i:s", $addedtime+$secs), false, false, true);
-					$text = $lang_functions['text_please_download_something_within'].$kicktimeout.$lang_functions['text_inactive_account_be_deleted'];
-					msgalert("rules.php", $text, "gray");
-				}
-			}
-		}
-	}
-	if($CURUSER['showclienterror'] == 'yes')
-	{
-		$text = $lang_functions['text_banned_client_warning'];
-		msgalert("faq.php#id29", $text, "black");
-	}
-	if ($unread)
-	{
-		$text = $lang_functions['text_you_have'].$unread.$lang_functions['text_new_message'] . add_s($unread) . $lang_functions['text_click_here_to_read'];
-		msgalert("messages.php",$text, "red");
-	}
-/*
-	$pending_invitee = $Cache->get_value('user_'.$CURUSER["id"].'_pending_invitee_count');
-	if ($pending_invitee == ""){
-		$pending_invitee = get_row_count("users","WHERE status = 'pending' AND invited_by = ".sqlesc($CURUSER[id]));
-		$Cache->cache_value('user_'.$CURUSER["id"].'_pending_invitee_count', $pending_invitee, 900);
-	}
-	if ($pending_invitee > 0)
-	{
-		$text = $lang_functions['text_your_friends'].add_s($pending_invitee).is_or_are($pending_invitee).$lang_functions['text_awaiting_confirmation'];
-		msgalert("invite.php?id=".$CURUSER[id],$text, "red");
-	}*/
-	$settings_script_name = $_SERVER["SCRIPT_FILENAME"];
-	if (!preg_match("/index/i", $settings_script_name))
-	{
-		$new_news = $Cache->get_value('user_'.$CURUSER["id"].'_unread_news_count');
-		if ($new_news == ""){
-			$new_news = get_row_count("news","WHERE notify = 'yes' AND added > ".sqlesc($CURUSER['last_home']));
-			$Cache->cache_value('user_'.$CURUSER["id"].'_unread_news_count', $new_news, 300);
-		}
-		if ($new_news > 0)
-		{
-			$text = $lang_functions['text_there_is'].is_or_are($new_news).$new_news.$lang_functions['text_new_news'];
-			msgalert("index.php",$text, "green");
-		}
-	}
 
-	if (get_user_class() >= $staffmem_class)
-	{
-		$numreports = $Cache->get_value('staff_new_report_count');
-		if ($numreports == ""){
-			$numreports = get_row_count("reports","WHERE dealtwith=0");
-			$Cache->cache_value('staff_new_report_count', $numreports, 900);
-		}
-		if ($numreports){
-			$text = $lang_functions['text_there_is'].is_or_are($numreports).$numreports.$lang_functions['text_new_report'] .add_s($numreports);
-			msgalert("reports.php",$text, "blue");
-		}
-		$nummessages = $Cache->get_value('staff_new_message_count');
-		if ($nummessages == ""){
-			$nummessages = get_row_count("staffmessages","WHERE answered='no'");
-			$Cache->cache_value('staff_new_message_count', $nummessages, 900);
-		}
-		if ($nummessages > 0) {
-			$text = $lang_functions['text_there_is'].is_or_are($nummessages).$nummessages.$lang_functions['text_new_staff_message'] . add_s($nummessages);
-			msgalert("staffbox.php",$text, "blue");
-		}
-		$numcheaters = $Cache->get_value('staff_new_cheater_count');
-		if ($numcheaters == ""){
-			$numcheaters = get_row_count("cheaters","WHERE dealtwith=0");
-			$Cache->cache_value('staff_new_cheater_count', $numcheaters, 900);
-		}
-		if ($numcheaters){
-			$text = $lang_functions['text_there_is'].is_or_are($numcheaters).$numcheaters.$lang_functions['text_new_suspected_cheater'] .add_s($numcheaters);
-			msgalert("cheaterbox.php",$text, "blue");
-		}
-	}
-}
 		if ($offlinemsg)
 		{
 			print("<p><table width=\"737\"  cellspacing=\"0\" cellpadding=\"10\"><tr><td style='padding: 10px; background: red' class=\"text\" align=\"center\">\n");

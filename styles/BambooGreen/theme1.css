@@ -1341,3 +1341,9 @@ td .text{
     font-family: sans-serif;
     font-size: 16px;
 }
+
+.container {
+    min-width: 1333px;
+    width: 100%;
+    max-width: 1353px;
+}
