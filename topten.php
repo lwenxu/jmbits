@@ -20,14 +20,20 @@ $type = 1;
 $limit = isset($_GET["lim"]) ? 0 + $_GET["lim"] : false;
 $subtype = isset($_GET["subtype"]) ? $_GET["subtype"] : false;
 
-print("<p align=\"center\">"  .
-($type == 1 && !$limit ? "<b>".$lang_topten['text_users']."</b>" : "<a href=\"topten.php?type=1\">".$lang_topten['text_users']."</a>") .	" | " .
-($type == 2 && !$limit ? "<b>".$lang_topten['text_torrents']."</b>" : "<a href=\"topten.php?type=2\">".$lang_topten['text_torrents']."</a>") . " | " .
-($type == 3 && !$limit ? "<b>".$lang_topten['text_countries']."</b>" : "<a href=\"topten.php?type=3\">".$lang_topten['text_countries']."</a>") . " | " .
-($type == 4 && !$limit ? "<b>".$lang_topten['text_peers']."</b>" : "<a href=\"topten.php?type=4\">".$lang_topten['text_peers']."</a>")  . " | " .
-($type == 5 && !$limit ? "<b>".$lang_topten['text_community']."</b>" : "<a href=\"topten.php?type=5\">".$lang_topten['text_community']."</a>")  . " | " .
-($type == 7 && !$limit ? "<b>".$lang_topten['text_search']."</b>" : "<a href=\"topten.php?type=7\">".$lang_topten['text_search']."</a>")  . " | " .
-($type == 6 && !$limit ? "<b>".$lang_topten['text_other']."</b>" : "<a href=\"topten.php?type=6\">".$lang_topten['text_other']."</a>")  . "</p>\n");
+print("<div id=\"usercpnav\" style='margin-left: 36%'>
+  <ul id=\"\" class=\"nav nav-pills\">"  .
+($type != 1 || $limit ? "<li class='nav-settings-item'><a href='topten.php?type=1'>".$lang_topten['text_users']."</a></li>" : "<li class=\"active\"><a class=\"nav-settings-item\" href=\"topten.php?type=1\">".$lang_topten['text_users']."</a></li>")  .
+($type != 2 || $limit ? "<li class='nav-settings-item'><a href='topten.php?type=2'>".$lang_topten['text_torrents']."</a></li>" : "<li class=\"active\"><a class=\"nav-settings-item\" href=\"topten.php?type=2\">".$lang_topten['text_torrents']."</a></li>")  .
+
+($type != 4 || $limit ? "<li class='nav-settings-item'><a href='topten.php?type=4'>".$lang_topten['text_peers']."</a></li>" : "<li class=\"active\"><a class=\"nav-settings-item\" href=\"topten.php?type=4\">".$lang_topten['text_peers']."</a></li>")   .
+($type != 5 || $limit ? "<li class='nav-settings-item'><a href='topten.php?type=5'>".$lang_topten['text_community']."</a></li>" : "<li class=\"active\"><a class=\"nav-settings-item\" href=\"topten.php?type=5\">".$lang_topten['text_community']."</a></li>")   .
+($type != 7 || $limit ? "<li class='nav-settings-item'> <a href='topten.php?type=7'> ".$lang_topten['text_search']."</a></li>" : "<li class=\"active\"><a class=\"nav-settings-item\" href=\"topten.php?type=7\">".$lang_topten['text_search']."</a></li>")   .
+($type != 6 || $limit ? "<li class='nav-settings-item'><a href='topten.php?type=6'>".$lang_topten['text_other']."</a></li>" : "<li class=\"active\"><a class=\"nav-settings-item\" href=\"topten.php?type=6\">".$lang_topten['text_other']."</a></li>")  . " 
+ </ul>
+</div>\n");
+//去掉国家
+//($type != 3 || $limit ? "<li class='nav-settings-item'><a href='topten.php?type=3'>" . $lang_topten['text_countries'] . "</a></li>" : "<li class=\"active\"><a class=\"nav-settings-item\" href=\"topten.php?type=3\">" . $lang_topten['text_countries'] . "</a></li>") .
+
 
 if (!$limit || $limit > 250)
 $limit = 10;

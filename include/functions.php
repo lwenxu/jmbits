@@ -91,7 +91,7 @@ function stderr($heading, $text, $htmlstrip = true, $head = true, $foot = true, 
 
 function sqlerr($file = '', $line = '')
 {
-	print("<table border=\"0\" bgcolor=\"blue\" align=\"left\" cellspacing=\"0\" cellpadding=\"10\" style=\"background: blue;\">" .
+	print("<table border=\"0\" bgcolor=\"blue\" align=\"center\" cellspacing=\"0\" cellpadding=\"10\" style=\"background: blue;\">" .
 	"<tr><td class=\"embedded\"><font color=\"white\"><h1>SQL Error</h1>\n" .
 	"" . mysql_error() . ($file != '' && $line != '' ? "<p>in $file, line $line</p>" : "") . "</font></td></tr></table>");
 	die;
@@ -643,7 +643,7 @@ function insert_smilies_frame()
 	global $lang_functions;
 	begin_frame($lang_functions['text_smilies'], true);
 	begin_table(false, 5);
-	print("<tr><td class=\"colhead\">".$lang_functions['col_type_something']."</td><td class=\"colhead\">".$lang_functions['col_to_make_a']."</td></tr>\n");
+	print("<tr><td align=\"center\">".$lang_functions['col_type_something']."</td><td align=\"center\">".$lang_functions['col_to_make_a']."</td></tr>\n");
 	for ($i=1; $i<192; $i++) {
 		print("<tr><td>[em$i]</td><td><img src=\"pic/smilies/".$i.".gif\" alt=\"[em$i]\" /></td></tr>\n");
 	}
@@ -1077,12 +1077,12 @@ function begin_compose($title = "",$type="new", $body="", $hassubject=true, $sub
 	if ($title)
 		print("<h3 align=\"center\">".$title."</h3>");
 	switch ($type){
-		case 'new': 
+		case 'new':
 		{
 			$framename = $lang_functions['text_new'];
 			break;
 		}
-		case 'reply': 
+		case 'reply':
 		{
 			$framename = $lang_functions['text_reply'];
 			break;
@@ -1107,17 +1107,18 @@ function begin_compose($title = "",$type="new", $body="", $hassubject=true, $sub
 	print("<table class='table table-striped' width=\"100%\"  cellspacing=\"0\" cellpadding=\"5\">\n");
 	if ($hassubject)
 		print("<tr><td class=\"rowhead\">".$lang_functions['row_subject']."</td>" .
-"<td class=\"rowfollow\" align=\"left\"><input type=\"text\" style=\"width: 650px;\" name=\"subject\" maxlength=\"".$maxsubjectlength."\" value=\"".$subject."\" /></td></tr>\n");
-	print("<tr><td class=\"rowhead\" valign=\"top\">".$lang_functions['row_body']."</td><td class=\"rowfollow\" align=\"left\"><span style=\"display: none;\" id=\"previewouter\"></span><div id=\"editorouter\">");
+"<td class=\"rowfollow\" align=\"center\"><input type=\"text\" style=\"width: 650px;\" name=\"subject\" maxlength=\"".$maxsubjectlength."\" value=\"".$subject."\" /></td></tr>\n");
+	print("<tr><td class=\"rowhead\" valign=\"top\">".$lang_functions['row_body']."</td><td class=\"rowfollow\" align=\"center\"><span style=\"display: none;\" id=\"previewouter\"></span><div id=\"editorouter\">");
 	textbbcode("compose","body", $body, false);
 	print("</div></td></tr>");
 }
 
 function end_compose(){
 	global $lang_functions;
-	print("<tr><td colspan=\"2\" align=\"center\"><table><tr><td class=\"embedded\"><input id=\"qr\" type=\"submit\" class=\"btn\" value=\"".$lang_functions['submit_submit']."\" /></td><td class=\"embedded\">");
-	print("<input type=\"button\" class=\"btn2\" name=\"previewbutton\" id=\"previewbutton\" value=\"".$lang_functions['submit_preview']."\" onclick=\"javascript:preview(this.parentNode);\" />");
-	print("<input type=\"button\" class=\"btn2\" style=\"display: none;\" name=\"unpreviewbutton\" id=\"unpreviewbutton\" value=\"".$lang_functions['submit_edit']."\" onclick=\"javascript:unpreview(this.parentNode);\" />");
+	print("<tr><td colspan=\"2\" align=\"center\"><table><tr><td class=\"embedded\"><input style='margin-left: 50%' id=\"qr\" type=\"submit\" class=\"btn btn-success\" value=\"".$lang_functions['submit_submit']."\" /></td><td class=\"embedded\">");
+//	关闭预览功能
+//	print("<input type=\"button\" class=\"btn btn-success\" name=\"previewbutton\" id=\"previewbutton\" value=\"".$lang_functions['submit_preview']."\" onclick=\"javascript:preview(this.parentNode);\" />");
+//	print("<input type=\"button\" class=\"btn btn-success\" style=\"display: none;\" name=\"unpreviewbutton\" id=\"unpreviewbutton\" value=\"".$lang_functions['submit_edit']."\" onclick=\"javascript:unpreview(this.parentNode);\" />");
 	print("</td></tr></table>");
 	print("</td></tr>");
 	print("</table>\n");
@@ -1234,7 +1235,7 @@ function get_torrent_2_user_value($user_snatched_arr)
 	}
 	else	// torrent already deleted, half blind guess, be conservative
 	{
-		
+
 		if($user_snatched_arr['finished'] == 'no' && $user_snatched_arr['uploaded'] > 0 && $user_snatched_arr['downloaded'] == 0)	// possibly owner
 		{
 			$torrent_2_user_value *= 0.55;	//conservative
@@ -1687,8 +1688,8 @@ function show_image_code () {
 		unset($imagehash);
 		$imagehash = image_code () ;
 		print ("<tr><td class=\"rowhead\">".$lang_functions['row_security_image']."</td>");
-		print ("<td align=\"left\"><img src=\"".htmlspecialchars("image.php?action=regimage&imagehash=".$imagehash)."\" border=\"0\" alt=\"CAPTCHA\" /></td></tr>");
-		print ("<tr><td class=\"rowhead\">".$lang_functions['row_security_code']."</td><td align=\"left\">");
+		print ("<td align=\"center\"><img src=\"".htmlspecialchars("image.php?action=regimage&imagehash=".$imagehash)."\" border=\"0\" alt=\"CAPTCHA\" /></td></tr>");
+		print ("<tr><td class=\"rowhead\">".$lang_functions['row_security_code']."</td><td align=\"center\">");
 		print("<input type=\"text\" autocomplete=\"off\" style=\"width: 180px; border: 1px solid gray\" name=\"imagestring\" value=\"\" />");
 		print("<input type=\"hidden\" name=\"imagehash\" value=\"$imagehash\" /></td></tr>");
 	}
@@ -2123,7 +2124,7 @@ function tr($x,$y,$noesc=0,$relation='') {
 		$a = htmlspecialchars($y);
 		$a = str_replace("\n", "<br />\n", $a);
 	}
-	print("<tr".( $relation ? " relation = \"$relation\"" : "")."><td class=\"embedded-head\" style='width:100px;margin-left:2%'  align=\"left\" >$x</td><td class=\"embedded-head\" valign=\"top\" >".$a."</td></tr>\n");
+	print("<tr".( $relation ? " relation = \"$relation\"" : "")."><td class=\"embedded-head\" style='width:100px;margin-left:2%'  align=\"center\" >$x</td><td class=\"embedded-head\" valign=\"top\" >".$a."</td></tr>\n");
 }
 
 function tr_small($x,$y,$noesc=0,$relation='') {
@@ -2133,7 +2134,7 @@ function tr_small($x,$y,$noesc=0,$relation='') {
 		$a = htmlspecialchars($y);
 		$a = str_replace("\n", "<br />\n", $a);
 	}
-	print("<tr".( $relation ? " relation = \"$relation\"" : "")."><td width=\"10%\" class=\"embedded-head\" valign=\"top\" align=\"right\">".$x."</td><td width=\"90%\" class=\"rowfollow\" valign=\"top\" align=\"left\">".$a."</td></tr>\n");
+	print("<tr".( $relation ? " relation = \"$relation\"" : "")."><td width=\"10%\" class=\"embedded-head\" valign=\"top\" >".$x."</td><td width=\"90%\" class=\"rowfollow\" valign=\"top\" >".$a."</td></tr>\n");
 }
 
 function twotd($x,$y,$nosec=0){
@@ -2168,7 +2169,7 @@ function validlang($langid) {
 
 function get_if_restricted_is_open()
 {
-	global $sptime; 
+	global $sptime;
 	// it's sunday
 	if($sptime == 'yes' && (date("w",time()) == '0' || (date("w",time()) == 6) && (date("G",time()) >=12 && date("G",time()) <=23)))
 	{
@@ -2333,7 +2334,7 @@ function stdhead($title = "", $msgalert = true, $script = "", $place = "")
 	global $Advertisement;
 
 	$Cache->setLanguage($CURLANGDIR);
-	
+
 	$Advertisement = new ADVERTISEMENT($CURUSER['id']);
 	$cssupdatedate = $cssdate_tweak;
 	// Variable for Start Time
@@ -2972,7 +2973,7 @@ function commenttable($rows, $type, $parent_id, $review = false)
 		print("</tr>\n");
 		$actionbar = "<a href=\"comment.php?action=add&amp;sub=quote&amp;cid=".$row[id]."&amp;pid=".$parent_id."&amp;type=".$type."\"><img class=\"f_quote\" src=\"pic/trans.gif\" alt=\"Quote\" title=\"".$lang_functions['title_reply_with_quote']."\" /></a>".
 		"<a href=\"comment.php?action=add&amp;pid=".$parent_id."&amp;type=".$type."\"><img class=\"f_reply\" src=\"pic/trans.gif\" alt=\"Add Reply\" title=\"".$lang_functions['title_add_reply']."\" /></a>".(get_user_class() >= $commanage_class ? "<a href=\"comment.php?action=delete&amp;cid=".$row[id]."&amp;type=".$type."\"><img class=\"f_delete\" src=\"pic/trans.gif\" alt=\"Delete\" title=\"".$lang_functions['title_delete']."\" /></a>" : "").($row["user"] == $CURUSER["id"] || get_user_class() >= $commanage_class ? "<a href=\"comment.php?action=edit&amp;cid=".$row[id]."&amp;type=".$type."\"><img class=\"f_edit\" src=\"pic/trans.gif\" alt=\"Edit\" title=\"".$lang_functions['title_edit']."\" />"."</a>" : "");
-		print("<tr><td class=\"toolbox\"> ".("'".$userRow['last_access']."'"> $dt ? "<img class=\"f_online\" src=\"pic/trans.gif\" alt=\"Online\" title=\"".$lang_functions['title_online']."\" />":"<img class=\"f_offline\" src=\"pic/trans.gif\" alt=\"Offline\" title=\"".$lang_functions['title_offline']."\" />" )."<a href=\"sendmessage.php?receiver=".htmlspecialchars(trim($row["user"]))."\"><img class=\"f_pm\" src=\"pic/trans.gif\" alt=\"PM\" title=\"".$lang_functions['title_send_message_to'].htmlspecialchars($userRow["username"])."\" /></a><a href=\"report.php?commentid=".htmlspecialchars(trim($row["id"]))."\"><img class=\"f_report\" src=\"pic/trans.gif\" alt=\"Report\" title=\"".$lang_functions['title_report_this_comment']."\" /></a></td><td class=\"toolbox\" align=\"right\">".$actionbar."</td>");
+		print("<tr><td class=\"toolbox\"> ".("'".$userRow['last_access']."'"> $dt ? "<img class=\"f_online\" src=\"pic/trans.gif\" alt=\"Online\" title=\"".$lang_functions['title_online']."\" />":"<img class=\"f_offline\" src=\"pic/trans.gif\" alt=\"Offline\" title=\"".$lang_functions['title_offline']."\" />" )."<a href=\"sendmessage.php?receiver=".htmlspecialchars(trim($row["user"]))."\"><img class=\"f_pm\" src=\"pic/trans.gif\" alt=\"PM\" title=\"".$lang_functions['title_send_message_to'].htmlspecialchars($userRow["username"])."\" /></a><a href=\"report.php?commentid=".htmlspecialchars(trim($row["id"]))."\"><img class=\"f_report\" src=\"pic/trans.gif\" alt=\"Report\" title=\"".$lang_functions['title_report_this_comment']."\" /></a></td><td class=\"toolbox\" align=\"center\">".$actionbar."</td>");
 
 		print("</tr></table>\n");
 		$count++;
@@ -3148,7 +3149,7 @@ for ($i=1; $i<=9; $i++){
 
 if ($wait)
 {
-	print("<td class=\"colhead\">".$lang_functions['col_wait']."</td>\n");
+	print("<td align=\"center\">".$lang_functions['col_wait']."</td>\n");
 }
 if ($CURUSER['showcomnum'] != 'no') { ?>
 <td class="colhead" align="center"><a href="?<?php echo $oldlink?>sort=3&amp;type=<?php echo $link[3]?>"><span class=" icon-comments-alt icos-download"  alt="comments" title="<?php echo $lang_functions['title_number_of_comments'] ?>" ></span></a></td>
@@ -3247,8 +3248,8 @@ while ($row = mysql_fetch_assoc($res))
 	if ($row['pos_state'] == 'sticky' && $CURUSER['appendsticky'] == 'yes')
 		$stickyicon = "<img class=\"sticky\" src=\"pic/trans.gif\" alt=\"Sticky\" title=\"".$lang_functions['title_sticky']."\" />&nbsp;";
 	else $stickyicon = "";
-	
-	print("<td class=\"rowfollow\" width=\"100%\" align=\"left\"><table class=\"sans\" width=\"100%\"><tr" . $sphighlight . "><td class=\"sans\">".$stickyicon."<a $short_torrent_name_alt $mouseovertorrent href=\"details.php?id=".$id."&amp;hit=1\">".htmlspecialchars($dispname)."</a>");
+
+	print("<td class=\"rowfollow\" width=\"100%\" align=\"center\"><table class=\"sans\" width=\"100%\"><tr" . $sphighlight . "><td class=\"sans\">".$stickyicon."<a $short_torrent_name_alt $mouseovertorrent href=\"details.php?id=".$id."&amp;hit=1\">".htmlspecialchars($dispname)."</a>");
 	$sp_torrent = get_torrent_promotion_append($row['sp_state'],"",true,$row["added"], $row['promotion_time_type'], $row['promotion_until']);
 	$picked_torrent = "";
 	if ($CURUSER['appendpicked'] != 'no'){
@@ -3299,7 +3300,7 @@ while ($row = mysql_fetch_assoc($res))
 		else
 		print("<td class=\"rowfollow nowrap\">".$lang_functions['text_none']."</td>\n");
 	}
-	
+
 	if ($CURUSER['showcomnum'] != 'no')
 	{
 	print("<td class=\"rowfollow\">");
@@ -3703,7 +3704,7 @@ function getimdb($imdb_id, $cache_stamp, $mode = 'minor')
 				$tagline = $movie->tagline ();
 				switch ($mode)
 				{
-				case 'minor' : 
+				case 'minor' :
 					{
 					$autodata = "<font class=\"big\">".$title."</font> (".$year.") <br /><strong><font color=\"DarkRed\">".$lang_functions['text_imdb'].": </font></strong>".$imdbrating." <strong><font color=\"DarkRed\">".$lang_functions['text_country'].": </font></strong>".$countries." <strong><font color=\"DarkRed\">".$lang_functions['text_genres'].": </font></strong>".$genres."<br />".$director_or_creator."<strong><font color=\"DarkRed\"> ".$lang_functions['text_starring'].": </font></strong>".$casts."<br /><p><strong>".$tagline."</strong></p>";
 					break;
@@ -3730,10 +3731,10 @@ function getimdb($imdb_id, $cache_stamp, $mode = 'minor')
 						$plots = "<font class=\"small\">".$plots."</font>";
 						}
 					$autodata = "<table style=\"background-color: transparent;\" border=\"0\" cellspacing=\"0\" cellpadding=\"3\">
-".($smallth ? "<td class=\"clear\" valign=\"top\" align=\"right\">
+".($smallth ? "<td class=\"clear\" valign=\"top\" align=\"center\">
 $smallth
 </td>" : "")
-."<td class=\"clear\" valign=\"top\" align=\"left\">
+."<td class=\"clear\" valign=\"top\" align=\"center\">
 <table style=\"background-color: transparent;\" border=\"0\" cellspacing=\"0\" cellpadding=\"3\" width=\"350\">
 <tr><td class=\"clear\" colspan=\"2\"><img class=\"imdb\" src=\"pic/trans.gif\" alt=\"imdb\" /> <font class=\"big\">".$title."</font> (".$year.") </td></tr>
 <tr><td class=\"clear\"><strong><font color=\"DarkRed\">".$lang_functions['text_imdb'].": </font></strong>".$imdbrating."</td>
@@ -3752,7 +3753,7 @@ $smallth
 				}
 				return $autodata;
 			}
-			case "2" : 
+			case "2" :
 			{
 				return false;
 				break;
@@ -4151,7 +4152,7 @@ function set_forum_moderators($name, $forumid, $limit=3){
 }
 
 function get_plain_username($id){
-	$row = get_user_row($id);	
+	$row = get_user_row($id);
 	if ($row)
 		$username = $row['username'];
 	else $username = "";
@@ -4539,13 +4540,13 @@ function usershare_table($res, $frame_caption)
 				$ratio = "<font color=\"$color\">$ratio</font>";
 		} else
 			$ratio = $lang_topten['text_inf'];
-		print("<tr><td class=\"rowfollow\" align=\"center\">$num</td><td class=\"rowfollow\" align=\"left\">" . get_username($a["userid"]) .
-			"</td><td class=\"rowfollow\" align=\"right\">" . mksize($a["uploaded"]) .
-			"</td><td class=\"rowfollow\" align=\"right\">" . mksize($a["upspeed"]) . "/s" .
-			"</td><td class=\"rowfollow\" align=\"right\">" . mksize($a["downloaded"]) .
-			"</td><td class=\"rowfollow\" align=\"right\">" . mksize($a["downspeed"]) . "/s" .
-			"</td><td class=\"rowfollow\" align=\"right\">" . $ratio .
-			"</td><td class=\"rowfollow\" align=\"left\">" . gettime($a["added"], true, false) . "</td></tr>");
+		print("<tr><td class=\"rowfollow\" align=\"center\">$num</td><td class=\"rowfollow\" align=\"center\">" . get_username($a["userid"]) .
+			"</td><td class=\"rowfollow\" align=\"center\">" . mksize($a["uploaded"]) .
+			"</td><td class=\"rowfollow\" align=\"center\">" . mksize($a["upspeed"]) . "/s" .
+			"</td><td class=\"rowfollow\" align=\"center\">" . mksize($a["downloaded"]) .
+			"</td><td class=\"rowfollow\" align=\"center\">" . mksize($a["downspeed"]) . "/s" .
+			"</td><td class=\"rowfollow\" align=\"center\">" . $ratio .
+			"</td><td class=\"rowfollow\" align=\"center\">" . gettime($a["added"], true, false) . "</td></tr>");
 	}
 	end_table();
 	end_frame();
@@ -4579,11 +4580,11 @@ function _torrenttable($res, $frame_caption)
 			$ratio = "<font color=\"" . get_ratio_color($r) . "\">" . number_format($r, 2) . "</font>";
 		} else
 			$ratio = $lang_topten['text_inf'];
-		print("<tr><td class=\"rowfollow\" align=\"center\">$num</td><td class=\"rowfollow\" align=\"left\"><a href=\"details.php?id=" . $a["id"] . "&amp;hit=1\">" .
-			$a["name"] . "</a></td><td class=\"rowfollow\" align=\"right\">" . number_format($a["times_completed"]) .
-			"</td><td class=\"rowfollow\" align=\"right\">" . mksize($a["data"]) . "</td><td class=\"rowfollow\" align=\"right\">" . number_format($a["seeders"]) .
-			"</td><td class=\"rowfollow\" align=\"right\">" . number_format($a["leechers"]) . "</td><td class=\"rowfollow\" align=\"right\">" . ($a["leechers"] + $a["seeders"]) .
-			"</td><td class=\"rowfollow\" align=\"right\">$ratio</td>\n");
+		print("<tr><td class=\"rowfollow\" align=\"center\">$num</td><td class=\"rowfollow\" align=\"center\"><a href=\"details.php?id=" . $a["id"] . "&amp;hit=1\">" .
+			$a["name"] . "</a></td><td class=\"rowfollow\" align=\"center\">" . number_format($a["times_completed"]) .
+			"</td><td class=\"rowfollow\" align=\"center\">" . mksize($a["data"]) . "</td><td class=\"rowfollow\" align=\"center\">" . number_format($a["seeders"]) .
+			"</td><td class=\"rowfollow\" align=\"center\">" . number_format($a["leechers"]) . "</td><td class=\"rowfollow\" align=\"center\">" . ($a["leechers"] + $a["seeders"]) .
+			"</td><td class=\"rowfollow\" align=\"center\">$ratio</td>\n");
 	}
 	end_table();
 	end_frame();
@@ -4613,11 +4614,11 @@ function countriestable($res, $frame_caption, $what)
 			$value = mksize($a["ul_avg"]);
 		elseif ($what == $lang_topten['col_ratio'])
 			$value = number_format($a["r"], 2);
-		print("<tr><td class=\"rowfollow\" align=\"center\">$num</td><td class=\"rowfollow\" align=\"left\">
+		print("<tr><td class=\"rowfollow\" align=\"center\">$num</td><td class=\"rowfollow\" align=\"center\">
 <table border=\"0\" class=\"main\" cellspacing=\"0\" cellpadding=\"0\">
 <tr><td class=\"sans\">" .
 			"<img align=\"center\" src=\"pic/flag/$a[flagpic]\" alt=\"\" /></td><td class=\"sans\" style='padding-left: 5px'>$a[name]</td>" .
-			"</tr></table></td><td class=\"rowfollow\" align=\"right\">$value</td></tr>\n");
+			"</tr></table></td><td class=\"rowfollow\" align=\"center\">$value</td></tr>\n");
 	}
 	end_table();
 	end_frame();
@@ -4629,7 +4630,7 @@ function peerstable($res, $frame_caption)
 	begin_frame($frame_caption, true);
 	begin_table();
 
-	print("<tr><td class=\"colhead\">" . $lang_topten['col_rank'] . "</td><td class=\"colhead\">" . $lang_topten['col_username'] . "</td><td class=\"colhead\">" . $lang_topten['col_upload_rate'] . "</td><td class=\"colhead\">" . $lang_topten['col_download_rate'] . "</td></tr>");
+	print("<tr><td align=\"center\">" . $lang_topten['col_rank'] . "</td><td align=\"center\">" . $lang_topten['col_username'] . "</td><td align=\"center\">" . $lang_topten['col_upload_rate'] . "</td><td align=\"center\">" . $lang_topten['col_download_rate'] . "</td></tr>");
 
 	$n = 1;
 	while ($arr = mysql_fetch_assoc($res)) {
@@ -4647,12 +4648,12 @@ function bonustable($res, $frame_caption)
 	begin_frame($frame_caption, true);
 	begin_table();
 
-	print("<tr><td class=\"colhead\">" . $lang_topten['col_rank'] . "</td><td class=\"colhead\">" . $lang_topten['col_username'] . "</td><td class=\"colhead\">" . $lang_topten['col_bonus'] . "</td></tr>");
+	print("<tr><td align=\"center\">" . $lang_topten['col_rank'] . "</td><td align=\"center\">" . $lang_topten['col_username'] . "</td><td align=\"center\">" . $lang_topten['col_bonus'] . "</td></tr>");
 
 	$n = 1;
 	while ($arr = mysql_fetch_assoc($res)) {
 		//die();
-		print("<tr><td class=\"rowfollow\" align=\"center\">$n</td><td class=\"rowfollow\" align=\"left\">" . get_username($arr["id"]) . "</td><td class=\"rowfollow\" align=\"right\">" . number_format($arr["seedbonus"], 1) . "</td></tr>\n");
+		print("<tr><td class=\"rowfollow\" align=\"center\">$n</td><td class=\"rowfollow\" align=\"center\">" . get_username($arr["id"]) . "</td><td class=\"rowfollow\" align=\"center\">" . number_format($arr["seedbonus"], 1) . "</td></tr>\n");
 		$n++;
 	}
 
@@ -4666,12 +4667,12 @@ function prolinkclicktable($res, $frame_caption)
 	begin_frame($frame_caption, true);
 	begin_table();
 
-	print("<tr><td class=\"colhead\">" . $lang_topten['col_rank'] . "</td><td class=\"colhead\">" . $lang_topten['col_username'] . "</td><td class=\"colhead\">" . $lang_topten['col_clicks'] . "</td></tr>");
+	print("<tr><td align=\"center\">" . $lang_topten['col_rank'] . "</td><td align=\"center\">" . $lang_topten['col_username'] . "</td><td align=\"center\">" . $lang_topten['col_clicks'] . "</td></tr>");
 
 	$n = 1;
 	while ($arr = mysql_fetch_assoc($res)) {
 		//die();
-		print("<tr><td class=\"rowfollow\" align=\"center\">$n</td><td class=\"rowfollow\" align=\"left\">" . get_username($arr["userid"]) . "</td><td class=\"rowfollow\" align=\"right\">" . number_format($arr["count"]) . "</td></tr>\n");
+		print("<tr><td class=\"rowfollow\" align=\"center\">$n</td><td class=\"rowfollow\" align=\"center\">" . get_username($arr["userid"]) . "</td><td class=\"rowfollow\" align=\"center\">" . number_format($arr["count"]) . "</td></tr>\n");
 		$n++;
 	}
 
@@ -4685,12 +4686,12 @@ function charityTable($res, $frame_caption)
 	begin_frame($frame_caption, true);
 	begin_table();
 
-	print("<tr><td class=\"colhead\">" . $lang_topten['col_rank'] . "</td><td class=\"colhead\">" . $lang_topten['col_username'] . "</td><td class=\"colhead\">" . $lang_topten['col_bonus'] . "</td></tr>");
+	print("<tr><td align=\"center\">" . $lang_topten['col_rank'] . "</td><td align=\"center\">" . $lang_topten['col_username'] . "</td><td align=\"center\">" . $lang_topten['col_bonus'] . "</td></tr>");
 
 	$n = 1;
 	while ($arr = mysql_fetch_assoc($res)) {
 		//die();
-		print("<tr><td class=\"rowfollow\" align=\"center\">$n</td><td class=\"rowfollow\" align=\"left\">" . get_username($arr["id"]) . "</td><td class=\"rowfollow\" align=\"right\">" . number_format($arr["charity"]) . "</td></tr>\n");
+		print("<tr><td class=\"rowfollow\" align=\"center\">$n</td><td class=\"rowfollow\" align=\"center\">" . get_username($arr["id"]) . "</td><td class=\"rowfollow\" align=\"center\">" . number_format($arr["charity"]) . "</td></tr>\n");
 		$n++;
 	}
 
@@ -4704,11 +4705,11 @@ function cmttable($res, $frame_caption, $col2_name)
 	begin_frame($frame_caption, true);
 	begin_table();
 
-	print("<tr><td class=\"colhead\">" . $lang_topten['col_rank'] . "</td><td class=\"colhead\">" . $lang_topten['col_username'] . "</td><td class=\"colhead\">" . $col2_name . "</td></tr>");
+	print("<tr><td align=\"center\">" . $lang_topten['col_rank'] . "</td><td align=\"center\">" . $lang_topten['col_username'] . "</td><td align=\"center\">" . $col2_name . "</td></tr>");
 
 	$n = 1;
 	while ($arr = mysql_fetch_assoc($res)) {
-		print("<tr><td class=\"rowfollow\" align=\"center\">$n</td><td class=\"rowfollow\" align=\"left\">" . get_username($arr["userid"]) . "</td><td class=\"rowfollow\" align=\"right\">" . number_format($arr["num"]) . "</td></tr>\n");
+		print("<tr><td class=\"rowfollow\" align=\"center\">$n</td><td class=\"rowfollow\" align=\"center\">" . get_username($arr["userid"]) . "</td><td class=\"rowfollow\" align=\"center\">" . number_format($arr["num"]) . "</td></tr>\n");
 		$n++;
 	}
 
@@ -4722,11 +4723,11 @@ function locationtable($res, $frame_caption)
 	begin_frame($frame_caption, true);
 	begin_table();
 
-	print("<tr><td class=\"colhead\">" . $lang_topten['col_rank'] . "</td><td class=\"colhead\">" . $lang_topten['col_location'] . "</td><td class=\"colhead\">" . $lang_topten['col_number'] . "</td></tr>");
+	print("<tr><td align=\"center\">" . $lang_topten['col_rank'] . "</td><td align=\"center\">" . $lang_topten['col_location'] . "</td><td align=\"center\">" . $lang_topten['col_number'] . "</td></tr>");
 
 	$n = 1;
 	while ($arr = mysql_fetch_assoc($res)) {
-		print("<tr><td class=\"rowfollow\" align=\"center\">$n</td><td class=\"rowfollow\" align=\"left\">" . get_username($arr["location_name"]) . "</td><td class=\"rowfollow\" align=\"right\">" . number_format($arr["num"]) . "</td></tr>\n");
+		print("<tr><td class=\"rowfollow\" align=\"center\">$n</td><td class=\"rowfollow\" align=\"center\">" . get_username($arr["location_name"]) . "</td><td class=\"rowfollow\" align=\"center\">" . number_format($arr["num"]) . "</td></tr>\n");
 		$n++;
 	}
 
@@ -4740,11 +4741,11 @@ function postable($res, $frame_caption)
 	begin_frame($frame_caption, true);
 	begin_table();
 
-	print("<tr><td class=\"colhead\">" . $lang_topten['col_rank'] . "</td><td class=\"colhead\">" . $lang_topten['col_username'] . "</td><td class=\"colhead\">" . $lang_topten['col_topics'] . "</td><td class=\"colhead\">" . $lang_topten['col_posts'] . "</td></tr>");
+	print("<tr><td align=\"center\">" . $lang_topten['col_rank'] . "</td><td align=\"center\">" . $lang_topten['col_username'] . "</td><td align=\"center\">" . $lang_topten['col_topics'] . "</td><td align=\"center\">" . $lang_topten['col_posts'] . "</td></tr>");
 
 	$n = 1;
 	while ($arr = mysql_fetch_assoc($res)) {
-		print("<tr><td class=\"rowfollow\" align=\"center\">$n</td><td class=\"rowfollow\" align=\"left\">" . get_username($arr["userid"]) . "</td><td class=\"rowfollow\" align=\"right\">" . number_format($arr["usertopics"]) . "</td><td class=\"rowfollow\" align=\"right\">" . number_format($arr["userposts"]) . "</td></tr>\n");
+		print("<tr><td class=\"rowfollow\" align=\"center\">$n</td><td class=\"rowfollow\" align=\"center\">" . get_username($arr["userid"]) . "</td><td class=\"rowfollow\" align=\"center\">" . number_format($arr["usertopics"]) . "</td><td class=\"rowfollow\" align=\"center\">" . number_format($arr["userposts"]) . "</td></tr>\n");
 		$n++;
 	}
 
@@ -4758,13 +4759,13 @@ function bigtopic_table($res, $frame_caption)
 	begin_frame($frame_caption, true);
 	begin_table();
 
-	print("<tr><td class=\"colhead\">" . $lang_topten['col_rank'] . "</td><td class=\"colhead\">" . $lang_topten['col_subject'] . "</td><td class=\"colhead\">" . $lang_topten['col_posts'] . "</td></tr>");
+	print("<tr><td align=\"center\">" . $lang_topten['col_rank'] . "</td><td align=\"center\">" . $lang_topten['col_subject'] . "</td><td align=\"center\">" . $lang_topten['col_posts'] . "</td></tr>");
 
 	$n = 1;
 	while ($arr = mysql_fetch_assoc($res)) {
 		// topics_posts.topicid, topics_posts.postnum, forums.id as forumid
 		$topic = "<a href =\"forums.php?action=viewtopic&forumid=" . $arr["forumid"] . "&topicid=" . $arr["topicid"] . "\">" . $arr["topicsubject"] . "</a>";
-		print("<tr><td class=\"rowfollow\" align=\"center\">$n</td><td class=\"rowfollow\" align=\"left\">" . $topic . "</td><td class=\"rowfollow\" align=\"right\">" . number_format($arr["postnum"]) . "</td></tr>\n");
+		print("<tr><td class=\"rowfollow\" align=\"center\">$n</td><td class=\"rowfollow\" align=\"center\">" . $topic . "</td><td class=\"rowfollow\" align=\"center\">" . number_format($arr["postnum"]) . "</td></tr>\n");
 		$n++;
 	}
 
@@ -4778,11 +4779,11 @@ function donortable($res, $frame_caption)
 	begin_frame($frame_caption, true);
 	begin_table();
 
-	print("<tr><td class=\"colhead\">" . $lang_topten['col_rank'] . "</td><td class=\"colhead\">" . $lang_topten['col_username'] . "</td><td class=\"colhead\">" . $lang_topten['col_donated_usd'] . "</td><td class=\"colhead\">" . $lang_topten['col_donated_cny'] . "</td></tr>");
+	print("<tr><td align=\"center\">" . $lang_topten['col_rank'] . "</td><td align=\"center\">" . $lang_topten['col_username'] . "</td><td align=\"center\">" . $lang_topten['col_donated_usd'] . "</td><td align=\"center\">" . $lang_topten['col_donated_cny'] . "</td></tr>");
 
 	$n = 1;
 	while ($arr = mysql_fetch_assoc($res)) {
-		print("<tr><td class=\"rowfollow\" align=\"center\">$n</td><td class=\"rowfollow\" align=\"left\">" . get_username($arr["id"]) . "</td><td class=\"rowfollow\" align=\"right\">" . number_format($arr["donated"], 2) . "</td><td class=\"rowfollow\" align=\"right\">" . number_format($arr["donated_cny"], 2) . "</td></tr>\n");
+		print("<tr><td class=\"rowfollow\" align=\"center\">$n</td><td class=\"rowfollow\" align=\"center\">" . get_username($arr["id"]) . "</td><td class=\"rowfollow\" align=\"center\">" . number_format($arr["donated"], 2) . "</td><td class=\"rowfollow\" align=\"center\">" . number_format($arr["donated_cny"], 2) . "</td></tr>\n");
 		$n++;
 	}
 
@@ -4796,11 +4797,11 @@ function clienttable($res, $frame_caption)
 	begin_frame($frame_caption, true);
 	begin_table();
 
-	print("<tr><td class=\"colhead\">" . $lang_topten['col_rank'] . "</td><td class=\"colhead\">" . $lang_topten['col_name'] . "</td><td class=\"colhead\">" . $lang_topten['col_number'] . "</td></tr>");
+	print("<tr><td align=\"center\">" . $lang_topten['col_rank'] . "</td><td align=\"center\">" . $lang_topten['col_name'] . "</td><td align=\"center\">" . $lang_topten['col_number'] . "</td></tr>");
 
 	$n = 1;
 	while ($arr = mysql_fetch_assoc($res)) {
-		print("<tr><td class=\"rowfollow\" align=\"center\">$n</td><td class=\"rowfollow\" align=\"left\">" . $arr["client_name"] . "</td><td class=\"rowfollow\" align=\"right\">" . number_format($arr["client_num"]) . "</td></tr>\n");
+		print("<tr><td class=\"rowfollow\" align=\"center\">$n</td><td class=\"rowfollow\" align=\"center\">" . $arr["client_name"] . "</td><td class=\"rowfollow\" align=\"center\">" . number_format($arr["client_num"]) . "</td></tr>\n");
 		$n++;
 	}
 
@@ -4814,11 +4815,11 @@ function lastsearch_table($res, $frame_caption)
 	begin_frame($frame_caption, true);
 	begin_table();
 
-	print("<tr><td class=\"colhead\">" . $lang_topten['col_rank'] . "</td><td class=\"colhead\">" . $lang_topten['col_keyword'] . "</td><td class=\"colhead\">" . $lang_topten['col_datetime'] . "</td></tr>");
+	print("<tr><td align=\"center\">" . $lang_topten['col_rank'] . "</td><td align=\"center\">" . $lang_topten['col_keyword'] . "</td><td align=\"center\">" . $lang_topten['col_datetime'] . "</td></tr>");
 
 	$n = 1;
 	while ($arr = mysql_fetch_assoc($res)) {
-		print("<tr><td class=\"rowfollow\" align=\"center\">$n</td><td class=\"rowfollow\" align=\"left\"><a href=\"torrents.php?search=" . rawurlencode($arr["keywords"]) . "\">" . $arr["keywords"] . "</a></td><td class=\"rowfollow\" align=\"right\">" . gettime($arr["adddate"], true, false) . "</td></tr>\n");
+		print("<tr><td class=\"rowfollow\" align=\"center\">$n</td><td class=\"rowfollow\" align=\"center\"><a href=\"torrents.php?search=" . rawurlencode($arr["keywords"]) . "\">" . $arr["keywords"] . "</a></td><td class=\"rowfollow\" align=\"center\">" . gettime($arr["adddate"], true, false) . "</td></tr>\n");
 		$n++;
 	}
 
@@ -4832,11 +4833,11 @@ function search_ranktable($res, $frame_caption)
 	begin_frame($frame_caption, true);
 	begin_table();
 
-	print("<tr><td class=\"colhead\">" . $lang_topten['col_rank'] . "</td><td class=\"colhead\">" . $lang_topten['col_keyword'] . "</td><td class=\"colhead\">" . $lang_topten['col_times'] . "</td></tr>");
+	print("<tr><td align=\"center\">" . $lang_topten['col_rank'] . "</td><td align=\"center\">" . $lang_topten['col_keyword'] . "</td><td align=\"center\">" . $lang_topten['col_times'] . "</td></tr>");
 
 	$n = 1;
 	while ($arr = mysql_fetch_assoc($res)) {
-		print("<tr><td class=\"rowfollow\" align=\"center\">$n</td><td class=\"rowfollow\" align=\"left\"><a href=\"torrents.php?search=" . rawurlencode($arr["keywords"]) . "\">" . $arr["keywords"] . "</a></td><td class=\"rowfollow\" align=\"right\">" . number_format($arr["count"]) . "</td></tr>\n");
+		print("<tr><td class=\"rowfollow\" align=\"center\">$n</td><td class=\"rowfollow\" align=\"center\"><a href=\"torrents.php?search=" . rawurlencode($arr["keywords"]) . "\">" . $arr["keywords"] . "</a></td><td class=\"rowfollow\" align=\"center\">" . number_format($arr["count"]) . "</td></tr>\n");
 		$n++;
 	}
 
@@ -4876,13 +4877,13 @@ function supply_snatchtable($res, $frame_caption)
 				$ratio = "<font color=\"$color\">$ratio</font>";
 		} else
 			$ratio = $lang_topten['text_inf'];
-		print("<tr><td class=\"rowfollow\" align=\"center\">$num</td><td class=\"rowfollow\" align=\"left\">" . get_username($a["userid"]) .
-			"</td><td class=\"rowfollow\" align=\"right\">" . number_format($a["supplied"]) .
-			"</td><td class=\"rowfollow\" align=\"right\">" . mksize($a["uploaded"]) .
-			"</td><td class=\"rowfollow\" align=\"right\">" . number_format($a["snatched"]) .
-			"</td><td class=\"rowfollow\" align=\"right\">" . mksize($a["downloaded"]) .
-			"</td><td class=\"rowfollow\" align=\"right\">" . $ratio .
-			"</td><td class=\"rowfollow\" align=\"left\">" . gettime($a["added"]) . "</td></tr>");
+		print("<tr><td class=\"rowfollow\" align=\"center\">$num</td><td class=\"rowfollow\" align=\"center\">" . get_username($a["userid"]) .
+			"</td><td class=\"rowfollow\" align=\"center\">" . number_format($a["supplied"]) .
+			"</td><td class=\"rowfollow\" align=\"center\">" . mksize($a["uploaded"]) .
+			"</td><td class=\"rowfollow\" align=\"center\">" . number_format($a["snatched"]) .
+			"</td><td class=\"rowfollow\" align=\"center\">" . mksize($a["downloaded"]) .
+			"</td><td class=\"rowfollow\" align=\"center\">" . $ratio .
+			"</td><td class=\"rowfollow\" align=\"center\">" . gettime($a["added"]) . "</td></tr>");
 	}
 	end_table();
 	end_frame();
@@ -4894,12 +4895,12 @@ function stylesheettable($res, $frame_caption)
 	begin_frame($frame_caption, true);
 	begin_table();
 
-	print("<tr><td class=\"colhead\">" . $lang_topten['col_rank'] . "</td><td class=\"colhead\">" . $lang_topten['col_name'] . "</td><td class=\"colhead\">" . $lang_topten['col_number'] . "</td></tr>");
+	print("<tr><td align=\"center\">" . $lang_topten['col_rank'] . "</td><td align=\"center\">" . $lang_topten['col_name'] . "</td><td align=\"center\">" . $lang_topten['col_number'] . "</td></tr>");
 
 	$n = 1;
 	while ($arr = mysql_fetch_assoc($res)) {
 		//die();
-		print("<tr><td class=\"rowfollow\" align=\"center\">$n</td><td class=\"rowfollow\" align=\"left\">" . $arr["stylesheet_name"] . "</td><td class=\"rowfollow\" align=\"right\">" . number_format($arr["stylesheet_num"]) . "</td></tr>\n");
+		print("<tr><td class=\"rowfollow\" align=\"center\">$n</td><td class=\"rowfollow\" align=\"center\">" . $arr["stylesheet_name"] . "</td><td class=\"rowfollow\" align=\"center\">" . number_format($arr["stylesheet_num"]) . "</td></tr>\n");
 		$n++;
 	}
 
@@ -4913,12 +4914,12 @@ function languagetable($res, $frame_caption)
 	begin_frame($frame_caption, true);
 	begin_table();
 
-	print("<tr><td class=\"colhead\">" . $lang_topten['col_rank'] . "</td><td class=\"colhead\">" . $lang_topten['col_name'] . "</td><td class=\"colhead\">" . $lang_topten['col_number'] . "</td></tr>");
+	print("<tr><td align=\"center\">" . $lang_topten['col_rank'] . "</td><td align=\"center\">" . $lang_topten['col_name'] . "</td><td align=\"center\">" . $lang_topten['col_number'] . "</td></tr>");
 
 	$n = 1;
 	while ($arr = mysql_fetch_assoc($res)) {
 		//die();
-		print("<tr><td class=\"rowfollow\" align=\"center\">$n</td><td class=\"rowfollow\" align=\"left\">" . $arr["lang_name"] . "</td><td class=\"rowfollow\" align=\"right\">" . number_format($arr["lang_num"]) . "</td></tr>\n");
+		print("<tr><td class=\"rowfollow\" align=\"center\">$n</td><td class=\"rowfollow\" align=\"center\">" . $arr["lang_name"] . "</td><td class=\"rowfollow\" align=\"center\">" . number_format($arr["lang_num"]) . "</td></tr>\n");
 		$n++;
 	}
 

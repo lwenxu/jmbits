@@ -20,11 +20,11 @@ $res = sql_query("SELECT * FROM users WHERE users.support='yes' AND users.status
 while ($arr = mysql_fetch_assoc($res))
 {
 	$countryrow = get_country_row($arr['country']);
-	$ppl .= "<tr  style='margin-left:5%'><td class=embedded-add>". get_username($arr['id']) ."</td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<td class=embedded-add ><img width=24 height=15 src=\"pic/flag/".$countryrow[flagpic]."\" title=\"".$countryrow['name']."\" style=\"padding-bottom:1px;\"></td>
- <td class=embedded-add> ".(strtotime($arr['last_access']) > $dt ? $onlineimg : $offlineimg)."</td>".
- "<td class=embedded-add><a href=sendmessage.php?receiver=".$arr['id']." title=\"".$lang_staff['title_send_pm']."\">".$sendpmimg."</a></td>".
- "<td class=embedded-add>".$arr['supportlang']."</td>".
- "<td class=embedded-add>".$arr['supportfor']."</td></tr>\n";
+	$ppl .= "<tr  style='margin-left:5%'><td class=embedded-add align=center>". get_username($arr['id']) ."</td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<td class=embedded-add align=center ><img width=24 height=15 src=\"pic/flag/".$countryrow[flagpic]."\" title=\"".$countryrow['name']."\" style=\"padding-bottom:1px;\"></td>
+ <td class=embedded-add align=center> ".(strtotime($arr['last_access']) > $dt ? $onlineimg : $offlineimg)."</td>".
+ "<td class=embedded-add align=center><a href=sendmessage.php?receiver=".$arr['id']." title=\"".$lang_staff['title_send_pm']."\">".$sendpmimg."</a></td>".
+ "<td class=embedded-add align=center>".$arr['supportlang']."</td>".
+ "<td class=embedded-add align=center>".$arr['supportfor']."</td></tr>\n";
 }
 
 begin_frame($lang_staff['text_firstline_support']."<font class=small> - [<a class=altlink href=contactstaff.php><b>".$lang_staff['text_apply_for_it']."</b></a>]</font>");
@@ -33,15 +33,15 @@ begin_frame($lang_staff['text_firstline_support']."<font class=small> - [<a clas
 <br /><br />
 <table width=100% cellspacing=0 align=center class="table table-striped">
 	<tr>
-		<td class=embedded-add><b><?php echo $lang_staff['text_username'] ?></b></td>
-		<td class=embedded-add align=center><b><?php echo $lang_staff['text_country'] ?></b></td>
-		<td class=embedded-add align=center><b><?php echo $lang_staff['text_online_or_offline'] ?></b></td>
-		<td class=embedded-add align=center><b><?php echo $lang_staff['text_contact'] ?></b></td>
-		<td class=embedded-add align=center><b><?php echo $lang_staff['text_language'] ?></b></td>
-		<td class=embedded-add><b><?php echo $lang_staff['text_support_for'] ?></b></td>
+		<td class=embedded-add align=center><b><?php echo $lang_staff['text_username'] ?></b></td>
+		<td class=embedded-add align=center align=center><b><?php echo $lang_staff['text_country'] ?></b></td>
+		<td class=embedded-add align=center align=center><b><?php echo $lang_staff['text_online_or_offline'] ?></b></td>
+		<td class=embedded-add align=center align=center><b><?php echo $lang_staff['text_contact'] ?></b></td>
+		<td class=embedded-add align=center align=center><b><?php echo $lang_staff['text_language'] ?></b></td>
+		<td class=embedded-add align=center><b><?php echo $lang_staff['text_support_for'] ?></b></td>
 	</tr>
 	<tr>
-		<td class=embedded-add colspan=6>
+		<td class=embedded-add align=center colspan=6>
 			<hr color="#4040c0">
 		</td>
 	</tr>
@@ -58,10 +58,10 @@ $res = sql_query("SELECT * FROM users WHERE users.picker='yes' AND users.status=
 while ($arr = mysql_fetch_assoc($res))
 {
 	$countryrow = get_country_row($arr['country']);
-	$ppl .= "<tr height=15><td class=embedded-add>". get_username($arr['id']) ."</td class=embedded-add> <td class=embedded-add style='text-align:center'><span style='text-align:center'><img  width=24 height=15 src=\"pic/flag/".$countryrow['flagpic']."\" title=\"".$countryrow['name']."\" style=\"padding-bottom:1px;\"></span></td>
- <td class=embedded-add> ".(strtotime($arr['last_access']) > $dt ? $onlineimg : $offlineimg)."</td>".
- "<td class=embedded-add><a href=sendmessage.php?receiver=".$arr['id']." title=\"".$lang_staff['title_send_pm']."\">".$sendpmimg."</a></td>".
- "<td class=embedded-add>".$arr['pickfor']."</td></tr>\n";
+	$ppl .= "<tr height=15><td class=embedded-add align=center>". get_username($arr['id']) ."</td class=embedded-add align=center> <td class=embedded-add align=center style='text-align:center'><span style='text-align:center'><img  width=24 height=15 src=\"pic/flag/".$countryrow['flagpic']."\" title=\"".$countryrow['name']."\" style=\"padding-bottom:1px;\"></span></td>
+ <td class=embedded-add align=center> ".(strtotime($arr['last_access']) > $dt ? $onlineimg : $offlineimg)."</td>".
+ "<td class=embedded-add align=center><a href=sendmessage.php?receiver=".$arr['id']." title=\"".$lang_staff['title_send_pm']."\">".$sendpmimg."</a></td>".
+ "<td class=embedded-add align=center>".$arr['pickfor']."</td></tr>\n";
 }
 
 begin_frame($lang_staff['text_movie_critics']."<font class=small> - [<a class=altlink href=contactstaff.php><b>".$lang_staff['text_apply_for_it']."</b></a>]</font>");
@@ -70,14 +70,14 @@ begin_frame($lang_staff['text_movie_critics']."<font class=small> - [<a class=al
 <br /><br />
 <table width=100% cellspacing=0 align=center class="table table-striped">
 	<tr>
-		<td class=embedded-add><b><?php echo $lang_staff['text_username'] ?></b></td>
-		<td class=embedded-add align=center><b><?php echo $lang_staff['text_country'] ?></b></td>
-		<td class=embedded-add align=center><b><?php echo $lang_staff['text_online_or_offline'] ?></b></td>
-		<td class=embedded-add align=center><b><?php echo $lang_staff['text_contact'] ?></b></td>
-		<td class=embedded-add><b><?php echo $lang_staff['text_responsible_for'] ?></b></td>
+		<td class=embedded-add align=center><b><?php echo $lang_staff['text_username'] ?></b></td>
+		<td class=embedded-add align=center align=center><b><?php echo $lang_staff['text_country'] ?></b></td>
+		<td class=embedded-add align=center align=center><b><?php echo $lang_staff['text_online_or_offline'] ?></b></td>
+		<td class=embedded-add align=center align=center><b><?php echo $lang_staff['text_contact'] ?></b></td>
+		<td class=embedded-add align=center><b><?php echo $lang_staff['text_responsible_for'] ?></b></td>
 	</tr>
 	<tr>
-		<td class=embedded-add colspan=5>
+		<td class=embedded-add align=center colspan=5>
 			<hr color="#4040c0">
 		</td>
 	</tr>
@@ -100,10 +100,10 @@ while ($arr = mysql_fetch_assoc($res))
 		$forums .= "<a href=forums.php?action=viewforum&forumid=".$forumrow['id'].">".$forumrow['name']."</a>, ";
 	}
 	$forums = rtrim(trim($forums),",");
-	$ppl .= "<tr height=15><td class=embedded-add>". get_username($arr['userid']) ."</td><td class=embedded-add ><img width=24 height=15 src=\"pic/flag/".$countryrow['flagpic']."\" title=\"".$countryrow['name']."\" style=\"padding-bottom:1px;\"></td>
- <td class=embedded-add> ".(strtotime($arr['last_access']) > $dt ? $onlineimg : $offlineimg)."</td>".
- "<td class=embedded-add><a href=sendmessage.php?receiver=".$arr['userid']." title=\"".$lang_staff['title_send_pm']."\">".$sendpmimg."</a></td>".
- "<td class=embedded-add>".$forums."</td></tr>\n";
+	$ppl .= "<tr height=15><td class=embedded-add align=center>". get_username($arr['userid']) ."</td><td class=embedded-add align=center ><img width=24 height=15 src=\"pic/flag/".$countryrow['flagpic']."\" title=\"".$countryrow['name']."\" style=\"padding-bottom:1px;\"></td>
+ <td class=embedded-add align=center> ".(strtotime($arr['last_access']) > $dt ? $onlineimg : $offlineimg)."</td>".
+ "<td class=embedded-add align=center><a href=sendmessage.php?receiver=".$arr['userid']." title=\"".$lang_staff['title_send_pm']."\">".$sendpmimg."</a></td>".
+ "<td class=embedded-add align=center>".$forums."</td></tr>\n";
 }
 
 begin_frame($lang_staff['text_forum_moderators']."<font class=small> - [<a class=altlink href=contactstaff.php><b>".$lang_staff['text_apply_for_it']."</b></a>]</font>");
@@ -112,14 +112,14 @@ begin_frame($lang_staff['text_forum_moderators']."<font class=small> - [<a class
 <br /><br />
 <table width=100% cellspacing=0 align=center class="table table-striped">
 	<tr>
-		<td class=embedded-add><b><?php echo $lang_staff['text_username'] ?></b></td>
-		<td class=embedded-add align=center><b><?php echo $lang_staff['text_country'] ?></b></td>
-		<td class=embedded-add align=center><b><?php echo $lang_staff['text_online_or_offline'] ?></b></td>
-		<td class=embedded-add align=center><b><?php echo $lang_staff['text_contact'] ?></b></td>
-		<td class=embedded-add><b><?php echo $lang_staff['text_forums'] ?></b></td>
+		<td class=embedded-add align=center><b><?php echo $lang_staff['text_username'] ?></b></td>
+		<td class=embedded-add align=center align=center><b><?php echo $lang_staff['text_country'] ?></b></td>
+		<td class=embedded-add align=center align=center><b><?php echo $lang_staff['text_online_or_offline'] ?></b></td>
+		<td class=embedded-add align=center align=center><b><?php echo $lang_staff['text_contact'] ?></b></td>
+		<td class=embedded-add align=center><b><?php echo $lang_staff['text_forums'] ?></b></td>
 	</tr>
 	<tr>
-		<td class=embedded-add colspan=5>
+		<td class=embedded-add align=center colspan=5>
 			<hr color="#4040c0">
 		</td>
 	</tr>
@@ -139,22 +139,22 @@ while ($arr = mysql_fetch_assoc($res))
 	{
 		$curr_class = $arr['class'];
 		if ($ppl != "")
-			$ppl .= "<tr height=15><td class=embedded-add colspan=5 align=right>&nbsp;</td></tr>";
-		$ppl .= "<tr height=15><td class=embedded-add colspan=5 align=right>" . get_user_class_name($arr["class"],false,true,true) . "</td></tr>";
+			$ppl .= "<tr height=15><td class=embedded-add align=center colspan=5 align=right>&nbsp;</td></tr>";
+		$ppl .= "<tr height=15><td class=embedded-add align=center colspan=5 align=right>" . get_user_class_name($arr["class"],false,true,true) . "</td></tr>";
 		$ppl .= "<tr>" . 
-		"<td class=embedded-add><b>" . $lang_staff['text_username'] . "</b></td>".
-		"<td class=embedded-add align=center><b>" . $lang_staff['text_country'] . "</b></td>".
-		"<td class=embedded-add align=center><b>" . $lang_staff['text_online_or_offline'] . "</b></td>".
-		"<td class=embedded-add align=center><b>" . $lang_staff['text_contact'] . "</b></td>".
-		"<td class=embedded-add><b>" . $lang_staff['text_duties'] . "</b></td>".
+		"<td class=embedded-add align=center><b>" . $lang_staff['text_username'] . "</b></td>".
+		"<td class=embedded-add align=center align=center><b>" . $lang_staff['text_country'] . "</b></td>".
+		"<td class=embedded-add align=center align=center><b>" . $lang_staff['text_online_or_offline'] . "</b></td>".
+		"<td class=embedded-add align=center align=center><b>" . $lang_staff['text_contact'] . "</b></td>".
+		"<td class=embedded-add align=center><b>" . $lang_staff['text_duties'] . "</b></td>".
 		"</tr>";
-		$ppl .= "<tr height=15><td class=embedded-add colspan=5><hr color=\"#4040c0\"></td></tr>";
+		$ppl .= "<tr height=15><td class=embedded-add align=center colspan=5><hr color=\"#4040c0\"></td></tr>";
 	}
 	$countryrow = get_country_row($arr['country']);
-	$ppl .= "<tr><td class=embedded-add>". get_username($arr['id']) ."</td><td class=embedded-add ><img width=24 height=15 src=\"pic/flag/".$countryrow['flagpic']."\" title=\"".$countryrow['name']."\" style=\"padding-bottom:1px;\"></td>
- <td class=embedded-add> ".(strtotime($arr['last_access']) > $dt ? $onlineimg : $offlineimg)."</td>".
- "<td class=embedded-add><a href=sendmessage.php?receiver=".$arr['id']." title=\"".$lang_staff['title_send_pm']."\">".$sendpmimg."</a></td>".
- "<td class=embedded-add>".$arr['stafffor']."</td></tr>\n";
+	$ppl .= "<tr><td class=embedded-add align=center>". get_username($arr['id']) ."</td><td class=embedded-add align=center ><img width=24 height=15 src=\"pic/flag/".$countryrow['flagpic']."\" title=\"".$countryrow['name']."\" style=\"padding-bottom:1px;\"></td>
+ <td class=embedded-add align=center> ".(strtotime($arr['last_access']) > $dt ? $onlineimg : $offlineimg)."</td>".
+ "<td class=embedded-add align=center><a href=sendmessage.php?receiver=".$arr['id']." title=\"".$lang_staff['title_send_pm']."\">".$sendpmimg."</a></td>".
+ "<td class=embedded-add align=center>".$arr['stafffor']."</td></tr>\n";
 }
 
 begin_frame($lang_staff['text_general_staff']."<font class=small> - [<a class=altlink href=contactstaff.php><b>".$lang_staff['text_apply_for_it']."</b></a>]</font>");
@@ -177,10 +177,10 @@ $res = sql_query("SELECT * FROM users WHERE class=".UC_VIP." AND status='confirm
 while ($arr = mysql_fetch_assoc($res))
 {
 	$countryrow = get_country_row($arr['country']);
-	$ppl .= "<tr><td class=embedded-add>". get_username($arr['id']) ."</td><td class=embedded-add><img width=24 height=15 src=\"pic/flag/".$countryrow['flagpic']."\" title=\"".$countryrow['name']."\" style=\"padding-bottom:1px;\"></td>
- <td class=embedded-add> ".(strtotime($arr['last_access']) > $dt ? $onlineimg : $offlineimg)."</td>".
- "<td class=embedded-add><a href=sendmessage.php?receiver=".$arr['id']." title=\"".$lang_staff['title_send_pm']."\">".$sendpmimg."</a></td>".
- "<td class=embedded-add>".$arr['stafffor']."</td></tr>\n";
+	$ppl .= "<tr><td class=embedded-add align=center>". get_username($arr['id']) ."</td><td class=embedded-add align=center><img width=24 height=15 src=\"pic/flag/".$countryrow['flagpic']."\" title=\"".$countryrow['name']."\" style=\"padding-bottom:1px;\"></td>
+ <td class=embedded-add align=center> ".(strtotime($arr['last_access']) > $dt ? $onlineimg : $offlineimg)."</td>".
+ "<td class=embedded-add align=center><a href=sendmessage.php?receiver=".$arr['id']." title=\"".$lang_staff['title_send_pm']."\">".$sendpmimg."</a></td>".
+ "<td class=embedded-add align=center>".$arr['stafffor']."</td></tr>\n";
 }
 
 begin_frame($lang_staff['text_vip']);
@@ -189,14 +189,14 @@ begin_frame($lang_staff['text_vip']);
 <br /><br />
 <table width=100% cellspacing=0 align=center class="table table-striped">
 	<tr>
-		<td class=embedded-add><b><?php echo $lang_staff['text_username'] ?></b></td>
-		<td class=embedded-add><b><?php echo $lang_staff['text_country'] ?></b></td>
-		<td class=embedded-add><b><?php echo $lang_staff['text_online_or_offline'] ?></b></td>
-		<td class=embedded-add><b><?php echo $lang_staff['text_contact'] ?></b></td>
-		<td class=embedded-add><b><?php echo $lang_staff['text_reason'] ?></b></td>
+		<td class=embedded-add align=center><b><?php echo $lang_staff['text_username'] ?></b></td>
+		<td class=embedded-add align=center><b><?php echo $lang_staff['text_country'] ?></b></td>
+		<td class=embedded-add align=center><b><?php echo $lang_staff['text_online_or_offline'] ?></b></td>
+		<td class=embedded-add align=center><b><?php echo $lang_staff['text_contact'] ?></b></td>
+		<td class=embedded-add align=center><b><?php echo $lang_staff['text_reason'] ?></b></td>
 	</tr>
 	<tr>
-		<td class=embedded-add colspan=5>
+		<td class=embedded-add align=center colspan=5>
 			<hr color="#4040c0">
 		</td>
 	</tr>

@@ -16,9 +16,9 @@ stderr($lang_invite['std_sorry'],$lang_invite['std_only'].get_user_class_name($s
 $res = sql_query("SELECT username FROM users WHERE id = ".mysql_real_escape_string($id)) or sqlerr();
 $user =  mysql_fetch_assoc($res);
 stdhead($lang_invite['head_invites']);
-print("<table width=700 class=main border=0 cellspacing=0 cellpadding=0><tr><td class=embedded>");
+print("<table width=90% class='table table-striped' border=0 cellspacing=0 cellpadding=0><tr><td class=embedded>");
 
-print("<h1 align=center><a href=\"invite.php?id=".$id."\">".$user['username'].$lang_invite['text_invite_system']."</a></h1>");
+print("<h3 align=center><a href=\"invite.php?id=".$id."\">".$user['username'].$lang_invite['text_invite_system']."</a></h3>");
 	$sent = htmlspecialchars($_GET['sent']);
 	if ($sent == 1){
 		$msg = $lang_invite['text_invite_code_sent'];
@@ -46,14 +46,14 @@ if ($type == 'new'){
 	$invitation_body =  $lang_invite['text_invitation_body'].$CURUSER[username];
 	//$invitation_body_insite = str_replace("<br />","\n",$invitation_body);
 	print("<form method=post action=takeinvite.php?id=".htmlspecialchars($id).">".
-	"<table border=1 width=737 cellspacing=0 cellpadding=5>");
+	"<table  class=table width=90% cellspacing=0 cellpadding=5>");
 	// 邀请时快速点击会出现65535的邀请数 ，关于session的两行
 	$_SESSION['inviterand'] = time();
 	echo "<input type=hidden name='inviterand' value=.\"$_SESSION[inviterand]\"><tr align=center><td colspan=2><b>".$lang_invite['text_invite_someone']."$SITENAME ($inv[invites]".$lang_invite['text_invitation'].$_s.$lang_invite['text_left'] .")</b></td></tr>".
-	"<tr><td class=\"rowhead nowrap\" valign=\"top\" align=\"right\">".$lang_invite['text_email_address']."</td><td align=left><input type=text size=40 name=email><br /><font align=left class=small>".$lang_invite['text_email_address_note']."</font>".($restrictemaildomain == 'yes' ? "<br />".$lang_invite['text_email_restriction_note'].allowedemails() : "")."</td></tr>".
-	"<tr><td class=\"rowhead nowrap\" valign=\"top\" align=\"right\">".$lang_invite['text_message']."</td><td align=left><textarea name=body rows=8 cols=120>" .$invitation_body.
+	"<tr><td class=\"rowhead nowrap\" valign=\"top\" align=\"right\">".$lang_invite['text_email_address']."</td><td align=left><input class='input fullwidth inputor' type=text size=40 name=email><br /><font align=left class=small>".$lang_invite['text_email_address_note']."</font>".($restrictemaildomain == 'yes' ? "<br />".$lang_invite['text_email_restriction_note'].allowedemails() : "")."</td></tr>".
+	"<tr><td class=\"rowhead nowrap\" valign=\"top\" align=\"right\">".$lang_invite['text_message']."</td><td align=left><textarea class='input fullwidth inputor'  name=body rows=8 cols=120>" .$invitation_body.
 	"</textarea></td></tr>".
-	"<tr><td align=center colspan=2><input type=submit value='".$lang_invite['submit_invite']."'></td></tr>".
+	"<tr><td align=center colspan=2><input class='btn btn-success' type=submit value='".$lang_invite['submit_invite']."'></td></tr>".
 	"</form></table></td></tr></table>";
 
 } else {
@@ -65,8 +65,8 @@ if ($type == 'new'){
 	$ret = sql_query("SELECT id, username, email, uploaded, downloaded, status, warned, enabled, donor, email FROM users WHERE invited_by = ".mysql_real_escape_string($id)) or sqlerr();
 	$num = mysql_num_rows($ret);
 
-	print("<table border=1 width=737 cellspacing=0 cellpadding=5>".
-	"<h2 align=center>".$lang_invite['text_invite_status']." ($number)</h2><form method=post action=takeconfirm.php?id=".htmlspecialchars($id).">");
+	print("<table class='table table-striped' width=90% cellspacing=0 cellpadding=5>".
+	"<h3 align=center>".$lang_invite['text_invite_status']." ($number)</h3><form method=post action=takeconfirm.php?id=".htmlspecialchars($id).">");
 
 	if(!$num){
 		print("<tr><td colspan=7 align=center>".$lang_invite['text_no_invites']."</tr>");
@@ -116,10 +116,10 @@ if ($type == 'new'){
 		$pendingcount = number_format(get_row_count("users", "WHERE  status='pending' AND invited_by=$CURUSER[id]"));
 		if ($pendingcount){
 		print("<input type=hidden name=email value=$arr[email]>");
-		print("<tr><td colspan=7 align=right><input type=submit style='height: 20px' value=".$lang_invite['submit_confirm_users']."></td></tr>");
+		print("<tr><td colspan=7 align=right><input class='btn btn-success' type=submit style='height: 20px' value=".$lang_invite['submit_confirm_users']."></td></tr>");
 		}
 		print("</form>");
-		print("<tr><td colspan=7 align=center><form method=post action=invite.php?id=".htmlspecialchars($id)."&type=new><input type=submit ".($CURUSER[invites] <= 0 ? "disabled " : "")." value='".$lang_invite['sumbit_invite_someone']."'></form></td></tr>");
+		print("<tr><td colspan=7 align=center><form method=post action=invite.php?id=".htmlspecialchars($id)."&type=new><input class='btn btn-success' type=submit ".($CURUSER[invites] <= 0 ? "disabled " : "")." value='".$lang_invite['sumbit_invite_someone']."'></form></td></tr>");
 	}
 	print("</table>");
 
@@ -132,8 +132,8 @@ if ($type == 'new'){
 	$num1 = mysql_num_rows($rer);
 
 
-	print("<table border=1 width=737 cellspacing=0 cellpadding=5>".
-	"<h2 align=center>".$lang_invite['text_sent_invites_status']." ($number1)</h2>");
+	print("<table class='table table-striped' width=90% cellspacing=0 cellpadding=5>".
+	"<h3 align=center>".$lang_invite['text_sent_invites_status']." ($number1)</h3>");
 
 	if(!$num1){
 		print("<tr align=center><td colspan=6>".$lang_invite['text_no_invitation_sent']."</tr>");

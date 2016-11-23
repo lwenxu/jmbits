@@ -60,7 +60,7 @@ if (isset($faq_categ)) {
 	{
 		if ($faq_categ[$id][flag] == "1")
 		{
-			print("<ul><li><a href=\"#id". $faq_categ[$id][link_id] ."\"><b>". $faq_categ[$id][title] ."</b></a><ul>\n");
+			print("<ul><li><a href=\"#id". $faq_categ[$id][link_id] ."\">". $faq_categ[$id][title] ."</a><ul>\n");
    			if (array_key_exists("items", $faq_categ[$id])) 
 			{
     				foreach ($faq_categ[$id][items] as $id2 => $temp)
@@ -87,7 +87,7 @@ if (isset($faq_categ)) {
 				{
 					if ($faq_categ[$id][items][$id2][flag] != "0")
 					{
-						print("<br /><span id=\"id".$faq_categ[$id][items][$id2][link_id]."\"><b>". $faq_categ[$id][items][$id2][question] ."</b></span><br />\n");
+						print("<br /><span id=\"id".$faq_categ[$id][items][$id2][link_id]."\">". $faq_categ[$id][items][$id2][question] ."</span><br />\n");
 						print("<br />". $faq_categ[$id][items][$id2][answer] ."\n<br /><br />\n");
 					}
 				}
