@@ -627,7 +627,7 @@ function begin_table($fullwidth = false, $padding = 5)
 
 	if ($fullwidth)
 	$width .= " width=50%";
-	print("<table class=\"main".$width."\"  cellspacing=\"0\" cellpadding=\"".$padding."\">");
+	print("<table class='table table-striped'  cellspacing=\"0\" cellpadding=\"".$padding."\">");
 }
 
 function end_table()
@@ -930,7 +930,7 @@ function simpletag(thetag)
 //]]>
 </script>
 <table width="100%" cellspacing="0" cellpadding="5" border="0">
-<tr style="border: 0px"><td align="left" colspan="2" style="border: 0px">
+<tr style="border: 0px"><td  colspan="2" style="border: 0px">
 <table cellspacing="1" cellpadding="2" border="0">
 <tr>
 <td class="embedded-add"><input class="btn btn-info" style="font-weight: bold;font-size:11px; margin:7px" type="button" name="b" value="B" onclick="javascript: simpletag('b')" /></td>
@@ -2470,7 +2470,7 @@ else
 }
 ?>
 		</td>
-		<td class="clear nowrap" align="right" valign="middle">
+		<td class="clear nowrap"  valign="middle">
 <?php if ($Advertisement->enable_ad()){
 		$headerad=$Advertisement->get_ad('header');
 		if ($headerad){
@@ -2556,7 +2556,7 @@ if ($enabledonation == 'yes'){?>
 				<td>
 					<table width="100%" cellspacing="0" cellpadding="0" border="0">
 						<tr>
-							<td class="bottom" align="left"><span
+							<td class="bottom" ><span
 									class="medium"><?php echo $lang_functions['text_welcome_back'] ?>, <span
 										class="icon-user"></span><?php echo get_username($CURUSER['id']) ?> <span
 										class="icon-signout"></span><a
@@ -2589,7 +2589,7 @@ if ($enabledonation == 'yes'){?>
 										class='color_connectable'><?php echo $lang_functions['text_connectable'] ?></font><?php echo $connectable ?> <?php echo maxslots(); ?></span>
 							</td>
 
-							<td class="bottom" align="right"><span class="medium"><span
+							<td class="bottom" ><span class="medium"><span
 										class="icon-time"></span> <?php echo $lang_functions['text_the_time_is_now'] ?><?php echo $datum[hours] . ":" . $datum[minutes] ?>
 									<br/>
 
@@ -3151,18 +3151,18 @@ if ($wait)
 	print("<td class=\"colhead\">".$lang_functions['col_wait']."</td>\n");
 }
 if ($CURUSER['showcomnum'] != 'no') { ?>
-<td class="colhead"><a href="?<?php echo $oldlink?>sort=3&amp;type=<?php echo $link[3]?>"><span class=" icon-comments-alt icos-download"  alt="comments" title="<?php echo $lang_functions['title_number_of_comments'] ?>" ></span></a></td>
+<td class="colhead" align="center"><a href="?<?php echo $oldlink?>sort=3&amp;type=<?php echo $link[3]?>"><span class=" icon-comments-alt icos-download"  alt="comments" title="<?php echo $lang_functions['title_number_of_comments'] ?>" ></span></a></td>
 <?php } ?>
 
-<td class="colhead"><a href="?<?php echo $oldlink?>sort=4&amp;type=<?php echo $link[4]?>"><span class=" icon-time icos-download" alt="time" title="<?php echo ($CURUSER['timetype'] != 'timealive' ? $lang_functions['title_time_added'] : $lang_functions['title_time_alive'])?>" ></span></a></td>
-<td class="colhead"><a href="?<?php echo $oldlink?>sort=5&amp;type=<?php echo $link[5]?>"><span class="icon-hdd icos-download" alt="size" title="<?php echo $lang_functions['title_size'] ?>" /></a></td>
-<td class="colhead"><a href="?<?php echo $oldlink?>sort=7&amp;type=<?php echo $link[7]?>"><span class="icon-tasks icos-download" alt="seeders" title="<?php echo $lang_functions['title_number_of_seeders'] ?>" ></span></a></td>
-<td class="colhead"><a href="?<?php echo $oldlink?>sort=8&amp;type=<?php echo $link[8]?>"><span class="icon-cloud-download icos-download" alt="leechers" title="<?php echo $lang_functions['title_number_of_leechers'] ?>" ></span></a></td>
-<td class="colhead"><a href="?<?php echo $oldlink?>sort=6&amp;type=<?php echo $link[6]?>"><span class="icon-check  icos-download" alt="snatched" title="<?php echo $lang_functions['title_number_of_snatched']?>" ></span></a></td>
+<td class="colhead" align="center"><a href="?<?php echo $oldlink?>sort=4&amp;type=<?php echo $link[4]?>"><span class=" icon-time icos-download" alt="time" title="<?php echo ($CURUSER['timetype'] != 'timealive' ? $lang_functions['title_time_added'] : $lang_functions['title_time_alive'])?>" ></span></a></td>
+<td class="colhead" align="center"><a href="?<?php echo $oldlink?>sort=5&amp;type=<?php echo $link[5]?>"><span class="icon-hdd icos-download" alt="size" title="<?php echo $lang_functions['title_size'] ?>" /></a></td>
+<td class="colhead" align="center"><a href="?<?php echo $oldlink?>sort=7&amp;type=<?php echo $link[7]?>"><span class="icon-tasks icos-download" alt="seeders" title="<?php echo $lang_functions['title_number_of_seeders'] ?>" ></span></a></td>
+<td class="colhead" align="center"><a href="?<?php echo $oldlink?>sort=8&amp;type=<?php echo $link[8]?>"><span class="icon-cloud-download icos-download" alt="leechers" title="<?php echo $lang_functions['title_number_of_leechers'] ?>" ></span></a></td>
+<td class="colhead" align="center"><a href="?<?php echo $oldlink?>sort=6&amp;type=<?php echo $link[6]?>"><span class="icon-check  icos-download" alt="snatched" title="<?php echo $lang_functions['title_number_of_snatched']?>" ></span></a></td>
 <td class="embedded-head"><a href="?<?php echo $oldlink?>sort=9&amp;type=<?php echo $link[9]?>"><?php echo $lang_functions['col_uploader']?></a></td>
 <?php
 if (get_user_class() >= $torrentmanage_class) { ?>
-	<td class="colhead"><?php echo $lang_functions['col_action'] ?></td>
+	<td class="colhead" align="center"><?php echo $lang_functions['col_action'] ?></td>
 <?php } ?>
 </tr>
 <?php
@@ -4518,14 +4518,14 @@ function usershare_table($res, $frame_caption)
 	begin_table();
 	?>
 	<tr>
-		<td class="colhead"><?php echo $lang_topten['col_rank'] ?></td>
-		<td class="colhead" align="left"> <?php echo $lang_topten['col_user'] ?> </td>
-		<td class="colhead"> <?php echo $lang_topten['col_uploaded'] ?> </td>
-		<td class="colhead" align="left"> <?php echo $lang_topten['col_ul_speed'] ?> </td>
-		<td class="colhead"> <?php echo $lang_topten['col_downloaded'] ?></td>
-		<td class="colhead" align="left"> <?php echo $lang_topten['col_dl_speed'] ?> </td>
-		<td class="colhead" align="right"> <?php echo $lang_topten['col_ratio'] ?> </td>
-		<td class="colhead" align="left"> <?php echo $lang_topten['col_joined'] ?> </td>
+		<td class="colhead" align="center" align="center"><?php echo $lang_topten['col_rank'] ?></td>
+		<td class="colhead" align="center" align="center" > <?php echo $lang_topten['col_user'] ?> </td>
+		<td class="colhead" align="center" align="center"> <?php echo $lang_topten['col_uploaded'] ?> </td>
+		<td class="colhead" align="center" align="center" > <?php echo $lang_topten['col_ul_speed'] ?> </td>
+		<td class="colhead" align="center" align="center"> <?php echo $lang_topten['col_downloaded'] ?></td>
+		<td class="colhead" align="center" align="center" > <?php echo $lang_topten['col_dl_speed'] ?> </td>
+		<td class="colhead" align="center" align="center" > <?php echo $lang_topten['col_ratio'] ?> </td>
+		<td class="colhead" align="center" align="center" > <?php echo $lang_topten['col_joined'] ?> </td>
 	</tr>
 	<?php
 	$num = 0;
@@ -4558,17 +4558,17 @@ function _torrenttable($res, $frame_caption)
 	begin_table();
 	?>
 	<tr>
-		<td class="colhead" align="center"><?php echo $lang_topten['col_rank'] ?></td>
-		<td class="colhead" align="left"><?php echo $lang_topten['col_name'] ?></td>
-		<td class="colhead"
-		    align="right"><?php echo "<img class=\"snatched\" src=\"pic/trans.gif\" alt=\"snatched\" title=\"" . $lang_topten['title_sna'] . "\" />" ?></td>
-		<td class="colhead" align="right"><?php echo $lang_topten['col_data'] ?></td>
-		<td class="colhead"
-		    align="right"><?php echo "<img class=\"seeders\" src=\"pic/trans.gif\" alt=\"seeders\" title=\"" . $lang_topten['title_se'] . "\" />" ?></td>
-		<td class="colhead"
-		    align="right"><?php echo "<img class=\"leechers\" src=\"pic/trans.gif\" alt=\"leechers\" title=\"" . $lang_topten['title_le'] . "\" />" ?></td>
-		<td class="colhead" align="right"><?php echo $lang_topten['col_to'] ?></td>
-		<td class="colhead" align="right"><?php echo $lang_topten['col_ratio'] ?></td>
+		<td class="colhead" align="center" align="center"><?php echo $lang_topten['col_rank'] ?></td>
+		<td class="colhead" align="center" ><?php echo $lang_topten['col_name'] ?></td>
+		<td class="colhead" align="center"
+		    ><?php echo "<img class=\"snatched\" src=\"pic/trans.gif\" alt=\"snatched\" title=\"" . $lang_topten['title_sna'] . "\" />" ?></td>
+		<td class="colhead" align="center" ><?php echo $lang_topten['col_data'] ?></td>
+		<td class="colhead" align="center"
+		    ><?php echo "<img class=\"seeders\" src=\"pic/trans.gif\" alt=\"seeders\" title=\"" . $lang_topten['title_se'] . "\" />" ?></td>
+		<td class="colhead" align="center"
+		    ><?php echo "<img class=\"leechers\" src=\"pic/trans.gif\" alt=\"leechers\" title=\"" . $lang_topten['title_le'] . "\" />" ?></td>
+		<td class="colhead" align="center" ><?php echo $lang_topten['col_to'] ?></td>
+		<td class="colhead" align="center" ><?php echo $lang_topten['col_ratio'] ?></td>
 	</tr>
 	<?php
 	$num = 0;
@@ -4597,9 +4597,9 @@ function countriestable($res, $frame_caption, $what)
 	begin_table();
 	?>
 	<tr>
-		<td class="colhead"><?php echo $lang_topten['col_rank'] ?></td>
-		<td class="colhead" align="left"><?php echo $lang_topten['col_country'] ?></td>
-		<td class="colhead" align="right"><?php echo $what ?></td>
+		<td class="colhead" align="center"><?php echo $lang_topten['col_rank'] ?></td>
+		<td class="colhead" align="center" ><?php echo $lang_topten['col_country'] ?></td>
+		<td class="colhead" align="center" ><?php echo $what ?></td>
 	</tr>
 	<?php
 	$num = 0;
@@ -4855,14 +4855,14 @@ function supply_snatchtable($res, $frame_caption)
 	?>
 
 	<tr>
-		<td class="colhead"><?php echo $lang_topten['col_rank'] ?></td>
-		<td class="colhead" align="left"> <?php echo $lang_topten['col_user'] ?> </td>
-		<td class="colhead" align="left"> <?php echo $lang_topten['col_torrent_uploaded'] ?> </td>
-		<td class="colhead"> <?php echo $lang_topten['col_uploaded'] ?> </td>
-		<td class="colhead" align="left"> <?php echo $lang_topten['col_torrent_downloaded'] ?> </td>
-		<td class="colhead"> <?php echo $lang_topten['col_downloaded'] ?></td>
-		<td class="colhead" align="right"> <?php echo $lang_topten['col_ratio'] ?> </td>
-		<td class="colhead" align="left"> <?php echo $lang_topten['col_joined'] ?> </td>
+		<td class="colhead" align="center"><?php echo $lang_topten['col_rank'] ?></td>
+		<td class="colhead" align="center" > <?php echo $lang_topten['col_user'] ?> </td>
+		<td class="colhead" align="center" > <?php echo $lang_topten['col_torrent_uploaded'] ?> </td>
+		<td class="colhead" align="center"> <?php echo $lang_topten['col_uploaded'] ?> </td>
+		<td class="colhead" align="center" > <?php echo $lang_topten['col_torrent_downloaded'] ?> </td>
+		<td class="colhead" align="center"> <?php echo $lang_topten['col_downloaded'] ?></td>
+		<td class="colhead" align="center" > <?php echo $lang_topten['col_ratio'] ?> </td>
+		<td class="colhead" align="center" > <?php echo $lang_topten['col_joined'] ?> </td>
 	</tr>
 	<?php
 	$num = 0;
