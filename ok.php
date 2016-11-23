@@ -35,22 +35,25 @@ elseif ($type == "sysop") {
 	}
 elseif ($type == "confirmed") {
 	stdhead($lang_ok['head_already_confirmed']);
-	print($lang_ok['std_already_confirmed']);
-	print($lang_ok['std_already_confirmed_note']);
+	stdmsg($lang_ok['std_already_confirmed'], $lang_ok['std_already_confirmed_note']);
+//	print($lang_ok['std_already_confirmed']);
+//	print($lang_ok['std_already_confirmed_note']);
 	stdfoot();
 }
 elseif ($type == "confirm") {
 	if (isset($CURUSER)) {
 		stdhead($lang_ok['head_signup_confirmation']);
-		print($lang_ok['std_account_confirmed']);
-		print($lang_ok['std_auto_logged_in_note']);
-		print($lang_ok['std_read_rules_faq']);
+		stdmsg($lang_ok['std_account_confirmed'], $lang_ok['std_auto_logged_in_note']. $lang_ok['std_read_rules_faq']);
+//		print($lang_ok['std_account_confirmed']);
+//		print($lang_ok['std_auto_logged_in_note']);
+//		print($lang_ok['std_read_rules_faq']);
 		stdfoot();
 	}
 	else {
 		stdhead($lang_ok['head_signup_confirmation']);
-		print($lang_ok['std_account_confirmed']);
-		print($lang_ok['std_cookies_disabled_note']);
+		stdmsg($lang_ok['std_account_confirmed'], $lang_ok['std_cookies_disabled_note']);
+//		print($lang_ok['std_account_confirmed']);
+//		print($lang_ok['std_cookies_disabled_note']);
 		stdfoot();
 	}
 }

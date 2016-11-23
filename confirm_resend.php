@@ -62,7 +62,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 	sql_query("UPDATE users SET passhash=" .sqlesc($wantpasshash) . ",secret=" . sqlesc($secret) . ",editsecret=" . sqlesc($editsecret) . " WHERE id=" . sqlesc($arr["id"])) or sqlerr(__FILE__, __LINE__);
 	
 	if (!mysql_affected_rows())
-	stderr($lang_confirm_resend['std_error'], $lang_confirm_resend['std_database_error']);
+	stdmsg($lang_confirm_resend['std_error'], $lang_confirm_resend['std_database_error']);
 
 	$psecret = md5($editsecret);
 	$ip = getip() ;
@@ -87,11 +87,17 @@ EOD;
 }
 else
 {
-	stdhead();
+	login_head();
+	echo "<div class=\"logo\">
+			<a href=\"index.html\">
+			<img src=\"./styles/BambooGreen/logo-big.png\" alt=\"\"> </a>
+			</div>
+			<div class=\"content\">";
+
 	$s = "<select name=\"sitelanguage\" onchange='submit()'>\n";
 	
 	$langs = langlist("site_lang");
-	
+
 	foreach ($langs as $row)
 	{
 		if ($row["site_lang_folder"] == get_langfolder_cookie()) $se = " selected=\"selected\""; else $se = "";
@@ -101,22 +107,22 @@ else
 	?>
 	<form method="get" action="<?php echo $_SERVER['PHP_SELF'] ?>">
 <?php
-	print("<div align=\"right\">".$lang_confirm_resend['text_select_lang']. $s . "</div>");
+//	print("<div align=\"right\">".$lang_confirm_resend['text_select_lang']. $s . "</div>");
 ?>
 	</form>
 	<?php echo $lang_confirm_resend['text_resend_confirmation_mail_note']?>
-	<p><?php echo $lang_confirm_resend['text_you_have'] ?><b><?php echo remaining ();?></b><?php echo $lang_confirm_resend['text_remaining_tries'] ?></p>
+<!--	<p>--><?php //echo $lang_confirm_resend['text_you_have'] ?><!--<b>--><?php //echo remaining ();?><!--</b>--><?php //echo $lang_confirm_resend['text_remaining_tries'] ?><!--</p>-->
 	<form method="post" action="confirm_resend.php">
 	<table  cellspacing="0" cellpadding="10">
 	<tr><td class="rowhead nowrap"><?php echo $lang_confirm_resend['row_registered_email'] ?></td>
-	<td class="rowfollow"><input type="text" style="width: 200px" name="email" /></td></tr>
-	<tr><td class="rowhead nowrap"><?php echo $lang_confirm_resend['row_new_password'] ?></td><td align="left"><input type="password" style="width: 200px" name="wantpassword" /><br />
+	<td class="rowfollow"><input class="form-control form-control-solid placeholder-no-fix " type="text" style="width: 200px" name="email" /><br></td></tr>
+	<tr><td class="rowhead nowrap"><?php echo $lang_confirm_resend['row_new_password'] ?></td><td align="left"><input class="form-control form-control-solid placeholder-no-fix" type="password" style="width: 200px" name="wantpassword" /><br />
 		<font class="small"><?php echo $lang_confirm_resend['text_password_note'] ?></font></td></tr>
-	<tr><td class="rowhead nowrap"><?php echo $lang_confirm_resend['row_enter_password_again'] ?></td><td align="left"><input type="password" style="width: 200px" name="passagain" /></td></tr>
+	<tr><td class="rowhead nowrap"><?php echo $lang_confirm_resend['row_enter_password_again'] ?></td><td align="left"><input class="form-control form-control-solid placeholder-no-fix" type="password" style="width: 200px" name="passagain" /><br></td></tr>
 	<?php
 	show_image_code();
 	?>
-	<tr><td class="toolbox" colspan="2" align="center"><input type="submit" class="btn" value="<?php echo $lang_confirm_resend['submit_send_it'] ?>" /></td></tr>
+	<tr><td class="toolbox" colspan="2" align="center"><input type="submit" class="btn btn-success" value="<?php echo $lang_confirm_resend['submit_send_it'] ?>" /></td></tr>
 	</table></form>
 	<?php
 	stdfoot();

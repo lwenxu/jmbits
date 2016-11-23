@@ -1456,7 +1456,8 @@ function sent_mail($to,$fromname,$fromemail,$subject,$body,$type = "confirmation
 			ini_set('sendmail_from', $smtp_from);
 		}
 
-		@mail($to,"=?".$hdr_encoding."?B?".base64_encode($subject)."?=",$body,$headers) or stderr($lang_functions['std_error'], $lang_functions['text_unable_to_send_mail']);
+//		@mail($to,"=?".$hdr_encoding."?B?".base64_encode($subject)."?=",$body,$headers) or stderr($lang_functions['std_error'], $lang_functions['text_unable_to_send_mail']);
+		var_dump(mail($to, "=?" . $hdr_encoding . "?B?" . base64_encode($subject) . "?=", $body, $headers));
 
 		ini_restore(SMTP);
 		ini_restore(smtp_port);
@@ -1483,7 +1484,10 @@ function sent_mail($to,$fromname,$fromemail,$subject,$body,$type = "confirmation
 		$mail->mime_charset('text/html', $hdr_encoding);
 		$mail->subject($subject);
 		$mail->body($body);
-		$mail->send() or stderr($lang_functions['std_error'], $lang_functions['text_unable_to_send_mail']);
+
+//		$mail->send() or stderr($lang_functions['std_error'], $lang_functions['text_unable_to_send_mail']);
+		var_dump($mail->send());
+		echo "lllll";
 		$mail->close();
 	}
 	if ($showmsg) {

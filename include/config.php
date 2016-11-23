@@ -148,11 +148,12 @@ $smtp_host = $SMTP['smtp_host'];
 $smtp_port = $SMTP['smtp_port'];
 if (strtoupper(substr(PHP_OS,0,3)=='WIN'))
 $smtp_from = $SMTP['smtp_from'];
-$smtpaddress = $SMTP['smtpaddress'];
-$smtpport = $SMTP['smtpport'];
-$accountname = $SMTP['accountname'];
-$accountpassword = $SMTP['accountpassword'];
-
+$smtpaddress = $SMTP['smtp_address'];
+$smtpport = $SMTP['smtp_port'];
+$account_name = $SMTP['account_name'];
+$account_password = $SMTP['account_password'];
+//$accountpassword = "bzmhlpdhdnxhbaac";
+//$accountpassword = ;
 $securelogin = $SECURITY['securelogin'];
 $securetracker = $SECURITY['securetracker'];
 $https_announce_urls = array();

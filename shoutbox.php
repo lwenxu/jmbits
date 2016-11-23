@@ -237,6 +237,11 @@ else
 			$rand=0;
 		}
 		$rand++;
+		if ($CURUSER['avatar']){
+			$avatar=$CURUSER['avatar'];
+		}else{
+			$avatar="pic/default_avatar.png";
+		}
 		if ($rand%2==0) {
 			print("<tr><td>
 			<img src=$CURUSER[avatar] height='50px' style='float: right;border-radius: 8px'/>

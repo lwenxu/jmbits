@@ -41,10 +41,10 @@ login_head();
 unset($returnto);
 if (!empty($_GET["returnto"])) {
 	$returnto = $_GET["returnto"];
-	if (!$_GET["nowarn"]) {
-		print("<h1>" . $lang_login['h1_not_logged_in']. "</h1>\n");
-		print("<p><b>" . $lang_login['p_error']. "</b> " . $lang_login['p_after_logged_in']. "</p>\n");
-	}
+//	if (!$_GET["nowarn"]) {
+//		print("<h1>" . $lang_login['h1_not_logged_in']. "</h1>\n");
+//		print("<p><b>" . $lang_login['p_error']. "</b> " . $lang_login['p_after_logged_in']. "</p>\n");
+//	}
 }
 ?>
 
