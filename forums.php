@@ -840,7 +840,7 @@ if ($action == "viewtopic")
 "<input type=\"hidden\" name=\"id\" value=\"".$topicid."\" /><input type=\"hidden\" name=\"type\" value=\"reply\" /><br />");
 	quickreply('compose', 'body',$lang_forums['submit_add_reply']);
 	print("</form></td></tr></table>");
-	print("<br><a class=\" icon-ok btn btn-warning\" href=\"".htmlspecialchars("?action=reply&topicid=".$topicid)."\">".$lang_forums['text_add_reply']."</a>\n");
+	print("<br/><a style='margin-left:49%' class=\" icon-ok btn btn-warning\" href=\"".htmlspecialchars("?action=reply&topicid=".$topicid)."\">".$lang_forums['text_add_reply']."</a>\n");
 	}
 	elseif ($locked)
 		print($lang_forums['text_topic_locked_new_denied']);

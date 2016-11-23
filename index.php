@@ -64,7 +64,7 @@ a {
 //	}
 //	if (!$row) //There is no funbox item
 //	{
-//		print("<h4>".$lang_index['text_funbox'].(get_user_class() >= $newfunitem_class ? "<font class=\"small\"> - [<a class=\"altlink\" href=\"fun.php?action=new\"><b>".$lang_index['text_new_fun']."</b></a>]</font>" : "")."</h4>");
+//		print("<h4>".$lang_index['text_funbox'].(get_user_class() >= $newfunitem_class ? "<font class=\"small\"> - [<a class=\"altlink\" href=\"fun.php?action=new\">".$lang_index['text_new_fun']."</a>]</font>" : "")."</h4>");
 //	}
 //	else
 //	{
@@ -83,7 +83,7 @@ a {
 //		print ("<h4><span class='icon-trophy'></span>".$lang_index['text_funbox']);
 //		if ($CURUSER)
 //		{
-//			print("<font class=\"small\">".(get_user_class() >= $log_class ? " &nbsp;&nbsp;&nbsp;<a class=\"altlink\" href=\"log.php?action=funbox\"><b><span class='icon-quote-left'></span>".$lang_index['text_more_fun']."</b></a>": "").($row['neednew'] && get_user_class() >= $newfunitem_class ? " &nbsp;<a class=altlink href=\"fun.php?action=new\"><b>".$lang_index['text_new_fun']."</b></a>" : "" ).( ($CURUSER['id'] == $row['userid'] || get_user_class() >= $funmanage_class) ? " &nbsp;<a class=\"altlink\" href=\"fun.php?action=edit&amp;id=".$row['id']."&amp;returnto=index.php\"><b><span class='icon-edit'></span>".$lang_index['text_edit']."</b></a>" : "").(get_user_class() >= $funmanage_class ? " &nbsp;<a class=\"altlink\" href=\"fun.php?action=delete&amp;id=".$row['id']."&amp;returnto=index.php\"><b ><sapn class='icon-trash'></sapn>".$lang_index['text_delete']."</b></a>&nbsp;&nbsp;<a class=\"altlink\" href=\"fun.php?action=ban&amp;id=".$row['id']."&amp;returnto=index.php\"><b><sapn class='icon-ban-circle'></sapn>".$lang_index['text_ban']."</b></a>" : "")."</font>") ;
+//			print("<font class=\"small\">".(get_user_class() >= $log_class ? " &nbsp;&nbsp;&nbsp;<a class=\"altlink\" href=\"log.php?action=funbox\"><span class='icon-quote-left'></span>".$lang_index['text_more_fun']."</a>": "").($row['neednew'] && get_user_class() >= $newfunitem_class ? " &nbsp;<a class=altlink href=\"fun.php?action=new\">".$lang_index['text_new_fun']."</a>" : "" ).( ($CURUSER['id'] == $row['userid'] || get_user_class() >= $funmanage_class) ? " &nbsp;<a class=\"altlink\" href=\"fun.php?action=edit&amp;id=".$row['id']."&amp;returnto=index.php\"><span class='icon-edit'></span>".$lang_index['text_edit']."</a>" : "").(get_user_class() >= $funmanage_class ? " &nbsp;<a class=\"altlink\" href=\"fun.php?action=delete&amp;id=".$row['id']."&amp;returnto=index.php\"><b ><sapn class='icon-trash'></sapn>".$lang_index['text_delete']."</a>&nbsp;&nbsp;<a class=\"altlink\" href=\"fun.php?action=ban&amp;id=".$row['id']."&amp;returnto=index.php\"><sapn class='icon-ban-circle'></sapn>".$lang_index['text_ban']."</a>" : "")."</font>") ;
 //		}
 //		print("</h2>");
 //
@@ -94,7 +94,7 @@ a {
 //		{
 //			$funonclick = " onclick=\"funvote(".$row['id'].",'fun'".")\"";
 //			$dullonclick = " onclick=\"funvote(".$row['id'].",'dull'".")\"";
-//			print("<span id=\"funvote\"><b>".$funvote."</b>".$lang_index['text_out_of'].$totalvote.$lang_index['text_people_found_it'].($funvoted ? "" : "<font class=\"striking\">".$lang_index['text_your_opinion']."</font>&nbsp;&nbsp;<input type=\"button\" class='btn' name='fun' id='fun' ".$funonclick." value=\"".$lang_index['submit_fun']."\" />&nbsp;<input type=\"button\" class='btn' name='dull' id='dull' ".$dullonclick." value=\"".$lang_index['submit_dull']."\" />")."</span><span id=\"voteaccept\" style=\"display: none;\">".$lang_index['text_vote_accepted']."</span>");
+//			print("<span id=\"funvote\">".$funvote."".$lang_index['text_out_of'].$totalvote.$lang_index['text_people_found_it'].($funvoted ? "" : "<font class=\"striking\">".$lang_index['text_your_opinion']."</font>&nbsp;&nbsp;<input type=\"button\" class='btn' name='fun' id='fun' ".$funonclick." value=\"".$lang_index['submit_fun']."\" />&nbsp;<input type=\"button\" class='btn' name='dull' id='dull' ".$dullonclick." value=\"".$lang_index['submit_dull']."\" />")."</span><span id=\"voteaccept\" style=\"display: none;\">".$lang_index['text_vote_accepted']."</span>");
 //		}
 //		print("</td></tr></table>");
 //	}
@@ -140,7 +140,7 @@ a {
 //							else continue;
 //						}
 //						else continue;
-//						$thumbnail = "<a href=\"details.php?id=" . $array['id'] . "&amp;hit=1\" onmouseover=\"domTT_activate(this, event, 'content', '" . htmlspecialchars("<font class=\'big\'><b>" . (addslashes($array['name'] . $pro_torrent)) . "</b></font><br /><font class=\'medium\'>".(addslashes($array['small_descr'])) ."</font>"). "', 'trail', true, 'delay', 0,'lifetime',5000,'styleClass','niceTitle','maxWidth', 600);\">" . $thumbnail . "</a>";
+//						$thumbnail = "<a href=\"details.php?id=" . $array['id'] . "&amp;hit=1\" onmouseover=\"domTT_activate(this, event, 'content', '" . htmlspecialchars("<font class=\'big\'>" . (addslashes($array['name'] . $pro_torrent)) . "</font><br /><font class=\'medium\'>".(addslashes($array['small_descr'])) ."</font>"). "', 'trail', true, 'delay', 0,'lifetime',5000,'styleClass','niceTitle','maxWidth', 600);\">" . $thumbnail . "</a>";
 //						$movies_list .= $thumbnail;
 //						$count++;
 //						if ($count >= 9)
@@ -185,13 +185,13 @@ if (!$Cache->get_page()){
 			$Cache->add_row();
 			$Cache->add_part();
 			if ($news_flag < 1) {
-				print("<h4><a href=\"javascript: klappe_news('a".$array['id']."')\"><span class='icon-tags' style='color:#2DCB70'></span>&nbsp;"."<b>". $array['title'] . "</b>(".date("Y.m.d",strtotime($array['added'])).")</a></h4>");
-				print("<div class='kas' id=\"ka".$array['id']."\" style=\"display: block;\"> ".format_comment($array["body"],0)." </div> ");
+				print("<h3><a href=\"javascript: klappe_news('a".$array['id']."')\"><span class='icon-tags' style='color:#2DCB70'></span>&nbsp;"."". $array['title'] . "(".date("Y.m.d",strtotime($array['added'])).")</a></h3>");
+				print("<div class='kas' id=\"ka".$array['id']."\" style=\"display: block;\"> ".format_comment($array["body"],0)." </div>");
 				$news_flag = $news_flag + 1;
 			}
 			else
 			{
-				print("<h4><a href=\"javascript: klappe_news('a".$array['id']."')\"><br /><span class='icon-tags' style='color:#2DCB70'></span>&nbsp;"."<b>". $array['title'] . "</b>(".date("Y.m.d",strtotime($array['added'])).")</a></h4>");
+				print("<h3><a href=\"javascript: klappe_news('a".$array['id']."')\"><br /><span class='icon-tags' style='color:#2DCB70'></span>&nbsp;"."". $array['title'] . "(".date("Y.m.d",strtotime($array['added'])).")</a></h3>");
 				print("<div class='alttext' id=\"ka".$array['id']."\" style=\"display: none;\"> ".format_comment($array["body"],0)." </div> ");
 			}
 			$Cache->end_part();
@@ -289,7 +289,7 @@ if ($showshoutbox_main == "yes") {
 	print("<form action='shoutbox.php' method='get' target='sbox' name='shbox'>\n");
 	print("<label for='shbox_text'>" . $lang_index['text_message'] . "</label>
 	<div class=\"vtop td-fat pd5\">
-	<textarea class=\"input fullwidth inputor\" name='shbox_text' id='shbox_text' rows=\"2\" placeholder=\"请输入聊天内容\" style=\"height: 4em; background-color: rgb(255, 255, 255);width:100%\"></textarea>
+	<textarea class=\"input fullwidth inputor\" name='shbox_text' id='shbox_text' rows=\"2\" placeholder=\"请输入聊天内容\" style=\"height: 4em; background-color: rgb(255, 255, 255);width:98%;margin-left:1%\"></textarea>
 	</div>
 	<input style='margin:7px' type='submit' id='hbsubmit' class=\"btn btn-success\" name='shout' value=\"" . $lang_index['sumbit_shout'] . "\" />");
 	if ($CURUSER['hidehb'] != 'yes' && $showhelpbox_main == 'yes')
@@ -321,17 +321,17 @@ if ($CURUSER && $showpolls_main == "yes") {
 	else $pollexists = true;
 	panel_head_start();
 	print("<h3 class='panel-title'><sapn class='icon-bookmark'></sapn>" . $lang_index['text_polls']);
-	panel_head_end();
 	if (get_user_class() >= $pollmanage_class) {
-		print("&nbsp;<sapn class='icon-pencil'></sapn><a class=\"altlink\" href=\"makepoll.php?returnto=main\"><b>" . $lang_index['text_new'] . "</b></a></h>\n");
+		print("&nbsp;<sapn class='icon-pencil'></sapn><a class=\"altlink\" href=\"makepoll.php?returnto=main\">" . $lang_index['text_new'] . "</a></h>\n");
 		if ($pollexists) {
-			print("&nbsp;<sapn class='icon-edit'></sapn><a class=\"altlink\" href=\"makepoll.php?action=edit&amp;pollid=" . $arr[id] . "&amp;returnto=main\"><b>" . $lang_index['text_edit'] . "</b></a>\n");
-			print("&nbsp;<span class='icon-trash'></span><a class=\"altlink\" href=\"log.php?action=poll&amp;do=delete&amp;pollid=" . $arr[id] . "&amp;returnto=main\"><b>" . $lang_index['text_delete'] . "</b></a>");
-			print("&nbsp;<span class='icon-spinner'></span><a class=\"altlink\" href=\"polloverview.php?id=" . $arr[id] . "\"><b>" . $lang_index['text_detail'] . "</b></a>");
+			print("&nbsp;<sapn class='icon-edit'></sapn><a class=\"altlink\" href=\"makepoll.php?action=edit&amp;pollid=" . $arr[id] . "&amp;returnto=main\">" . $lang_index['text_edit'] . "</a>\n");
+			print("&nbsp;<span class='icon-trash'></span><a class=\"altlink\" href=\"log.php?action=poll&amp;do=delete&amp;pollid=" . $arr[id] . "&amp;returnto=main\">" . $lang_index['text_delete'] . "</a>");
+			print("&nbsp;<span class='icon-spinner'></span><a class=\"altlink\" href=\"polloverview.php?id=" . $arr[id] . "\">" . $lang_index['text_detail'] . "</a>");
 		}
 		print("</font>");
 	}
 	print("</h4>");
+	panel_head_end();
 	if ($pollexists) {
 		$pollid = 0 + $arr["id"];
 		$userid = 0 + $CURUSER["id"];
@@ -428,7 +428,7 @@ if ($CURUSER && $showpolls_main == "yes") {
 			}
 			print("<br />");
 			print("<label class=\"checkbox\"><input style='margin-left: 20%' type=\"radio\" name=\"choice\" value=\"255\">" . $lang_index['radio_blank_vote'] . "<br />\n");
-			print("<p align=\"center\"><input  type=\"submit\" class=\"btn\" value=\"" . $lang_index['submit_vote'] . "\" /></p></label>");
+			print("<p align=\"center\"><input  type=\"submit\" class=\"btn btn-success\" value=\"" . $lang_index['submit_vote'] . "\" /></p></label>");
 		}
 		print("</table>");
 
@@ -535,8 +535,8 @@ if ($showstats_main == "yes") {
 		<sapn class=" icon-dashboard"></sapn>
 		&nbsp;<?php echo $lang_index['text_tracker_statistics'] ?>
 	</h3>
-
-	<table style="margin-top: 10px" width="100%" class="table table-striped" id="statustable">
+	<div class="panel panel-default">
+	<table  width="100%" class="table table-striped" >
 	<tr>
 	<!--<table width="60%" class="table table-bordered"  cellspacing="0" cellpadding="10">-->
 	<?php

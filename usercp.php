@@ -161,7 +161,9 @@ if ($action){
 			}
 
 			usercpmenu ("personal");
-			print ("<table class='table table-striped' border=0 cellspacing=0 cellpadding=5 width=940>");
+			print ("
+<div class=\"panel panel-default\">
+<table class='table table-striped' border=0 cellspacing=0 cellpadding=5 width=940>");
 			if ($type == 'saved')
 				print("<tr><td colspan=2 class=\"heading\" valign=\"top\" align=\"center\"><font color=red>".$lang_usercp['text_saved']."</font></td></tr>\n");
 
@@ -193,7 +195,7 @@ tr($lang_usercp['row_school'], "<select class='btn btn-warning'  name=school>$sc
   "\"><br />\n".$lang_usercp['text_avatar_note'].($enablebitbucket_main == 'yes' ? $lang_usercp['text_bitbucket_note'] : ""),1);
   tr($lang_usercp['row_info'], "<textarea class='input fullwidth inputor' name=\"info\" style=\"width:700px\" rows=\"10\" >" . htmlspecialchars($CURUSER["info"]) . "</textarea><br />".$lang_usercp['text_info_note'], 1);
   submit();
-  print("</table>");
+  print("</table></div>");
   stdfoot();
   die;
   break;
@@ -395,7 +397,9 @@ if ($showprocessing) $processings = searchbox_item_list("processings");
 if ($showteam) $teams = searchbox_item_list("teams");
 if ($showaudiocodec) $audiocodecs = searchbox_item_list("audiocodecs");
 }
-			print ("<table class='table table-striped' border=0 cellspacing=0 cellpadding=5 width=940>");
+			print ("
+<div class=\"panel panel-default\">
+<table class='table table-striped' border=0 cellspacing=0 cellpadding=5 width=940>");
 			form ("tracker");
 			if ($type == 'saved')
 				print("<tr><td colspan=2 class=\"heading\" valign=\"top\" align=\"center\"><font color=red>".$lang_usercp['text_saved']."</font></td></tr>\n");
@@ -597,7 +601,7 @@ tr_small($lang_usercp['row_funbox'],"<input type=checkbox name=showfb".($CURUSER
 		<b>".$lang_usercp['text_comments_reviews'].": </b><br /><input type=checkbox name=showcomnum ".($CURUSER['showcomnum'] == 'yes' ? " checked" : "")." value=yes>".$lang_usercp['text_show_comment_number'].($showtooltipsetting ? "<select class='btn btn-warning'  name=\"showlastcom\" style=\"width: 70px;\"><option value=\"yes\" ".($CURUSER['showlastcom'] != 'no' ? " selected" : "").">".$lang_usercp['select_with']."</option><option value=\"no\" ".($CURUSER['showlastcom'] == 'no' ? " selected" : "").">".$lang_usercp['select_without']."</option></select>".$lang_usercp['text_last_comment_on_tooltip'] : ""), 1);
 
 			submit();
-			print("</table>");
+			print("</table></div>");
 			stdfoot();
 			die;
 			break;
@@ -632,7 +636,9 @@ tr_small($lang_usercp['row_funbox'],"<input type=checkbox name=showfb".($CURUSER
 			}
 			stdhead($lang_usercp['head_control_panel'].$lang_usercp['head_forum_settings'],true);
 			usercpmenu ("forum");
-			print ("<table class='table table-striped' border=0 cellspacing=0 cellpadding=5 width=940>");
+			print ("
+<div class=\"panel panel-default\">
+<table class='table table-striped' border=0 cellspacing=0 cellpadding=5 width=940>");
 			form ("forum");
 			if ($type == 'saved')
 			print("<tr><td colspan=2 class=\"heading\" valign=\"top\" align=\"center\"><font color=red>".$lang_usercp['text_saved']."</font></td></tr>\n");
@@ -646,7 +652,7 @@ tr_small($lang_usercp['row_funbox'],"<input type=checkbox name=showfb".($CURUSER
 			tr_small($lang_usercp['row_click_on_topic'], "<input type=radio name=clicktopic" . ($CURUSER["clicktopic"] == "firstpage" ? " checked" : "") . " value=\"firstpage\">".$lang_usercp['text_go_to_first_page']."<input type=radio name=clicktopic" . ($CURUSER["clicktopic"] == "lastpage" ? " checked" : "") . " value=\"lastpage\">".$lang_usercp['text_go_to_last_page'],1);
 			tr_small($lang_usercp['row_forum_signature'], "<textarea class='input fullwidth inputor' name=signature style=\"width:700px\" rows=10>" . $CURUSER[signature] . "</textarea><br />".$lang_usercp['text_signature_note'],1);
 			submit();
-			print("</table>");
+			print("</table></div>");
 			stdfoot();
 			die;
 			break;
@@ -787,7 +793,9 @@ EOD;
 			}
 			stdhead($lang_usercp['head_control_panel'].$lang_usercp['head_security_settings']);
 			usercpmenu ("security");
-			print ("<table class='table table-striped' border=0 cellspacing=0 cellpadding=5 width=940>");
+			print ("
+<div class=\"panel panel-default\">
+<table class='table table-striped' border=0 cellspacing=0 cellpadding=5 width=940>");
 			if ($type == 'save') {
 				print("<form method=post action=usercp.php><input type=hidden name=action value=security><input type=hidden name=type value=confirm>");
 				$resetpasskey = $_POST["resetpasskey"];
@@ -817,7 +825,7 @@ EOD;
 			tr_small($lang_usercp['row_type_password_again'], "<input class='input tip-focus fullwidth' type=\"password\" name=\"passagain\" style=\"width: 200px\" />", 1);
 			tr_small($lang_usercp['row_privacy_level'],  priv("normal", $lang_usercp['radio_normal']) . " " . priv("low", $lang_usercp['radio_low']) . " " . priv("strong", $lang_usercp['radio_strong']), 1);
 			submit();
-			print("</table>");
+			print("</table></div>");
 			stdfoot();
 			die;
 			break;
@@ -855,13 +863,17 @@ if ($forumposts)
 	$percentages = round($forumposts*100/$postcount, 3)."%";
 }
 ?>
+	<div class="panel panel-default">
 <table class='table table-striped' border="0" cellspacing="0" cellpadding="5" width=940>
 <?php
+//echo "<pre>";
+//var_dump($CURUSER);
+//echo "</pre>";
 tr_small($lang_usercp['row_join_date'], $joindate, 1);
 tr_small($lang_usercp['row_email_address'], $CURUSER['email'], 1);
 if ($enablelocation_tweak == 'yes'){
-	list($loc_pub, $loc_mod) = get_ip_location($CURUSER["ip"]);
-	tr_small($lang_usercp['row_ip_location'], $CURUSER["ip"]." <span title='" . $loc_mod . "'>[" . $loc_pub . "]</span>", 1);
+//	list($loc_pub, $loc_mod) = get_ip_location($CURUSER["ip"]);
+	tr_small($lang_usercp['row_ip_location'], $CURUSER["ip"], 1);
 }
 else{
 	tr_small($lang_usercp['row_ip_location'], $CURUSER["ip"], 1);
@@ -882,9 +894,12 @@ if ($forumposts)
 	tr($lang_usercp['row_forum_posts'], $forumposts." [<a href=\"userhistory.php?action=viewposts&id=".$CURUSER[id]."\" title=\"".$lang_usercp['link_view_posts']."\">".$lang_usercp['text_view']."</a>] (".$dayposts.$lang_usercp['text_posts_per_day']."; ".$percentages.$lang_usercp['text_of_total_posts'].")", 1);
 ?>
 </table>
+</div>
+<div class="panel panel-default">
 <table class='table table-striped' border="0" cellspacing="0" cellpadding="5" width=940>
 <?php
-print("<td align=center class=tabletitle><b>".$lang_usercp['text_recently_read_topics']."</b></td>");
+
+print("<td align=center class=tabletitle><h3 class='icon-tasks icon-big'>&nbsp;".$lang_usercp['text_recently_read_topics']."</h3></td>");
 ?>
 </table>
 <?php
@@ -930,6 +945,7 @@ while ($topicarr = mysql_fetch_assoc($res_topics))
 }
 ?>
   </table>
+</div>
 </td>
 </tr>
 <?php

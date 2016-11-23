@@ -62,7 +62,7 @@ if ($_GET["add_offer"]){
 	"<input class='input tip-focus fullwidth' type=text name=picture ><br />".$lang_offers['text_link_to_picture']."</td></tr>".
 	"<tr><td class=rowhead align=right valign=top><b>".$lang_offers['row_description']."<b><font color=red>*</font></td><td class=rowfollow align=left>\n");
 	textbbcode("compose","body",$body,false);
-	print("</td></tr><tr><td class=toolbox align=center colspan=2><input class='med btn btn-success' id=qr type=submit class=btn value=".$lang_offers['submit_add_offer']." ></td></tr></table></form>\n");
+	print("</td></tr><tr><td class=toolbox align=center colspan=2><input style='margin-left: 9%' class='med btn btn-success' id=qr type=submit class=btn value=".$lang_offers['submit_add_offer']." ></td></tr></table></form>\n");
 	stdfoot();
 	die;
 }
@@ -143,7 +143,7 @@ if ($_GET["off_details"]){
 	$id = 0+$_GET["id"];
 	if(!$id)
 		die();
-		//stderr("Error", "I smell a rat!");
+//		stderr("Error", "I smell a rat!");
 	
 	$res = sql_query("SELECT * FROM offers WHERE id = $id") or sqlerr(__FILE__,__LINE__);
 	$num = mysql_fetch_array($res);
@@ -703,9 +703,9 @@ $res = sql_query("SELECT offers.id, offers.userid, offers.name, offers.added, of
 $num = mysql_num_rows($res);
 
 stdhead($lang_offers['head_offers']);
-begin_main_frame();
+//begin_main_frame();
 begin_frame($lang_offers['text_offers_section'], true,10,"100%","center");
-panel_start();
+//panel_start();
 //noborder("text");
 print("<p align=\"left\"><b><font size=\"5\"><h4><span class='icon-bullhorn'></span>&nbsp;".$lang_offers['text_rules']."</h4></font></b></p>\n");
 print("<div align=\"left\"><ul style='margin-left: 22%;font-size: 15px'>");

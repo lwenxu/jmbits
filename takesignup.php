@@ -7,7 +7,8 @@ require_once(get_langfile_path("", false, get_langfolder_cookie()));
 
 function bark($msg) {
 	global $lang_takesignup;
-	stdhead();
+//	stdhead();
+	login_head();
 	stdmsg($lang_takesignup['std_signup_failed'], $msg);
 	stdfoot();
 	exit;

@@ -1337,6 +1337,11 @@ td .text{
     font-size:17px;
 }
 
+.icon-red {
+    color: tomato;
+    font-size: 17px;
+}
+
 .sans{
     font-family: sans-serif;
     font-size: 16px;
@@ -1346,4 +1351,14 @@ td .text{
     min-width: 1333px;
     width: 100%;
     max-width: 1353px;
+}
+
+/*.vtop{*/
+    /*background-color: #00c9c9;*/
+    /*border-radius: 3px;*/
+/*}*/
+
+.icon-greenbig{
+    color: #3CB371;
+    font-size: 25px;
 }

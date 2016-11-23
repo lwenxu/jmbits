@@ -175,14 +175,14 @@ else {
 					
 					$rows = sql_query ( "SELECT * FROM req WHERE " . $limit . "  ORDER BY $order $page" ) or sqlerr ( __FILE__, __LINE__ );
 					print ("<h2 align=center><a href=viewrequest.php?action=new><input class='btn btn-success' type=\"button\" value=\"" . $lang_req ['head_req'] . "\" onclick=\"window.location='viewrequest.php?action=new';\" style=\"font-weight: bold\"/></a> <a href=forums.php?action=viewtopic&topicid=4818&page=0><input class='btn btn-danger' type=\"button\" value=\"规则\" onclick=\"window.location='forums.php?action=viewtopic&topicid=4818';\"/></a></h2>") ;
-					print ($pagertop) ;
+//					print ($pagertop) ;
 					print ("<table class='table table-striped' width=100% border=1 cellspacing=0 cellpadding=5 style=border-collapse:collapse >\n") ;
 					if (get_user_class () >= 13) {
 						print ("<form action=\"viewrequest.php\" method=\"GET\">\n") ;
 						print ("<input type=\"hidden\" name=\"action\" value=\"fastdel\" />") ;
 					}
 					print ("<table class=\"table table-striped\" cellspacing=\"0\" cellpadding=\"5\" width=\"100%\">\n") ;
-					print ("<tr>" . "<td class=colhead width=3% align=center><a href=?" . $orderlink . "sort=1&type=" . ($column == "catid" && $ascdesc == "ASC," ? "desc" : "asc") . ">类型</a></td>" . "<td class=colhead width=40% align=left><a href=?" . $orderlink . "sort=2&type=" . ($column == "name" && $ascdesc == "ASC," ? "desc" : "asc") . ">" . $lang_req ['name'] . "</a></td>" . "<td class=colhead width=5% align=center><a href=?" . $orderlink . "sort=4&type=" . ($column == "ori_amount" && $ascdesc == "DESC," ? "asc" : "desc") . ">" . $lang_req ['ori_amount'] . "</a></td>" . "<td class=colhead width=5% align=center><a href=?" . $orderlink . "sort=3&type=" . ($column == "amount" && $ascdesc == "DESC," ? "asc" : "desc") . ">" . $lang_req ['new_amount'] . "</a></td>" . "<td class=colhead width=7% align=center><a href=?" . $orderlink . "sort=5&type=" . ($column == "userid" && $ascdesc == "ASC," ? "desc" : "asc") . ">" . $lang_req ['addedby'] . "</a></td>" . "<td class=colhead width=4% align=center><a href=?" . $orderlink . "sort=6&type=" . ($column == "comments" && $ascdesc == "DESC," ? "asc" : "desc") . ">评论</a></td>" . "<td class=colhead width=4% align=center ><font color=black>应求</font></a></td>" . "<td class=colhead width=9% align=center><a href=?" . $orderlink . "sort=7&type=" . ($column == "added" && $ascdesc == "DESC," ? "asc" : "desc") . ">" . $lang_req ['addedtime'] . "</a></td>" . "<td class=colhead width=8% align=center><a href=?" . $orderlink . "sort=9&type=" . ($column == "resetdate" && $ascdesc == "DESC," ? "asc" : "desc") . ">最后悬赏</a></td>" . "<td class=colhead width=8% align=center><a href=?" . $orderlink . "sort=8&type=" . ($column == "finish" && $ascdesc == "DESC," ? "asc" : "desc") . ">" . $lang_req ['state'] . "</a></td>\n" . (get_user_class () >= 13 ? "<td width=13% class=colhead align=center><font color=black>行为</font></td>\n" : "") . "</tr>") ;
+					print ("<tr>" . "<td class=colhead width=3% align=center><a href=?" . $orderlink . "sort=1&type=" . ($column == "catid" && $ascdesc == "ASC," ? "desc" : "asc") . ">类型</a></td>" . "<td class=colhead width=35% align=left><a href=?" . $orderlink . "sort=2&type=" . ($column == "name" && $ascdesc == "ASC," ? "desc" : "asc") . ">" . $lang_req ['name'] . "</a></td>" . "<td class=colhead width=7% align=center><a href=?" . $orderlink . "sort=4&type=" . ($column == "ori_amount" && $ascdesc == "DESC," ? "asc" : "desc") . ">" . $lang_req ['ori_amount'] . "</a></td>" . "<td class=colhead width=7% align=center><a href=?" . $orderlink . "sort=3&type=" . ($column == "amount" && $ascdesc == "DESC," ? "asc" : "desc") . ">" . $lang_req ['new_amount'] . "</a></td>" . "<td class=colhead width=7% align=center><a href=?" . $orderlink . "sort=5&type=" . ($column == "userid" && $ascdesc == "ASC," ? "desc" : "asc") . ">" . $lang_req ['addedby'] . "</a></td>" . "<td class=colhead width=4% align=center><a href=?" . $orderlink . "sort=6&type=" . ($column == "comments" && $ascdesc == "DESC," ? "asc" : "desc") . ">评论</a></td>" . "<td class=colhead width=4% align=center ><font color=black>应求</font></a></td>" . "<td class=colhead width=9% align=center><a href=?" . $orderlink . "sort=7&type=" . ($column == "added" && $ascdesc == "DESC," ? "asc" : "desc") . ">" . $lang_req ['addedtime'] . "</a></td>" . "<td class=colhead width=8% align=center><a href=?" . $orderlink . "sort=9&type=" . ($column == "resetdate" && $ascdesc == "DESC," ? "asc" : "desc") . ">最后悬赏</a></td>" . "<td class=colhead width=8% align=center><a href=?" . $orderlink . "sort=8&type=" . ($column == "finish" && $ascdesc == "DESC," ? "asc" : "desc") . ">" . $lang_req ['state'] . "</a></td>\n" . (get_user_class () >= 13 ? "<td width=13% class=colhead align=center><font color=black>行为</font></td>\n" : "") . "</tr>") ;
 					
 					// $cat = mysql_fetch_array($cat);
 					// $cat=array(
@@ -192,14 +192,14 @@ else {
 						// if
 						$count = mysql_fetch_assoc ( sql_query ( "SELECT count(*) FROM resreq WHERE reqid=" . $row ["id"] ) );
 						$man = (get_user_class () >= 13) ? "<input type=\"checkbox\" name=\"id[]\" value=\"{$row['id']}\"/> " : '';
-						print ("<tr>" . "<td  align=center>" . $cat ["name"] . "</td>" . "<td align=left>{$man}<a href=viewrequest.php?action=view&id=" . $row ["id"] . "><b>" . $row ["name"] . "</b></a></td>" . "<td align=center>" . $row ['ori_amount'] . "</td>" . "<td align=center><font color=#ff0000><b>" . ($row ['amount'] - $row ['ori_amount']) . "</b></font></td>" . "<td align=center>" . get_username ( $row ['userid'] ) . "</td>" . "<td align=center>" . $row ['comments'] . "</td>" . "<td align=center>" . $count ["count(*)"] . "</td>" . "<td align=center>" . gettime ( $row ['added'], true, false ) . "</td>" . "<td align=center>" . gettime ( $row ['resetdate'], true, false ) . "</td>" . "<td align=center>" . ($row ['finish'] == "yes" ? $lang_req ['finished'] : ($row ['finish'] == "cancel" ? "已撤消" : ($row ['userid'] == $CURUSER [id] ? $lang_req ['unfinished'] : "<a href=viewrequest.php?action=res&id=" . $row ["id"] . " >" . $lang_req ['unfinished'] . "</a>"))) . "</td>" . (get_user_class () >= 13 ? "<td align=center><font color=black><a href=viewrequest.php?action=fastdel&id=" . $row ["id"] . " >删</a> <a href=viewrequest.php?action=edit&id=" . $row ["id"] . " >改</a> <a href=viewrequest.php?action=cancel&id=" . $row ["id"] . " >撤</a></td>\n" : "") . 
+						print ("<tr>" . "<td  align=center>" . $cat ["name"] . "</td>" . "<td align=left>{$man}<a href=viewrequest.php?action=view&id=" . $row ["id"] . "><span>" . $row ["name"] . "</span></a></td>" . "<td align=center>" . $row ['ori_amount'] . "</td>" . "<td align=center><font color=#ff0000><span>" . ($row ['amount'] - $row ['ori_amount']) . "</span></font></td>" . "<td align=center>" . get_username ( $row ['userid'] ) . "</td>" . "<td align=center>" . $row ['comments'] . "</td>" . "<td align=center>" . $count ["count(*)"] . "</td>" . "<td align=center>" . gettime ( $row ['added'], true, false ) . "</td>" . "<td align=center>" . gettime ( $row ['resetdate'], true, false ) . "</td>" . "<td align=center>" . ($row ['finish'] == "yes" ? $lang_req ['finished'] : ($row ['finish'] == "cancel" ? "已撤消" : ($row ['userid'] == $CURUSER [id] ? $lang_req ['unfinished'] : "<a href=viewrequest.php?action=res&id=" . $row ["id"] . " >" . $lang_req ['unfinished'] . "</a>"))) . "</td>" . (get_user_class () >= 13 ? "<td align=center><font color=black><a href=viewrequest.php?action=fastdel&id=" . $row ["id"] . " >删</a> <a href=viewrequest.php?action=edit&id=" . $row ["id"] . " >改</a> <a href=viewrequest.php?action=cancel&id=" . $row ["id"] . " >撤</a></td>\n" : "") . 
 
 						"</tr>") ;
 					}
 					
 					if (get_user_class () >= 13) {
 						print ("<tr>") ;
-						print ("<td class=\"rowfollow\" colspan=\"11\"><a href=\"#\" onclick=\"set_checked_torrent(true); return false;\">全选</a> <a href=\"#\" onclick=\"set_checked_torrent(false); return false;\">全不选</a>, 选中项: <input type=\"submit\" name=\"job\" value=\"删除\"> <input type=\"submit\" name=\"job\" value=\"撤销\"></td>\n") ;
+						print ("<td class=\"rowfollow\" colspan=\"11\"><a class='btn btn-success' href=\"#\" onclick=\"set_checked_torrent(true); return false;\">全选</a> <a class='btn btn-success' href=\"#\" onclick=\"set_checked_torrent(false); return false;\">全不选</a>, 选中项: <input class='btn btn-danger' type=\"submit\" name=\"job\" value=\"删除\"> <input class='btn btn-success' type=\"submit\" name=\"job\" value=\"撤销\"></td>\n") ;
 						print ("</tr>\n") ;
 						print ("</form>") ;
 						print ("<script type=\"text/javascript\">function set_checked_torrent(val){var checkboxs=document.getElementsByName(\"id[]\"); for (var i=0; i<checkboxs.length; i++) checkboxs[i].checked=val; }</script>") ;
@@ -207,7 +207,7 @@ else {
 					print ("</table>\n") ;
 					print ($pagerbottom) ;
 				}
-				print ("<br><a href=viewrequest.php?finished=all>查看所有</a> <a href=viewrequest.php?finished=yes>查看已解决</a> <a href=viewrequest.php?finished=no>查看未解决</a> <a href=viewrequest.php?finished=cancel>查看已关闭</a>\n") ;
+				print ("<spanr><a href=viewrequest.php?finished=all>查看所有</a> <a href=viewrequest.php?finished=yes>查看已解决</a> <a href=viewrequest.php?finished=no>查看未解决</a> <a href=viewrequest.php?finished=cancel>查看已关闭</a>\n") ;
 				stdfoot ();
 				die ();
 				break;
@@ -227,26 +227,26 @@ else {
 					print ("<table class='table table-striped' width=100% cellspacing=0 cellpadding=5>\n") ;
 					tr ( "基本信息", $lang_req ['text_reqed_by'] . get_username ( $arr ['userid'] ) . $lang_req ['text_reqed_at'] . gettime ( $arr ["added"], true, false ) . "\n", 1 );
 					tr ( "悬赏", "累计悬赏" . $arr ['amount'] . $lang_req ['ori_amount_is_1'] . $arr ["ori_amount"] . $lang_req ['ori_amount_is_2'] . "\n", 1 );
-					tr ( $lang_req ['do'], (($arr ['userid'] == $CURUSER [id] || get_user_class () >= 13) && $arr ["finish"] == "no" ? "<a href=viewrequest.php?action=edit&id=" . $id . " >" . $lang_req ['tr_edit'] : "") . "\n" . 					// 编辑权限（带分隔线）
-					($arr ['userid'] == $CURUSER [id] || $arr ["finish"] != "no" ? "" : "<a href=viewrequest.php?action=res&id=" . $id . " ><b>" . $lang_req ['tr_res'] . "</b>\n") . 					// 应求权限
-					(get_user_class () >= 13 && $arr ['userid'] != $CURUSER [id] && $arr ["finish"] == "no" ? " | " : "") . 					// 应求分隔线
-					(get_user_class () >= 13 ? "<a href=viewrequest.php?action=delete&id=" . $id . " >" . $lang_req ['tr_delete'] . 					// 删除权限
-					($arr ["finish"] == "no" ? " | " : "") : "") . "\n" . 					// 删除分隔线
-					(($arr ['userid'] == $CURUSER [id] || get_user_class () >= 13) && $arr ["finish"] == "no" ? "<a href=viewrequest.php?action=cancel&id=" . $id . " >" . "<b>撤销求种</b></a>" : "") . "\n" . 					// 撤销权限
-					($arr ['userid'] == $CURUSER [id] ? "" : (" | <a href=report.php?reportrequestid=" . $id . " >" . "<b>举报求种</b></a>") . "\n"), 					// 举报
+					tr ( $lang_req ['do'], (($arr ['userid'] == $CURUSER [id] || get_user_class () >= 13) && $arr ["finish"] == "no" ? "<a class='btn btn-success' href=viewrequest.php?action=edit&id=" . $id . " >" . $lang_req ['tr_edit'] : "") . "\n" . 					// 编辑权限（带分隔线）
+					($arr ['userid'] == $CURUSER [id] || $arr ["finish"] != "no" ? "" : "<a  href=viewrequest.php?action=res&id=" . $id . " ><span class='btn btn-success'>" . $lang_req ['tr_res'] . "</span>\n") . 					// 应求权限
+					(get_user_class () >= 13 && $arr ['userid'] != $CURUSER [id] && $arr ["finish"] == "no" ? "  " : "") . 					// 应求分隔线
+					(get_user_class () >= 13 ? "<a class='btn btn-danger' href=viewrequest.php?action=delete&id=" . $id . " >" . $lang_req ['tr_delete'] . 					// 删除权限
+					($arr ["finish"] == "no" ? "  " : "") : "") . "\n" . 					// 删除分隔线
+					(($arr ['userid'] == $CURUSER [id] || get_user_class () >= 13) && $arr ["finish"] == "no" ? "<a class='btn btn-info' href=viewrequest.php?action=cancel&id=" . $id . " >" . "<span>撤销求种</span></a>" : "") . "\n" . 					// 撤销权限
+					($arr ['userid'] == $CURUSER [id] ? "" : ("  <a href=report.php?reportrequestid=" . $id . " >" . "<span>举报求种</span></a>") . "\n"), 					// 举报
 					1 );
 					
 					{ // 检查是否有非求种人追加悬赏
 						$amountadds = sql_query ( "SELECT * FROM givebonus WHERE bonustotorrentid ='" . $id . "' AND type='3'" );
 						if (mysql_num_rows ( $amountadds ) > 0) {
-							$amountadder = "<br/>";
+							$amountadder = "<spanr/>";
 							while ( $amountadd = mysql_fetch_array ( $amountadds ) )
 								$amountadder .= get_username ( $amountadd ['bonusfromuserid'] ) . "(" . $amountadd ['bonus'] . ")&nbsp;&nbsp;&nbsp;";
 						}
 					}
 					
 					if ($arr ["finish"] == "no")
-						tr ( "追加悬赏", "<form action=viewrequest.php method=post> <input type=hidden name=action value=addamount><input type=hidden name=reqid value=" . $arr ["id"] . "><input size=6 name=amount value=1000 ><input type=submit value=提交 > 追加悬赏每次将扣减25个麦粒作为手续费" . $amountadder . "</form>", 1 );
+						tr ( "追加悬赏", "<form action=viewrequest.php method=post> <input type=hidden name=action value=addamount><input type=hidden name=reqid value=" . $arr ["id"] . "><input class='input tip-focus' size=6 name=amount value=1000 >&nbsp;&nbsp;<input  class='btn btn-success' type=submit value=提交 > 追加悬赏每次将扣减25个魔力值 作为手续费" . $amountadder . "</form>", 1 );
 					tr ( "介绍", format_comment ( unesc ( $arr ["introduce"] ) ), 1 );
 					$limit = ($arr ['finish'] == "no" ? "" : " AND chosen = 'yes' ");
 					$res = sql_query ( "SELECT * FROM resreq WHERE reqid ='" . $_GET ["id"] . "'" . $limit ) or sqlerr ( __FILE__, __LINE__ );
@@ -264,13 +264,13 @@ else {
 								$ress .= "<a href=details.php?id=" . $each ["id"] . "&hit=1 >" . $each ["name"] . "</a> by " . (($each ["anonymous"] == "yes" && get_user_class () < 12 && $each ["owner"] != $CURUSER ["id"]) ? "<i>匿名</i>" : get_username ( $each [owner] ));
 							else
 								$ress .= "<i>种子已被删除</i>";
-							$ress .= (get_user_class () >= 13 ? " [<a href=viewrequest.php?action=delres&id=" . $row ["id"] . " >X</a>]" : "") . "<br/>\n";
+							$ress .= (get_user_class () >= 13 ? " [<a href=viewrequest.php?action=delres&id=" . $row ["id"] . " >X</a>]" : "") . "<spanr/>\n";
 						}
 						if (($arr ['userid'] == $CURUSER [id] || get_user_class () >= 13) && $arr ['finish'] == "no")
 							$ress .= "<input type=submit value=确认选中应求></form>\n";
 					}
-					tr ( "应求", $ress . "&nbsp;&nbsp;&nbsp;<a href=viewrequest.php?action=res&id=" . $id . " ><b>" . $lang_req ['tr_res'] . "</b>\n", 1 );
-					print ("</table><br/><br/>\n") ;
+					tr ( "应求", $ress . "&nbsp;&nbsp;&nbsp;<a class='btn btn-success' href=viewrequest.php?action=res&id=" . $id . " ><span>" . $lang_req ['tr_res'] . "</span>\n", 1 );
+					print ("</table><spanr/><spanr/>\n") ;
 					
 					$commentbar = "<p align=\"center\"><a class=\"index\" href=\"comment.php?action=add&amp;pid=" . $id . "&amp;type=request\">添加留言</a></p>\n";
 					$subres = sql_query ( "SELECT COUNT(*) FROM comments WHERE request = $id" );
@@ -299,7 +299,7 @@ function quick_reply_to(username)
     parent.document.getElementById("quickreplytext").value = "@" + username + " "+parent.document.getElementById("quickreplytext").value;
 }
 </script>') ;
-//					print ("<a name='quickreply' id='quickreply'> </a><table style='border:1px solid #000000;'><tr>" . "<td class=\"text\" align=\"center\"><b>快速留言</b><br /><br />" . "<form id=\"compose\" name=\"comment\" method=\"post\" action=\"comment.php?action=add&amp;type=request\" onsubmit=\"return postvalid(this);\">" . "<input type=\"hidden\" name=\"pid\" value=\"" . $id . "\" /><br />") ;
+//					print ("<a name='quickreply' id='quickreply'> </a><table style='border:1px solid #000000;'><tr>" . "<td class=\"text\" align=\"center\"><span>快速留言</span><spanr /><spanr />" . "<form id=\"compose\" name=\"comment\" method=\"post\" action=\"comment.php?action=add&amp;type=request\" onsubmit=\"return postvalid(this);\">" . "<input type=\"hidden\" name=\"pid\" value=\"" . $id . "\" /><spanr />") ;
 //					quickreply ( 'comment', 'body', '我要留言' );
 //					print ("</form></td></tr></table>") ;
 //					print ($commentbar) ;
@@ -339,18 +339,18 @@ function quick_reply_to(username)
 							410 => "其他",
 							411 => "纪录片" 
 					);
-					$select = "<select name = catid>";
+					$select = "<select  name = catid>";
 					foreach ( $cat as $name => $value )
 						$select .= "<option value=\"" . $name . "\" " . ($arr ["catid"] == $name ? "selected " : "") . ">" . $value . "</option>";
 					$select .= "</select>";
 					
 					print ("<table class='table table-striped' width=100% cellspacing=0 cellpadding=3><tr><td class=colhead align=center colspan=2>编辑求种</td></tr>") ;
 					tr ( "类型：", $select, 401 );
-					tr ( "标题：", "<input name=name value=\"" . $arr ["name"] . "\" size=134 ><br/>", 1 );
-					print ("<tr><td class=rowhead align=right valign=top><b>介绍：</b></td><td class=rowfollow align=left>") ;
+					tr ( "标题：", "<input name=name value=\"" . $arr ["name"] . "\" size=134 ><spanr/>", 1 );
+					print ("<tr><td class=rowhead align=right valign=top><span>介绍：</span></td><td class=rowfollow align=left>") ;
 					textbbcode ( "edit", "introduce", $arr ["introduce"] );
 					print ("</td></tr>") ;
-					print ("</td></tr><tr><td class=toolbox align=center colspan=2><input id=qr type=submit class=btn value=编辑求种 ></td></tr></table></form><br />\n") ;
+					print ("</td></tr><tr><td class=toolbox align=center colspan=2><input id=qr type=submit class=btn value=编辑求种 ></td></tr></table></form><spanr />\n") ;
 					stdfoot ();
 					die ();
 				} else
@@ -364,7 +364,7 @@ function quick_reply_to(username)
 					$cat = sql_query ( "SELECT id,name FROM categories" );
 					// $cat=array(
 					// 401=>"电影",402=>"剧集",403=>"综艺",404=>"资料",405=>"动漫",406=>"音乐",407=>"体育",408=>"软件",409=>"游戏",410=>"其他",411=>"纪录片");
-					$select = "<select name = catid>";
+					$select = "<select class='btn btn-success' name = catid>";
 					$select .= "<option value=\"\">- 请选择 -</option>";
 					while ( $rows = mysql_fetch_array ( $cat ) ) {
 						$select .= "<option value=\"" . $rows ["id"] . "\">" . $rows ["name"] . "</option>";
@@ -385,8 +385,8 @@ function quick_reply_to(username)
 <tr>
 <td class=colhead align=center colspan=2>新增求种</td></tr>\n") ;
 					tr ( "类型：", $select, 1 );
-					tr ( "标题：", "<input name=name size=134><br/>", 1 );
-					tr ( "悬赏：", "<input name=amount size=11 value=2000>赏金不得低于1000魔力值，每次求种将扣去100魔力值作为手续费。<br/>", 1 );
+					tr ( "标题：", "<input class='input tip-focus fullwidth' name=name size=134><spanr/>", 1 );
+					tr ( "悬赏：", "<input class='input tip-focus' name=amount size=11 value=2000>赏金不得低于1000魔力值，每次求种将扣去100魔力值作为手续费。<spanr/>", 1 );
 //					tr("介绍：");
 					print ("<tr>
 					<td class=embedded-head >介绍：</td><td class=rowfollow align=left>") ;
@@ -394,8 +394,8 @@ function quick_reply_to(username)
 					print ("</td></tr>") ;
 					print ("<tr>
 						<td class=toolbox style=vertical-align: middle; padding-top: 10px; padding-bottom: 10px; align=center colspan=2>
-						<input id=qr type=submit value=新增求种 class='btn btn-success' />
-						</td></tr></table></form><br />\n") ;
+						<input style='margin-left: 9%' id=qr type=submit value=新增求种 class='btn btn-success ' />
+						</td></tr></table></form><spanr />\n") ;
 					print ("<script language=\"javascript\">\n" . "alert(\"新增求种前请先阅读规则，\\n\\n不符合要求的求种可能会被直接删除，赏金不予返还！\");\n" . "</script>\n") ;
 					stdfoot ();
 					die ();
@@ -470,7 +470,7 @@ function quick_reply_to(username)
 	<form action=viewrequest.php method=post>
 	<input type=hidden name=action value=takeres />
 	<input type=hidden name=reqid value=\"" . $_GET ["id"] . "\" />
-	请输入种子的id:（请根据地址栏填写）<br/>http://127.0.0.1/nwupt?id=<input type=text name=torrentid size=11/><br/>
+	请输入种子的id:（请根据地址栏填写）<spanr/>http://127.0.0.1/nwupt?id=<input type=text name=torrentid size=11/><spanr/>
 	<input type=submit value=提交 >&nbsp;&nbsp;&nbsp;&nbsp;<input type=button onclick=\"location.href='viewrequest.php'\" value=\"返回\" ></form>", 0 );
 				stdfoot ();
 				die ();
@@ -523,16 +523,16 @@ function quick_reply_to(username)
 					stderr ( "出错了！", "赏金必须为数字！" );
 				$amount = 0 + $_POST ["amount"];
 				if ($amount < 100)
-					stderr ( "出错了！", "追加悬赏赏金不得小于100个麦粒！" );
+					stderr ( "出错了！", "追加悬赏赏金不得小于100个魔力值 ！" );
 				if ($amount > 5000)
-					stderr ( "出错了！", "追加悬赏赏金不得大于5000个麦粒！" );
+					stderr ( "出错了！", "追加悬赏赏金不得大于5000个魔力值 ！" );
 					// $amount += 25;
 				$newseedbonus = $amount + 25;
 				$newamount = $arr ["amount"] + $amount;
 				if ($amount > $CURUSER [seedbonus])
-					stderr ( "出错了！", "你没有那么多麦粒！" );
+					stderr ( "出错了！", "你没有那么多魔力值 ！" );
 				sql_query ( "UPDATE users SET seedbonus = seedbonus - " . $newseedbonus . " WHERE id = " . $CURUSER [id] );
-//				writeBonusComment($CURUSER [id],"使用$newseedbonus 麦粒追加了悬赏". sqlesc ( $_POST ["reqid"] ));
+//				writeBonusComment($CURUSER [id],"使用$newseedbonus 魔力值 追加了悬赏". sqlesc ( $_POST ["reqid"] ));
 				sql_query ( "UPDATE req SET amount = " . $newamount . ", resetdate = '" . date ( "Y-m-d H:i:s" ) . "' WHERE id = " . sqlesc ( $_POST ["reqid"] ) );
 				if ($arr ["userid"] != $CURUSER ["id"]) {
 					$res = sql_query ( "SELECT * FROM givebonus WHERE bonusfromuserid = '" . $CURUSER ["id"] . "' AND bonustotorrentid =" . sqlesc ( $_POST ["reqid"] ) . " AND type='3'" );
@@ -648,11 +648,11 @@ function quick_reply_to(username)
 						if (mysql_num_rows ( $amountadds ) > 0)
 							while ( $amountadd = mysql_fetch_array ( $amountadds ) ) {
 								sql_query ( "UPDATE users SET seedbonus=seedbonus +" . $amountadd ["bonus"] . " WHERE id ='" . $amountadd ["bonusfromuserid"] . "'" ) or sqlerr ( __FILE__, __LINE__ );
-//								writeBonusComment($amountadd ["bonusfromuserid"],"求种$id 被撤销，返还$amountadd[bonus] 麦粒");
+//								writeBonusComment($amountadd ["bonusfromuserid"],"求种$id 被撤销，返还$amountadd[bonus] 魔力值 ");
 								$amount -= $amountadd ["bonus"];
 							}
 						sql_query ( "UPDATE users SET seedbonus=seedbonus +" . $amount . " WHERE id ='" . $arr ["userid"] . "'" ) or sqlerr ( __FILE__, __LINE__ );
-//						writeBonusComment($arr ["userid"],"求种$id 被撤销，返还$amount 麦粒");
+//						writeBonusComment($arr ["userid"],"求种$id 被撤销，返还$amount 魔力值 ");
 						sql_query ( "DELETE FROM givebonus WHERE bonustotorrentid ='" . $id . "' AND type = '3'" ) or sqlerr ( __FILE__, __LINE__ );
 						write_log ( "求种：".($arr ['userid'] != $CURUSER ["id"] ? "管理员 " : "求种人 ") . $CURUSER ["username"] . " 撤销了求种 " . $id );
 						if ($CURUSER ["id"] != $arr ['userid']) {
@@ -764,11 +764,11 @@ function quick_reply_to(username)
 						$owner [] = $row [0];
 					$resuser = get_user_row ( $arr ['userid'] );
 					$subject = ($arr ['userid'] != $CURUSER [id] ? "管理员" . $CURUSER ['username'] . "代替" : "") . $resuser [username] . "通过了你的应求";
-					$notifs = "你因此获得了悬赏的" . $amount . "麦粒。详情请见[url=viewrequest.php?action=view&id=" . $_POST ["id"] . "]这里[/url]";
+					$notifs = "你因此获得了悬赏的" . $amount . "魔力值 。详情请见[url=viewrequest.php?action=view&id=" . $_POST ["id"] . "]这里[/url]";
 					$added = sqlesc ( date ( "Y-m-d H:i:s" ) );
 					foreach ( $owner as $id ) {
 						sql_query ( "UPDATE users SET seedbonus = seedbonus + $amount WHERE id = '" . $id . "'" ) or sqlerr ( __FILE__, __LINE__ );
-//						writeBonusComment($id,"求种$_POST[id] 被确认，增加悬赏$amount 麦粒");
+//						writeBonusComment($id,"求种$_POST[id] 被确认，增加悬赏$amount 魔力值 ");
 						sql_query ( "INSERT INTO messages (sender, receiver, subject, msg, added,goto) VALUES(0, " . $id . ", '$subject', '$notifs', $added,1)" ) or sqlerr ( __FILE__, __LINE__ );
 					}
 					write_log ("求种：". ($arr ['userid'] != $CURUSER ["id"] ? "管理员 " : "求种人 ") . $CURUSER ["username"] . " 确认了求种 " . $_POST ["id"] );

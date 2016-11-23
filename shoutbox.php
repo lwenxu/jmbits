@@ -1,15 +1,19 @@
 <?php
 echo "
+<script>
+window.location.href='#shutboxfooter';
+</script>
+
 <style>
 .bubble {
-    background-color: lightseagreen;
+    background-color: #2DCB70;
     border-radius: 5px;
     box-shadow: 0 0 6px #b2b2b2;
     display: table-cell;
     padding: 10px 18px;
     position: relative;
     max-width: 350px;
-    min-width: 100px;
+    min-width: 200px;
     word-break: break-all;
     vertical-align: middle;
     text-align: left
@@ -19,11 +23,12 @@ echo "
     padding: 5px 9px;
     max-width: 250px;
     min-width: 100px;
-    font-size: 14px
+    font-size: 16px;
+    font-family: sans-serif;
 }
 
 .bubble::before {
-    background-color: lightseagreen;
+    background-color: #2DCB70;
     content: \"\00a0\";
     display: block;
     height: 16px;
@@ -153,7 +158,7 @@ countdown(time);
 }
 </script>
 </head>
-<body class='inframe' <?php if ($_GET["type"] != "helpbox"){?> onload="<?php echo $startcountdown?>" <?php } else {?> onload="hbquota()" <?php } ?>>
+<body class='inframe' onload="scrollBy(0,document.body.scrollHeight)">
 <?php
 if($_GET["sent"]=="yes"){
 if(!$_GET["shbox_text"])
@@ -211,8 +216,10 @@ else
 {
 	print("<table border='0' cellspacing='0' cellpadding='2' width='100%' align='left'>\n");
 
-	while ($arr = mysql_fetch_assoc($res))
-	{
+	while ($array[] = mysql_fetch_assoc($res)){
+	}
+	$array=array_reverse($array);
+	foreach ($array as $arr) {
 		if (get_user_class() >= $sbmanage_class) {
 			$del="<a id=dellink href=\"shoutbox.php?del=".$arr[id]."\">".$lang_shoutbox['text_del']."</a>";
 		}
@@ -225,23 +232,27 @@ else
 		if ($CURUSER['timetype'] != 'timealive')
 			$time = strftime("%m.%d %H:%M",$arr["date"]);
 		else $time = get_elapsed_time($arr["date"]).$lang_shoutbox['text_ago'];
-		$rand=rand(1,2);
-		if ($rand!=1) {
+		static $rand=0;
+		if ($rand == 60000){
+			$rand=0;
+		}
+		$rand++;
+		if ($rand%2==0) {
 			print("<tr><td>
-			<img src=./pic/default_avatar.png height='30px' style='float: right'/>
+			<img src=$CURUSER[avatar] height='50px' style='float: right;border-radius: 8px'/>
 			<div style='float: right' class=\"bubble bubble-right bubble-shoutbox bubble-right-shoutbox\">
-			<span class='date'><span class='icon-time'></span>&nbsp;" . $time . "</span> " . "<span class=' icon-trash'></span>&nbsp;" . $del . "&nbsp;<span class=' icon-user'></span>&nbsp; " . $username . "<br><hr>" . format_comment($arr["text"], true, false, true, true, 600, true, false) . "
+			<span class='date'><span class='icon-time'></span>&nbsp;" . $time."</span> " . "<span class=' icon-trash'></span>&nbsp;" . $del . "&nbsp;<span class='icon-user'></span>&nbsp; " . $username . "<br><hr>" . format_comment($arr["text"], true, false, true, true, 600, true, false) . "
 			</td></tr>\n");
 		}
 		else {
 			print("<tr><td>
-			<img src=./pic/default_avatar.png height='30px' style='float: left'/>
+			<img src=$CURUSER[avatar] height='50px'  style='float: left;border-radius: 8px'/>
 			<div style='float: left' class=\"bubble bubble-left bubble-shoutbox bubble-right-shoutbox\">
 			<span class='date'><span class='icon-time'></span>&nbsp;" . $time . "</span> " . "<span class=' icon-trash'></span>&nbsp;" . $del . "&nbsp;<span class=' icon-user'></span>&nbsp; " . $username . "<br><hr>" . format_comment($arr["text"], true, false, true, true, 600, true, false) . "
 			</td></tr>\n");
 		}
 	}
-	print("</table>");
+	print("</table><div id='shutboxfooter'></div>");
 }
 ?>
 </body>

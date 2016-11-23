@@ -113,13 +113,13 @@ else {
 
 		tr($lang_details['row_basic_info'], $size_info.$type_info.$source_info . $medium_info. $codec_info . $audiocodec_info. $standard_info . $processing_info . $team_info, 1);
 		if ($CURUSER["downloadpos"] != "no")
-			$download = "<a title=\"".$lang_details['title_download_torrent']."\" href=\"download.php?id=".$id."\"><img class=\"dt_download\" src=\"pic/trans.gif\" alt=\"download\" />&nbsp;<font class=\"small\">".$lang_details['text_download_torrent']."</font></a>&nbsp;|&nbsp;";
+			$download = "<a title=\"".$lang_details['title_download_torrent']."\" href=\"download.php?id=".$id."\"><span class='icon-download-alt icon-green'></span>&nbsp;<font >".$lang_details['text_download_torrent']."</font></a>&nbsp;|&nbsp;";
 		else $download = "";
 
 		tr(
-			$lang_details['row_action'], $download. ($owned == 1 ? "<$editlink><img class=\"dt_edit\" src=\"pic/trans.gif\" alt=\"edit\" />&nbsp;<font class=\"small\">"           .$lang_details['text_edit_torrent'] . "</font></a>&nbsp;|&nbsp;" : "").  (get_user_class() >= $askreseed_class && $row[seeders] == 0 ? "<a title=\""                    .$lang_details['title_ask_for_reseed']."\" href=\"takereseed.php?reseedid=$id\"><img class=\"dt_reseed\" src=\"pic/trans.gif\" alt=\"reseed\">&nbsp;<font class=\"small\">"
+			$lang_details['row_action'], $download. ($owned == 1 ? "<$editlink><span class='icon-reorder icon-green'></span>&nbsp;<font >"           .$lang_details['text_edit_torrent'] . "</font></a>&nbsp;|&nbsp;" : "").  (get_user_class() >= $askreseed_class && $row[seeders] == 0 ? "<a title=\""                    .$lang_details['title_ask_for_reseed']."\" href=\"takereseed.php?reseedid=$id\"><span class='icon-upload-alt icon-green'></span>&nbsp;<font >"
 			 .$lang_details['text_ask_for_reseed'] ."</font></a>&nbsp;|&nbsp;" : "") . "<a title=\""
-			.$lang_details['title_report_torrent']."\" href=\"report.php?torrent=$id\"><img class=\"dt_report\" src=\"pic/trans.gif\" alt=\"report\" />&nbsp;<font class=\"small\">"
+			.$lang_details['title_report_torrent']."\" href=\"report.php?torrent=$id\"><span class='icon-exclamation-sign icon-red'></span>&nbsp;<font >"
 			.$lang_details['text_report_torrent']."</font></a>" . $v6button , 1);
 
 
@@ -128,12 +128,12 @@ else {
 		$v6button = "| " .
 			"<script type=\"text/javascript\">function play(){window.location.href='6xvod://{$id}&ty=1&ro=1&id={$id}&ua={$CURUSER['passkey']}';}</script>" .
 			"<img height='14px' src=\"pic/v6player.png\"/>" .
-			"<a href=\"v6player.php?id={$id}&u={$CURUSER['passkey']}\" target=\"_blank\"><b><font class=\"small\"> 直接播放</font></b></a>";
+			"<a href=\"v6player.php?id={$id}&u={$CURUSER['passkey']}\" target=\"_blank\"><b><font > 直接播放</font></b></a>";
 
 		$wybutton = "| " .
 			"<script type=\"text/javascript\">function play(){window.location.href='6xvod://{$id}&ty=1&ro=1&id={$id}&ua={$CURUSER['passkey']}';}</script>" .
 			"<img height='14px' src=\"pic/v6player.png\"/>" .
-			"<a href=\"wyplayer.php?id={$id}&u={$CURUSER['passkey']}\" target=\"_blank\"><b><font class=\"small\"> 网页播放</font></b></a>";
+			"<a href=\"wyplayer.php?id={$id}&u={$CURUSER['passkey']}\" target=\"_blank\"><b><font > 网页播放</font></b></a>";
 		/*********************6vdplayer**************************/
 
 

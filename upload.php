@@ -36,6 +36,7 @@ stdhead($lang_upload['head_upload']);
 //			print("<p align=\"center\">".$lang_upload['text_red_star_required']."</p>");
 //			?>
 			<table class="table table-striped" border="0" cellspacing="0" cellpadding="5" width="940">
+
 				<tr>
 					<td class='colhead' colspan='2' align='center'>
 						<?php echo "<div style='font-size: 17px;color: #00ccff'>".$lang_upload['text_tracker_url'] ?>: &nbsp;&nbsp;&nbsp;&nbsp;<b><?php echo  get_protocol_prefix() . $announce_urls[0]?></b></div>
@@ -48,7 +49,30 @@ stdhead($lang_upload['head_upload']);
 					</td>
 				</tr>
 				<?php
-				tr($lang_upload['row_torrent_file']."<font color=\"red\">*</font>", "<input style='margin: 10px' type=\"file\" class=\"btn btn-info\" id=\"torrent\" name=\"file\" onchange=\"getname()\" />\n", 1);
+
+				if ($allowtorrents) {
+					$disablespecial = " onchange=\"disableother('browsecat','specialcat')\"";
+					$s = "<select class=\"btn btn-info\" style name=\"type\" id=\"browsecat\" " . ($allowtwosec ? $disablespecial : "") . ">\n<option value=\"0\">" . $lang_upload['select_choose_one'] . "</option>\n";
+					$cats = genrelist($browsecatmode);
+					foreach ($cats as $row)
+						$s .= "<option value=\"" . $row["id"] . "\">" . htmlspecialchars($row["name"]) . "</option>\n";
+					$s .= "</select>\n";
+				} else $s = "";
+				if ($allowspecial) {
+					$disablebrowse = " onchange=\"disableother('specialcat','browsecat')\"";
+					$s2 = "<select name=\"type\" id=\"specialcat\" " . $disablebrowse . ">\n<option value=\"0\">" . $lang_upload['select_choose_one'] . "</option>\n";
+					$cats2 = genrelist($specialcatmode);
+					foreach ($cats2 as $row)
+						$s2 .= "<option value=\"" . $row["id"] . "\">" . htmlspecialchars($row["name"]) . "</option>\n";
+					$s2 .= "</select>\n";
+				} else $s2 = "";
+				tr($lang_upload['row_type'] . "<font color=\"red\">*</font>", ($allowtwosec ? $lang_upload['text_to_browse_section'] : "") . $s . ($allowtwosec ? $lang_upload['text_to_special_section'] : "") . $s2 . ($allowtwosec ? $lang_upload['text_type_note'] : ""), 1);
+
+				tr($lang_upload['row_torrent_file']."<font color=\"red\">*</font>", "
+
+<input class='btn btn-info' type=\"file\"  id=\"torrent\" name=\"file\" onchange=\"getname()\" />
+
+\n", 1);
 				if ($altname_main == 'yes'){
 					tr($lang_upload['row_torrent_name'], "<b>".$lang_upload['text_english_title']."</b>&nbsp;<input type=\"text\" style=\"width: 250px;\" name=\"name\" />&nbsp;&nbsp;&nbsp;
 <b>".$lang_upload['text_chinese_title']."</b>&nbsp;<input type=\"text\" style=\"width: 250px\" name=\"cnname\"><br /><font class=\"medium\">".$lang_upload['text_titles_note']."</font>", 1);
@@ -59,31 +83,14 @@ stdhead($lang_upload['head_upload']);
 				tr($lang_upload['row_small_description'], "<input type=\"text\" style=\"width: 650px;\" name=\"small_descr\" /><br /><font class=\"medium\">".$lang_upload['text_small_description_note']."</font>", 1);
 				
 				get_external_tr();
-				if ($enablenfo_main=='yes')
-					tr($lang_upload['row_nfo_file'], "<input type=\"file\" class=\"file\" name=\"nfo\" /><br /><font class=\"medium\">".$lang_upload['text_only_viewed_by'].get_user_class_name($viewnfo_class,false,true,true).$lang_upload['text_or_above']."</font>", 1);
+
+				if ($enablenfo_main == 'yes')
+					tr($lang_upload['row_nfo_file'], "<input type=\"file\" class=\"file\" name=\"nfo\" /><br /><font class=\"medium\">" . $lang_upload['text_only_viewed_by'] . get_user_class_name($viewnfo_class, false, true, true) . $lang_upload['text_or_above'] . "</font>", 1);
 				print("<tr><td class=\"rowhead\" style='padding: 3px' valign=\"top\">".$lang_upload['row_description']."<font color=\"red\">*</font></td><td class=\"rowfollow\">");
 				textbbcode("upload","descr","",false);
 				print("</td></tr>\n");
 
-				if ($allowtorrents){
-					$disablespecial = " onchange=\"disableother('browsecat','specialcat')\"";
-					$s = "<select class=\"btn btn-info\" style name=\"type\" id=\"browsecat\" ".($allowtwosec ? $disablespecial : "").">\n<option value=\"0\">".$lang_upload['select_choose_one']."</option>\n";
-					$cats = genrelist($browsecatmode);
-					foreach ($cats as $row)
-						$s .= "<option value=\"" . $row["id"] . "\">" . htmlspecialchars($row["name"]) . "</option>\n";
-					$s .= "</select>\n";
-				}
-				else $s = "";
-				if ($allowspecial){
-					$disablebrowse = " onchange=\"disableother('specialcat','browsecat')\"";
-					$s2 = "<select name=\"type\" id=\"specialcat\" ".$disablebrowse.">\n<option value=\"0\">".$lang_upload['select_choose_one']."</option>\n";
-					$cats2 = genrelist($specialcatmode);
-					foreach ($cats2 as $row)
-						$s2 .= "<option value=\"" . $row["id"] . "\">" . htmlspecialchars($row["name"]) . "</option>\n";
-					$s2 .= "</select>\n";
-				}
-				else $s2 = "";
-				tr($lang_upload['row_type']."<font color=\"red\">*</font>", ($allowtwosec ? $lang_upload['text_to_browse_section'] : "").$s.($allowtwosec ? $lang_upload['text_to_special_section'] : "").$s2.($allowtwosec ? $lang_upload['text_type_note'] : ""),1);
+
 
 
 //				---------show the encode and makers info------
@@ -149,7 +156,7 @@ stdhead($lang_upload['head_upload']);
 					tr($lang_upload['row_show_uploader'], "<input style='margin: 10px'  type=\"checkbox\" name=\"uplver\" value=\"yes\" />".$lang_upload['checkbox_hide_uploader_note'], 1);
 				}
 				?>
-				<tr><td class="toolbox" align="center" colspan="2"> <input id="qr" type="submit" class="btn btn-success" value="<?php echo $lang_upload['submit_upload']."(".$lang_upload['text_read_rules'].")"?>" /></td></tr>
+				<tr><td class="toolbox" align="center" colspan="2"> <input style="margin-left: 9%" id="qr" type="submit" class="btn btn-success" value="<?php echo $lang_upload['submit_upload']."(".$lang_upload['text_read_rules'].")"?>" /></td></tr>
 		</table>
 	</form>
 <?php
