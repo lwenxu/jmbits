@@ -244,14 +244,14 @@ else
 		}
 		if ($rand%2==0) {
 			print("<tr><td>
-			<img src=$CURUSER[avatar] height='50px' style='float: right;border-radius: 8px'/>
+			<img src=$avatar height='50px' style='float: right;border-radius: 8px'/>
 			<div style='float: right' class=\"bubble bubble-right bubble-shoutbox bubble-right-shoutbox\">
 			<span class='date'><span class='icon-time'></span>&nbsp;" . $time."</span> " . "<span class=' icon-trash'></span>&nbsp;" . $del . "&nbsp;<span class='icon-user'></span>&nbsp; " . $username . "<br><hr>" . format_comment($arr["text"], true, false, true, true, 600, true, false) . "
 			</td></tr>\n");
 		}
 		else {
 			print("<tr><td>
-			<img src=$CURUSER[avatar] height='50px'  style='float: left;border-radius: 8px'/>
+			<img src=$avatar height='50px'  style='float: left;border-radius: 8px'/>
 			<div style='float: left' class=\"bubble bubble-left bubble-shoutbox bubble-right-shoutbox\">
 			<span class='date'><span class='icon-time'></span>&nbsp;" . $time . "</span> " . "<span class=' icon-trash'></span>&nbsp;" . $del . "&nbsp;<span class=' icon-user'></span>&nbsp; " . $username . "<br><hr>" . format_comment($arr["text"], true, false, true, true, 600, true, false) . "
 			</td></tr>\n");

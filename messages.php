@@ -110,7 +110,7 @@ echo $pagertop;
 ?>
 <form action="messages.php" method="post" >
 <input type="hidden" name="action" value="moveordel">
-<table border="0" cellpadding="4" cellspacing="0" width="737" class="table table-striped">
+<table border="0" cellpadding="4" cellspacing="0" width="90%" class="table table-striped">
 <tr>
 <td width="5%" class="colhead" align="center"><?php echo $lang_messages['col_status'] ?></td>
 <td class="colhead" align="left"><?php echo $lang_messages['col_subject'] ?> </td>
@@ -158,13 +158,13 @@ echo("<td class=rowfollow><input style='margin-left: 29px' class=checkbox type=\
 }
 ?>
 <tr class="colhead">
-<td colspan="5" align="right" class="colhead"><input class=btn type="button" value="<?php echo $lang_messages['input_check_all']; ?>" onClick="this.value=check(form,'<?php echo $lang_messages['input_check_all'] ?>','<?php echo $lang_messages['input_uncheck_all'] ?>')"> 
-<?php if($mailbox != PM_SENTBOX) print("<input class=btn type=\"submit\" name=\"markread\" value=\"".$lang_messages['submit_mark_as_read']."\">") ?>
-<input class=btn type="submit" name="delete" value=<?php echo $lang_messages['submit_delete']?>>
+<td colspan="5" align="right" class="colhead"><input class="btn btn-success" type="button" value="<?php echo $lang_messages['input_check_all']; ?>" onClick="this.value=check(form,'<?php echo $lang_messages['input_check_all'] ?>','<?php echo $lang_messages['input_uncheck_all'] ?>')">
+<?php if($mailbox != PM_SENTBOX) print("<input class=\"btn btn-success\" type=\"submit\" name=\"markread\" value=\"".$lang_messages['submit_mark_as_read']."\">") ?>
+<input class="btn btn-danger" type="submit" name="delete" value=<?php echo $lang_messages['submit_delete']?>>
 <?php
 if($mailbox != PM_SENTBOX){
 	echo $lang_messages['text_or'];
-	print("<input class=btn type=\"submit\" name=\"move\" value=\"".$lang_messages['submit_move_to']."\"> <select name=\"box\"><option value=\"1\">".$lang_messages['text_inbox']."</option>");
+	print("<input class=\"btn btn-success\" type=\"submit\" name=\"move\" value=\"".$lang_messages['submit_move_to']."\"> <select class=\"btn btn-success\" name=\"box\"><option value=\"1\">".$lang_messages['text_inbox']."</option>");
         $res = sql_query('SELECT * FROM pmboxes WHERE userid=' . sqlesc($CURUSER['id']) . ' ORDER BY boxnumber') or sqlerr(__FILE__,__LINE__);
         while ($row = mysql_fetch_assoc($res))
         {
@@ -256,7 +256,7 @@ stdhead("PM ($subject)"); ?>
 $mailbox = ($message['sender'] == $CURUSER['id'] ? -1 : $message['location']);
 messagemenu($mailbox);
 ?>
-<table width="737" border="0" cellpadding="4" cellspacing="0">
+<table class="table table-striped" width="90%" border="0" cellpadding="4" cellspacing="0">
 <tr>
 <td width="50%" class="colhead" align="left"><?php echo $from?></td>
 <td width="50%" class="colhead" align="left"><?php echo $lang_messages['col_date'] ?></td>
@@ -272,7 +272,7 @@ messagemenu($mailbox);
 <td align=left>
 <?php if($message['sender'] != $CURUSER['id']){
 print("<form action=\"messages.php\" method=\"post\"><input type=\"hidden\" name=\"action\" value=\"moveordel\"><input type=\"hidden\" name=\"id\" value=".$pm_id.">
-<input type=\"submit\" name=\"move\" value=".$lang_messages['submit_move_to']."><select name=\"box\"><option value=\"1\">".$lang_messages['text_inbox']."</option>");
+<input type=\"submit\" class=\"btn btn-success\" name=\"move\" value=".$lang_messages['submit_move_to']."><select class=\"btn btn-success\" name=\"box\"><option value=\"1\">".$lang_messages['text_inbox']."</option>");
 $res = sql_query('SELECT * FROM pmboxes WHERE userid=' . sqlesc($CURUSER['id']) . ' ORDER BY boxnumber') or sqlerr(__FILE__,__LINE__);
 while ($row = mysql_fetch_assoc($res))
 {
@@ -281,7 +281,7 @@ echo("<option value=\"" . $row['boxnumber'] . "\">" . htmlspecialchars($row['nam
 print("</select></form>");
 }
 ?>
-</td><td align="right" ><font color=white>[ <a href="messages.php?action=deletemessage&id=<?php echo $pm_id?>"><?php echo $lang_messages['text_delete'] ?></a> ]<?php echo $reply?> [ <a
+</td><td align="right" ><font color=white>[ <a class=" btn btn-danger" href="messages.php?action=deletemessage&id=<?php echo $pm_id?>"><?php echo $lang_messages['text_delete'] ?></a> ]<?php echo $reply?> [ <a class="btn btn-success"
 
 href="messages.php?action=forward&id=<?php echo $pm_id?>"><?php echo $lang_messages['text_forward_pm'] ?></a> ]</font></td>
 </tr>
@@ -454,33 +454,33 @@ $body = "-------- Original Message from " . $orig_name2 . " --------<br />" . fo
 
 stdhead($subject);?>
 <h1 align="center"><?php echo $lang_messages['text_forward_pm'] ?></h1>
-<table border="0" cellpadding="4" cellspacing="0"  width="737">
+<table class="table table-striped" border="0" cellpadding="4" cellspacing="0"  width="90%">
 <form action="takemessage.php" method="post">
 <input type="hidden" name="forward" value="1">
 <input type="hidden" name="origmsg" value="<?php echo $pm_id?>">
 <tr>
 <td class="rowhead" align="right"><?php echo $lang_messages['row_to'] ?></td>
-<td class="rowfollow" align=left><input type="text" name="to" style="width: 200px"></td>
+<td class="rowfollow" align=center><input type="text" name="to" style="width: 200px"></td>
 </tr>
 <tr>
 <td class="rowhead" align="right"><?php echo $lang_messages['row_original_receiver'] ?></td>
-<td class="rowfollow" align=left><?php echo $from_name?></td>
+<td class="rowfollow" align=center><?php echo $from_name?></td>
 </tr>
 <tr>
 <td class="rowhead" align="right"><?php echo $lang_messages['row_original_sender'] ?></td>
-<td class="rowfollow" align=left><?php echo $orig_name?></td>
+<td class="rowfollow" align=center><?php echo $orig_name?></td>
 </tr>
 <tr>
-<td class="rowhead" align="right"><?php echo $lang_messages['row_subject'] ?></td>
-<td class="rowfollow" align=left><input type="text" name="subject" value="<?php echo $subject?>" style="width: 500px"></td>
+<td class="rowhead" align="center"><?php echo $lang_messages['row_subject'] ?></td>
+<td class="rowfollow" align=center><input type="text" name="subject" value="<?php echo $subject?>" style="width: 500px"></td>
 </tr>
 <tr>
 <td class="rowhead" align="right" valign="top"><nobr><?php echo $lang_messages['row_message'] ?></nobr></td>
-<td class="rowfollow" align=left><textarea name="body" style="width: 500px" rows="8"></textarea><br /><?php echo $body?></td>
+<td class="rowfollow" align=center><textarea name="body" style="width: 500px" rows="8"></textarea><br /><?php echo $body?></td>
 </tr>
 <tr>
 <td class=toolbox colspan="2" align="center"><input class=checkbox type="checkbox" name="save" value="yes"<?php echo $CURUSER['savepms'] == 'yes'?" checked":""?>><?php echo $lang_messages['checkbox_save_message'] ?>&nbsp;
-<input type="submit" class="btn" value=<?php echo $lang_messages['submit_forward']?>></td>
+<input class="btn btn-success" type="submit"  value=<?php echo $lang_messages['submit_forward']?>></td>
 </tr>
 </table>
 </form>
@@ -506,7 +506,7 @@ stdhead($lang_messages['head_editing_mailboxes']); ?>
 <input type="text" name="new1" size="40" maxlength="14"><br />
 <input type="text" name="new2" size="40" maxlength="14"><br />
 <input type="text" name="new3" size="40" maxlength="14"><br />
-<input type="submit" value="<?php echo $lang_messages['submit_add'] ?>">
+<input class="btn btn-success" type="submit" value="<?php echo $lang_messages['submit_add'] ?>">
 </form></td>
 </tr>
 <tr>
@@ -534,7 +534,7 @@ $id = $row['id'];
 $name = htmlspecialchars($row['name']);
 echo("<input type=\"text\" name=\"edit$id\" value=\"$name\" size=\"40\" maxlength=\"14\"><br />\n");
 }
-echo("<input type=\"submit\" value=".$lang_messages['submit_edit'].">");
+echo("<input class=\"btn btn-success\" type=\"submit\" value=".$lang_messages['submit_edit'].">");
 }
 ?></form></td>
 </tr>
@@ -680,12 +680,12 @@ $place = $_GET['place'];
 ?>
 <form action="messages.php" method="get">
 <input type="hidden" name="action" value="viewmailbox"><?php echo $lang_messages['text_search'] ?>&nbsp;&nbsp;<input id="searchinput" name="keyword" type="text" value="<?php echo $_GET['keyword']?>" style="width: 200px"/>
-<?php echo $lang_messages['text_in'] ?>&nbsp;<select name="place">
+<?php echo $lang_messages['text_in'] ?>&nbsp;<select class="btn btn-success" name="place">
 <option value="both" <?php echo ($place == 'both' ? " selected" : "")?>><?php echo $lang_messages['select_both'] ?></option>
 <option value="title" <?php echo ($place == 'title' ? " selected" : "")?>><?php echo $lang_messages['select_title'] ?></option>
 <option value="body" <?php echo ($place == 'body' ? " selected" : "")?>><?php echo $lang_messages['select_body'] ?></option>
 </select>
-<?php echo $lang_messages['text_jump_to'] ?><select name="box">
+<?php echo $lang_messages['text_jump_to'] ?><select class="btn btn-success" name="box">
 <option value="1" <?php echo ($selected == PM_INBOX ? " selected" : "")?>><?php echo $lang_messages['select_inbox'] ?></option>
 <option value="-1" <?php echo ($selected == PM_SENTBOX ? " selected" : "")?>><?php echo $lang_messages['select_sentbox'] ?></option>
 <?php
