@@ -1064,7 +1064,7 @@ if ($count) {
 	print("<p align=\"center\"> ".$lang_functions['text_promoted_torrents_note']."</p>\n");
 	if ($sectiontype == $browsecatmode)
 		torrenttable($res, "torrents");
-	elseif ($sectiontype == $specialcatmode) 
+	elseif ($sectiontype == $specialcatmode)
 		torrenttable($res, "music");
 	else torrenttable($res, "bookmarks");
 	print($pagerbottom);

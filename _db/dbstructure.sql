@@ -354,7 +354,7 @@ CREATE TABLE IF NOT EXISTS `categories` (
   `id` smallint(5) unsigned NOT NULL AUTO_INCREMENT,
   `mode` tinyint(3) unsigned NOT NULL DEFAULT '1',
   `class_name` varchar(255) NOT NULL DEFAULT '',
-  `name` varchar(30) NOT NULL,
+  `name` varchar(255) NOT NULL,
   `image` varchar(255) NOT NULL,
   `sort_index` smallint(5) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
@@ -366,15 +366,26 @@ CREATE TABLE IF NOT EXISTS `categories` (
 --
 
 INSERT INTO `categories` (`id`, `mode`, `class_name`, `name`, `image`, `sort_index`) VALUES
-(401, 4, 'c_movies', 'Movies', 'catsprites.png', 0),
-(402, 4, 'c_tvseries', 'TV Series', 'catsprites.png', 3),
-(403, 4, 'c_tvshows', 'TV Shows', 'catsprites.png', 4),
-(404, 4, 'c_doc', 'Documentaries', 'catsprites.png', 1),
-(405, 4, 'c_anime', 'Animations', 'catsprites.png', 2),
-(406, 4, 'c_mv', 'Music Videos', 'catsprites.png', 5),
-(407, 4, 'c_sports', 'Sports', 'catsprites.png', 6),
-(408, 4, 'c_hqaudio', 'HQ Audio', 'catsprites.png', 8),
-(409, 4, 'c_misc', 'Misc', 'catsprites.png', 7);
+(401, 4, '电影', '电影', 'catsprites.png', 0),
+(402, 4, '电视剧', '电视剧', 'catsprites.png', 3),
+(403, 4, '游戏', '游戏', 'catsprites.png', 4),
+(404, 4, '教育', '教育', 'catsprites.png', 1),
+(405, 4, '动漫', '动漫', 'catsprites.png', 2),
+(406, 4, '软件', '软件', 'catsprites.png', 5),
+(407, 4, '体育综艺', '体育综艺', 'catsprites.png', 6),
+(408, 4, '音乐', '音乐', 'catsprites.png', 8),
+(409, 4, '其他', '其他', 'catsprites.png', 7);
+
+-- INSERT INTO `categories` (`id`, `mode`, `class_name`, `name`, `image`, `sort_index`) VALUES
+-- (401, 4, 'c_movies', 'Movies', 'catsprites.png', 0),
+-- (402, 4, 'c_tvseries', 'TV Series', 'catsprites.png', 3),
+-- (403, 4, 'c_tvshows', 'TV Shows', 'catsprites.png', 4),
+-- (404, 4, 'c_doc', 'Documentaries', 'catsprites.png', 1),
+-- (405, 4, 'c_anime', 'Animations', 'catsprites.png', 2),
+-- (406, 4, 'c_mv', 'Music Videos', 'catsprites.png', 5),
+-- (407, 4, 'c_sports', 'Sports', 'catsprites.png', 6),
+-- (408, 4, 'c_hqaudio', 'HQ Audio', 'catsprites.png', 8),
+-- (409, 4, 'c_misc', 'Misc', 'catsprites.png', 7);
 
 -- --------------------------------------------------------
 

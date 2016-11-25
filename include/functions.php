@@ -3094,7 +3094,9 @@ function get_torrent_bookmark_state($userid, $torrentid, $text = false)
 	$ret = return_torrent_bookmark_array($userid);
 	if (!count($ret) || !in_array($torrentid, $ret, false)) // already bookmarked
 		$act = ($text == true ?  $lang_functions['title_bookmark_torrent']  : "<img class=\"delbookmark\" src=\"pic/trans.gif\" alt=\"Unbookmarked\" title=\"".$lang_functions['title_bookmark_torrent']."\" />");
-	else
+	else{
+
+	}
 //		$act = ($text == true ? $lang_functions['title_delbookmark_torrent'] : "<img class=\"bookmark\" src=\"pic/trans.gif\" alt=\"Bookmarked\" title=\"".$lang_functions['title_delbookmark_torrent']."\" />");
 	return $act;
 }
@@ -3210,9 +3212,9 @@ while ($row = mysql_fetch_assoc($res))
 	print("<td class=\"rowfollow nowrap\" valign=\"middle\" style='padding: 0px'>");
 	if (isset($row["category"])) {
 		print(return_category_image($row["category"], "?"));
-		if ($has_secondicon){
-			print(get_second_icon($row, "pic/".$catimgurl."additional/"));
-		}
+//		if ($has_secondicon){
+//			print(get_second_icon($row, "pic/".$catimgurl."additional/"));
+//		}
 	}
 	else
 		print("-");
@@ -4510,7 +4512,8 @@ function return_category_image($categoryid, $link="")
 	} else {
 		$categoryrow = get_category_row($categoryid);
 		$catimgurl = get_cat_folder($categoryid);
-		$catImg[$categoryid] = $catimg = "<img".($categoryrow['class_name'] ? " class=\"".$categoryrow['class_name']."\"" : "")." src=\"pic/cattrans.gif\" alt=\"" . $categoryrow["name"] . "\" title=\"" .$categoryrow["name"]. "\" style=\"background-image: url(pic/" . $catimgurl . $categoryrow["image"].");\" />";
+		$catImg[$categoryid] = $catimg = "<img".($categoryrow['class_name'] ? " class=\"".$categoryrow['class_name']."\"" : "")." src='$categoryrow[image]' style='width: 50px;
+height: 62px;' alt=\"" . $categoryrow["name"] . "\" title=\"" .$categoryrow["name"]. "\"  />";
 	}
 	if ($link) {
 		$catimg = "<a href=\"".$link."cat=" . $categoryid . "\">".$catimg."</a>";
