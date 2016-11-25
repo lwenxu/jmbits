@@ -551,11 +551,11 @@ CREATE TABLE `messages` (
 DROP TABLE IF EXISTS `requests`;
 CREATE TABLE `requests` (
   `id` int(10) unsigned NOT NULL auto_increment,
-  `request` char unsigned NOT NULL default '',
+  `request` char(255) NOT NULL default '',
   `userid` int(10) unsigned NOT NULL default 0,
   `comments` char NOT NULL default 0,
   PRIMARY KEY  (`id`),
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+);
 
 -- ----------------------------
 -- Records of requests

@@ -1455,86 +1455,6 @@ function check_email ($email) {
 function sent_mail($to,$fromname,$fromemail,$subject,$body,$type = "confirmation",$showmsg=true,$multiple=false,$multiplemail='',$hdr_encoding = 'UTF-8', $specialcase = '') {
 	global $lang_functions;
 	global $rootpath,$SITENAME,$SITEEMAIL,$smtptype,$smtp,$smtp_host,$smtp_from,$smtp_address,$smtp_port,$account_name,$account_password;
-//	# Is the OS Windows or Mac or Linux?
-//	if (strtoupper(substr(PHP_OS,0,3)=='WIN')) {
-//		$eol="\r\n";
-//		$windows = true;
-//	}
-//	elseif (strtoupper(substr(PHP_OS,0,3)=='MAC'))
-//		$eol="\r";
-//	else
-//		$eol="\n";
-//	if ($smtptype == 'none')
-//		return false;
-//	if ($smtptype == 'default') {
-//		mail($to, "=?".$hdr_encoding."?B?".base64_encode($subject)."?=", $body, "From: ".$SITEEMAIL.$eol."Content-type: text/html; charset=".$hdr_encoding.$eol, "-f$SITEEMAIL") or stderr($lang_functions['std_error'], $lang_functions['text_unable_to_send_mail']);
-////		var_dump(mail($to, "=?".$hdr_encoding."?B?".base64_encode($subject)."?=", $body, "From: ".$SITEEMAIL.$eol."Content-type: text/html; charset=".$hdr_encoding.$eol, "-f$SITEEMAIL"));
-////		echo "aaaaa";
-//	}
-//	elseif ($smtptype == 'advanced') {
-//		$mid = md5(getip() . $fromname);
-//		$name = $_SERVER["SERVER_NAME"];
-//		$headers = "From: $fromname <$fromemail>".$eol;
-//		$headers .= "Reply-To: $fromname <$fromemail>".$eol;
-//		$headers .= "Return-Path: $fromname <$fromemail>".$eol;
-//		$headers .= "Message-ID: <$mid thesystem@$name>".$eol;
-//		$headers .= "X-Mailer: PHP v".phpversion().$eol;
-//		$headers .= "MIME-Version: 1.0".$eol;
-//		$headers .= "Content-type: text/html; charset=".$hdr_encoding.$eol;
-//		$headers .= "X-Sender: PHP".$eol;
-//		if ($multiple)
-//		{
-//			$bcc_multiplemail = "";
-//			foreach ($multiplemail as $toemail)
-//			$bcc_multiplemail = $bcc_multiplemail . ( $bcc_multiplemail != "" ? "," : "") . $toemail;
-//
-//			$headers .= "Bcc: $multiplemail.$eol";
-//		}
-//		if ($smtp == "yes") {
-//			ini_set('SMTP', $smtp_host);
-//			ini_set('smtp_port', $smtp_port);
-//			if ($windows)
-//			ini_set('sendmail_from', $smtp_from);
-//		}
-//
-////		var_dump(mail($to,"=?".$hdr_encoding."?B?".base64_encode($subject)."?=",$body,$headers));
-////		echo "ddddd";
-//		mail($to,"=?".$hdr_encoding."?B?".base64_encode($subject)."?=",$body,$headers) or stderr($lang_functions['std_error'], $lang_functions['text_unable_to_send_mail']);
-//
-//		ini_restore(SMTP);
-//		ini_restore(smtp_port);
-//		if ($windows)
-//		ini_restore(sendmail_from);
-//	}
-//	elseif ($smtptype == 'external') {
-//		require_once ($rootpath . 'include/smtp/smtp.lib.php');
-//		$mail = new smtp($hdr_encoding,'eYou');
-//		$mail->debug(true);
-//		$mail->open($smtpaddress, $smtpport);
-//		$mail->auth($accountname, $accountpassword);
-//		//	$mail->bcc($multiplemail);
-//		$mail->from($SITEEMAIL);
-//		if ($multiple)
-//		{
-//			$mail->multi_to_head($to);
-//			foreach ($multiplemail as $toemail)
-//			$mail->multi_to($toemail);
-//		}
-//		else
-//		$mail->to($to);
-//		$mail->mime_content_transfer_encoding();
-//		$mail->mime_charset('text/html', $hdr_encoding);
-//		$mail->subject($subject);
-//		$mail->body($body);
-//
-//		@$mail->send() or   stderr($lang_functions['std_error'], $lang_functions['text_unable_to_send_mail']);
-////				mail_debug
-//
-//		var_dump($mail->send());
-//		$mail->close();
-//	}
-
-
 //	mail rewrite by lwenxu
 	require_once($rootpath . 'include/smtp/smtp.class.php');
 	$smtpserver = $smtp_host; //SMTP服务器
@@ -1548,7 +1468,9 @@ function sent_mail($to,$fromname,$fromemail,$subject,$body,$type = "confirmation
 	$smtpemailfrom = $smtpusermail;
 	$emailsubject = $subject;
 	$emailbody = $body;
-	$rs = $smtp->sendmail($smtpemailto, $smtpemailfrom, $emailsubject, $emailbody, $emailtype) or stderr($lang_functions['std_error'], $lang_functions['text_unable_to_send_mail']);
+	$rs = $smtp->sendmail($smtpemailto, $smtpemailfrom, $emailsubject, $emailbody, $emailtype)
+	or stderr($lang_functions['std_error'], $lang_functions['text_unable_to_send_mail']);
+//    var_dump($rs);
 
 
 	if ($showmsg) {
