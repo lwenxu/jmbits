@@ -1468,8 +1468,10 @@ function sent_mail($to,$fromname,$fromemail,$subject,$body,$type = "confirmation
 	$smtpemailfrom = $smtpusermail;
 	$emailsubject = $subject;
 	$emailbody = $body;
+	$smtp->debug = true;
 	$rs = $smtp->sendmail($smtpemailto, $smtpemailfrom, $emailsubject, $emailbody, $emailtype)
 	or stderr($lang_functions['std_error'], $lang_functions['text_unable_to_send_mail']);
+
 //    var_dump($rs);
 
 
