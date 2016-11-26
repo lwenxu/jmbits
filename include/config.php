@@ -144,14 +144,14 @@ $logo_main = $MAIN['logo'];
 
 $emailnotify_smtp = $SMTP['emailnotify'];
 $smtptype = $SMTP['smtptype'];
-$smtp_host = $SMTP['smtp_host'];
-$smtp_port = $SMTP['smtp_port'];
-if (strtoupper(substr(PHP_OS,0,3)=='WIN'))
-$smtp_from = $SMTP['smtp_from'];
-$smtpaddress = $SMTP['smtp_address'];
-$smtpport = $SMTP['smtp_port'];
-$account_name = $SMTP['account_name'];
-$account_password = $SMTP['account_password'];
+$smtp_host = $SMTP['smtpaddress'];
+$smtp_port = $SMTP['smtpport'];
+//if (strtoupper(substr(PHP_OS,0,3)=='WIN'))
+$smtp_from = $SMTP['accountname'];
+$smtpaddress = $SMTP['smtpaddress'];
+$smtpport = $SMTP['smtpport'];
+$account_name = $SMTP['accountname'];
+$account_password = $SMTP['accountpassword'];
 //$accountpassword = "bzmhlpdhdnxhbaac";
 //$accountpassword = ;
 $securelogin = $SECURITY['securelogin'];

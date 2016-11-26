@@ -1,5 +1,6 @@
 <?php
-$ACCOUNT=array(	'neverdelete' => '6',
+$ACCOUNT=array(
+	'neverdelete' => '6',
 	'neverdeletepacked' => '3',
 	'deletepacked' => '400',
 	'deleteunpacked' => '150',
@@ -48,7 +49,8 @@ $ACCOUNT=array(	'neverdelete' => '6',
 	'nmdl' => '3072',
 	'nmprratio' => '4.55',
 	'nmderatio' => '4.45',
-	'getInvitesByPromotion' => array(		'2' => '1',
+	'getInvitesByPromotion' => array(
+		'2' => '1',
 		'3' => '0',
 		'4' => '2',
 		'5' => '0',
@@ -58,7 +60,8 @@ $ACCOUNT=array(	'neverdelete' => '6',
 		'9' => '10',
 	),
 );
-$ADVERTISEMENT=array(	'enablead' => 'yes',
+$ADVERTISEMENT=array(
+	'enablead' => 'yes',
 	'enablenoad' => 'yes',
 	'noad' => '12',
 	'enablebonusnoad' => 'yes',
@@ -67,7 +70,8 @@ $ADVERTISEMENT=array(	'enablead' => 'yes',
 	'bonusnoadtime' => '15',
 	'adclickbonus' => '0',
 );
-$ATTACHMENT=array(	'enableattach' => 'yes',
+$ATTACHMENT=array(
+	'enableattach' => 'yes',
 	'classone' => '1',
 	'countone' => '5',
 	'sizeone' => '256',
@@ -98,7 +102,8 @@ $ATTACHMENT=array(	'enableattach' => 'yes',
 	'altthumbwidth' => '180',
 	'altthumbheight' => '135',
 );
-$AUTHORITY=array(	'defaultclass' => '1',
+$AUTHORITY=array(
+	'defaultclass' => '1',
 	'staffmem' => '13',
 	'newsmanage' => '14',
 	'newfunitem' => '1',
@@ -143,7 +148,8 @@ $AUTHORITY=array(	'defaultclass' => '1',
 	'againstoffer' => '1',
 	'userbar' => '2',
 );
-$BASIC=array(	'SITENAME' => '嘉木',
+$BASIC=array(
+	'SITENAME' => '嘉木',
 	'BASEURL' => '127.0.0.1/nwupt',
 	'announce_url' => '127.0.0.1/nwupt/announce.php',
 	'mysql_host' => '127.0.0.1',
@@ -151,7 +157,8 @@ $BASIC=array(	'SITENAME' => '嘉木',
 	'mysql_pass' => '',
 	'mysql_db' => 'nexusphp',
 );
-$BONUS=array(	'donortimes' => '2',
+$BONUS=array(
+	'donortimes' => '2',
 	'perseeding' => '1',
 	'maxseeding' => '7',
 	'tzero' => '4',
@@ -183,12 +190,14 @@ $BONUS=array(	'donortimes' => '2',
 	'prolinkpoint' => '1',
 	'prolinktime' => '600',
 );
-$CODE=array(	'mainversion' => 'NexusPHP',
+$CODE=array(
+	'mainversion' => 'NexusPHP',
 	'subversion' => 'Standard v1.5 Beta 4',
 	'releasedate' => '2010-09-19',
 	'website' => '<a href="http://www.nexusphp.com">http://www.nexusphp.com</a>',
 );
-$MAIN=array(	'site_online' => 'yes',
+$MAIN=array(
+	'site_online' => 'yes',
 	'max_torrent_size' => '1048576',
 	'announce_interval' => '1800',
 	'annintertwoage' => '7',
@@ -260,7 +269,8 @@ $MAIN=array(	'site_online' => 'yes',
 	'startsubid' => NULL,
 	'logo' => '',
 );
-$SECURITY=array(	'securelogin' => 'no',
+$SECURITY=array(
+	'securelogin' => 'no',
 	'securetracker' => 'no',
 	'https_announce_url' => '',
 	'iv' => 'no',
@@ -270,16 +280,16 @@ $SECURITY=array(	'securelogin' => 'no',
 	'cheaterdet' => '1',
 	'nodetect' => '11',
 );
-$SMTP=array(	'smtptype' => 'external',
+$SMTP=array(
+	'smtptype' => 'external',
 	'emailnotify' => 'no',
-	'smtp_host' => 'smtp.163.com',
-	'smtp_port' => '25',
-	'smtp_from' => '15686070023@163.com',
-	'smtp_address' => '15686070023@163.com',
-	'account_name' => '15686070023@163.com',
-	'account_password' => 'xpf199741',
+	'smtpaddress' => 'smtp.163.com',
+	'smtpport' => '25',
+	'accountname' => '15686070023@163.com',
+	'accountpassword' => 'xpf199741',
 );
-$TORRENT=array(	'prorules' => 'no',
+$TORRENT=array(
+	'prorules' => 'no',
 	'randomhalfleech' => '5',
 	'randomfree' => '2',
 	'randomtwoup' => '2',
@@ -307,7 +317,8 @@ $TORRENT=array(	'prorules' => 'no',
 	'thirtypercentleechbecome' => '1',
 	'expirethirtypercentleech' => '0',
 );
-$TWEAK=array(	'where' => 'yes',
+$TWEAK=array(
+	'where' => 'yes',
 	'iplog1' => 'yes',
 	'bonus' => 'enable',
 	'datefounded' => '2016-11-19',
