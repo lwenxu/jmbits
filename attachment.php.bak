@@ -19,8 +19,6 @@ $altsize = $_POST['altsize'];
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <link rel="stylesheet" href="<?php echo get_font_css_uri()?>" type="text/css">
 <link rel="stylesheet" href="<?php echo $css_uri."theme.css"?>" type="text/css">
-    <link rel="stylesheet" href="styles/bootstrap/css/bootstrap.min.css" type="text/css">
-    <link rel="stylesheet" href="styles/BambooGreen/components.css">
 </head>
 <body class="inframe">
 <table width="100%">
@@ -228,19 +226,57 @@ if ($Attach->enable_attachment())
 			if (!$warning) //insert into database and add code to editor
 			{
 				$dlkey = md5($db_file_location.".".$ext);
-				//缩列图在此。。。。。。。。。
 				sql_query("INSERT INTO attachments (userid, width, added, filename, filetype, filesize, location, dlkey, isimage, thumb) VALUES (".$CURUSER['id'].", ".$width.", ".sqlesc(date("Y-m-d H:i:s")).", ".sqlesc($origfilename).", ".sqlesc($filetype).", ".$filesize.", ".sqlesc($db_file_location.".".$ext).", ".sqlesc($dlkey).", ".($isimage ? 1 : 0).", ".($hasthumb ? 1 : 0).")") or sqlerr(__FILE__, __LINE__);
 				$count_left--;
 				echo("<script type=\"text/javascript\">parent.tag_extimage('". "[attach]" . $dlkey . "[/attach]" . "');</script>");
 			}
 		}
 	}
+	echo "<style>
+	.btn-info {
+    color: #fff;
+    background-color: #5bc0de;
+    border-color: #46b8da;
+	}
+	.btn {
+	margin: 7px;
+    display: inline-block;
+    padding: 6px 12px;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+	}
+	.btn-info:hover {
+    color: #fff;
+    background-color: #31b0d5;
+    border-color: #269abc;
+	}
+//	input[type='file']{
+//    color: #fff;
+//    background-color: #5bc0de;
+//    border-color: #46b8da;
+//	}
+	</style>";
 	print("<form enctype=\"multipart/form-data\" name=\"attachment\" method=\"post\" action=\"attachment.php\">");
 	print("<tr>");
 	print("<td class=\"embedded\" colspan=\"2\" align=left>");
-	print("<input style='float:left' class='btn btn-info' type=\"file\" name=\"file\"".($count_left ? "" : " disabled=\"disabled\"")." />&nbsp;&nbsp;&nbsp;");
-	print("<input type=\"checkbox\" name=\"altsize\" value=\"yes\"".($altsize == 'yes' ? " checked=\"checked\"" : "")." />".$lang_attachment['text_small_thumbnail']."&nbsp;");
-	print("<input class='btn btn-success' type=\"submit\" name=\"submit\" value=\"".$lang_attachment['submit_upload']."\"".($count_left ? "" : " disabled=\"disabled\"")." /> ");
+	print("<input class=\"btn btn-info\"  type=\"file\"/>");
+	print("<input class=\"btn btn-info\" type=\"checkbox\" name=\"altsize\" value=\"yes\"".($altsize == 'yes' ? " checked=\"checked\"" : "")." />".$lang_attachment['text_small_thumbnail']."&nbsp;");
+	print("<input class=\"btn btn-info\" type=\"submit\" name=\"submit\" value=\"".$lang_attachment['submit_upload']."\"".($count_left ? "" : " disabled=\"disabled\"")." /> ");
 	if ($warning) {
 		print('<span class="striking">'.$warning.'</span>');
 	} else {
@@ -255,7 +291,13 @@ if ($Attach->enable_attachment())
 		}
 		print("<span title=\"".htmlspecialchars($allowedextsblock)."\"><i>".$lang_attachment['text_mouse_over_here']."</i></span>");
 	}
-
+	echo "     <script>
+        $(function(){
+	$('#upfile').change(function(){
+	$('#filetxt').val($('#upfile').val());
+		});
+	});
+    </script>";
 	print("</td>");
 	print("</tr>");
 	print("</form>");
