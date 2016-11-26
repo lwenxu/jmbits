@@ -196,15 +196,15 @@ if (get_user_class() >= $userprofile_class) {
 	tr_small($lang_userdetails['row_ip_history'], $lang_userdetails['text_user_earlier_used']."<b><a href=\"iphistory.php?id=" . $user['id'] . "\">" . $iphistory. $lang_userdetails['text_different_ips'].add_s($iphistory, true)."</a></b>", 1);
 
 }
-if (get_user_class() >= $userprofile_class ||  $user["id"] == $CURUSER["id"])
-{
-	if ($enablelocation_tweak == 'yes'){
-		list($loc_pub, $loc_mod) = get_ip_location($user[ip]);
-		$locationinfo = "<span title=\"" . $loc_mod . "\">[" . $loc_pub . "]</span>";
-	}
-	else $locationinfo = "";
-	tr_small($lang_userdetails['row_ip_address'], $user[ip].$locationinfo, 1);
-}
+//if (get_user_class() >= $userprofile_class ||  $user["id"] == $CURUSER["id"])
+//{
+//	if ($enablelocation_tweak == 'yes'){
+//		list($loc_pub, $loc_mod) = get_ip_location($user[ip]);
+//		$locationinfo = "<span title=\"" . $loc_mod . "\">[" . $loc_pub . "]</span>";
+//	}
+//	else $locationinfo = "";
+//	tr_small($lang_userdetails['row_ip_address'], $user[ip].$locationinfo, 1);
+//}
 
 $res = sql_query("SELECT agent, peer_id, ip, port FROM peers WHERE userid = $user[id] GROUP BY agent") or sqlerr();
 if (mysql_num_rows($res) > 0)

@@ -882,7 +882,7 @@ if ($allsec != 1 || $enablespecial != 'yes'){ //do not print searchbox if showin
 		</tr></tbody>
 		<tbody id="ksearchboxmain">
 		<tr>
-			<td class="rowfollow" align="left">
+			<td class="rowfollow" style="padding-left: 15%">
 				<table>
 					<?php
 						function printcat($name, $listarray, $cbname, $wherelistina, $btname, $showimg = false)
