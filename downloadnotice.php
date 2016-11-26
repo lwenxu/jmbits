@@ -83,9 +83,12 @@ else
 	stdhead($lang_downloadnotice['head_download_notice']);
 	begin_main_frame();
 ?>
-<h2><?php echo $title?></h2>
+
+    <div class="note note-success">
+        <h2 align="center"><?php echo $title ?></h2>
+        <p>
 <table width="100%"><tr>
-<td colspan="2" class="text" align="left"><p><?php echo $note?></p></td></tr>
+<td colspan="2" class="text" align="center"><h4><?php echo $note?></h4><br></td></tr>
 <tr>
 <?php
 if ($showrationotice)
@@ -106,12 +109,13 @@ if ($showclientnotice)
 ?>
 <td class="text" align="left" valign="top" <?php echo $tdattr?>>
 <h3><?php echo $lang_downloadnotice['text_use_allowed_clients']?></h3>
-<p><?php echo $lang_downloadnotice['text_allowed_clients_note_one']?><i>(<?php echo $lang_downloadnotice['text_why_banned']?><a class="faqlink" href="<?php echo NEXUSWIKIURL?>/客户端测试报告" target="_blank"><?php echo $lang_downloadnotice['text_nexuswiki']?></a>)</i></p>
+<p><?php echo $lang_downloadnotice['text_allowed_clients_note_one']?></p>
 <p><?php echo $lang_downloadnotice['text_allowed_clients_note_two']?><a class='faqlink' href='faq.php#id29' target='_blank'><?php echo $lang_downloadnotice['text_faq']?></a><?php echo $lang_downloadnotice['text_allowed_clients_note_three']?></p>
 <table width="100%">
 <tr>
 <td class="embedded" style="text-align: center; padding: 5px;" width="50%">
-<a href="http://www.utorrent.com/download.php" target="_blank" title="<?php echo $lang_downloadnotice['title_download']?>uTorrent"><img src="pic/utorrentbig.png" alt="uTorrent" /></a>
+<a href="http://219.245.18.94/assets/uTorrent2.0.4.rar" target="_blank" title="<?php echo $lang_downloadnotice['title_download']?>uTorrent"><img
+            height="130px" width="200px" src="pic/utorrentbig.png" alt="uTorrent" /></a>
 </td>
 <td class="embedded" style="text-align: center; padding: 5px;" width="50%">
 <a href="http://azureus.sourceforge.net/download.php" target="_blank" title="<?php echo $lang_downloadnotice['title_download']?>Vuze"><img src="pic/vuzebig.png" alt="Vuze" /></a>
@@ -119,7 +123,7 @@ if ($showclientnotice)
 </tr>
 <tr>
 <td class="embedded" style="text-align: center; padding: 5px;">
-<div class="big"><a href="http://www.utorrent.com/download.php" target="_blank" title="<?php echo $lang_downloadnotice['title_download']?>uTorrent"><b>uTorrent</b></a></div>
+<div class="big"><a href="http://219.245.18.94/assets/uTorrent2.0.4.rar" target="_blank" title="<?php echo $lang_downloadnotice['title_download']?>uTorrent"><b>uTorrent</b></a></div>
 <div><?php echo $lang_downloadnotice['text_for']?>Windows</div>
 </td>
 <td class="embedded" style="text-align: center; padding: 5px;">
@@ -160,6 +164,8 @@ if ($forcecheck)
 }
 ?>
 </table>
+        </p>
+    </div>
 <?php
 	end_main_frame();
 	stdfoot();
