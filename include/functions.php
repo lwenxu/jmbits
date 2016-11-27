@@ -208,7 +208,48 @@ function print_attachment($dlkey, $enableimage = true, $imageresizer = true)
 	return $return;
 	}
 }
+//by lwenxu
+function print_thumb($id, $enableimage = true, $imageresizer = true){
+	global $Cache, $httpdirectory_attachment;
+	global $lang_functions;
+	$res=sql_query("SELECT descr,category FROM torrents WHERE id=$id LIMIT 1") or sqlerr(__FILE__, __LINE__);
+	$attachment= mysql_fetch_array($res);
+	$pattern= "/\[attach\]([0-9a-zA-z][0-9a-zA-z]*)\[\/attach\]/ies";
+	preg_match_all($pattern,$attachment[0],$matches);
+//	$dlkey=preg_replace("/\[attach\]([0-9a-zA-z][0-9a-zA-z]*)\[\/attach\]/ies", $attachment, $s, $limit);
+    $dlkey=$matches[1][0];
 
+	if (strlen($dlkey) == 32) {
+			$res = sql_query("SELECT * FROM attachments WHERE dlkey=" . sqlesc($dlkey) . " LIMIT 1") or sqlerr(__FILE__, __LINE__);
+			$row = mysql_fetch_array($res);
+	}
+	if (!$row) {
+//	    var_dump($matches);
+		echo $return = return_category_image($attachment[1]);
+	} else {
+		$id = $row['id'];
+		if ($row['isimage'] == 1) {
+				if ($row['thumb'] == 0) {
+
+					$url = $httpdirectory_attachment . "/" . $row['location'] . ".thumb.jpg";
+				} else {
+					$url = $httpdirectory_attachment . "/" . $row['location'];
+				}
+				if ($imageresizer == true){
+					$onclick = " onclick=\"Previewurl('" . $httpdirectory_attachment . "/" . $row['location'] . "')\"";
+                } else {
+                    $onclick = "";
+				}
+				echo $return = "<img style='height:66px;width:54px;border: 1px solid #888;
+box-shadow: 1px 1px 2px #888;' id=\"attach" . $id . "\" alt=\"" . htmlspecialchars($row['filename']) . "\" src=\"" . $url . "\"" . $onclick . " onmouseover=\"domTT_activate(this, event, 'content', '" . htmlspecialchars("<strong>" . $lang_functions['text_size'] . "</strong>: " . mksize($row['filesize']) . "<br />" . gettime($row['added'])) . "', 'styleClass', 'attach', 'x', findPosition(this)[0], 'y', findPosition(this)[1]-58);\" />";
+			} else {
+		        echo $return=return_category_image($attachment[1]);
+			}
+//			$return = "<div class=\"attach\">" . $icon . "&nbsp;&nbsp;<a href=\"" . htmlspecialchars("getattachment.php?id=" . $id . "&dlkey=" . $dlkey) . "\" target=\"_blank\" id=\"attach" . $id . "\" onmouseover=\"domTT_activate(this, event, 'content', '" . htmlspecialchars("<strong>" . $lang_functions['text_downloads'] . "</strong>: " . number_format($row['downloads']) . "<br />" . gettime($row['added'])) . "', 'styleClass', 'attach', 'x', findPosition(this)[0], 'y', findPosition(this)[1]-58);\">" . htmlspecialchars($row['filename']) . "</a>&nbsp;&nbsp;<font class=\"size\">(" . mksize($row['filesize']) . ")</font></div>";
+		}
+		return $return;
+
+}
 function addTempCode($value) {
 	global $tempCode, $tempCodeCount;
 	$tempCode[$tempCodeCount] = $value;
@@ -3134,9 +3175,10 @@ while ($row = mysql_fetch_assoc($res))
 	$sphighlight = get_torrent_bg_color($row['sp_state']);
 	print("<tr" . $sphighlight . ">\n");
 
-	print("<td class=\"rowfollow nowrap\" valign=\"middle\" style='padding: 0px'>");
+	print("<td class=\"rowfollow nowrap\" valign=\"middle\" style='padding: 5px'>");
 	if (isset($row["category"])) {
-		print(return_category_image($row["category"], "?"));
+	    print_thumb($id);
+//		print(return_category_image($row["category"], "?"));
 //		if ($has_secondicon){
 //			print(get_second_icon($row, "pic/".$catimgurl."additional/"));
 //		}
@@ -4432,13 +4474,14 @@ function return_avatar_image($url)
 function return_category_image($categoryid, $link="")
 {
 	static $catImg = array();
+
 	if ($catImg[$categoryid]) {
 		$catimg = $catImg[$categoryid];
 	} else {
 		$categoryrow = get_category_row($categoryid);
 		$catimgurl = get_cat_folder($categoryid);
-		$catImg[$categoryid] = $catimg = "<img".($categoryrow['class_name'] ? " class=\"".$categoryrow['class_name']."\"" : "")." src='$categoryrow[image]' style='width: 50px;
-height: 62px;' alt=\"" . $categoryrow["name"] . "\" title=\"" .$categoryrow["name"]. "\"  />";
+		$catImg[$categoryid] = $catimg = "<img".($categoryrow['class_name'] ? " class=\"".$categoryrow['class_name']."\"" : "")."  src='$categoryrow[image]' style='width: 52px;
+height: 66px;border:1px solid #888;box-shadow: 1px 1px 2px #888;border-radius:2px' alt=\"" . $categoryrow["name"] . "\" title=\"" .$categoryrow["name"]. "\"  />";
 	}
 	if ($link) {
 		$catimg = "<a href=\"".$link."cat=" . $categoryid . "\">".$catimg."</a>";

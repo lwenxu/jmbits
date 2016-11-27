@@ -1,0 +1,842 @@
+Index: admanage.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- admanage.php	(date 1479575991000)
++++ admanage.php	(revision )
+@@ -122,7 +122,7 @@
+ <h1 align="center"><a class="faqlink" href="admanage.php"><?php echo $lang_admanage['text_ad']?></a> - <?php echo get_position_name($position)?></h1>
+ <div><p align="center"><?php echo $note?></p></div>
+ <h2 align="left"><?php echo $lang_admanage['text_ad_detail']?></h2>
+-<table border="1" cellspacing="0" cellpadding="10" width="100%">
++<table  cellspacing="0" cellpadding="10" width="100%">
+ <?php
+ tr($lang_admanage['row_name']."<font color=\"red\">*</font>", "<input type=\"text\" name=\"ad[name]\" value=\"".htmlspecialchars($name)."\" style=\"width: 300px\" /> " . $lang_admanage['text_name_note'], 1);
+ tr($lang_admanage['row_start_time'], "<input type=\"text\" name=\"ad[starttime]\" value=\"".$starttime."\" style=\"width: 300px\" /> " . $lang_admanage['text_start_time_note'], 1);
+@@ -134,7 +134,7 @@
+ </table>
+ <div id="type_image"<?php echo $type == 'image' ? "" : " style=\"display: none;\""?>>
+ <h2 align="left"><?php echo $lang_admanage['text_image']?></h2>
+-<table border="1" cellspacing="0" cellpadding="10" width="100%">
++<table  cellspacing="0" cellpadding="10" width="100%">
+ <?php
+ tr($lang_admanage['row_image_url']."<font color=\"red\">*</font>", "<input type=\"text\" name=\"ad[image][url]\"".($type == 'image' ? " value=\"".$pararow['url']."\"" : "")." style=\"width: 300px\" /> ".$lang_admanage['text_image_url_note'], 1);
+ tr($lang_admanage['row_image_link']."<font color=\"red\">*</font>", "<input type=\"text\" name=\"ad[image][link]\"".($type == 'image' ? " value=\"".$pararow['link']."\"" : "")." style=\"width: 300px\" /> ".$lang_admanage['text_image_link_note'], 1);
+@@ -146,7 +146,7 @@
+ </div>
+ <div id="type_text"<?php echo $type == 'text' ? "" : " style=\"display: none;\""?>>
+ <h2 align="left"><?php echo $lang_admanage['text_text']?></h2>
+-<table border="1" cellspacing="0" cellpadding="10" width="100%">
++<table  cellspacing="0" cellpadding="10" width="100%">
+ <?php
+ tr($lang_admanage['row_text_content']."<font color=\"red\">*</font>", "<input type=\"text\" name=\"ad[text][content]\"".($type == 'text' ? " value=\"".$pararow['content']."\"" : "")." style=\"width: 300px\" /> ".$lang_admanage['text_text_content_note'], 1);
+ tr($lang_admanage['row_text_link']."<font color=\"red\">*</font>", "<input type=\"text\" name=\"ad[text][link]\"".($type == 'text' ? " value=\"".$pararow['link']."\"" : "")." style=\"width: 300px\" /> ".$lang_admanage['text_text_link_note'], 1);
+@@ -156,7 +156,7 @@
+ </div>
+ <div id="type_bbcodes"<?php echo $type == 'bbcodes' ? "" : " style=\"display: none;\""?>>
+ <h2 align="left"><?php echo $lang_admanage['text_bbcodes']?></h2>
+-<table border="1" cellspacing="0" cellpadding="10" width="100%">
++<table  cellspacing="0" cellpadding="10" width="100%">
+ <?php
+ tr($lang_admanage['row_bbcodes_code']."<font color=\"red\">*</font>", "<textarea name=\"ad[bbcodes][code]\" cols=\"50\" rows=\"6\" style=\"width: 300px\">".($type == 'bbcodes' ? $pararow['code'] : "")."</textarea><br />".$lang_admanage['text_bbcodes_code_note']."<a class=\"altlink\" href=\"tags.php\"><b>".$lang_admanage['text_here']."</b></a>", 1);
+ ?>
+@@ -164,7 +164,7 @@
+ </div>
+ <div id="type_xhtml"<?php echo $type == 'xhtml' ? "" : " style=\"display: none;\""?>>
+ <h2 align="left"><?php echo $lang_admanage['text_xhtml']?></h2>
+-<table border="1" cellspacing="0" cellpadding="10" width="100%">
++<table  cellspacing="0" cellpadding="10" width="100%">
+ <?php
+ tr($lang_admanage['row_xhtml_code']."<font color=\"red\">*</font>", "<textarea name=\"ad[xhtml][code]\" cols=\"50\" rows=\"6\" style=\"width: 300px\">".($type == 'xhtml' ? $pararow['code'] : "")."</textarea><br />".$lang_admanage['text_xhmtl_code_note'], 1);
+ ?>
+@@ -172,7 +172,7 @@
+ </div>
+ <div id="type_flash"<?php echo $type == 'flash' ? "" : " style=\"display: none;\""?>>
+ <h2 align="left"><?php echo $lang_admanage['text_flash']?></h2>
+-<table border="1" cellspacing="0" cellpadding="10" width="100%">
++<table  cellspacing="0" cellpadding="10" width="100%">
+ <?php
+ tr($lang_admanage['row_flash_url']."<font color=\"red\">*</font>", "<input type=\"text\" name=\"ad[flash][url]\"".($type == 'flash' ? " value=\"".$pararow['url']."\"" : "")." style=\"width: 300px\" /> ".$lang_admanage['text_flash_url_note'], 1);
+ tr($lang_admanage['row_flash_width']."<font color=\"red\">*</font>", "<input type=\"text\" name=\"ad[flash][width]\"".($type == 'flash' ? " value=\"".$pararow['width']."\"" : "")." style=\"width: 100px\" /> ".$lang_admanage['text_flash_width_note'], 1);
+@@ -382,7 +382,7 @@
+ 		list($pagertop, $pagerbottom, $limit) = pager($perpage, $num, "?");
+ 		$res = sql_query("SELECT * FROM advertisements ORDER BY id DESC ".(int)$limit) or sqlerr(__FILE__, __LINE__);
+ ?>
+-<table border="1" cellspacing="0" cellpadding="5" width="940">
++<table  cellspacing="0" cellpadding="5" width="940">
+ <tr>
+ <td class="colhead"><?php echo $lang_admanage['col_enabled']?></td>
+ <td class="colhead"><?php echo $lang_admanage['col_name']?></td>
+Index: forums.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- forums.php	(date 1479575991000)
++++ forums.php	(revision )
+@@ -717,7 +717,7 @@
+ 
+ 		print("</table></div>\n");
+ 
+-		print("<table class=\"main\" width=\"100%\" border=\"1\" cellspacing=\"0\" cellpadding=\"5\">\n");
++		print("<table class=\"main\" width=\"100%\"  cellspacing=\"0\" cellpadding=\"5\">\n");
+ 
+ 		$body = "<div id=\"pid".$postid."body\" style='margin:7px;font-size:16px'>".format_comment($arr["body"]);
+ 
+@@ -1145,7 +1145,7 @@
+ 	print("</tr></table>\n");
+ 	if ($numtopics > 0)
+ 	{
+-		print("<table style='margin-top: 10px' class='table table-striped ' border=\"1\" cellspacing=\"0\" cellpadding=\"5\" width=\"98%\">");
++		print("<table style='margin-top: 10px' class='table table-striped '  cellspacing=\"0\" cellpadding=\"5\" width=\"98%\">");
+ 
+ 		print("<tr><td class=\"colhead\" align=\"center\" width=\"70%\">".$lang_forums['col_topic']."</td><td class=\"colhead\" align=\"center\"><a href=\"".htmlspecialchars("?action=viewforum&forumid=".$forumid.$addparam."&sort=".($_GET["sort"] == 'firstpostdesc' ? "firstpostasc" : "firstpostdesc"))."\" title=\"".($_GET["sort"] == 'firstpostdesc' ?  $lang_forums['title_order_topic_asc'] : $lang_forums['title_order_topic_desc'])."\">".$lang_forums['col_author']."</a></td><td class=\"colhead\" align=\"center\" >".$lang_forums['col_replies']."/".$lang_forums['col_views']."</td><td class=\"colhead\" align=\"center\"><a href=\"".htmlspecialchars("?action=viewforum&forumid=".$forumid.$addparam."&sort=".($_GET["sort"] == 'lastpostasc' ? "lastpostdesc" : "lastpostasc"))."\" title=\"".($_GET["sort"] == 'lastpostasc' ? $lang_forums['title_order_post_desc'] : $lang_forums['title_order_post_asc'])."\">".$lang_forums['col_last_post']."</a></td>\n");
+ 
+@@ -1322,7 +1322,7 @@
+ 		$forumname = $a['name'];
+ 		if ($n == 1)
+ 		{
+-			print("<table border=\"1\" cellspacing=\"0\" cellpadding=\"5\">\n");
++			print("<table  cellspacing=\"0\" cellpadding=\"5\">\n");
+ 			print("<tr><td class=\"colhead\" align=\"left\">".$lang_forums['col_topic']."</td><td class=\"colhead\" align=\"left\">".$lang_forums['col_forum']."</td></tr>\n");
+ 		}
+ 		print("<tr><td class=\"rowfollow\" align=\"left\"><table border=\"0\" cellspacing=\"0\" cellpadding=\"0\"><tr><td class=\"embedded\" style='padding-right: 10px'>" .
+@@ -1419,7 +1419,7 @@
+ 		$res = sql_query("SELECT posts.id, posts.topicid, posts.userid, posts.added, topics.subject, topics.hlcolor, forums.id AS forumid, forums.name AS forumname FROM posts LEFT JOIN topics ON posts.topicid = topics.id LEFT JOIN forums ON topics.forumid = forums.id WHERE forums.minclassread <= ".sqlesc(get_user_class())." AND ((topics.subject $extraSql AND posts.id=topics.firstpost) OR posts.body $extraSql) ORDER BY posts.id DESC $limit") or sqlerr(__FILE__, __LINE__);
+ 
+ 		print($pagertop);
+-		print("<table border=\"1\" cellspacing=\"0\" cellpadding=\"5\" width=\"100%\">\n");
++		print("<table  cellspacing=\"0\" cellpadding=\"5\" width=\"100%\">\n");
+ 		print("<tr><td class=\"colhead\" align=\"center\">".$lang_forums['col_post']."</td><td class=\"colhead\" align=\"center\" width=\"70%\">".$lang_forums['col_topic']."</td><td class=\"colhead\" align=\"left\">".$lang_forums['col_forum']."</td><td class=\"colhead\" align=\"left\">".$lang_forums['col_posted_by']."</td></tr>\n");
+ 
+ 		while ($post = mysql_fetch_array($res))
+Index: viewnfo.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- viewnfo.php	(date 1479575991000)
++++ viewnfo.php	(revision )
+@@ -39,7 +39,7 @@
+ print($lang_viewnfo['text_nfo_for']."<a href=details.php?id=$id>".htmlspecialchars($a["name"])."</a>\n");
+ 
+ ?>
+-<table border="1" cellspacing="0" cellpadding="10" align="center">
++<table  cellspacing="0" cellpadding="10" align="center">
+ <tr>
+ <?php /*<td align="center" width="25%">
+ <a href="viewnfo.php?id=<?php echo $id?>&view=fonthack"
+Index: viewfilelist.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- viewfilelist.php	(date 1479575991000)
++++ viewfilelist.php	(revision )
+@@ -13,7 +13,7 @@
+ $id = 0 + $_GET['id'];
+ if(isset($CURUSER))
+ {
+-	$s = "<table class=\"main\" border=\"1\" cellspacing=0 cellpadding=\"5\">\n";
++	$s = "<table class=\"main\"  cellspacing=0 cellpadding=\"5\">\n";
+ 
+ 	$subres = sql_query("SELECT * FROM files WHERE torrent = ".sqlesc($id)." ORDER BY id");
+ 	$s.="<tr><td class=colhead>".$lang_viewfilelist['col_path']."</td><td class=colhead align=center><img class=\"size\" src=\"pic/trans.gif\" alt=\"size\" /></td></tr>\n";
+Index: functions.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- functions.php	(date 1479575991000)
++++ functions.php	(revision )
+@@ -73,7 +73,7 @@
+ 	print("<table align=\"center\" class=\"main\" width=\"500\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tr><td class=\"embedded\">\n");
+ 	if ($heading)
+ 	print("<h2>".$heading."</h2>\n");
+-	print("<table width=\"100%\" border=\"1\" cellspacing=\"0\" cellpadding=\"10\"><tr><td class=\"text\">");
++	print("<table width=\"100%\"  cellspacing=\"0\" cellpadding=\"10\"><tr><td class=\"text\">");
+ 	print($text . "</td></tr></table></td></tr></table>\n");
+ }
+ 
+@@ -461,7 +461,7 @@
+ 				stderr($lang_functions['std_error'],$lang_functions['std_invalid_id']);
+ 			else
+ 			{
+-				print ("<h2>".$lang_functions['std_error']."</h2><table width=\"100%\" border=\"1\" cellspacing=\"0\" cellpadding=\"10\"><tr><td class=\"text\">");
++				print ("<h2>".$lang_functions['std_error']."</h2><table width=\"100%\"  cellspacing=\"0\" cellpadding=\"10\"><tr><td class=\"text\">");
+ 				print ($lang_functions['std_invalid_id']."</td></tr></table>");
+ 			}
+ 			if ($stdfood)
+@@ -507,7 +507,7 @@
+ 	if ($center)
+ 	$tdextra .= " align=\"center\"";
+ 
+-	print(($caption ? "<h2 align=\"".$caption_center."\">".$caption."</h2>" : "") . "<table width=\"".$width."\" border=\"1\" cellspacing=\"0\" cellpadding=\"".$padding."\">" . "<tr><td class=\"text\" $tdextra>\n");
++	print(($caption ? "<h2 align=\"".$caption_center."\">".$caption."</h2>" : "") . "<table width=\"".$width."\"  cellspacing=\"0\" cellpadding=\"".$padding."\">" . "<tr><td class=\"text\" $tdextra>\n");
+ 
+ }
+ 
+@@ -522,7 +522,7 @@
+ 
+ 	if ($fullwidth)
+ 	$width .= " width=50%";
+-	print("<table class=\"main".$width."\" border=\"1\" cellspacing=\"0\" cellpadding=\"".$padding."\">");
++	print("<table class=\"main".$width."\"  cellspacing=\"0\" cellpadding=\"".$padding."\">");
+ }
+ 
+ function end_table()
+@@ -1044,7 +1044,7 @@
+ 		}
+ 	}
+ 	begin_frame($framename, true);
+-	print("<table class=\"main\" width=\"100%\" border=\"1\" cellspacing=\"0\" cellpadding=\"5\">\n");
++	print("<table class=\"main\" width=\"100%\"  cellspacing=\"0\" cellpadding=\"5\">\n");
+ 	if ($hassubject){
+ 		print("<tr><td class=\"rowhead\">".$lang_functions['row_subject']."</td>" .
+ "<td class=\"rowfollow\" align=\"left\"><input type=\"text\" style=\"width: 650px;\" name=\"subject\" maxlength=\"".$maxsubjectlength."\" value=\"".$subject."\" /><input name=\"onlyauthor\" type=\"checkbox\"");
+@@ -2734,7 +2734,7 @@
+ }
+ 		if ($offlinemsg)
+ 		{
+-			print("<p><table width=\"737\" border=\"1\" cellspacing=\"0\" cellpadding=\"10\"><tr><td style='padding: 10px; background: red' class=\"text\" align=\"center\">\n");
++			print("<p><table width=\"737\"  cellspacing=\"0\" cellpadding=\"10\"><tr><td style='padding: 10px; background: red' class=\"text\" align=\"center\">\n");
+ 			print("<font color=\"white\">".$lang_functions['text_website_offline_warning']."</font>");
+ 			print("</td></tr></table></p><br />\n");
+ 		}
+Index: modrules.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- modrules.php	(date 1479575991000)
++++ modrules.php	(revision )
+@@ -13,7 +13,7 @@
+ 	//begin_main_frame();
+ 	print("<h1 align=center>Add Rules</h1>");
+ 	print("<form method=\"post\" action=\"modrules.php?act=addsect\">");
+-	print("<table border=\"1\" cellspacing=\"0\" cellpadding=\"10\" align=\"center\">\n");
++	print("<table  cellspacing=\"0\" cellpadding=\"10\" align=\"center\">\n");
+ 	print("<tr><td>Title:</td><td align=left><input style=\"width: 400px;\" type=\"text\" name=\"title\"/></td></tr>\n");
+ 	print("<tr><td style=\"vertical-align: top;\">Rules:</td><td><textarea cols=90 rows=20 name=\"text\"></textarea></td></tr>\n");
+ 	$s = "<select name=language>";
+@@ -45,7 +45,7 @@
+ 	//begin_main_frame();
+ 	print("<h1 align=center>Edit Rules</h1>");
+ 	print("<form method=\"post\" action=\"modrules.php?act=edited\">");
+-	print("<table border=\"1\" cellspacing=\"0\" cellpadding=\"10\" align=\"center\">\n");
++	print("<table  cellspacing=\"0\" cellpadding=\"10\" align=\"center\">\n");
+ 	print("<tr><td>Title:</td><td align=left><input style=\"width: 400px;\" type=\"text\" name=\"title\" value=\"".htmlspecialchars($res[title])."\" /></td></tr>\n");
+ 	print("<tr><td style=\"vertical-align: top;\">Rules:</td><td><textarea cols=90 rows=20 name=\"text\">$res[text]</textarea></td></tr>\n");
+ 	$s = "<select name=language>";
+Index: torrents.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- torrents.php	(date 1479575991000)
++++ torrents.php	(revision )
+@@ -875,7 +875,7 @@
+ 		}
+ 	</style>
+ <form method="get" name="searchbox" action="?">
+-	<table border="1" class="searchbox" cellspacing="0" cellpadding="5" width="100%">
++	<table  class="searchbox" cellspacing="0" cellpadding="5" width="100%">
+ 		<tbody>
+ 		<tr>
+ 		<td class="colhead" align="center" colspan="2"><a href="javascript: klappe_news('searchboxmain')"><span class="icon-search" style="font-size: 33px;color: #00a2d4">&nbsp;&nbsp;<?php echo $lang_torrents['text_search_box'] ?></a></span></td>
+Index: recover.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- recover.php	(date 1479575991000)
++++ recover.php	(revision )
+@@ -152,7 +152,7 @@
+ <!--  	<p><b>--><?php //echo $lang_recover['text_note'] ?><!----><?php //echo $maxloginattempts;?><!--</b>--><?php //echo $lang_recover['text_ban_ip'] ?><!--</p>-->
+ <!--	<p>--><?php //echo $lang_recover['text_you_have'] ?><!--<b>--><?php //echo remaining ();?><!--</b>--><?php //echo $lang_recover['text_remaining_tries'] ?><!--</p>-->
+ <!--	<form method="post" action="recover.php">-->
+-<!--	<table border="1" cellspacing="0" cellpadding="10">-->
++<!--	<table  cellspacing="0" cellpadding="10">-->
+ <!--	<tr><td class="rowhead">--><?php //echo $lang_recover['row_registered_email'] ?><!--</td>-->
+ <!--	<td class="rowfollow"><input type="text" style="width: 150px" name="email" /></td></tr>-->
+ <!--	--><?php
+Index: uploaders.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- uploaders.php	(date 1479575991000)
++++ uploaders.php	(revision )
+@@ -64,7 +64,7 @@
+ ?>
+ <div style="margin-top: 8px">
+ <?php
+-	print("<table border=\"1\" cellspacing=\"0\" cellpadding=\"5\" align=\"center\" width=\"940\"><tr>");
++	print("<table  cellspacing=\"0\" cellpadding=\"5\" align=\"center\" width=\"940\"><tr>");
+ 	print("<td class=\"colhead\">".$lang_uploaders['col_username']."</td>");
+ 	print("<td class=\"colhead\">".$lang_uploaders['col_torrents_size']."</td>");
+ 	print("<td class=\"colhead\">".$lang_uploaders['col_torrents_num']."</td>");
+Index: signup.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- signup.php	(date 1479575991000)
++++ signup.php	(revision )
+@@ -152,7 +152,7 @@
+ 
+ <!--<form method="post" action="takesignup.php">-->
+ <?php //if ($type == 'invite') print("<input type=\"hidden\" name=\"inviter\" value=\"".$inviter."\"><input type=hidden name=type value='invite'");?>
+-<!--<table border="1" cellspacing="0" cellpadding="10">-->
++<!--<table  cellspacing="0" cellpadding="10">-->
+ <?php
+ //print("<tr><td class=text align=center colspan=2>".$lang_signup['text_cookies_note']."</td></tr>");
+ //?>
+Index: viewrequest.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- viewrequest.php	(date 1479575991000)
++++ viewrequest.php	(revision )
+@@ -595,7 +595,7 @@
+ 						stderr ( "成功", "删除求种成功，<a href=viewrequest.php>点击这里返回</a>", false );
+ 					} else {
+ 						print ("<form action=\"viewrequest.php?action=delete&id=" . $_GET ["id"] . "\" method=\"post\" >") ;
+-						stderr ( "删除求种-理由：", "<table align=\"center\" border=\"1\" cellspacing=\"0\" cellpadding=\"5\">\n" . "<tr><td class=\"rowhead\" valign=\"top\" align=\"right\"><input name=\"reasontype\" type=\"radio\" value=\"1\" />&nbsp;成功</td>" . "<td class=\"rowfollow\" valign=\"middle\" align=\"left\">已经有用户成功发布该资源</td></tr>" . "<td class=\"rowhead\" valign=\"top\" align=\"right\"><input name=\"reasontype\" type=\"radio\" value=\"2\" />&nbsp;过期" . "</td>" . "<td class=\"rowfollow\" valign=\"middle\" align=\"left\">长时间无人应求</td></tr>" . "<td class=\"rowhead\" valign=\"top\" align=\"right\"><input name=\"reasontype\" type=\"radio\" value=\"3\" />&nbsp;重复</td>" . "<td class=\"rowfollow\" ><input type=\"text\" style=\"width: 200px\" name=\"reason[]\" /></td></tr>" . "<td class=\"rowhead\" valign=\"top\" align=\"right\"><input name=\"reasontype\" type=\"radio\" value=\"4\" />&nbsp;" . "格式错</td>" . "<td class=\"rowfollow\" valign=\"top\" align=\"left\"><input type=\"text\" style=\"width: 200px\" name=\"reason[]\" /></td></tr>" . "<td class=\"rowhead \" valign=\"top\" align=\"right\"><input name=\"reasontype\" type=\"radio\" value=\"5\" checked=\"checked\" />&nbsp;" . "其他</td>" . "<td class=\"rowfollow\" valign=\"top\" align=\"left\"><input type=\"text\" style=\"width: 200px\" name=\"reason[]\" />(必填)</td></tr>" . "<tr><td class=\"toolbox\" colspan=\"2\" align=\"center\"><input type=\"submit\" style='height: 25px' value=\"删除\" />&nbsp;&nbsp;&nbsp;&nbsp;<input type=button style='height: 25px' onclick=\"location.href='javascript:history.go(-1)'\" value=\"返回\" ></td></tr></table>\n" . "</form>", false );
++						stderr ( "删除求种-理由：", "<table align=\"center\"  cellspacing=\"0\" cellpadding=\"5\">\n" . "<tr><td class=\"rowhead\" valign=\"top\" align=\"right\"><input name=\"reasontype\" type=\"radio\" value=\"1\" />&nbsp;成功</td>" . "<td class=\"rowfollow\" valign=\"middle\" align=\"left\">已经有用户成功发布该资源</td></tr>" . "<td class=\"rowhead\" valign=\"top\" align=\"right\"><input name=\"reasontype\" type=\"radio\" value=\"2\" />&nbsp;过期" . "</td>" . "<td class=\"rowfollow\" valign=\"middle\" align=\"left\">长时间无人应求</td></tr>" . "<td class=\"rowhead\" valign=\"top\" align=\"right\"><input name=\"reasontype\" type=\"radio\" value=\"3\" />&nbsp;重复</td>" . "<td class=\"rowfollow\" ><input type=\"text\" style=\"width: 200px\" name=\"reason[]\" /></td></tr>" . "<td class=\"rowhead\" valign=\"top\" align=\"right\"><input name=\"reasontype\" type=\"radio\" value=\"4\" />&nbsp;" . "格式错</td>" . "<td class=\"rowfollow\" valign=\"top\" align=\"left\"><input type=\"text\" style=\"width: 200px\" name=\"reason[]\" /></td></tr>" . "<td class=\"rowhead \" valign=\"top\" align=\"right\"><input name=\"reasontype\" type=\"radio\" value=\"5\" checked=\"checked\" />&nbsp;" . "其他</td>" . "<td class=\"rowfollow\" valign=\"top\" align=\"left\"><input type=\"text\" style=\"width: 200px\" name=\"reason[]\" />(必填)</td></tr>" . "<tr><td class=\"toolbox\" colspan=\"2\" align=\"center\"><input type=\"submit\" style='height: 25px' value=\"删除\" />&nbsp;&nbsp;&nbsp;&nbsp;<input type=button style='height: 25px' onclick=\"location.href='javascript:history.go(-1)'\" value=\"返回\" ></td></tr></table>\n" . "</form>", false );
+ 					}
+ 				} else
+ 					stderr ( "出错了！！！", "你没有该权限！！！", true );
+\ No newline at end of file
+Index: userdetails.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- userdetails.php	(date 1479575991000)
++++ userdetails.php	(revision )
+@@ -94,7 +94,7 @@
+ if ($CURUSER[id] == $user[id] || get_user_class() >= $cruprfmanage_class)
+ 	print("<center style='margin-bottom: 18px'><a class=\"btn btn-success\" href=\"takeflush.php?id=".$id."\">".$lang_userdetails['text_here']."</a></center>\n");
+ ?>
+-<table width="100%" border="1" cellspacing="0" cellpadding="5" class="table table-striped">
++<table width="100%"  cellspacing="0" cellpadding="5" class="table table-striped">
+ <?php
+ if (($user["privacy"] != "strong") OR (get_user_class() >= $prfmanage_class) || $CURUSER[id] == $user[id]){
+ //Xia Zuojie: Taste compatibility is extremely slow. It can takes thounsands of datebase queries. It is disabled until someone makes it fast.
+@@ -317,7 +317,7 @@
+ 	print("<input type=\"hidden\" name=\"action\" value=\"edituser\" />");
+ 	print("<input type=\"hidden\" name=\"userid\" value=\"".$id."\" />");
+ 	print("<input type=\"hidden\" name=\"returnto\" value=\"".htmlspecialchars("userdetails.php?id=$id")."\" />");
+-	print("<table width=\"100%\" class=\"main\" border=\"1\" cellspacing=\"0\" cellpadding=\"5\" >\n");
++	print("<table width=\"100%\" class=\"main\"  cellspacing=\"0\" cellpadding=\"5\" >\n");
+ 	tr($lang_userdetails['row_title'], "<input type=\"text\" size=\"60\" name=\"title\" value=\"" . htmlspecialchars(trim($user[title])) . "\" />", 1);
+ 	$avatar = htmlspecialchars(trim($user["avatar"]));
+ 
+Index: usersearch.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- usersearch.php	(date 1479575991000)
++++ usersearch.php	(revision )
+@@ -46,7 +46,7 @@
+ ?>
+ 
+ <form method=get action=<?php echo $_SERVER["PHP_SELF"]?>>
+-<table border="1" cellspacing="0" cellpadding="5">
++<table  cellspacing="0" cellpadding="5">
+ <tr>
+ 
+   <td valign="middle" class=rowhead>Name:</td>
+@@ -836,7 +836,7 @@
+ 	/*
+     <br /><br />
+     <form method=post action=/sendmessage.php>
+-      <table border="1" cellpadding="5" cellspacing="0">
++      <table  cellpadding="5" cellspacing="0">
+         <tr>
+           <td>
+             <div align="center">
+Index: aboutnexus.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- aboutnexus.php	(date 1479575991000)
++++ aboutnexus.php	(revision )
+@@ -8,7 +8,7 @@
+ begin_main_frame();
+ begin_frame("<span id=\"version\">".$lang_aboutnexus['text_version']."</span>");
+ print ($lang_aboutnexus['text_version_note']);
+-print ("<br /><br /><table class=\"main\" border=\"1\" cellspacing=\"0\" cellpadding=\"5\" align=\"center\">");
++print ("<br /><br /><table class=\"main\"  cellspacing=\"0\" cellpadding=\"5\" align=\"center\">");
+ tr($lang_aboutnexus['text_main_version'],$mainversion_code,1);
+ tr($lang_aboutnexus['text_sub_version'],$subversion_code,1);
+ tr($lang_aboutnexus['text_release_date'],$releasedate_code,1);
+@@ -33,7 +33,7 @@
+ }
+ begin_frame("<span id=\"translation\">".$lang_aboutnexus['text_translation']."</span>");
+ print (PROJECTNAME.$lang_aboutnexus['text_translation_note']);
+-print ("<br /><br /><table class=\"main\" border=\"1\" cellspacing=\"0\" cellpadding=\"5\" align=\"center\"><tr><td class=\"colhead\">".$lang_aboutnexus['text_flag']."</td><td class=\"colhead\">".$lang_aboutnexus['text_language']."</td><td class=\"colhead\">".$lang_aboutnexus['text_state']."</td></tr>");
++print ("<br /><br /><table class=\"main\"  cellspacing=\"0\" cellpadding=\"5\" align=\"center\"><tr><td class=\"colhead\">".$lang_aboutnexus['text_flag']."</td><td class=\"colhead\">".$lang_aboutnexus['text_language']."</td><td class=\"colhead\">".$lang_aboutnexus['text_state']."</td></tr>");
+ print ($ppl);
+ print ("</table>");
+ print ("<br /><br />");
+@@ -48,14 +48,14 @@
+ }
+ begin_frame("<span id=\"stylesheet\">".$lang_aboutnexus['text_stylesheet']."</span>");
+ print ($lang_aboutnexus['text_stylesheet_note']);
+-print ("<br /><br /><table class=\"main\" border=\"1\" cellspacing=\"0\" cellpadding=\"5\" align=\"center\"><tr><td class=\"colhead\">".$lang_aboutnexus['text_name']."</td><td class=\"colhead\">".$lang_aboutnexus['text_designer']."</td><td class=\"colhead\">".$lang_aboutnexus['text_comment']."</td></tr>");
++print ("<br /><br /><table class=\"main\"  cellspacing=\"0\" cellpadding=\"5\" align=\"center\"><tr><td class=\"colhead\">".$lang_aboutnexus['text_name']."</td><td class=\"colhead\">".$lang_aboutnexus['text_designer']."</td><td class=\"colhead\">".$lang_aboutnexus['text_comment']."</td></tr>");
+ print ($ppl);
+ print ("</table>");
+ print ("<br /><br />");
+ end_frame();
+ begin_frame("<span id=\"contact\">".$lang_aboutnexus['text_contact'].PROJECTNAME."</span>");
+ print ($lang_aboutnexus['text_contact_note']);
+-print ("<br /><br /><table class=\"main\" border=\"1\" cellspacing=\"0\" cellpadding=\"5\" align=\"center\">");
++print ("<br /><br /><table class=\"main\"  cellspacing=\"0\" cellpadding=\"5\" align=\"center\">");
+ tr($lang_aboutnexus['text_web_site'],$website_code ? $website_code : "N/A",1);
+ print ("</table>");
+ print ("<br /><br />");
+Index: promotionlink.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- promotionlink.php	(date 1479575991000)
++++ promotionlink.php	(revision )
+@@ -43,7 +43,7 @@
+ 	begin_frame($lang_promotionlink['text_promotion_link']);
+ ?>
+ <div><p align="left"><?php echo $lang_promotionlink['text_promotion_link_note_one']?></p><p align="left"><?php echo $lang_promotionlink['text_promotion_link_note_two']?></p><p align="left"><?php echo $lang_promotionlink['text_you_would_get'].$prolinkpoint_bonus.$lang_promotionlink['text_bonus_points'].$prolinktime_bonus.$lang_promotionlink['text_seconds']?></p><p align="left"><?php echo "<b>".$lang_promotionlink['text_your_promotion_link_is']."</b><a href=\"".$yourlink."\">".$yourlink."</a>"?></p><p align="left"><?php echo $lang_promotionlink['text_promotion_link_note_four']?></p></div>
+-<table border="1" cellspacing="0" cellpadding="10" width="100%">
++<table  cellspacing="0" cellpadding="10" width="100%">
+ <tr>
+ <td class="colhead"><?php echo $lang_promotionlink['col_type']?></td>
+ <td class="colhead"><?php echo $lang_promotionlink['col_code']?></td>
+Index: config/allconfig.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- config/allconfig.php	(date 1479575991000)
++++ config/allconfig.php	(revision )
+@@ -156,8 +156,6 @@
+ 	'mysql_user' => 'root',
+ 	'mysql_pass' => '',
+ 	'mysql_db' => 'nexusphp',
+-
+-//	'mysql_db' => 'mtpt',
+ );
+ $BONUS=array(
+ 	'donortimes' => '2',
+Index: mysql_stats.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- mysql_stats.php	(date 1479575991000)
++++ mysql_stats.php	(revision )
+@@ -149,7 +149,7 @@
+ //echo sprintf("Server Status Uptime", timespanFormat($serverStatus['Uptime']), localisedDate($row[0])) . "\n";
+ ?>
+ 
+-	<table id="torrenttable" border="1"><tr><td>
++	<table id="torrenttable" ><tr><td>
+ 
+ <?php
+ print("This MySQL server has been running for ". timespanFormat($serverStatus['Uptime']) .". It started up on ". localisedDate($row[0])) . "\n";
+Index: include/functions.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- include/functions.php	(date 1479575991000)
++++ include/functions.php	(revision )
+@@ -73,7 +73,7 @@
+ 	print("<table align=\"center\" class=\"alert alert-block\" width=\"60%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tr><td class=\"embedded\">\n");
+ 	if ($heading)
+ 	print("<h2 style='text-align: center'>".$heading."</h2>\n");
+-	print("<table width=\"100%\" border=\"1\" cellspacing=\"0\" cellpadding=\"10\"><tr><td class=\"text\" style='text-align: center;font-size: 17px;font-family: Arial Black, arial-black'>");
++	print("<table width=\"100%\"  cellspacing=\"0\" cellpadding=\"10\"><tr><td class=\"text\" style='text-align: center;font-size: 17px;font-family: Arial Black, arial-black'>");
+ 	print($text . "</td></tr></table></td></tr></table>\n");
+ }
+ 
+@@ -456,7 +456,7 @@
+ 				stderr($lang_functions['std_error'],$lang_functions['std_invalid_id']);
+ 			else
+ 			{
+-				print ("<h2>".$lang_functions['std_error']."</h2><table width=\"100%\" border=\"1\" cellspacing=\"0\" cellpadding=\"10\"><tr><td class=\"text\">");
++				print ("<h2>".$lang_functions['std_error']."</h2><table width=\"100%\"  cellspacing=\"0\" cellpadding=\"10\"><tr><td class=\"text\">");
+ 				print ($lang_functions['std_invalid_id']."</td></tr></table>");
+ 			}
+ 			if ($stdfood)
+@@ -543,7 +543,7 @@
+ 	if ($center)
+ 	$tdextra .= " align=\"center\"";
+ //	panel_start();
+-	print(($caption ? "<h3 style='float: left;margin-left:1%' align=\"".$caption_center."\"><sapn class='icon-tags' style='color: #5cb85c '></sapn>".$caption."</h3>" : "") . "<table width=\"".$width."\" border=\"1\" cellspacing=\"0\" cellpadding=\"".$padding."\">" . "<tr><td class=\"text\" $tdextra>\n");
++	print(($caption ? "<h3 style='float: left;margin-left:1%' align=\"".$caption_center."\"><sapn class='icon-tags' style='color: #5cb85c '></sapn>".$caption."</h3>" : "") . "<table width=\"".$width."\"  cellspacing=\"0\" cellpadding=\"".$padding."\">" . "<tr><td class=\"text\" $tdextra>\n");
+ 
+ }
+ 
+@@ -558,7 +558,7 @@
+ 
+ 	if ($fullwidth)
+ 	$width .= " width=50%";
+-	print("<table class=\"main".$width."\" border=\"1\" cellspacing=\"0\" cellpadding=\"".$padding."\">");
++	print("<table class=\"main".$width."\"  cellspacing=\"0\" cellpadding=\"".$padding."\">");
+ }
+ 
+ function end_table()
+@@ -1034,7 +1034,7 @@
+ 		}
+ 	}
+ 	begin_frame($framename, true);
+-	print("<table class='table table-striped' width=\"100%\" border=\"1\" cellspacing=\"0\" cellpadding=\"5\">\n");
++	print("<table class='table table-striped' width=\"100%\"  cellspacing=\"0\" cellpadding=\"5\">\n");
+ 	if ($hassubject)
+ 		print("<tr><td class=\"rowhead\">".$lang_functions['row_subject']."</td>" .
+ "<td class=\"rowfollow\" align=\"left\"><input type=\"text\" style=\"width: 650px;\" name=\"subject\" maxlength=\"".$maxsubjectlength."\" value=\"".$subject."\" /></td></tr>\n");
+@@ -2653,7 +2653,7 @@
+ }
+ 		if ($offlinemsg)
+ 		{
+-			print("<p><table width=\"737\" border=\"1\" cellspacing=\"0\" cellpadding=\"10\"><tr><td style='padding: 10px; background: red' class=\"text\" align=\"center\">\n");
++			print("<p><table width=\"737\"  cellspacing=\"0\" cellpadding=\"10\"><tr><td style='padding: 10px; background: red' class=\"text\" align=\"center\">\n");
+ 			print("<font color=\"white\">".$lang_functions['text_website_offline_warning']."</font>");
+ 			print("</td></tr></table></p><br />\n");
+ 		}
+Index: catmanage.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- catmanage.php	(date 1479575991000)
++++ catmanage.php	(revision )
+@@ -152,7 +152,7 @@
+ 		list($pagertop, $pagerbottom, $limit) = pager($perpage, $num, "?");
+ 		$res = sql_query("SELECT * FROM ".$dbtablename." ORDER BY id DESC ".$limit) or sqlerr(__FILE__, __LINE__);
+ ?>
+-<table border="1" cellspacing="0" cellpadding="5" width="940">
++<table  cellspacing="0" cellpadding="5" width="940">
+ <tr>
+ <td class="colhead"><?php echo $lang_catmanage['col_id']?></td>
+ <td class="colhead"><?php echo $lang_catmanage['col_name']?></td>
+@@ -190,7 +190,7 @@
+ <div style="width: 940px">
+ <h1 align="center"><a class="faqlink" href="?action=view&amp;type=<?php echo $type?>"><?php echo $typename?></a></h1>
+ <div>
+-<table border="1" cellspacing="0" cellpadding="10" width="100%">
++<table  cellspacing="0" cellpadding="10" width="100%">
+ <?php
+ 		if ($type=='searchbox')
+ 		{
+@@ -342,7 +342,7 @@
+ ?>
+ <div style="width: 940px">
+ <h1 align="center"><a class="faqlink" href="?action=view&amp;type=<?php echo $type?>"><?php echo $typename?></a></h1>
+-<table border="1" cellspacing="0" cellpadding="10" width="100%">
++<table  cellspacing="0" cellpadding="10" width="100%">
+ <?php
+ tr($lang_catmanage['col_name']."<font color=\"red\">*</font>", "<input type=\"text\" name=\"name\" value=\"".htmlspecialchars($name)."\" style=\"width: 300px\" /> " . $lang_catmanage['text_subcategory_name_note'], 1);
+ tr($lang_catmanage['col_order'], "<input type=\"text\" name=\"sort_index\" value=\"".$sort_index."\" style=\"width: 100px\" /> " . $lang_catmanage['text_order_note'], 1);
+@@ -384,7 +384,7 @@
+ 		list($pagertop, $pagerbottom, $limit) = pager($perpage, $num, "?");
+ 		$res = sql_query("SELECT * FROM ".$dbtablename." ORDER BY id ASC ".$limit) or sqlerr(__FILE__, __LINE__);
+ ?>
+-<table border="1" cellspacing="0" cellpadding="5" width="940">
++<table  cellspacing="0" cellpadding="5" width="940">
+ <tr>
+ <td class="colhead"><?php echo $lang_catmanage['col_id']?></td>
+ <td class="colhead"><?php echo $lang_catmanage['col_name']?></td>
+@@ -438,7 +438,7 @@
+ 		list($pagertop, $pagerbottom, $limit) = pager($perpage, $num, "?");
+ 		$res = sql_query("SELECT * FROM ".$dbtablename." ORDER BY id ASC ".$limit) or sqlerr(__FILE__, __LINE__);
+ ?>
+-<table border="1" cellspacing="0" cellpadding="5" width="940">
++<table  cellspacing="0" cellpadding="5" width="940">
+ <tr>
+ <td class="colhead"><?php echo $lang_catmanage['col_id']?></td>
+ <td class="colhead"><?php echo $lang_catmanage['col_name']?></td>
+@@ -484,7 +484,7 @@
+ 		list($pagertop, $pagerbottom, $limit) = pager($perpage, $num, "?");
+ 		$res = sql_query("SELECT * FROM ".$dbtablename." ORDER BY id ASC ".$limit) or sqlerr(__FILE__, __LINE__);
+ ?>
+-<table border="1" cellspacing="0" cellpadding="5" width="940">
++<table  cellspacing="0" cellpadding="5" width="940">
+ <tr>
+ <td class="colhead"><?php echo $lang_catmanage['col_id']?></td>
+ <td class="colhead"><?php echo $lang_catmanage['col_name']?></td>
+@@ -536,7 +536,7 @@
+ 		list($pagertop, $pagerbottom, $limit) = pager($perpage, $num, "?");
+ 		$res = sql_query("SELECT ".$dbtablename.".*, searchbox.name AS catmodename FROM ".$dbtablename." LEFT JOIN searchbox ON ".$dbtablename.".mode=searchbox.id ORDER BY ".$dbtablename.".mode ASC, ".$dbtablename.".id ASC ".$limit) or sqlerr(__FILE__, __LINE__);
+ ?>
+-<table border="1" cellspacing="0" cellpadding="5" width="940">
++<table  cellspacing="0" cellpadding="5" width="940">
+ <tr>
+ <td class="colhead"><?php echo $lang_catmanage['col_id']?></td>
+ <td class="colhead"><?php echo $lang_catmanage['col_mode']?></td>
+Index: faqmanage.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- faqmanage.php	(date 1479575991000)
++++ faqmanage.php	(revision )
+@@ -53,7 +53,7 @@
+ 	{
+ 		foreach ($temp2 as $id => $temp)
+ 		{
+-			print("<br />\n<table border=\"1\" cellspacing=\"0\" cellpadding=\"5\" align=\"center\" width=\"95%\">\n");
++			print("<br />\n<table  cellspacing=\"0\" cellpadding=\"5\" align=\"center\" width=\"95%\">\n");
+ 			print("<tr><td class=\"colhead\" align=\"center\" colspan=\"2\">Position</td><td class=\"colhead\" align=\"left\">Section/Item Title</td><td class=\"colhead\" align=\"center\">Language</td><td class=\"colhead\" align=\"center\">Status</td><td class=\"colhead\" align=\"center\">Actions</td></tr>\n");
+ 
+ 			print("<tr><td align=\"center\" width=\"40px\"><select name=\"order[". $id ."]\">");
+@@ -91,7 +91,7 @@
+ 
+ // print the orphaned items table
+ if (isset($faq_orphaned)) {
+-	print("<br />\n<table border=\"1\" cellspacing=\"0\" cellpadding=\"5\" align=\"center\" width=\"95%\">\n");
++	print("<br />\n<table  cellspacing=\"0\" cellpadding=\"5\" align=\"center\" width=\"95%\">\n");
+ 	print("<tr><td align=\"center\" colspan=\"3\"><b style=\"color: #FF0000\">Orphaned Items</b></td>\n");
+ 	print("<tr><td class=\"colhead\" align=\"left\">Item Title</td><td class=\"colhead\" align=\"center\">Status</td><td class=\"colhead\" align=\"center\">Actions</td></tr>\n");
+ 	foreach ($faq_orphaned as $lang => $temp2){
+@@ -107,7 +107,7 @@
+ 	print("</table>\n");
+ }
+ 
+-print("<br />\n<table border=\"1\" cellspacing=\"0\" cellpadding=\"5\" align=\"center\" width=\"95%\">\n<tr><td align=\"center\"><a href=\"faqactions.php?action=addsection\">Add new section</a></td></tr>\n</table>\n");
++print("<br />\n<table  cellspacing=\"0\" cellpadding=\"5\" align=\"center\" width=\"95%\">\n<tr><td align=\"center\"><a href=\"faqactions.php?action=addsection\">Add new section</a></td></tr>\n</table>\n");
+ print("<p align=\"center\"><input type=\"submit\" name=\"reorder\" value=\"Reorder\"></p>\n");
+ print("</form>\n");
+ print("<p>When the position numbers don't reflect the position in the table, it means the order id is bigger than the total number of sections/items and you should check all the order id's in the table and click \"reorder\"</p>");
+Index: getusertorrentlistajax.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- getusertorrentlistajax.php	(date 1479575991000)
++++ getusertorrentlistajax.php	(revision )
+@@ -85,7 +85,7 @@
+ 		}
+ 		default: break;
+ 	}
+-	$ret = "<table border=\"1\" cellspacing=\"0\" cellpadding=\"5\" width=\"800\"><tr><td class=\"colhead\" style=\"padding: 0px\">".$lang_getusertorrentlistajax['col_type']."</td><td class=\"colhead\" align=\"center\">".$lang_getusertorrentlistajax['col_name']."</td>".
++	$ret = "<table  cellspacing=\"0\" cellpadding=\"5\" width=\"800\"><tr><td class=\"colhead\" style=\"padding: 0px\">".$lang_getusertorrentlistajax['col_type']."</td><td class=\"colhead\" align=\"center\">".$lang_getusertorrentlistajax['col_name']."</td>".
+ 	($showsize ? "<td class=\"colhead\" align=\"center\"><img class=\"size\" src=\"pic/trans.gif\" alt=\"size\" title=\"".$lang_getusertorrentlistajax['title_size']."\" /></td>" : "").($showsenum ? "<td class=\"colhead\" align=\"center\"><img class=\"seeders\" src=\"pic/trans.gif\" alt=\"seeders\" title=\"".$lang_getusertorrentlistajax['title_seeders']."\" /></td>" : "").($showlenum ? "<td class=\"colhead\" align=\"center\"><img class=\"leechers\" src=\"pic/trans.gif\" alt=\"leechers\" title=\"".$lang_getusertorrentlistajax['title_leechers']."\" /></td>" : "").($showuploaded ? "<td class=\"colhead\" align=\"center\">".$lang_getusertorrentlistajax['col_uploaded']."</td>" : "") . ($showdownloaded ? "<td class=\"colhead\" align=\"center\">".$lang_getusertorrentlistajax['col_downloaded']."</td>" : "").($showratio ? "<td class=\"colhead\" align=\"center\">".$lang_getusertorrentlistajax['col_ratio']."</td>" : "").($showsetime ? "<td class=\"colhead\" align=\"center\">".$lang_getusertorrentlistajax['col_se_time']."</td>" : "").($showletime ? "<td class=\"colhead\" align=\"center\">".$lang_getusertorrentlistajax['col_le_time']."</td>" : "").($showcotime ? "<td class=\"colhead\" align=\"center\">".$lang_getusertorrentlistajax['col_time_completed']."</td>" : "").($showanonymous ? "<td class=\"colhead\" align=\"center\">".$lang_getusertorrentlistajax['col_anonymous']."</td>" : "")."</tr>\n";
+ 	while ($arr = mysql_fetch_assoc($res))
+ 	{
+Index: confirm_resend.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- confirm_resend.php	(date 1479575991000)
++++ confirm_resend.php	(revision )
+@@ -107,7 +107,7 @@
+ 	<?php echo $lang_confirm_resend['text_resend_confirmation_mail_note']?>
+ 	<p><?php echo $lang_confirm_resend['text_you_have'] ?><b><?php echo remaining ();?></b><?php echo $lang_confirm_resend['text_remaining_tries'] ?></p>
+ 	<form method="post" action="confirm_resend.php">
+-	<table border="1" cellspacing="0" cellpadding="10">
++	<table  cellspacing="0" cellpadding="10">
+ 	<tr><td class="rowhead nowrap"><?php echo $lang_confirm_resend['row_registered_email'] ?></td>
+ 	<td class="rowfollow"><input type="text" style="width: 200px" name="email" /></td></tr>
+ 	<tr><td class="rowhead nowrap"><?php echo $lang_confirm_resend['row_new_password'] ?></td><td align="left"><input type="password" style="width: 200px" name="wantpassword" /><br />
+Index: comment.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- comment.php	(date 1479575991000)
++++ comment.php	(revision )
+@@ -298,7 +298,7 @@
+ 
+ 		stdhead($lang_comment['head_original_comment']);
+ 		print("<h1>".$lang_comment['text_original_content_of_comment']."#$commentid</h1>");
+-		print("<table width=\"737\" border=\"1\" cellspacing=\"0\" cellpadding=\"5\">");
++		print("<table width=\"737\"  cellspacing=\"0\" cellpadding=\"5\">");
+ 		print("<tr><td class=\"text\">\n");
+ 		echo format_comment($arr["ori_text"]);
+ 		print("</td></tr></table>\n");
+Index: faqactions.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- faqactions.php	(date 1479575991000)
++++ faqactions.php	(revision )
+@@ -50,7 +50,7 @@
+ 		if ($arr[type] == "item") {
+ 			$lang_id = $arr['lang_id'];
+ 			print("<form method=\"post\" action=\"faqactions.php?action=edititem\">");
+-			print("<table border=\"1\" cellspacing=\"0\" cellpadding=\"10\" align=\"center\">\n");
++			print("<table  cellspacing=\"0\" cellpadding=\"10\" align=\"center\">\n");
+ 			print("<tr><td>ID:</td><td>$arr[id] <input type=\"hidden\" name=\"id\" value=\"$arr[id]\" /></td></tr>\n");
+ 			print("<tr><td>Question:</td><td><input style=\"width: 600px;\" type=\"text\" name=\"question\" value=\"$arr[question]\" /></td></tr>\n");
+ 			print("<tr><td style=\"vertical-align: top;\">Answer:</td><td><textarea rows=20 style=\"width: 600px; height=600px;\" name=\"answer\">$arr[answer]</textarea></td></tr>\n");
+@@ -73,7 +73,7 @@
+ 			if ($lang_arr = mysql_fetch_array($lang_res))
+ 				$lang_name = $lang_arr['lang_name'];
+ 			print("<form method=\"post\" action=\"faqactions.php?action=editsect\">");
+-			print("<table border=\"1\" cellspacing=\"0\" cellpadding=\"10\" align=\"center\">\n");
++			print("<table  cellspacing=\"0\" cellpadding=\"10\" align=\"center\">\n");
+ 			print("<tr><td>ID:</td><td>$arr[id] <input type=\"hidden\" name=\"id\" value=\"$arr[id]\" /></td></tr>\n");
+ 			print("<tr><td>Language:</td><td>$lang_name</td></tr>\n");
+ 			print("<tr><td>Title:</td><td><input style=\"width: 300px;\" type=\"text\" name=\"title\" value=\"$arr[question]\" /></td></tr>\n");
+@@ -116,7 +116,7 @@
+ 		stdhead("FAQ Management");
+ 		begin_main_frame();
+ 		print("<h1 align=\"center\">Confirmation required</h1>");
+-		print("<table border=\"1\" cellspacing=\"0\" cellpadding=\"5\" align=\"center\" width=\"95%\">\n<tr><td align=\"center\">Please click <a href=\"faqactions.php?action=delete&id=$_GET[id]&confirm=yes\">here</a> to confirm.</td></tr>\n</table>\n");
++		print("<table  cellspacing=\"0\" cellpadding=\"5\" align=\"center\" width=\"95%\">\n<tr><td align=\"center\">Please click <a href=\"faqactions.php?action=delete&id=$_GET[id]&confirm=yes\">here</a> to confirm.</td></tr>\n</table>\n");
+ 		end_main_frame();
+ 		stdfoot();
+ 	}
+@@ -128,7 +128,7 @@
+ 	begin_main_frame();
+ 	print("<h1 align=\"center\">Add Item</h1>");
+ 	print("<form method=\"post\" action=\"faqactions.php?action=addnewitem\">");
+-	print("<table border=\"1\" cellspacing=\"0\" cellpadding=\"10\" align=\"center\">\n");
++	print("<table  cellspacing=\"0\" cellpadding=\"10\" align=\"center\">\n");
+ 	print("<tr><td>Question:</td><td><input style=\"width: 600px;\" type=\"text\" name=\"question\" value=\"\" /></td></tr>\n");
+ 	print("<tr><td style=\"vertical-align: top;\">Answer:</td><td><textarea rows=20 style=\"width: 600px; height=600px;\" name=\"answer\"></textarea></td></tr>\n");
+ 	print("<tr><td>Status:</td><td><select name=\"flag\" style=\"width: 110px;\"><option value=\"0\" style=\"color: #FF0000;\">Hidden</option><option value=\"1\" style=\"color: #000000;\">Normal</option><option value=\"2\" style=\"color: #0000FF;\">Updated</option><option value=\"3\" style=\"color: #008000;\" selected=\"selected\">New</option></select></td></tr>");
+@@ -146,7 +146,7 @@
+ 	begin_main_frame();
+ 	print("<h1 align=\"center\">Add Section</h1>");
+ 	print("<form method=\"post\" action=\"faqactions.php?action=addnewsect\">");
+-	print("<table border=\"1\" cellspacing=\"0\" cellpadding=\"10\" align=\"center\">\n");
++	print("<table  cellspacing=\"0\" cellpadding=\"10\" align=\"center\">\n");
+ 	print("<tr><td>Title:</td><td><input style=\"width: 300px;\" type=\"text\" name=\"title\" value=\"\" /></td></tr>\n");
+ 	$s = "<select name=language>";
+ 	$langs = langlist("rule_lang");
+Index: mybonus.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- mybonus.php	(date 1479575991000)
++++ mybonus.php	(revision )
+@@ -123,7 +123,7 @@
+ 
+ 	$bonus = number_format($CURUSER['seedbonus'], 1);
+ if (!$action) {
+-	print("<table class='table table-striped' align=\"center\" width=\"940\" border=\"1\" cellspacing=\"0\" cellpadding=\"3\">\n");
++	print("<table class='table table-striped' align=\"center\" width=\"940\"  cellspacing=\"0\" cellpadding=\"3\">\n");
+ 	print("<tr><td class=\"colhead\" colspan=\"4\" align=\"center\"><font class=\"big\">".$SITENAME.$lang_mybonus['text_karma_system']."</font></td></tr>\n");
+ 	if ($msg)
+ 	print("<tr><td align=\"center\" colspan=\"4\"><font class=\"striking\">". $msg ."</font></td></tr>");
+Index: edit.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- edit.php	(date 1479575991000)
++++ edit.php	(revision )
+@@ -47,7 +47,7 @@
+ 	print("<input type=\"hidden\" name=\"id\" value=\"$id\" />");
+ 	if (isset($_GET["returnto"]))
+ 	print("<input type=\"hidden\" name=\"returnto\" value=\"" . htmlspecialchars($_GET["returnto"]) . "\" />");
+-	print("<table border=\"1\" cellspacing=\"0\" cellpadding=\"5\" width=\"940\">\n");
++	print("<table  cellspacing=\"0\" cellpadding=\"5\" width=\"940\">\n");
+ 	print("<tr><td class='colhead' colspan='2' align='center'>".htmlspecialchars($row["name"])."</td></tr>");
+ 	tr($lang_edit['row_torrent_name']."<font color=\"red\">*</font>", "<input type=\"text\" style=\"width: 650px;\" name=\"name\" value=\"" . htmlspecialchars($row["name"]) . "\" />", 1);
+ 	if ($smalldescription_main == 'yes')
+@@ -160,7 +160,7 @@
+ 	print("<input type=\"hidden\" name=\"id\" value=\"$id\" />\n");
+ 	if (isset($_GET["returnto"]))
+ 	print("<input type=\"hidden\" name=\"returnto\" value=\"" . htmlspecialchars($_GET["returnto"]) . "\" />\n");
+-	print("<table border=\"1\" cellspacing=\"0\" cellpadding=\"5\">\n");
++	print("<table  cellspacing=\"0\" cellpadding=\"5\">\n");
+ 	print("<tr><td class=\"colhead\" align=\"left\" style='padding-bottom: 3px' colspan=\"2\">".$lang_edit['text_delete_torrent']."</td></tr>");
+ 	tr("<input name=\"reasontype\" type=\"radio\" value=\"1\" />&nbsp;".$lang_edit['radio_dead'], $lang_edit['text_dead_note'], 1);
+ 	tr("<input name=\"reasontype\" type=\"radio\" value=\"2\" />&nbsp;".$lang_edit['radio_dupe'], "<input type=\"text\" style=\"width: 200px\" name=\"reason[]\" />", 1);
+Index: index.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- index.php	(date 1479575991000)
++++ index.php	(revision )
+@@ -169,7 +169,7 @@
+ 					}
+ ?>
+ <h2><?php echo $lang_index['text_' . $type_each . 'movies'] ?></h2>
+-<table width="100%" border="1" cellspacing="0" cellpadding="5"><tr><td class="text nowrap" align="center">
++<table width="100%"  cellspacing="0" cellpadding="5"><tr><td class="text nowrap" align="center">
+ <?php echo $movies_list ?></td></tr></table>
+ <?php
+ 				}
+@@ -250,7 +250,7 @@
+ 	$result = sql_query("SELECT * FROM torrents where visible='yes' ORDER BY added DESC LIMIT 5") or sqlerr(__FILE__, __LINE__);
+ 	if (mysql_num_rows($result) != 0) {
+ 		print ("<h2 class='panel-title'>" . $lang_index['text_last_five_torrent'] . "</h2>");
+-		print ("<table style='margin-top: 10px' class='table table-striped' width=\"100%\" border=\"1\" cellspacing=\"0\" cellpadding=\"5\">
++		print ("<table style='margin-top: 10px' class='table table-striped' width=\"100%\"  cellspacing=\"0\" cellpadding=\"5\">
+ <tr><td class=\"colhead\" width=\"100%\">" . $lang_index['col_name'] . "</td><td class=\"colhead\" align=\"center\">" . $lang_index['col_seeder'] . "</td><td class=\"colhead\" align=\"center\">" . $lang_index['col_leecher'] . "</td></tr>");
+ 
+ 		while ($row = mysql_fetch_assoc($result)) {
+@@ -301,7 +301,7 @@
+ 		<sapn class=" icon-dashboard"></sapn><?php echo $lang_index['text_tracker_statistics'] ?></h4>
+ 	<table width="100%" class="table table-bordered" id="statustable">
+ 		<tr>
+-			<!--<table width="60%" class="table table-bordered" border="1" cellspacing="0" cellpadding="10">-->
++			<!--<table width="60%" class="table table-bordered"  cellspacing="0" cellpadding="10">-->
+ 			<?php
+ 			$Cache->new_page('stats_users', 3000, true);
+ 			if (!$Cache->get_page()){
+@@ -624,7 +624,7 @@
+ 	if (mysql_num_rows($res) != 0) {
+ 		print("<h4 class='panel-title'>" . $lang_index['text_last_five_posts'] . "</h4>");
+ 		print("
+-<table style='margin-top: 10px' class='table table-striped'  width=\"100%\" border=\"1\" cellspacing=\"0\" cellpadding=\"5\">
++<table style='margin-top: 10px' class='table table-striped'  width=\"100%\"  cellspacing=\"0\" cellpadding=\"5\">
+ <tr>
+ <td class=\"colhead\" align=\"left\">" . $lang_index['col_topic_title'] . "</td>
+ <td class=\"colhead\" align=\"center\">" . $lang_index['col_view'] . "</td>
+@@ -666,7 +666,7 @@
+ //if ($uptimeresult){
+ //?>
+ <!--<h2>--><?php //echo $lang_index['text_tracker_load'] ?><!--</h2>-->
+-<!--<!--<table width="100%" border="1" cellspacing="0" cellpadding="10"><tr><td class="text" align="center">-->
++<!--<!--<table width="100%"  cellspacing="0" cellpadding="10"><tr><td class="text" align="center">-->
+ <?php
+ //			//uptime, work in *nix system
+ //			print ("<div align=\"center\">" . trim($uptimeresult) . "</div>");
+Index: mailtest.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- mailtest.php	(date 1479575991000)
++++ mailtest.php	(revision )
+@@ -27,7 +27,7 @@
+ {
+ 	stdhead($lang_mailtest['head_mail_test']);
+ 	print("<h1 align=\"center\">".$lang_mailtest['text_mail_test']."</h1>");
+-	print("<table border=\"1\" cellspacing=\"0\" cellpadding=\"5\">\n");
++	print("<table  cellspacing=\"0\" cellpadding=\"5\">\n");
+ 	print("<form method='post' action='mailtest.php'>");
+ 	print("<input type='hidden' name='action' value='sendmail'>");
+ 	tr($lang_mailtest['row_enter_email'], "<input type='text' name='email' size=35><br />".$lang_mailtest['text_enter_email_note'], 1);
+Index: details.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- details.php	(date 1479575991000)
++++ details.php	(revision )
+@@ -388,7 +388,7 @@
+ 			$copies_count = mysql_num_rows($copies_res);
+ 			if($copies_count > 0)
+ 			{
+-				$s = "<table border=\"1\" cellspacing=\"0\" cellpadding=\"5\">\n";
++				$s = "<table  cellspacing=\"0\" cellpadding=\"5\">\n";
+ 				$s.="<tr><td class=\"colhead\" style=\"padding: 0px; text-align:center;\">".$lang_details['col_type']."</td><td class=\"colhead\" align=\"left\">".$lang_details['col_name']."</td><td class=\"colhead\" align=\"center\">".$lang_details['col_quality']."</td><td class=\"colhead\" align=\"center\"><img class=\"size\" src=\"pic/trans.gif\" alt=\"size\" title=\"".$lang_details['title_size']."\" /></td><td class=\"colhead\" align=\"center\"><img class=\"time\" src=\"pic/trans.gif\" alt=\"time added\" title=\"".$lang_details['title_time_added']."\" /></td><td class=\"colhead\" align=\"center\"><img class=\"seeders\" src=\"pic/trans.gif\" alt=\"seeders\" title=\"".$lang_details['title_seeders']."\" /></td><td class=\"colhead\" align=\"center\"><img class=\"leechers\" src=\"pic/trans.gif\" alt=\"leechers\" title=\"".$lang_details['title_leechers']."\" /></td></tr>\n";
+ 				while ($copy_row = mysql_fetch_assoc($copies_res))
+ 				{
