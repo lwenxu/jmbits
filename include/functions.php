@@ -2255,7 +2255,7 @@ function menu ($selected = "home") {
 <div class='col-xs-12 col-md-12'>
 	<div class=\"container-fluid\">
     <div class=\"navbar-header\">
-        <a class=\"navbar-brand\" href=\"#\" style='margin-right: 20px;color: white'>NWU PT</a>
+        <a class=\"navbar-brand\" href=\"index.php\" style='margin-right: 20px;color: white'>NWU PT</a>
     </div>
         <ul class=\"nav navbar-nav\">
     ";
@@ -2433,19 +2433,16 @@ $cssupdatedate=($cssupdatedate ? "?".htmlspecialchars($cssupdatedate) : "");
 <link rel="stylesheet" href="<?php echo get_font_css_uri().$cssupdatedate?>" type="text/css" />
 <link rel="stylesheet" href="styles/sprites.css<?php echo $cssupdatedate?>" type="text/css" />
 <link rel="stylesheet" href="<?php echo get_forum_pic_folder()."/forumsprites.css".$cssupdatedate?>" type="text/css" />
-	<link rel="stylesheet" type="text/css" href="./styles/BambooGreen/components.min.css">
-
-	<link rel="stylesheet" href="<?php echo $css_uri."DomTT1.css".$cssupdatedate?>" type="text/css" />
+<link rel="stylesheet" type="text/css" href="./styles/BambooGreen/components.min.css">
+<link rel="stylesheet" href="<?php echo $css_uri."DomTT1.css".$cssupdatedate?>" type="text/css" />
 <link rel="stylesheet" href="<?php echo $css_uri."theme1.css".$cssupdatedate?>" type="text/css" />
 <link rel="stylesheet" href="styles/curtain_imageresizer.css<?php echo $cssupdatedate?>" type="text/css" />
-<script src="./styles/js/jqutextareaery-3.1.1.min.js"></script>
-
+<script src="./styles/js/jquery-3.1.1.min.js"></script>
 <link rel="stylesheet" href="./styles/bootstrap/css/bootstrap.min.css">
 <script src="./styles/bootstrap/js/bootstrap.min.js"></script>
-<script src="./styles/js/js.js"></script>
 <link href="./styles/awesome/css/font-awesome.min.css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="./styles/BambooGreen/main.css">
-	<?php
+<?php
 if ($CURUSER){
 	$caticonrow = get_category_icon_row($CURUSER['caticon']);
 	if($caticonrow['cssfile']){
@@ -2463,8 +2460,9 @@ if ($CURUSER){
 <script type="text/javascript" src="domTT.js<?php echo $cssupdatedate?>"></script>
 <script type="text/javascript" src="domTT_drag.js<?php echo $cssupdatedate?>"></script>
 <script type="text/javascript" src="fadomatic.js<?php echo $cssupdatedate?>"></script>
-<script type="text/javascript" src="styles/js/js.js"></script>
 </head>
+
+
 <body class="container-fluid">
 <!-- // add goto top  by lwenxu-->
 <div id="gotop" class="icon-circle-arrow-up m-icon-big"></div>
@@ -2484,25 +2482,7 @@ if ($CURUSER){
            var sc = $(window).scrollTop();
            $('body,html').animate({scrollTop: 0}, 500);
        })
-       //      $(function () {
-//         $(window).scroll(function () {
-//            var scrollt = document.documentElement.scrollTop + document.body.scrollTop;
-//            if (scrollt > 10) {
-//               $("#gotop").fadeIn(500);
-//            } else {
-//               $("#gotop").stop().fadeOut(500);
-//            }
-//         });
-//         $("#gotop").click(function () {
-//            $("html,body").animate({scrollTop: "0px"}, 5000);
-//            return false;
-//         });
-//      });
    </script>
-<!--<span id="srco">-->
-<!--    <a class="icon-circle-arrow-up" id="gotop" href="#" title="--><?php ////echo $lang_functions['title_top'];
-//		?><!--"><span></span></a>-->
-<!--</span>-->
 <div class="container" id="main_content">
     <div class="banner">
         <img src="<?php echo $logo_main ?>" style="width: 1303px;max-height: 300px;">
@@ -2567,8 +2547,9 @@ if ($CURUSER){
 			$unread = get_row_count("messages", "WHERE receiver=" . sqlesc($CURUSER["id"]) . " AND unread='yes'");
 			$Cache->cache_value('user_' . $CURUSER["id"] . '_unread_message_count', $unread, 60);
 		}
-
-		$inboxpic = "<span class='icon-envelope' title=\"" . ($unread ? $lang_functions['title_inbox_new_messages'] : $lang_functions['title_inbox_no_new_messages']) . "\"></span>";
+        $deepico='icon-envelope-alt';
+		$lightico=' icon-envelope';
+		$inboxpic = "<span class=\"".($unread ?$lightico:$deepico)."\"title=\"" . ($unread ? $lang_functions['title_inbox_new_messages'] : $lang_functions['title_inbox_no_new_messages']) . "\"></span>";
 		?>
 
 		<table id="info_block" class="table table-noborder zeromp" cellpadding="4" cellspacing="0" border="0"
@@ -2634,7 +2615,8 @@ if ($CURUSER){
 										print("<a href=\"cheaterbox.php\"><span class='icon-ban-circle' title=\"" . $lang_functions['title_cheaterbox'] . "\"></span>  </a>" . $totalcheaters . "  <a href=\"reports.php\"><span class='icon-exclamation-sign' title=\"" . $lang_functions['title_reportbox'] . "\"></span>  </a>" . $totalreports . "  <a href=\"staffbox.php\"><span class='icon-envelope-alt' title=\"" . $lang_functions['title_staffbox'] . "\"></span>  </a>" . $totalsm . "  ");
 									}
 
-									print("<a href=\"messages.php\">" . $inboxpic . "</a> " . ($messages ? $messages . " (" . $unread . $lang_functions['text_message_new'] . ")" : "0"));
+//									print("<a href=\"messages.php\">" . $inboxpic . "</a> " . ($messages ? $messages . " (" . $unread . $lang_functions['text_message_new'] . ")" : "0"));
+									print("<a href=\"messages.php\">" . $inboxpic . "</a> " . ($messages ?  $unread  : "0"));
 									print("  <a href=\"messages.php?action=viewmailbox&amp;box=-1\"><span class='icon-comment-alt' title=\"" . $lang_functions['title_sentbox'] . "\"></span></a> " . ($outmessages ? $outmessages : "0"));
 									print(" <a href=\"friends.php\"><span class='icon-group' title=\"" . $lang_functions['title_buddylist'] . "\"></span></a>");
 									//	print(" <a href=\"getrss.php\"><span class='icon-rss' title=\"".$lang_functions['title_get_rss']."\"></span></a>");
@@ -3443,6 +3425,20 @@ create_tooltip_container($lastcom_tooltip, 400);
 create_tooltip_container($torrent_tooltip, 500);
 }
 
+function get_realname($id){
+    static $usernameArray = array();
+    $id = 0 + $id;
+
+    if (func_num_args() == 1 && $usernameArray[$id]) {  //One argument=is default display of username. Get it directly from static array if available
+        return $usernameArray[$id];
+    }
+    $arr = get_user_row($id);
+    if ($arr) {
+	    return $arr['username'];
+    }else{
+	    return "";
+    }
+}
 function get_username($id, $big = false, $link = true, $bold = true, $target = false, $bracket = false, $withtitle = false, $link_ext = "", $underline = false)
 {
 	static $usernameArray = array();

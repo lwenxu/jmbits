@@ -259,7 +259,7 @@ var AutoTips = function(A){
 		var em = '<em>'+ char +'</em>';
 		for(var i=0; i<len; i++){
 			//var hm = data[i]['userid'].replace(reg,em);
-			h += html.replace(/\$ACCOUNT\$|\$NAME\$/g,data[i]['username']).replace('$SACCOUNT$',data[i]['userid']).replace('$ID$',"[@"+data[i]['userid']+"]");
+			h += html.replace(/\$ACCOUNT\$|\$NAME\$/g,data[i]['username']).replace('$SACCOUNT$',data[i]['userid']).replace('$ID$',"[@"+data[i]['userid']+"]"+"@"+data[i]['username']);
 		}
 		
 		_this.updatePosstion();

@@ -22,7 +22,7 @@ $row = mysql_fetch_array($res);
 //if (get_user_class() >= UC_STAFFLEADER)
 //{
 
-	if ($row['category'] == '401' || $row['category'] == '408') {
+	if ($row['category'] == '402' ||$row['category'] == '401' || $row['category'] == '405' || $row['category'] == '407') {
 		$v6button = "| " .
 			"<script type=\"text/javascript\">function play(){window.location.href='6xvod://{$id}&ty=1&ro=1&id={$id}&ua={$CURUSER['passkey']}';}</script>" . "<span class= 'icon-play-circle icon-green'></span>" . "<a href=\"v6player.php?id={$id}&u={$CURUSER['passkey']}\" target=\"_blank\"> 直接播放</a>";
 	} else {

@@ -1,4 +1,18 @@
 <?php
+
+function at_user_message($body,$username="jghgj")
+{
+	global $Cache;
+	$subject = "有关于你的消息啦！(From: $username)";
+	$content = $body;
+	preg_match_all("/\[@([0-9]+?)\]/ei", $body, $useridget);
+	$useridget[1] = array_unique($useridget[1]);
+	for ($i = 0; $i < min(10, count($useridget[1])); $i++) {
+		sql_query("INSERT INTO messages (sender, receiver, subject, msg, added) VALUES(0, " . $useridget[1][$i] . ",'$subject','$content', " . sqlesc(date("Y-m-d H:i:s")) . ")");
+		$Cache->delete_value('user_' . $useridget[1][$i] . '_unread_message_count');
+		$Cache->delete_value('user_' . $useridget[1][$i] . '_inbox_count');
+	}
+}
 echo "
 <style>
 .bubble {
@@ -187,6 +201,9 @@ else
 	$text=trim($_GET["shbox_text"]);
 
 	sql_query("INSERT INTO shoutbox (userid, date, text, type) VALUES (" . sqlesc($userid) . ", $date, " . sqlesc($text) . ", ".sqlesc($type).")") or sqlerr(__FILE__, __LINE__);
+	$insertname = get_realname($userid);
+//	var_dump($insertname);
+	at_user_message($text,$insertname);
 	print "<script type=\"text/javascript\">parent.document.forms['shbox'].shbox_text.value='';</script>";
 }
 }
@@ -242,14 +259,14 @@ else
 		}
 		if ($rand%2==0) {
 			print("<tr><td>
-			<img src=$avatar height='50px' style='float: right;border-radius: 8px'/>
+			<img src=$avatar height='50px' width='50px' style='float: right;border-radius: 8px'/>
 			<div style='float: right;font-size: 15px' class=\"bubble bubble-right bubble-shoutbox bubble-right-shoutbox\">
 			<span class='date'><span class='icon-time'></span>&nbsp;" . $time."</span> " . "<span class=' icon-trash'></span>&nbsp;" . $del . "&nbsp;<span class='icon-user'></span>&nbsp; " . $username . "<br><br>" . format_comment($arr["text"], true, false, true, true, 600, true, false) . "
 			</td></tr>\n");
 		}
 		else {
 			print("<tr><td>
-			<img src=$avatar height='50px'  style='float: left;border-radius: 8px'/>
+			<img src=$avatar height='50px' width='50px' style='float: left;border-radius: 8px'/>
 			<div style='float: left;font-size: 15px' class=\"bubble bubble-left bubble-shoutbox bubble-right-shoutbox\">
 			<span class='date' style=''><span class='icon-time'></span>&nbsp;" . $time . "</span> " . "<span class=' icon-trash'></span>&nbsp;" . $del . "&nbsp;<span class=' icon-user'></span>&nbsp; " . $username . "<br><br>" . format_comment($arr["text"], true, false, true, true, 600, true, false) . "
 			</td></tr>\n");

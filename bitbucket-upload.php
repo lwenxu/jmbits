@@ -6,7 +6,7 @@ loggedinorreturn();
 parked();
 if ($enablebitbucket_main != 'yes')
 	permissiondenied();
-$maxfilesize = 256 * 1024;
+$maxfilesize = 800 * 1024;
 $imgtypes = array (null,'gif','jpg','png');
 $scaleh = 200; // set our height size desired
 $scalew = 150; // set our width size desired
@@ -66,17 +66,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 
 stdhead($lang_bitbucketupload['head_avatar_upload']);
 ?>
-<h1><?php echo $lang_bitbucketupload['text_avatar_upload'] ?></h1>
+<h1 style="text-align: center;"><?php echo $lang_bitbucketupload['text_avatar_upload'] ?></h1>
 <form method="post" action=bitbucket-upload.php enctype="multipart/form-data">
-<table border=1 cellspacing=0 cellpadding=5>
+<table class="table table-striped" border=0 cellspacing=0 cellpadding=5>
 <?php
 
 if(!is_writable("$bitbucket"))
-print("<tr><td align=left colspan=2>".$lang_bitbucketupload['text_upload_directory_unwritable']."</tr></td>");
-print("<tr><td align=left colspan=2>".$lang_bitbucketupload['text_disclaimer']."$scaleh".$lang_bitbucketupload['text_disclaimer_two']."$scalew".$lang_bitbucketupload['text_disclaimer_three'].number_format($maxfilesize).$lang_bitbucketupload['text_disclaimer_four']);
+print("<tr><td align=center colspan=2>".$lang_bitbucketupload['text_upload_directory_unwritable']."</tr></td>");
+print("<tr><td align=center colspan=2>".$lang_bitbucketupload['text_disclaimer']."$scaleh".$lang_bitbucketupload['text_disclaimer_two']."$scalew".$lang_bitbucketupload['text_disclaimer_three'].number_format($maxfilesize).$lang_bitbucketupload['text_disclaimer_four']);
 ?>
-<tr><td class=rowhead><?php echo $lang_bitbucketupload['row_file'] ?></td><td class="rowfollow"><input type="file" name="file" size="60"></td></tr>
-<tr><td colspan=2 align=left class="toolbox"><input class="checkbox" type=checkbox name=public value=yes><?php echo $lang_bitbucketupload['checkbox_avatar_shared']?> <input type="submit" value=<?php echo $lang_bitbucketupload['submit_upload'] ?>></td></tr>
+<tr><td class= align="left"><?php echo $lang_bitbucketupload['row_file'] ?></td><td class="rowfollow"><input type="file" name="file" size="60"></td></tr>
+<tr><td colspan=2 align=left class="toolbox"><input class="checkbox" type=checkbox name=public value=yes><?php echo $lang_bitbucketupload['checkbox_avatar_shared']?>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <input class="btn btn-success" style="margin-left: 20%" type="submit" value=<?php echo $lang_bitbucketupload['submit_upload'] ?>></td></tr>
 </table>
 </form>
 <?php

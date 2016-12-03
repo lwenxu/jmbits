@@ -226,6 +226,7 @@ eve_block_end();
 // ------------- start: shut box box ------------------//
 col_start(7);
 eve_block_start();
+
 if ($showshoutbox_main == "yes") {
 	panel_head_start();
 	?>
@@ -243,14 +244,19 @@ if ($showshoutbox_main == "yes") {
 	print("<form action='shoutbox.php' method='get' target='sbox' name='shbox'>\n");
 	print("<label for='shbox_text'>" . $lang_index['text_message'] . "</label>
 	<div class=\"vtop td-fat pd5\">
-	<textarea class=\"input fullwidth inputor\" name='shbox_text' id='shbox_text' rows=\"2\" placeholder=\"请输入聊天内容\" style=\"height: 4em; background-color: rgb(255, 255, 255);width:98%;margin-left:1%\"></textarea>
-	</div>
+	<textarea id=\"qrbody\" class=\"input fullwidth inputor\" name='shbox_text' id='shbox_text' rows=\"2\" placeholder=\"请输入聊天内容\" style=\"height: 4em; background-color: rgb(255, 255, 255);width:98%;margin-left:1%\"></textarea>
+	<link rel=\"stylesheet\" href=\"userAutoTips.css\" type=\"text/css\">
+    <script type=\"text/javascript\" src=\"userAutoTips.js\"></script>
+    <script type=\"text/javascript\">userAutoTips({id:'qrbody'});$(window).bind('scroll resize', function(e){userAutoTips({id:'qrbody'})})</script>
+    </div>
 	<input style='margin:7px' type='submit' id='hbsubmit' class=\"btn btn-success\" name='shout' value=\"" . $lang_index['sumbit_shout'] . "\" />");
 	if ($CURUSER['hidehb'] != 'yes' && $showhelpbox_main == 'yes')
 		print("<input type='submit' class='btn' name='toguest' value=\"" . $lang_index['sumbit_to_guest'] . "\" />");
 	print("<input type='reset' class=\"btn btn-danger\" value=\"" . $lang_index['submit_clear'] . "\" /> <input type='hidden' name='sent' value='yes' /><input type='hidden' name='type' value='shoutbox' /><br />\n");
 	print(smile_row("shbox", "shbox_text"));
 	print("</form></td></tr></table>");
+
+
 }
 
 // ------------- end: shut box ------------------//
