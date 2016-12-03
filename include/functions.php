@@ -153,15 +153,27 @@ function print_attachment($dlkey, $enableimage = true, $imageresizer = true)
 	{
 		if ($enableimage){
 			if ($row['thumb'] == 1){
-				$url = $httpdirectory_attachment."/".$row['location'].".thumb.jpg";
+				$url = $httpdirectory_attachment."/".$row['location'];
 			}
 			else{
 				$url = $httpdirectory_attachment."/".$row['location'];
 			}
-			if($imageresizer == true)
+//			if($imageresizer == true)
 				$onclick = " onclick=\"Previewurl('".$httpdirectory_attachment."/".$row['location']."')\"";
-			else $onclick = "";
-			$return = "<img id=\"attach".$id."\" alt=\"".htmlspecialchars($row['filename'])."\" src=\"".$url."\"". $onclick .  " onmouseover=\"domTT_activate(this, event, 'content', '".htmlspecialchars("<strong>".$lang_functions['text_size']."</strong>: ".mksize($row['filesize'])."<br />".gettime($row['added']))."', 'styleClass', 'attach', 'x', findPosition(this)[0], 'y', findPosition(this)[1]-58);\" />";
+//			else
+//            {
+//                $onclick = "";
+//            }
+			$imgsize=getimagesize($url);
+			$width=$imgsize[0];
+			$height=$imgsize[1];
+			if ($width>800 || $height>700){
+			    $width=$width/2;
+			    $height=$height/2;
+				$return = "<img height=$height width=$width  id=\"attach" . $id . "\" alt=\"" . htmlspecialchars($row['filename']) . "\" src=\"" . $url . "\"" . $onclick . " onmouseover=\"domTT_activate(this, event, 'content', '" . htmlspecialchars("<strong>" . $lang_functions['text_size'] . "</strong>: " . mksize($row['filesize']) . "<br />" . gettime($row['added'])) . "', 'styleClass', 'attach', 'x', findPosition(this)[0], 'y', findPosition(this)[1]-58);\" />";
+			}else{
+				$return = "<img id=\"attach".$id."\" alt=\"".htmlspecialchars($row['filename'])."\" src=\"".$url."\"". $onclick .  " onmouseover=\"domTT_activate(this, event, 'content', '".htmlspecialchars("<strong>".$lang_functions['text_size']."</strong>: ".mksize($row['filesize'])."<br />".gettime($row['added']))."', 'styleClass', 'attach', 'x', findPosition(this)[0], 'y', findPosition(this)[1]-58);\" />";
+			}
 		}
 		else $return = "";
 	}
