@@ -43,7 +43,7 @@ require "include/bittorrent.php"; dbconn(); loggedinorreturn(); if (!isset($_GET
 <!--</p>-->
 <?php
 // 将 www.yy.org 替换为你自己站点 地址
-header("Refresh: 5; url=v6player://$id&ty=1&ro=2&id=$id&ua=$u&url=127.0.0.1/nwupt");
+header("Refresh: 5; url=v6player://$id&ty=1&ro=2&id=$id&ua=$u&url=219.245.18.94/nwupt");
 ?>
 </body>
 </html>
