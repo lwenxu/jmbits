@@ -1134,7 +1134,7 @@ print("<tr>");
 
 </td>
 <td align="center" width="90%" style="border: 0px;">
-<?php print("<textarea style='margin-top: 10px;' class='bbcode form-control inputor' cols=\"100\" style=\"width:90%;\" name=\"" . $text . "\" id=\"" . $text . "\" rows=\"17\" onkeydown=\"ctrlenter(event,'compose','qr')\">" . $content . "</textarea>");?>
+<?php print("<textarea placeholder='请大家务必填写认真填写简介，并且至少上传一张图片作为封面，否则将使用默认封面，并且不会出现在推荐以及热门资源中。' style='margin-top: 10px;' class='bbcode form-control inputor' cols=\"100\" style=\"width:90%;\" name=\"" . $text . "\" id=\"" . $text . "\" rows=\"17\" onkeydown=\"ctrlenter(event,'compose','qr')\">" . $content . "</textarea>");?>
 <table cellspacing="1" cellpadding="3">
 <tr>
 <?php
@@ -2608,7 +2608,7 @@ if ($CURUSER){
 							</td>
 
 							<td class="bottom" ><span class="medium"><span
-										class="icon-time"></span> <?php echo $lang_functions['text_the_time_is_now'] ?><?php echo $datum[hours] . ":" . $datum[minutes] ?>
+										class="icon-time"></span> <?php echo $lang_functions['text_the_time_is_now'] ?><?php date_default_timezone_set('Asia/Shanghai'); echo date('Y-m-d-h:m'); ?>
 									<br/>
 
 									<?php
@@ -3351,7 +3351,7 @@ while ($row = mysql_fetch_assoc($res))
 
 	$nl = "<br />";
 	if (!$row["comments"]) {
-		print("<a href=\"comment.php?action=add&amp;pid=".$id."&amp;type=torrent\" title=\"".$lang_functions['title_add_comments']."\">" . $row["comments"] .  "</a>");
+//		print("<a href=\"comment.php?action=add&amp;pid=".$id."&amp;type=torrent\" title=\"".$lang_functions['title_add_comments']."\">" . $row["comments"] .  "</a>");
 	} else {
 		if ($enabletooltip_tweak == 'yes' && $CURUSER['showlastcom'] != 'no')
 		{
@@ -4512,7 +4512,7 @@ function valid_class_name($filename)
 function return_avatar_image($url)
 {
 	global $CURLANGDIR;
-	return "<img src=\"".$url."\" style='border-radius:5px;margin:4px' alt=\"avatar\" width=\"140px\" onload=\"check_avatar(this, '".$CURLANGDIR."');\" />";
+	return "<img src=\"".$url."\" style='border-radius:5px;margin:4px' alt=\"avatar\" width=\"140px\"  />";
 }
 
 

@@ -26,6 +26,7 @@ foreach(explode(":","descr:type:name") as $v) {
 if (!isset($_FILES["file"]))
 bark($lang_takeupload['std_missing_form_data']);
 
+
 $f = $_FILES["file"];
 $fname = unesc($f["name"]);
 if (empty($fname))

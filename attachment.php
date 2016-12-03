@@ -238,7 +238,7 @@ if ($Attach->enable_attachment())
 	print("<form enctype=\"multipart/form-data\" name=\"attachment\" method=\"post\" action=\"attachment.php\">");
 	print("<tr>");
 	print("<td class=\"embedded\" colspan=\"2\" align=left>");
-	print("<input style='float:left' class='btn btn-info' type=\"file\" name=\"file\"".($count_left ? "" : " disabled=\"disabled\"")." />&nbsp;&nbsp;&nbsp;");
+	print("<font color=\"red\">*</font><input style='float:left' class='btn btn-info' type=\"file\" name=\"file\"".($count_left ? "" : " disabled=\"disabled\"")." />&nbsp;&nbsp;&nbsp;");
 	print("<input type=\"checkbox\" name=\"altsize\" value=\"yes\"".($altsize == 'yes' ? " checked=\"checked\"" : "")." />".$lang_attachment['text_small_thumbnail']."&nbsp;");
 	print("<input class='btn btn-success' type=\"submit\" name=\"submit\" value=\"".$lang_attachment['submit_upload']."\"".($count_left ? "" : " disabled=\"disabled\"")." /> ");
 	if ($warning) {

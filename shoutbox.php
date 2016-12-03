@@ -2,7 +2,7 @@
 echo "
 <style>
 .bubble {
-    background-color: #2DCB70;
+    background-color: #ececec;
     border-radius: 5px;
     box-shadow: 0 0 6px #b2b2b2;
     display: table-cell;
@@ -24,7 +24,7 @@ echo "
 }
 
 .bubble::before {
-    background-color: #2DCB70;
+    background-color: #ececec;
     content: \"\00a0\";
     display: block;
     height: 16px;
@@ -233,23 +233,25 @@ else
 			$rand=0;
 		}
 		$rand++;
+        $res=mysql_query("SELECT avatar FROM users WHERE id=$arr[userid]");
+        $avatars=mysql_fetch_array($res);
 		if ($CURUSER['avatar']){
-			$avatar=$CURUSER['avatar'];
+			$avatar=$avatars[0];
 		}else{
 			$avatar="pic/default_avatar.png";
 		}
 		if ($rand%2==0) {
 			print("<tr><td>
 			<img src=$avatar height='50px' style='float: right;border-radius: 8px'/>
-			<div style='float: right' class=\"bubble bubble-right bubble-shoutbox bubble-right-shoutbox\">
-			<span class='date'><span class='icon-time'></span>&nbsp;" . $time."</span> " . "<span class=' icon-trash'></span>&nbsp;" . $del . "&nbsp;<span class='icon-user'></span>&nbsp; " . $username . "<br><hr>" . format_comment($arr["text"], true, false, true, true, 600, true, false) . "
+			<div style='float: right;font-size: 15px' class=\"bubble bubble-right bubble-shoutbox bubble-right-shoutbox\">
+			<span class='date'><span class='icon-time'></span>&nbsp;" . $time."</span> " . "<span class=' icon-trash'></span>&nbsp;" . $del . "&nbsp;<span class='icon-user'></span>&nbsp; " . $username . "<br><br>" . format_comment($arr["text"], true, false, true, true, 600, true, false) . "
 			</td></tr>\n");
 		}
 		else {
 			print("<tr><td>
 			<img src=$avatar height='50px'  style='float: left;border-radius: 8px'/>
-			<div style='float: left' class=\"bubble bubble-left bubble-shoutbox bubble-right-shoutbox\">
-			<span class='date'><span class='icon-time'></span>&nbsp;" . $time . "</span> " . "<span class=' icon-trash'></span>&nbsp;" . $del . "&nbsp;<span class=' icon-user'></span>&nbsp; " . $username . "<br><hr>" . format_comment($arr["text"], true, false, true, true, 600, true, false) . "
+			<div style='float: left;font-size: 15px' class=\"bubble bubble-left bubble-shoutbox bubble-right-shoutbox\">
+			<span class='date' style=''><span class='icon-time'></span>&nbsp;" . $time . "</span> " . "<span class=' icon-trash'></span>&nbsp;" . $del . "&nbsp;<span class=' icon-user'></span>&nbsp; " . $username . "<br><br>" . format_comment($arr["text"], true, false, true, true, 600, true, false) . "
 			</td></tr>\n");
 		}
 	}

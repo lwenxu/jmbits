@@ -103,64 +103,7 @@ a {
 
 
 
-// ------------- start: hot and classic movies ------------------//
-//
-//if ($showextinfo['imdb'] == 'yes' && ($showmovies['hot'] == "yes" || $showmovies['classic'] == "yes"))
-//{
-//	$type = array('hot', 'classic');
-//	foreach($type as $type_each)
-//	{
-//		if($showmovies[$type_each] == 'yes' && (!isset($CURUSER) || $CURUSER['show' . $type_each] == 'yes'))
-//		{
-//			$Cache->new_page($type_each.'_resources', 900, true);
-//			if (!$Cache->get_page())
-//			{
-//				$Cache->add_whole_row();
-//
-//				$imdbcfg = new imdb_config();
-//				$res = sql_query("SELECT * FROM torrents WHERE picktype = " . sqlesc($type_each) . " AND seeders > 0 AND url != '' ORDER BY id DESC LIMIT 30") or sqlerr(__FILE__, __LINE__);
-//				if (mysql_num_rows($res) > 0)
-//				{
-//					$movies_list = "";
-//					$count = 0;
-//					$allImdb = array();
-//					while($array = mysql_fetch_array($res))
-//					{
-//						$pro_torrent = get_torrent_promotion_append($array[sp_state],'word');
-//						if ($imdb_id = parse_imdb_id($array["url"]))
-//						{
-//							if (array_search($imdb_id, $allImdb) !== false) { //a torrent with the same IMDb url already exists
-//								continue;
-//							}
-//							$allImdb[]=$imdb_id;
-//							$photo_url = $imdbcfg->photodir . $imdb_id. $imdbcfg->imageext;
-//
-//							if (file_exists($photo_url))
-//								$thumbnail = "<img width=\"101\" height=\"140\" src=\"".$photo_url."\" border=\"0\" alt=\"poster\" />";
-//							else continue;
-//						}
-//						else continue;
-//						$thumbnail = "<a href=\"details.php?id=" . $array['id'] . "&amp;hit=1\" onmouseover=\"domTT_activate(this, event, 'content', '" . htmlspecialchars("<font class=\'big\'>" . (addslashes($array['name'] . $pro_torrent)) . "</font><br /><font class=\'medium\'>".(addslashes($array['small_descr'])) ."</font>"). "', 'trail', true, 'delay', 0,'lifetime',5000,'styleClass','niceTitle','maxWidth', 600);\">" . $thumbnail . "</a>";
-//						$movies_list .= $thumbnail;
-//						$count++;
-//						if ($count >= 9)
-//							break;
-//					}
-//?>
-<!--<h2>--><?php //echo $lang_index['text_' . $type_each . 'movies'] ?><!--</h2>-->
-<!--<table width="100%"  cellspacing="0" cellpadding="5"><tr><td class="text nowrap" align="center">-->
-<?php //echo $movies_list ?><!--</td></tr></table>-->
-<?php
-//				}
-//				$Cache->end_whole_row();
-//				$Cache->cache_page();
-//			}
-//			echo $Cache->next_row();
-//		}
-//	}
-//}
-//
-// ------------- end: hot and classic movies ------------------//
+
 
 //  first  block
 block_start();
@@ -447,47 +390,107 @@ if ($CURUSER && $showpolls_main == "yes") {
 eve_block_end();
 // ------------- end: polls ------------------//
 
-// ------------- start: forums post ------------------//
-eve_block_start();
-//if ($showlastxforumposts_main == "yes" && $CURUSER) {
-$res = sql_query("SELECT posts.id AS pid, posts.userid AS userpost, posts.added, topics.id AS tid, topics.subject, topics.forumid, topics.views, forums.name FROM posts, topics, forums WHERE posts.topicid = topics.id AND topics.forumid = forums.id AND minclassread <=" . sqlesc(get_user_class()) . " ORDER BY posts.id DESC LIMIT 5") or sqlerr(__FILE__, __LINE__);
-if (mysql_num_rows($res) != 0) {
-	panel_head_start();
-	print("<h3 class='panel-title'>" . $lang_index['text_last_five_posts'] . "</h3>");
-	panel_head_end();
-	print("
-<table  class='table table-striped'  width=\"100%\"  cellspacing=\"0\" cellpadding=\"5\">
-<tr>
-<td class=\"colhead\" align=\"left\">" . $lang_index['col_topic_title'] . "</td>
-<td class=\"colhead\" align=\"center\">" . $lang_index['col_view'] . "</td>
-<td class=\"colhead\" align=\"center\">" . $lang_index['col_author'] . "</td>
-<td class=\"colhead\" align=\"left\">" . $lang_index['col_posted_at'] . "</td>
-</tr>");
-	echo "
-			<style>
-				.links-blue{
-				    font-family: \"Helvetica Neue\", Helvetica, Arial, sans-serif;
-				    font-size: 14px;
-				    color: #337ab7;
-					}
-			</style>
-		";
-	while ($postsx = mysql_fetch_assoc($res)) {
 
-		print("
-<tr>
-<td>
-	[<a class='links-blue' href=\"forums.php ? action = viewforum & amp;forumid =  '. $postsx[forumid].\" >" . htmlspecialchars($postsx["name"]) . "</a>]
-	<a class='links-blue' href=\"forums.php?action=viewtopic&amp;topicid=" . $postsx["tid"] . "&amp;page=p" . $postsx["pid"] . "#pid" . $postsx["pid"] . "\">" . htmlspecialchars($postsx["subject"]) . "</a>
-</td>
-<td align=\"center\">" . $postsx["views"] . "</td><td align=\"center\">" . get_username($postsx["userpost"]) . "</td>
-<td>" . gettime($postsx["added"]) . "</td>
-</tr>");
+// ------------- start: hot and classic movies ------------------//
+eve_block_start();
+if ($showextinfo['imdb'] == 'yes' && ($showmovies['hot'] == "yes" || $showmovies['classic'] == "yes")) {
+	$type = array('hot', 'classic');
+	foreach ($type as $type_each) {
+		if ($showmovies[$type_each] == 'yes' && (!isset($CURUSER) || $CURUSER['show' . $type_each] == 'yes')) {
+			$Cache->new_page($type_each . '_resources', 900, true);
+			if (!$Cache->get_page()) {
+				$Cache->add_whole_row();
+
+				$imdbcfg = new imdb_config();
+				$res = sql_query("SELECT * FROM torrents WHERE picktype = " . sqlesc($type_each) . " AND seeders > 0 AND url != '' ORDER BY id DESC LIMIT 30") or sqlerr(__FILE__, __LINE__);
+				if (mysql_num_rows($res) > 0) {
+					$movies_list = "";
+					$count = 0;
+					$allImdb = array();
+					while ($array = mysql_fetch_array($res)) {
+						$pro_torrent = get_torrent_promotion_append($array[sp_state], 'word');
+						if ($imdb_id = parse_imdb_id($array["url"])) {
+							if (array_search($imdb_id, $allImdb) !== false) { //a torrent with the same IMDb url already exists
+								continue;
+							}
+							$allImdb[] = $imdb_id;
+							$photo_url = $imdbcfg->photodir . $imdb_id . $imdbcfg->imageext;
+
+							if (file_exists($photo_url))
+								$thumbnail = "<img width=\"101\" height=\"140\" src=\"" . $photo_url . "\" border=\"0\" alt=\"poster\" />";
+							else continue;
+						} else continue;
+						$thumbnail = "<a href=\"details.php?id=" . $array['id'] . "&amp;hit=1\" onmouseover=\"domTT_activate(this, event, 'content', '" . htmlspecialchars("<font class=\'big\'>" . (addslashes($array['name'] . $pro_torrent)) . "</font><br /><font class=\'medium\'>" . (addslashes($array['small_descr'])) . "</font>") . "', 'trail', true, 'delay', 0,'lifetime',5000,'styleClass','niceTitle','maxWidth', 600);\">" . $thumbnail . "</a>";
+						$movies_list .= $thumbnail;
+						$count++;
+						if ($count >= 9)
+							break;
+					}
+					?>
+                    <h2><?php echo $lang_index['text_' . $type_each . 'movies'] ?></h2>
+                    <table width="100%" cellspacing="0" cellpadding="5">
+                        <tr>
+                            <td class="text nowrap" align="center">
+								<?php echo $movies_list ?></td>
+                        </tr>
+                    </table>
+					<?php
+				}
+				$Cache->end_whole_row();
+				$Cache->cache_page();
+			}
+			echo $Cache->next_row();
+		}
 	}
-	print("</table>");
 }
+
+//if ($showlastxforumposts_main == "yes" && $CURUSER) {
+
 //}
 eve_block_end();
+// ------------- end: hot and classic movies ------------------//
+
+
+
+// ------------- start: forums post ------------------//
+
+
+//$res = sql_query("SELECT posts.id AS pid, posts.userid AS userpost, posts.added, topics.id AS tid, topics.subject, topics.forumid, topics.views, forums.name FROM posts, topics, forums WHERE posts.topicid = topics.id AND topics.forumid = forums.id AND minclassread <=" . sqlesc(get_user_class()) . " ORDER BY posts.id DESC LIMIT 5") or sqlerr(__FILE__, __LINE__);
+//if (mysql_num_rows($res) != 0) {
+//	panel_head_start();
+//	print("<h3 class='panel-title'>" . $lang_index['text_last_five_posts'] . "</h3>");
+//	panel_head_end();
+//	print("
+//<table  class='table table-striped'  width=\"100%\"  cellspacing=\"0\" cellpadding=\"5\">
+//<tr>
+//<td class=\"colhead\" align=\"left\">" . $lang_index['col_topic_title'] . "</td>
+//<td class=\"colhead\" align=\"center\">" . $lang_index['col_view'] . "</td>
+//<td class=\"colhead\" align=\"center\">" . $lang_index['col_author'] . "</td>
+//<td class=\"colhead\" align=\"left\">" . $lang_index['col_posted_at'] . "</td>
+//</tr>");
+//	echo "
+//			<style>
+//				.links-blue{
+//				    font-family: \"Helvetica Neue\", Helvetica, Arial, sans-serif;
+//				    font-size: 14px;
+//				    color: #337ab7;
+//					}
+//			</style>
+//		";
+//	while ($postsx = mysql_fetch_assoc($res)) {
+//
+//		print("
+//<tr>
+//<td>
+//	[<a class='links-blue' href=\"forums.php ? action = viewforum & amp;forumid =  '. $postsx[forumid].\" >" . htmlspecialchars($postsx["name"]) . "</a>]
+//	<a class='links-blue' href=\"forums.php?action=viewtopic&amp;topicid=" . $postsx["tid"] . "&amp;page=p" . $postsx["pid"] . "#pid" . $postsx["pid"] . "\">" . htmlspecialchars($postsx["subject"]) . "</a>
+//</td>
+//<td align=\"center\">" . $postsx["views"] . "</td><td align=\"center\">" . get_username($postsx["userpost"]) . "</td>
+//<td>" . gettime($postsx["added"]) . "</td>
+//</tr>");
+//	}
+//	print("</table>");
+//}
 // ------------- end: latest forum posts ------------------//
 
 

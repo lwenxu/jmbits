@@ -78,9 +78,9 @@ stdhead($lang_upload['head_upload']);
 <b>".$lang_upload['text_chinese_title']."</b>&nbsp;<input type=\"text\" style=\"width: 250px\" name=\"cnname\"><br /><font class=\"medium\">".$lang_upload['text_titles_note']."</font>", 1);
 				}
 				else
-					tr($lang_upload['row_torrent_name'], "<input type=\"text\" class=\"input tip-focus fullwidth\"  id=\"name\" name=\"name\" /><br />", 1);
+					tr($lang_upload['row_torrent_name'] . "<font color=\"red\">*</font>", "<input placeholder='可清除默认生成的标题，标题尽量明了，标题请不要超过13字，下面还有副标题可填写哦：） [必填]' type=\"text\" class=\"input tip-focus fullwidth\"  id=\"name\" name=\"name\" /><br />", 1);
 				if ($smalldescription_main == 'yes')
-				tr($lang_upload['row_small_description'], "<input type=\"text\" style=\"width: 650px;\" name=\"small_descr\" /><br /><font class=\"medium\">".$lang_upload['text_small_description_note']."</font>", 1);
+				tr($lang_upload['row_small_description'] . "<font color=\"red\">*</font>", "<input placeholder='这里请填写种子的关键信息，方便大家选种哦^_^[必填]' type=\"text\" style=\"width: 650px;\" name=\"small_descr\" /><br /><font class=\"medium\">".$lang_upload['text_small_description_note']."</font>", 1);
 				
 				get_external_tr();
 
