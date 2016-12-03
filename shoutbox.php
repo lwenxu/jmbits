@@ -235,7 +235,7 @@ else
 		$rand++;
         $res=mysql_query("SELECT avatar FROM users WHERE id=$arr[userid]");
         $avatars=mysql_fetch_array($res);
-		if ($CURUSER['avatar']){
+		if ($avatars[0]){
 			$avatar=$avatars[0];
 		}else{
 			$avatar="pic/default_avatar.png";
