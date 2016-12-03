@@ -112,7 +112,7 @@ if ($Attach->enable_attachment())
 							imagecopyresized($thumb, $orig, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
 							if ($thumbnailtype_attachment == 'createthumb'){
 								$hasthumb = true;
-								imagejpeg($thumb, $file_location.".".$ext.".thumb.jpg", $thumbquality_attachment);
+								imagejpeg($thumb, $file_location.".".$ext."", $thumbquality_attachment);
 							}
 							elseif ($thumbnailtype_attachment == 'resizebigimg'){
 								$ext = "jpg";
