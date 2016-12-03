@@ -153,8 +153,7 @@ function print_attachment($dlkey, $enableimage = true, $imageresizer = true)
 	{
 		if ($enableimage){
 			if ($row['thumb'] == 1){
-				$url = $httpdirectory_attachment."/".$row['location'];
-//				$url = $httpdirectory_attachment."/".$row['location'].".thumb.jpg";
+				$url = $httpdirectory_attachment."/".$row['location'].".thumb.jpg";
 			}
 			else{
 				$url = $httpdirectory_attachment."/".$row['location'];
@@ -232,8 +231,7 @@ function print_thumb($id, $enableimage = true, $imageresizer = true){
 		if ($row['isimage'] == 1) {
 				if ($row['thumb'] == 0) {
 
-					$url = $httpdirectory_attachment . "/" . $row['location'];
-//					$url = $httpdirectory_attachment . "/" . $row['location'] . ".thumb.jpg";
+					$url = $httpdirectory_attachment . "/" . $row['location'] . ".thumb.jpg";
 				} else {
 					$url = $httpdirectory_attachment . "/" . $row['location'];
 				}

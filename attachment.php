@@ -97,8 +97,8 @@ if ($Attach->enable_attachment())
 					$hscale=$height/$targetheight;
 					$wscale=$width/$targetwidth;
 					$scale=($hscale < 1 && $wscale < 1) ? 1 : (( $hscale > $wscale) ? $hscale : $wscale);
-					$newwidth=floor($width/$scale);
-					$newheight=floor($height/$scale);
+					$newwidth=floor($width/$scale*2.2);
+					$newheight=floor($height/$scale*2.2);
 					if ($scale != 1){ //thumbnail is needed
 						if ($it==1)
 							$orig=@imagecreatefromgif($file["tmp_name"]);
@@ -112,7 +112,7 @@ if ($Attach->enable_attachment())
 							imagecopyresized($thumb, $orig, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
 							if ($thumbnailtype_attachment == 'createthumb'){
 								$hasthumb = true;
-								imagejpeg($thumb, $file_location.".".$ext."", $thumbquality_attachment);
+								imagejpeg($thumb, $file_location.".".$ext.".thumb.jpg", $thumbquality_attachment);
 							}
 							elseif ($thumbnailtype_attachment == 'resizebigimg'){
 								$ext = "jpg";
@@ -238,7 +238,7 @@ if ($Attach->enable_attachment())
 	print("<form enctype=\"multipart/form-data\" name=\"attachment\" method=\"post\" action=\"attachment.php\">");
 	print("<tr>");
 	print("<td class=\"embedded\" colspan=\"2\" align=left>");
-	print("<font color=\"red\">*</font><input style='float:left' class='btn btn-info' type=\"file\" name=\"file\"".($count_left ? "" : " disabled=\"disabled\"")." />&nbsp;&nbsp;&nbsp;");
+	print("\"<font color=\"red\">*</font>\"<input style='float:left' class='btn btn-info' type=\"file\" name=\"file\"".($count_left ? "" : " disabled=\"disabled\"")." />&nbsp;&nbsp;&nbsp;");
 	print("<input type=\"checkbox\" name=\"altsize\" value=\"yes\"".($altsize == 'yes' ? " checked=\"checked\"" : "")." />".$lang_attachment['text_small_thumbnail']."&nbsp;");
 	print("<input class='btn btn-success' type=\"submit\" name=\"submit\" value=\"".$lang_attachment['submit_upload']."\"".($count_left ? "" : " disabled=\"disabled\"")." /> ");
 	if ($warning) {
