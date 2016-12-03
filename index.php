@@ -179,7 +179,12 @@ if ($showlastxtorrents_main == "yes") {
 <tr><td class=\"colhead\" >" . $lang_index['col_name'] . "</td><td class=\"colhead\" align=\"center\">" . $lang_index['col_seeder'] . "</td><td class=\"colhead\" align=\"center\">" . $lang_index['col_leecher'] . "</td></tr>");
 
 		while ($row = mysql_fetch_assoc($result)) {
-			print ("<tr><a href=\"details.php?id=" . $row['id'] . "&amp;hit=1\"><td><a class='sans' href=\"details.php?id=" . $row['id'] . "&amp;hit=1\">" . htmlspecialchars($row['name']) . "</td></a><td align=\"center\" class='sans'>" . $row['seeders'] . "</td><td align=\"center\" class='sans'>" . $row['leechers'] . "</td></tr>");
+		    if (strlen($row['name'])>30){
+		        $title=mb_substr($row['name'],0,20)."...";
+            }else{
+		        $title=$row['name'];
+            }
+			print ("<tr><a href=\"details.php?id=" . $row['id'] . "&amp;hit=1\"><td><a class='sans' href=\"details.php?id=" . $row['id'] . "&amp;hit=1\">" . htmlspecialchars($title) . "</td></a><td align=\"center\" class='sans'>" . $row['seeders'] . "</td><td align=\"center\" class='sans'>" . $row['leechers'] . "</td></tr>");
 		}
 		print ("</table>");
 	}
