@@ -17,8 +17,10 @@ $res = sql_query("SELECT torrents.cache_stamp,torrents.category, torrents.sp_sta
 
 //$res = sql_query("SELECT torrents.category,torrents.temp+torrents.mod_temp as final_temp,torrents.title_image,torrents.ygp,torrents.editlock,torrents.editlockid,torrents.cache_stamp, torrents.sp_state, torrents.url, torrents.dburl, torrents.small_descr, torrents.seeders, torrents.banned, torrents.leechers, torrents.info_hash, torrents.filename, nfo, LENGTH(torrents.nfo) AS nfosz, torrents.last_action, torrents.name, torrents.owner, torrents.save_as, torrents.descr, torrents.visible, torrents.size, torrents.added, torrents.views, torrents.hits, torrents.times_completed, torrents.id, torrents.type, torrents.numfiles, torrents.anonymous, categories.name AS cat_name, sources.name AS source_name, media.name AS medium_name, codecs.name AS codec_name, standards.name AS standard_name, processings.name AS processing_name, teams.name AS team_name, audiocds.name AS audiocd_name FROM torrents LEFT JOIN categories ON torrents.category = categories.id LEFT JOIN sources ON torrents.source = sources.id LEFT JOIN media ON torrents.medium = media.id LEFT JOIN codecs ON torrents.codec = codecs.id LEFT JOIN standards ON torrents.standard = standards.id LEFT JOIN processings ON torrents.processing = processings.id LEFT JOIN teams ON torrents.team = teams.id LEFT JOIN audiocds ON torrents.audiocd = audiocds.id WHERE torrents.id = $id LIMIT 1") or sqlerr();
 $row = mysql_fetch_array($res);
-if (get_user_class() >= UC_STAFFLEADER)
-{
+
+//注释掉内容是只限定指定的等级才能播放，这里让所有的人口可以看到
+//if (get_user_class() >= UC_STAFFLEADER)
+//{
 
 	if ($row['category'] == '401' || $row['category'] == '408') {
 		$v6button = "| " .
@@ -26,7 +28,7 @@ if (get_user_class() >= UC_STAFFLEADER)
 	} else {
 		$v6button = "";
 	}
-}
+//}
 if (get_user_class() >= $torrentmanage_class || $CURUSER["id"] == $row["owner"])
 $owned = 1;
 else $owned = 0;
@@ -414,7 +416,8 @@ else {
 					$sphighlight = get_torrent_bg_color($copy_row['sp_state']);
 					$sp_info = get_torrent_promotion_append($copy_row['sp_state']);
 
-					$s .= "<tr". $sphighlight."><td class=\"rowfollow nowrap\" valign=\"middle\" style='padding: 0px'>".return_category_image($copy_row["catid"], "torrents.php?allsec=1&amp;")."</td><td class=\"rowfollow\" align=\"left\"><a href=\"" . htmlspecialchars(get_protocol_prefix() . $BASEURL . "/details.php?id=" . $copy_row["id"]. "&hit=1")."\">" . $dispname ."</a>". $sp_info."</td>" .
+					$s .= "<tr". $sphighlight.">
+					<td class=\"rowfollow nowrap\" valign=\"middle\" style='padding: 5px'>".return_category_image($copy_row["catid"], "torrents.php?allsec=1&amp;")."</td><td class=\"rowfollow\" align=\"left\"><a href=\"" . htmlspecialchars(get_protocol_prefix() . $BASEURL . "/details.php?id=" . $copy_row["id"]. "&hit=1")."\">" . $dispname ."</a>". $sp_info."</td>" .
 					"<td class=\"rowfollow\" align=\"left\">" . rtrim(trim($other_source_info . $other_medium_info . $other_codec_info . $other_standard_info . $other_processing_info), ","). "</td>" .
 					"<td class=\"rowfollow\" align=\"center\">" . mksize($copy_row["size"]) . "</td>" .
 					"<td class=\"rowfollow nowrap\" align=\"center\">" . str_replace("&nbsp;", "<br />", gettime($copy_row["added"],false)). "</td>" .
@@ -449,6 +452,7 @@ else {
 		$bwrow = mysql_fetch_array($bwres);
 		if ($bwrow['upname'] && $bwrow['downname'])
 			tr($lang_details['row_uploader_bandwidth'], "<img class=\"speed_down\" src=\"pic/trans.gif\" alt=\"Downstream Rate\" /> ".$bwrow['downname']."&nbsp;&nbsp;&nbsp;&nbsp;<img class=\"speed_up\" src=\"pic/trans.gif\" alt=\"Upstream Rate\" /> ".$bwrow['upname']."&nbsp;&nbsp;&nbsp;&nbsp;".$bwrow['ispname'],1);
+
 		tr("<span id=\"seeders\"></span><span id=\"leechers\"></span>".$lang_details['row_peers']."<br /><span id=\"showpeer\"><a href=\"javascript: viewpeerlist(".$row['id'].");\" class=\"\">".$lang_details['text_see_full_list']."</a></span><span id=\"hidepeer\" style=\"display: none;\"><a href=\"javascript: hidepeerlist();\" class=\"\">".$lang_details['text_hide_list']."</a></span>", "<div id=\"peercount\">".$row['seeders'].$lang_details['text_seeders'].add_s($row['seeders'])." | ".$row['leechers'].$lang_details['text_leechers'].add_s($row['leechers'])."</div><div id=\"peerlist\"></div>" , 1);
 		if ($_GET['dllist'] == 1)
 		{

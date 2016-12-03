@@ -1,9 +1,5 @@
 <?php
 echo "
-<script>
-window.location.href='#shutboxfooter';
-</script>
-
 <style>
 .bubble {
     background-color: #2DCB70;

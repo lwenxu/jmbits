@@ -1,5 +1,5 @@
 .table-striped>tbody>tr:nth-child(2n+1)>td, .table-striped>tbody>tr:nth-child(2n+1)>th {
-    background-color: #f5f5f5;
+    background-color: #f0f0f0;
 }
 .table>tbody>tr>td:last-child {
     border-right: 1px solid #ddd;

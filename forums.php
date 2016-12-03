@@ -97,15 +97,18 @@ function get_topic_image($status= "read"){
 			break;
 			}
 		case "unread": {
-			return "<img class=\"unlockednew\" src=\"pic/trans.gif\" alt=\"unread\" title=\"".$lang_forums['title_unread']."\" />";
+			return "<div id='forums_ico'><sapn class='icon-bookmark forums_ico'></sapn></div>";
+//			return "<img class=\"unlockednew\" src=\"pic/trans.gif\" alt=\"unread\" title=\"".$lang_forums['title_unread']."\" />";
 			break;
 		}
 		case "locked": {
-			return "<img class=\"locked\" src=\"pic/trans.gif\" alt=\"locked\" title=\"".$lang_forums['title_locked']."\" />";
+			return "<div id='forums_ico'><sapn class='icon-bookmark forums_ico'></sapn></div>";
+//			return "<img class=\"locked\" src=\"pic/trans.gif\" alt=\"locked\" title=\"".$lang_forums['title_locked']."\" />";
 			break;
 		}
 		case "lockednew": {
-			return "<img class=\"lockednew\" src=\"pic/trans.gif\" alt=\"lockednew\" title=\"".$lang_forums['title_locked_new']."\" />";
+			return "<div id='forums_ico'><sapn class='icon-bookmark forums_ico'></sapn></div>";
+//			return "<img class=\"lockednew\" src=\"pic/trans.gif\" alt=\"lockednew\" title=\"".$lang_forums['title_locked_new']."\" />";
 			break;
 		}
 	}
@@ -1477,7 +1480,7 @@ foreach ($overforums as $a)
 	$forid = $a["id"];
 	$overforumname = $a["name"];
 
-	print("<tr><td align=\"left\" class=\"colhead\" width=\"50%\" style='font-size: 16px;text-align: center'><span class='icon-list-alt' ></span>&nbsp;&nbsp;".htmlspecialchars($overforumname)."</td><td align=\"center\" class=\"colhead\" width='10%'>".$lang_forums['col_topics']."</td>" .
+	print("<tr><td align=\"left\" class=\"colhead center\" width=\"50%\" style='font-size: 16px;text-align: center'><span class='icon-list-alt' ></span>&nbsp;&nbsp;".htmlspecialchars($overforumname)."</td><td align=\"center\" class=\"colhead\" width='10%'>".$lang_forums['col_topics']."</td>" .
 	"<td align=\"center\" class=\"colhead\" width='10%'>".$lang_forums['col_posts']."</td>" .
 	"<td align=\"left\" class=\"colhead\" width='10%'>".$lang_forums['col_last_post']."</td><td class=\"colhead\" align=\"left\" width='10%'>".$lang_forums['col_moderator']."</td></tr>\n");
 

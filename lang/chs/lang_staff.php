@@ -25,8 +25,8 @@ $lang_staff = array
 	'text_vip_note' => "VIP资格只授予对".$SITENAME."做出过特殊贡献的用户。如曾经的管理组成员。",
 	'text_reason' => "原因",
 	'text_apply_for_it' => "申请加入",
-	'text_forum_moderators' => "论坛版主",
-	'text_forum_moderators_note' => "论坛版主负责论坛的日常管理。",
+	'text_forum_moderators' => "事务版主",
+	'text_forum_moderators_note' => "事务版主负责论坛的日常管理。",
 	'text_forums' => "版块"
 );
 

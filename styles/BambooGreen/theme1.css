@@ -4,11 +4,12 @@ body {
     margin-bottom: 0px;
     color: #000000;
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-    background: url(bg.jpg) ;
+    /*background: url(bg.jpg) ;*/
     background-size: 100%;
     /*background-image: url("bg.jpg") ;*/
     /*background-position: center top;*/
     /*background-color: mediumaquamarine;*/
+    background-color: #0c203a!important;
 }
 
 #bannerdown{
@@ -349,7 +350,7 @@ font.gray {
 
 .attach a:link {
     color: #0099CC;
-    text-decoration: underline;
+    text-decoration: none;
 }
 
 .attach .size {
@@ -357,17 +358,19 @@ font.gray {
 }
 
 a:link {
-    color: #000000;
+    color: #337ab7;
     text-decoration: none
 }
 
 a:visited {
-    color: #000000;
+    color: #337ab7;
     text-decoration: none
 }
 
 a:hover {
-    color: #ff0000
+    color: #337ab7;
+    text-decoration: none
+
 }
 
 a.index {
@@ -1301,32 +1304,44 @@ td .text{
 .links-blue{
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 14px;
-    color: #337ab7;
+    /*color: #337ab7;*/
 }
 
 #gotop {
-    background: url("/styles/totop.png") no-repeat scroll 5px 5px rgba(0, 0, 0, 0.7);
-    border-radius: 3px;
-    bottom: 60px;
-    height: 50px;
+    /*!*background: no-repeat scroll 5px 5px rgba(0, 0, 0, 0.5);*!*/
+    /*border-radius: 8px!important;*/
+    /*bottom: 60px;*/
+    /*!*height: 50px;*!*/
+    /*position: fixed;*/
+    /*z-index: 99;*/
+    /*right: 0.2%;*/
+    /*font-size: 50px;*/
+    /*!*width: 50px;*!*/
+    /*color: #1e9765;*/
+    /*display: none;*/
     position: fixed;
-    right: 0;
-    width: 50px;
-
-}
-
-#gotop span {
+    line-height: 36px;
+    width: 36px;
+    bottom: 35px;
+    height: 36px;
+    cursor: pointer;
     display: none;
-    width: 25px;
-    color: #dddddd;
-    font-size: 20px;
-    text-align: center;
-    margin-top: 5px;
-    -moz-transition: background 1s;
-    -webkit-transition: background 1s;
-    -o-transition: background 1s;
-
+    font-size: 48px;
+    z-index: 10;
+    color: #1BA39C;
 }
+
+/*#gotop span {*/
+    /*display: none;*/
+    /*!*width: 25px;*!*/
+    /*color: #dddddd;*/
+    /*font-size: 20px;*/
+    /*text-align: center;*/
+    /*margin-top: 5px;*/
+    /*-moz-transition: background 1s;*/
+    /*-webkit-transition: background 1s;*/
+    /*-o-transition: background 1s;*/
+/*}*/
 
 #gotop span:hover {
     color: #cccccc;
@@ -1367,4 +1382,58 @@ td .text{
     font-family: \"Helvetica Neue\", Helvetica, Arial, sans-serif;
     font-size: 14px;
     line-height: 1.4;
+}
+body{
+    background-color: #23527c;
+}
+
+td.colhead {
+    white-space: nowrap;
+    font-weight: normal;
+    text-align: center;
+    background-image: -webkit-linear-gradient(top, #f5f5f5 0, #e8e8e8 100%);
+    background-image: -o-linear-gradient(top, #f5f5f5 0, #e8e8e8 100%);
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#f5f5f5), to(#e8e8e8));
+    background-image: linear-gradient(to bottom, #f5f5f5 0, #e8e8e8 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fff5f5f5', endColorstr='#ffe8e8e8', GradientType=0);
+    background-repeat: repeat-x;
+}
+
+.center {
+    text-align: center !important;
+}
+
+img {
+    vertical-align: middle;
+}
+
+img {
+    border: 0;
+}
+
+.category_image_outer {
+    display: table;
+    position: relative;
+    width: 52px;
+    height: 64px;
+    border: 1px solid #CCC;
+}
+
+.category_text {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 1px 5px 1px 1px;
+    font-size: 10px;
+    color: white;
+    background: #999;
+    border-radius: 0 0 12px 0;
+    box-shadow: 1px 1px 5px #888;
+    opacity: .85;
+}
+
+.category_image_middle {
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
 }

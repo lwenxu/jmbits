@@ -740,7 +740,7 @@ else
 	print("<tr><td class=\"colhead\" style=\"padding: 0px\"><a href=\"?category=" . $catid . "&amp;sort=cat&amp;type=".$cat_order_type."\">".$lang_offers['col_type']."</a></td>".
 "<td class=\"colhead\" width=\"100%\"><a href=\"?category=" . $catid . "&amp;sort=name&amp;type=".$name_order_type."\">".$lang_offers['col_title']."</a></td>".
 "<td colspan=\"3\" class=\"colhead\"><a href=\"?category=" . $catid . "&amp;sort=v_res&amp;type=".$v_res_order_type."\">".$lang_offers['col_vote_results']."</a></td>".
-"<td class=\"colhead\"><a href=\"?category=" . $catid . "&amp;sort=comments&amp;type=".$comments_order_type."\"><span class=\"icon-comments-alt icos-download\"  alt=\"comments\" title=\"".$lang_offers['title_comment']."\" ></span>".$lang_offers['col_comment']."</a></td>".
+"<td class=\"colhead\"></td>".
 "<td class=\"colhead\"><a href=\"?category=" . $catid . "&amp;sort=added&amp;type=".$added_order_type."\"><span class=\"icon-time icos-download\"  title=\"".$lang_offers['title_time_added']."\" ></span></a></td>");
 if ($offervotetimeout_main > 0 && $offeruptimeout_main > 0)
 	print("<td class=\"colhead\">".$lang_offers['col_timeout']."</td>");
@@ -753,39 +753,7 @@ print("<td class=\"colhead\">".$lang_offers['col_offered_by']."</td>".
 
 	$addedby = get_username($arr['userid']);
 	$comms = $arr['comments'];
-	if ($comms == 0)
-		$comment = "<a href=\"comment.php?action=add&amp;pid=".$arr[id]."&amp;type=offer\" title=\"".$lang_offers['title_add_comments']."\">0</a>";
-	else
-	{
-		if (!$lastcom = $Cache->get_value('offer_'.$arr[id].'_last_comment_content')){
-			$res2 = sql_query("SELECT user, added, text FROM comments WHERE offer = $arr[id] ORDER BY added DESC LIMIT 1");
-			$lastcom = mysql_fetch_array($res2);
-			$Cache->cache_value('offer_'.$arr[id].'_last_comment_content', $lastcom, 1855);
-		}
-		$timestamp = strtotime($lastcom["added"]);
-		$hasnewcom = ($lastcom['user'] != $CURUSER['id'] && $timestamp >= $last_offer);
-		if ($CURUSER['showlastcom'] != 'no')
-		{
-			if ($lastcom)
-			{
-				$title = "";
-				if ($CURUSER['timetype'] != 'timealive')
-					$lastcomtime = $lang_offers['text_at_time'].$lastcom['added'];
-				else
-					$lastcomtime = $lang_offers['text_blank'].gettime($lastcom["added"],true,false,true);
-					$counter = $i;
-					$lastcom_tooltip[$counter]['id'] = "lastcom_" . $counter;
-					$lastcom_tooltip[$counter]['content'] = ($hasnewcom ? "<b>(<font class='new'>".$lang_offers['text_new']."</font>)</b> " : "").$lang_offers['text_last_commented_by'].get_username($lastcom['user']) . $lastcomtime."<br />". format_comment(mb_substr($lastcom['text'],0,100,"UTF-8") . (mb_strlen($lastcom['text'],"UTF-8") > 100 ? " ......" : "" ),true,false,false,true,600,false,false);
-					$onmouseover = "onmouseover=\"domTT_activate(this, event, 'content', document.getElementById('" . $lastcom_tooltip[$counter]['id'] . "'), 'trail', false, 'delay', 500,'lifetime',3000,'fade','both','styleClass','niceTitle','fadeMax', 87,'maxWidth', 400);\"";
-			}
-		}
-		else
-		{
-			$title = " title=\"".($hasnewcom ? $lang_offers['title_has_new_comment'] : $lang_offers['title_no_new_comment'])."\"";
-			$onmouseover = "";
-		}
-		$comment = "<b><a".$title." href=\"?id=".$arr[id]."&amp;off_details=1#startcomments\" ".$onmouseover.">".($hasnewcom ? "<font class='new'>" : ""). $comms .($hasnewcom ? "</font>" : "")."</a></b>";
-	}
+
 
 	//==== if you want allow deny for offers use this next bit
 	if ($arr["allowed"] == 'allowed')
@@ -820,7 +788,26 @@ print("<td class=\"colhead\">".$lang_offers['col_offered_by']."</td>".
 	$max_length_of_offer_name = 70;
 	if($count_dispname > $max_length_of_offer_name)
 		$dispname=mb_substr($dispname, 0, $max_length_of_offer_name-2,"UTF-8") . "..";
-	print("<tr><td class=\"rowfollow\" style=\"padding: 0px\"><a href=\"?category=".$arr['cat_id']."\">".return_category_image($arr['cat_id'], "")."</a></td><td style='text-align: left'><a class='embedded-head' href=\"?id=".$arr[id]."&amp;off_details=1\" title=\"".htmlspecialchars($arr[name])."\">".htmlspecialchars($dispname)."</a>".($CURUSER['appendnew'] != 'no' && strtotime($arr["added"]) >= $last_offer ? "<b> (<font class='new'>".$lang_offers['text_new']."</font>)</b>" : "").$allowed."</td><td class=\"rowfollow nowrap\" style='padding: 5px' align=\"center\">".$v_res."</td><td class=\"rowfollow nowrap\" ".(get_user_class() < $againstoffer_class ? " colspan=\"2\" " : "")." style='padding: 5px'><a href=\"?id=".$arr[id]."&amp;vote=yeah\" title=\"".$lang_offers['title_i_want_this']."\"><font color=\"green\">".$lang_offers['text_yep']."</b></font></a></td>".(get_user_class() >= $againstoffer_class ? "<td class=\"rowfollow nowrap\" align=\"center\"><a href=\"?id=".$arr[id]."&amp;vote=against\" title=\"".$lang_offers['title_do_not_want_it']."\"><font color=\"red\"><b>".$lang_offers['text_nah']."</b></font></a></td>" : ""));
+		echo "<tr>";
+		echo "
+	<td class=\"rowfollow\">    
+	    <div class=\"category_image_outer\">
+	    ";
+		echo GetCategoriesPic($id);
+		echo "
+        <div class=\"category_image_middle\">
+        ";
+			echo "<a href=\"?category=" . $arr['cat_id'] . "\">" . return_category_image($arr['cat_id'], "") . "</a>";
+		echo "</div>
+    </div>
+</td>
+	";
+
+//<td class=\"rowfollow\" style=\"padding: 5px \">
+//<a href=\"?category=".$arr['cat_id']."\">".return_category_image($arr['cat_id'], "")."</a>
+//</td>
+print("
+<td style='text-align: left'><a class='embedded-head' href=\"?id=".$arr[id]."&amp;off_details=1\" title=\"".htmlspecialchars($arr[name])."\">".htmlspecialchars($dispname)."</a>".($CURUSER['appendnew'] != 'no' && strtotime($arr["added"]) >= $last_offer ? "<b> (<font class='new'>".$lang_offers['text_new']."</font>)</b>" : "").$allowed."</td><td class=\"rowfollow nowrap\" style='padding: 5px' align=\"center\">".$v_res."</td><td class=\"rowfollow nowrap\" ".(get_user_class() < $againstoffer_class ? " colspan=\"2\" " : "")." style='padding: 5px'><a href=\"?id=".$arr[id]."&amp;vote=yeah\" title=\"".$lang_offers['title_i_want_this']."\"><font color=\"green\">".$lang_offers['text_yep']."</b></font></a></td>".(get_user_class() >= $againstoffer_class ? "<td class=\"rowfollow nowrap\" align=\"center\"><a href=\"?id=".$arr[id]."&amp;vote=against\" title=\"".$lang_offers['title_do_not_want_it']."\"><font color=\"red\"><b>".$lang_offers['text_nah']."</b></font></a></td>" : ""));
 
 	print("<td class=\"rowfollow\">".$comment."</td><td class=\"rowfollow nowrap\">" . $addtime. "</td>");
 	if ($offervotetimeout_main > 0 && $offeruptimeout_main > 0){

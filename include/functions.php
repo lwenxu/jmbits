@@ -240,8 +240,8 @@ function print_thumb($id, $enableimage = true, $imageresizer = true){
                 } else {
                     $onclick = "";
 				}
-				echo $return = "<img style='height:66px;width:54px;border: 1px solid #888;
-box-shadow: 1px 1px 2px #888;' id=\"attach" . $id . "\" alt=\"" . htmlspecialchars($row['filename']) . "\" src=\"" . $url . "\"" . $onclick . " onmouseover=\"domTT_activate(this, event, 'content', '" . htmlspecialchars("<strong>" . $lang_functions['text_size'] . "</strong>: " . mksize($row['filesize']) . "<br />" . gettime($row['added'])) . "', 'styleClass', 'attach', 'x', findPosition(this)[0], 'y', findPosition(this)[1]-58);\" />";
+				echo $return = "<img style='height:62px;width:50px;border: 1px dash #888;padding:1px
+' id=\"attach" . $id . "\" alt=\"" . htmlspecialchars($row['filename']) . "\" src=\"" . $url . "\"" . $onclick . " onmouseover=\"domTT_activate(this, event, 'content', '" . htmlspecialchars("<strong>" . $lang_functions['text_size'] . "</strong>: " . mksize($row['filesize']) . "<br />" . gettime($row['added'])) . "', 'styleClass', 'attach', 'x', findPosition(this)[0], 'y', findPosition(this)[1]-58);\" />";
 			} else {
 		        echo $return=return_category_image($attachment[1]);
 			}
@@ -249,6 +249,47 @@ box-shadow: 1px 1px 2px #888;' id=\"attach" . $id . "\" alt=\"" . htmlspecialcha
 		}
 		return $return;
 
+}
+
+function GetCategoriesPic($id){
+    $restor=sql_query("SELECT category FROM torrents WHERE id=$id");
+    $cateid=mysql_fetch_row($restor);
+    $rescate=sql_query("SELECT id,name FROM categories");
+    while($cate=mysql_fetch_row($rescate)){
+        $catearr[]=$cate;
+    }
+    foreach ($catearr as $row){
+        if ($row[0]==$cateid[0]){
+            $str=$row[1];
+        }
+    }
+    switch ($cateid[0]){
+        case '401':
+	        echo "<div class=\"category_text\" style=\"background-color:purple;\">$str</div>";
+            break;
+        case '402':
+	        echo "<div class=\"category_text\" style=\"background-color:orchid;\">$str</div>";
+            break;
+        case '403':
+	        echo "<div class=\"category_text\" style=\"background-color:yellow;\">$str</div>";
+            break;
+        case '404':
+	        echo "<div class=\"category_text\" style=\"background-color:maroon;\">$str</div>";
+            break;
+        case '405':
+	        echo "<div class=\"category_text\" style=\"background-color:green;\">$str</div>";
+            break;
+        case '406':
+	        echo "<div class=\"category_text\" style=\"background-color:cyan;\">$str</div>";
+            break;
+        case '407':
+	        echo "<div class=\"category_text\" style=\"background-color:navajowhite;\">$str</div>";
+            break;
+        case '408':
+	        echo "<div class=\"category_text\" style=\"background-color:royalblue;\">$str</div>";
+            break;
+
+    }
 }
 function addTempCode($value) {
 	global $tempCode, $tempCodeCount;
@@ -2008,15 +2049,15 @@ function getsize_int($amount, $unit = "G")
 function mksize_compact($bytes)
 {
 	if ($bytes < 1000 * 1024)
-	return number_format($bytes / 1024, 2) . "<br />KB";
+	return number_format($bytes / 1024, 2) . "K";
 	elseif ($bytes < 1000 * 1048576)
-	return number_format($bytes / 1048576, 2) . "<br />MB";
+	return number_format($bytes / 1048576, 2) . "M";
 	elseif ($bytes < 1000 * 1073741824)
-	return number_format($bytes / 1073741824, 2) . "<br />GB";
+	return number_format($bytes / 1073741824, 2) . "G";
 	elseif ($bytes < 1000 * 1099511627776)
-	return number_format($bytes / 1099511627776, 3) . "<br />TB";
+	return number_format($bytes / 1099511627776, 3) . "T";
 	else
-	return number_format($bytes / 1125899906842624, 3) . "<br />PB";
+	return number_format($bytes / 1125899906842624, 3) . "P";
 }
 
 function mksize_loose($bytes)
@@ -2422,64 +2463,48 @@ if ($CURUSER){
 <script type="text/javascript" src="styles/js/js.js"></script>
 </head>
 <body class="container-fluid">
-<table class="head" cellspacing="0" cellpadding="0" align="center">
-	<tr>
-		<td class="clear">
-<?php
-if ($logo_main == "")
-{
-?>
-	<!--	// add goto top  by lwenxu-->
-	<script type="text/javascript" src="jquery-1.7.1.min.js"></script>
-	<script type="text/javascript">
-		$(function () {
-			$(window).scroll(function () {
-				var scrollt = document.documentElement.scrollTop + document.body.scrollTop;
-				if (scrollt > 10) {
-					$("#gotop").fadeIn(500);
-				} else {
-					$("#gotop").stop().fadeOut(500);
-				}
-			});
-			$("#gotop").click(function () {
-				$("html,body").animate({scrollTop: "0px"}, 200);
-				return false;
-			});
-		});
-	</script>
-	<div id="srco">
-		<a id="gotop" href="#" title="<?php echo $lang_functions['title_top']; ?>"><span>↑</span></a>
-	</div>
-<!--	logo-->
-			<div class="logo""><?php echo htmlspecialchars($SITENAME)?></div>
-			<div class="slogan"><?php echo htmlspecialchars($SLOGAN)?></div>
-<?php
-}
-else
-{
-?>
-			<div class="logo_img"><img src="<?php echo $logo_main?>" alt="<?php echo htmlspecialchars($SITENAME)?>" title="<?php echo htmlspecialchars($SITENAME)?> - <?php echo htmlspecialchars($SLOGAN)?>" /></div>
-<?php
-}
-?>
-		</td>
-		<td class="clear nowrap"  valign="middle">
-<?php if ($Advertisement->enable_ad()){
-		$headerad=$Advertisement->get_ad('header');
-		if ($headerad){
-			echo "<span id=\"ad_header\">".$headerad[0]."</span>";
-		}
-}
-if ($enabledonation == 'yes'){?>
-<!--			<a href="donate.php"><img width="100px"  src="--><?php //echo get_forum_pic_folder()?><!--/donate.jpg" alt="Make a donation" style="margin-left: 5px; margin-top: 50px;border-radius: 5px" /></a>-->
-<?php
-}
-?>
-		</td>
-	</tr>
-</table>
-
-<div>
+<!-- // add goto top  by lwenxu-->
+<div id="gotop" class="icon-circle-arrow-up m-icon-big"></div>
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
+   <script type="text/javascript">
+       $(window).scroll(function () {
+           var sc = $(window).scrollTop();
+           var rwidth = $(window).width();
+           if (sc > 400) {
+               $("#gotop").css("display", "block");
+               $("#gotop").css("left", (rwidth - 100) + "px")
+           } else {
+               $("#gotop").css("display", "none");
+           }
+       })
+       $("#gotop").click(function () {
+           var sc = $(window).scrollTop();
+           $('body,html').animate({scrollTop: 0}, 500);
+       })
+       //      $(function () {
+//         $(window).scroll(function () {
+//            var scrollt = document.documentElement.scrollTop + document.body.scrollTop;
+//            if (scrollt > 10) {
+//               $("#gotop").fadeIn(500);
+//            } else {
+//               $("#gotop").stop().fadeOut(500);
+//            }
+//         });
+//         $("#gotop").click(function () {
+//            $("html,body").animate({scrollTop: "0px"}, 5000);
+//            return false;
+//         });
+//      });
+   </script>
+<!--<span id="srco">-->
+<!--    <a class="icon-circle-arrow-up" id="gotop" href="#" title="--><?php ////echo $lang_functions['title_top'];
+//		?><!--"><span></span></a>-->
+<!--</span>-->
+<div class="container" id="main_content">
+    <div class="banner">
+        <img src="<?php echo $logo_main ?>" style="width: 1303px;max-height: 300px;">
+    </div>
+</div>
 	<td id="nav_block" class="text" align="center">
 		<?php if (!$CURUSER) { ?>
 			<!--	<ul class="nav nav-pills" style="margin-left: 45%">-->
@@ -2643,6 +2668,9 @@ if ($enabledonation == 'yes'){?>
 			print("</td></tr></table></p><br />\n");
 		}
 }
+?>
+</body></html>
+<?php
 }
 
 
@@ -3107,7 +3135,7 @@ function torrenttable($res, $variant = "torrent") {
 		else $wait = 0;
 	}
 ?>
-<table class="table table-striped" cellspacing="0" cellpadding="5" width="100%">
+<table class="table table-striped" cellspacing="0" cellpadding="5" width="100%" style="table-layout: fixed;">
 <tr>
 <?php
 $count_get = 0;
@@ -3137,8 +3165,8 @@ for ($i=1; $i<=9; $i++){
 	else $link[$i] = ($i == 1 ? "asc" : "desc");
 }
 ?>
-<td class="embedded-head" style="padding: 7px;"><?php echo $lang_functions['col_type'] ?></td>
-<td class="" style="text-align: center"><a class="embedded-head"  href="?<?php echo $oldlink?>sort=1&amp;type=<?php echo $link[1]?>"><?php echo $lang_functions['col_name'] ?></a></td>
+<td class="colhead" style="padding: 7px;" width="5.5%"><?php echo $lang_functions['col_type'] ?></td>
+<td class="colhead" style="text-align: center" width="60%"><a class="colhead"  href="?<?php echo $oldlink?>sort=1&amp;type=<?php echo $link[1]?>"><?php echo $lang_functions['col_name'] ?></a></td>
 <?php
 
 if ($wait)
@@ -3146,15 +3174,15 @@ if ($wait)
 	print("<td align=\"center\">".$lang_functions['col_wait']."</td>\n");
 }
 if ($CURUSER['showcomnum'] != 'no') { ?>
-<td class="colhead" align="center"><a href="?<?php echo $oldlink?>sort=3&amp;type=<?php echo $link[3]?>"><span class=" icon-comments-alt icos-download"  alt="comments" title="<?php echo $lang_functions['title_number_of_comments'] ?>" ></span></a></td>
+<td class="colhead" align="center"></td>
 <?php } ?>
 
-<td class="colhead" align="center"><a href="?<?php echo $oldlink?>sort=4&amp;type=<?php echo $link[4]?>"><span class=" icon-time icos-download" alt="time" title="<?php echo ($CURUSER['timetype'] != 'timealive' ? $lang_functions['title_time_added'] : $lang_functions['title_time_alive'])?>" ></span></a></td>
-<td class="colhead" align="center"><a href="?<?php echo $oldlink?>sort=5&amp;type=<?php echo $link[5]?>"><span class="icon-hdd icos-download" alt="size" title="<?php echo $lang_functions['title_size'] ?>" /></a></td>
+<td class="colhead" align="center" width="6%"><a href="?<?php echo $oldlink?>sort=4&amp;type=<?php echo $link[4]?>"><span class=" icon-time icos-download" alt="time" title="<?php echo ($CURUSER['timetype'] != 'timealive' ? $lang_functions['title_time_added'] : $lang_functions['title_time_alive'])?>" ></span></a></td>
+<td class="colhead" align="center" width="6%"><a href="?<?php echo $oldlink?>sort=5&amp;type=<?php echo $link[5]?>"><span class="icon-hdd icos-download" alt="size" title="<?php echo $lang_functions['title_size'] ?>" /></a></td>
 <td class="colhead" align="center"><a href="?<?php echo $oldlink?>sort=7&amp;type=<?php echo $link[7]?>"><span class="icon-tasks icos-download" alt="seeders" title="<?php echo $lang_functions['title_number_of_seeders'] ?>" ></span></a></td>
 <td class="colhead" align="center"><a href="?<?php echo $oldlink?>sort=8&amp;type=<?php echo $link[8]?>"><span class="icon-cloud-download icos-download" alt="leechers" title="<?php echo $lang_functions['title_number_of_leechers'] ?>" ></span></a></td>
 <td class="colhead" align="center"><a href="?<?php echo $oldlink?>sort=6&amp;type=<?php echo $link[6]?>"><span class="icon-check  icos-download" alt="snatched" title="<?php echo $lang_functions['title_number_of_snatched']?>" ></span></a></td>
-<td class="embedded-head"><a href="?<?php echo $oldlink?>sort=9&amp;type=<?php echo $link[9]?>"><?php echo $lang_functions['col_uploader']?></a></td>
+<td class="colhead"><a href="?<?php echo $oldlink?>sort=9&amp;type=<?php echo $link[9]?>"><?php echo $lang_functions['col_uploader']?></a></td>
 <?php
 if (get_user_class() >= $torrentmanage_class) { ?>
 	<td class="colhead" align="center"><?php echo $lang_functions['col_action'] ?></td>
@@ -3175,17 +3203,35 @@ while ($row = mysql_fetch_assoc($res))
 	$sphighlight = get_torrent_bg_color($row['sp_state']);
 	print("<tr" . $sphighlight . ">\n");
 
-	print("<td class=\"rowfollow nowrap\" valign=\"middle\" style='padding: 5px'>");
-	if (isset($row["category"])) {
+	echo "
+	<td class=\"rowfollow\">    
+	    <div class=\"category_image_outer\">
+	    ";
+	echo GetCategoriesPic($id);
+    echo"
+        <div class=\"category_image_middle\">
+        ";
+		if (isset($row["category"])) {
 	    print_thumb($id);
-//		print(return_category_image($row["category"], "?"));
-//		if ($has_secondicon){
-//			print(get_second_icon($row, "pic/".$catimgurl."additional/"));
-//		}
-	}
-	else
-		print("-");
-	print("</td>\n");
+	    }
+	    else
+		    print("");
+    echo "</div>
+    </div>
+</td>
+	";
+
+//	print("<td class=\"rowfollow nowrap\" valign=\"middle\" style='padding: 5px'>");
+//	if (isset($row["category"])) {
+//	    print_thumb($id);
+////		print(return_category_image($row["category"], "?"));
+////		if ($has_secondicon){
+////			print(get_second_icon($row, "pic/".$catimgurl."additional/"));
+////		}
+//	}
+//	else
+//		print("-");
+//	print("</td>\n");
 
 	//torrent name
 	$dispname = trim($row["name"]);
@@ -3338,48 +3384,48 @@ while ($row = mysql_fetch_assoc($res))
 
 	$time = $row["added"];
 	$time = gettime($time,false,true);
-	print("<td class=\"rowfollow nowrap\">". $time. "</td>");
+	print("<td  class=\"\"  style='text-align: center'>". $time. "</td>");
 
 	//size
-	print("<td class=\"rowfollow\">" . mksize_compact($row["size"])."</td>");
+	print("<td class=\"\" style='text-align: center'>" . mksize_compact($row["size"])."</td>");
 
 	if ($row["seeders"]) {
 			$ratio = ($row["leechers"] ? ($row["seeders"] / $row["leechers"]) : 1);
 			$ratiocolor = get_slr_color($ratio);
-			print("<td class=\"rowfollow\" align=\"center\"><a href=\"details.php?id=".$id."&amp;hit=1&amp;dllist=1#seeders\">".($ratiocolor ? "<font color=\"" .
+			print("<td style='text-align: center' class=\"rowfollow\" align=\"center\"><a href=\"details.php?id=".$id."&amp;hit=1&amp;dllist=1#seeders\">".($ratiocolor ? "<font color=\"" .
 			$ratiocolor . "\">" . number_format($row["seeders"]) . "</font>" : number_format($row["seeders"]))."</a></td>\n");
 	}
 	else
-		print("<td class=\"rowfollow\"><span class=\"" . linkcolor($row["seeders"]) . "\">" . number_format($row["seeders"]) . "</span></td>\n");
+		print("<td style='text-align: center' class=\"rowfollow\"><span class=\"" . linkcolor($row["seeders"]) . "\">" . number_format($row["seeders"]) . "</span></td>\n");
 
 	if ($row["leechers"]) {
-		print("<td class=\"rowfollow\"><a href=\"details.php?id=".$id."&amp;hit=1&amp;dllist=1#leechers\">" .
+		print("<td style='text-align: center' class=\"rowfollow\"><a href=\"details.php?id=".$id."&amp;hit=1&amp;dllist=1#leechers\">" .
 		number_format($row["leechers"]) . "</a></td>\n");
 	}
 	else
-		print("<td class=\"rowfollow\">0</td>\n");
+		print("<td style='text-align: center' class=\"rowfollow\">0</td>\n");
 
 	if ($row["times_completed"] >=1)
-	print("<td class=\"rowfollow\"><a href=\"viewsnatches.php?id=".$row[id]."\">" . number_format($row["times_completed"]) . "</a></td>\n");
+	print("<td style='text-align: center' class=\"rowfollow\"><a href=\"viewsnatches.php?id=".$row[id]."\">" . number_format($row["times_completed"]) . "</a></td>\n");
 	else
-	print("<td class=\"rowfollow\">" . number_format($row["times_completed"]) . "</td>\n");
+	print("<td style='text-align: center' class=\"rowfollow\">" . number_format($row["times_completed"]) . "</td>\n");
 
 		if ($row["anonymous"] == "yes" && get_user_class() >= $torrentmanage_class)
 		{
-			print("<td class=\"rowfollow\" align=\"center\"><i>".$lang_functions['text_anonymous']."</i><br />".(isset($row["owner"]) ? "(" . get_username($row["owner"]) .")" : "<i>".$lang_functions['text_orphaned']."</i>") . "</td>\n");
+			print("<td style='text-align: center' class=\"rowfollow\" align=\"center\"><i>".$lang_functions['text_anonymous']."</i><br />".(isset($row["owner"]) ? "(" . get_username($row["owner"]) .")" : "<i>".$lang_functions['text_orphaned']."</i>") . "</td>\n");
 		}
 		elseif ($row["anonymous"] == "yes")
 		{
-			print("<td class=\"rowfollow\"><i>".$lang_functions['text_anonymous']."</i></td>\n");
+			print("<td style='text-align: center' class=\"rowfollow\"><i>".$lang_functions['text_anonymous']."</i></td>\n");
 		}
 		else
 		{
-			print("<td class=\"rowfollow\">" . (isset($row["owner"]) ? get_username($row["owner"]) : "<i>".$lang_functions['text_orphaned']."</i>") . "</td>\n");
+			print("<td style='text-align: center' class=\"rowfollow\">" . (isset($row["owner"]) ? get_username($row["owner"]) : "<i>".$lang_functions['text_orphaned']."</i>") . "</td>\n");
 		}
 
 	if (get_user_class() >= $torrentmanage_class)
 	{
-		print("<td class=\"rowfollow\"><a href=\"".htmlspecialchars("fastdelete.php?id=".$row[id])."\"><span class=\"icon-ban-circle\"  alt=\"D\" title=\"".$lang_functions['text_delete']."\" ></span></a></a>");
+		print("<td style='text-align: center' class=\"rowfollow\"><a href=\"".htmlspecialchars("fastdelete.php?id=".$row[id])."\"><span class=\"icon-ban-circle\"  alt=\"D\" title=\"".$lang_functions['text_delete']."\" ></span></a></a>");
 		print("<br /><a href=\"edit.php?returnto=" . rawurlencode($_SERVER["REQUEST_URI"]) . "&amp;id=" . $row["id"] . "\"><span class=\"icon-pencil\" alt=\"E\" title=\"".$lang_functions['text_edit']."\" ></span></a></td>\n");
 	}
 	print("</tr>\n");
@@ -3804,7 +3850,7 @@ function gettime($time, $withago = true, $twoline = false, $forceago = false, $o
 	if ($CURUSER['timetype'] != 'timealive' && !$forceago){
 		$newtime = $time;
 		if ($twoline){
-		$newtime = str_replace(" ", "<br />", $newtime);
+		$newtime = str_replace(" ", "", $newtime);
 		}
 	}
 	else{
@@ -3815,7 +3861,7 @@ function gettime($time, $withago = true, $twoline = false, $forceago = false, $o
 		{
 			$newtime = get_elapsed_time($timestamp,$oneunit).($withago ? $lang_functions['text_ago'] : "");
 			if($twoline){
-				$newtime = str_replace("&nbsp;", "<br />", $newtime);
+				$newtime = str_replace("&nbsp;", "", $newtime);
 			}
 			elseif($oneunit){
 				if ($length = strpos($newtime, "&nbsp;"))
@@ -4480,8 +4526,7 @@ function return_category_image($categoryid, $link="")
 	} else {
 		$categoryrow = get_category_row($categoryid);
 		$catimgurl = get_cat_folder($categoryid);
-		$catImg[$categoryid] = $catimg = "<img".($categoryrow['class_name'] ? " class=\"".$categoryrow['class_name']."\"" : "")."  src='$categoryrow[image]' style='width: 52px;
-height: 66px;border:1px solid #888;box-shadow: 1px 1px 2px #888;border-radius:2px' alt=\"" . $categoryrow["name"] . "\" title=\"" .$categoryrow["name"]. "\"  />";
+		$catImg[$categoryid] = $catimg = "<img".($categoryrow['class_name'] ? " class=\"".$categoryrow['class_name']."\"" : "")."  src='$categoryrow[image]' style='width: 50px;height:62px; border:1px dash #888;' alt=\"" . $categoryrow["name"] . "\" title=\"" .$categoryrow["name"]. "\"  />";
 	}
 	if ($link) {
 		$catimg = "<a href=\"".$link."cat=" . $categoryid . "\">".$catimg."</a>";

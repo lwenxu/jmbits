@@ -141,7 +141,7 @@ while ($arr = mysql_fetch_assoc($res))
 		if ($ppl != "")
 			$ppl .= "<tr height=15><td class=embedded-add align=center colspan=5 align=right>&nbsp;</td></tr>";
 		$ppl .= "<tr height=15><td class=embedded-add align=center colspan=5 align=right>" . get_user_class_name($arr["class"],false,true,true) . "</td></tr>";
-		$ppl .= "<tr>" . 
+		$ppl .= "<tr>" .
 		"<td class=embedded-add align=center><b>" . $lang_staff['text_username'] . "</b></td>".
 		"<td class=embedded-add align=center align=center><b>" . $lang_staff['text_country'] . "</b></td>".
 		"<td class=embedded-add align=center align=center><b>" . $lang_staff['text_online_or_offline'] . "</b></td>".

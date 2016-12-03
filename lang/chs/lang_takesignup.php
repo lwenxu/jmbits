@@ -27,7 +27,7 @@ $lang_takesignup = array
 	'std_to_finish_signup' => "来完成注册，谢谢！",
 	'msg_subject' => "欢迎来到",
 	'msg_congratulations' => "祝贺你，",
-	'msg_you_are_a_member' => "，\n\n你已成为".$SITENAME."的一员，\n我们真诚地欢迎你的加入！\n\n请务必先阅读[url=rules.php][b]规则[/b][/url]，提问前请自行参考[url=faq.php][b]常见问题[/b][/url],有空也请到[url=forums.php][b]论坛[/b][/url]看看。 \n\n祝你愉快。\n".$SITENAME."管理组",
+	'msg_you_are_a_member' => "，\n\n你已成为".$SITENAME."的一员，\n我们真诚地欢迎你的加入！\n\n请务必先阅读[url=rules.php][b]规则[/b][/url]，提问前请自行参考[url=faq.php][b]常见问题[/b][/url],有空也请到[url=forums.php][b]事务[/b][/url]看看。 \n\n祝你愉快。\n".$SITENAME."管理组",
 	'mail_this_link' => "这个链接",
 	'mail_here' => "这里",
 	'mail_title' => " 网站用户注册验证",

@@ -182,9 +182,14 @@ if (($user["privacy"] != "strong") OR (get_user_class() >= $prfmanage_class) || 
 	}
 	tr_small($lang_userdetails['row_join_date'], $joindate, 1);
 	tr_small($lang_userdetails['row_last_seen'], $lastseen, 1);
-if ($where_tweak == "yes") {
-	tr_small($lang_userdetails['row_last_seen_location'], $user[page], 1);
-}
+
+
+	//删除了位置信息，不知道在哪插入的address表？？？？？
+//if ($where_tweak == "yes") {
+    //add by lwenxu get data from addr table
+//	tr_small($lang_userdetails['row_last_seen_location'], $user[page], 1);
+//	 get_ip_location('111.114.113.178');
+//}
 if (get_user_class() >= $userprofile_class OR $user["privacy"] == "low") {
 	tr_small($lang_userdetails['row_email'], "<a href=\"mailto:".$user[email]."\">".$user[email]."</a>", 1);
 }
@@ -257,7 +262,7 @@ tr_small($lang_userdetails['row_avatar'], return_avatar_image(htmlspecialchars(t
 $uclass = get_user_class_image($user["class"]);
 tr_small($lang_userdetails['row_class'], "<img alt=\"".get_user_class_name($user["class"],false,false,true)."\" title=\"".get_user_class_name($user["class"],false,false,true)."\" src=\"".$uclass."\" /> ".($user[title]!=="" ? "&nbsp;".htmlspecialchars(trim($user["title"]))."" :  ""), 1);
 
-tr_small($lang_userdetails['row_torrent_comment'], ($torrentcomments && ($user["id"] == $CURUSER["id"] || get_user_class() >= $viewhistory_class) ? "<a href=\"userhistory.php?action=viewcomments&amp;id=".$id."\" title=\"".$lang_userdetails['link_view_comments']."\">".$torrentcomments."</a>" : $torrentcomments), 1);
+//tr_small($lang_userdetails['row_torrent_comment'], ($torrentcomments && ($user["id"] == $CURUSER["id"] || get_user_class() >= $viewhistory_class) ? "<a href=\"userhistory.php?action=viewcomments&amp;id=".$id."\" title=\"".$lang_userdetails['link_view_comments']."\">".$torrentcomments."</a>" : $torrentcomments), 1);
 
 tr_small($lang_userdetails['row_forum_posts'], ($forumposts && ($user["id"] == $CURUSER["id"] || get_user_class() >= $viewhistory_class) ? "<a href=\"userhistory.php?action=viewposts&amp;id=".$id."\" title=\"".$lang_userdetails['link_view_posts']."\">".$forumposts."</a>" : $forumposts), 1);
 

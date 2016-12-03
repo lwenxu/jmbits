@@ -281,11 +281,17 @@ eve_block_start();
 if ($showshoutbox_main == "yes") {
 	panel_head_start();
 	?>
+    <script>
+        //var x=document.getElementById("frame1").contentDocument;//Use this or following
+        var x = document.getElementById("shutbox").contentWindow.document
+        //alert(document.getElementById("frame1").contentWindow.document==document.getElementById("frame1").contentDocument)
+        x.body.scrollTop = x.body.offsetHeight;
+    </script>
 	<h3 class="panel-title"><sapn class="icon-comments"></sapn><?php echo $lang_index['text_shoutbox'] ?></h3>
 	<?php
 	panel_head_end();
 	print("<table style='width: 100%;height: 805px;'><tr><td class=\"text\" style='width: 100px'>\n");
-	print("<iframe src='shoutbox.php?type=shoutbox' width='100%' height='520' frameborder='0' name='sbox' marginwidth='0' marginheight='0'></iframe><br /><br />\n");
+	print("<iframe id='shutbox' src='shoutbox.php?type=shoutbox' width='100%' height='520' frameborder='0' name='sbox' marginwidth='0' marginheight='0'></iframe><br /><br />\n");
 	print("<form action='shoutbox.php' method='get' target='sbox' name='shbox'>\n");
 	print("<label for='shbox_text'>" . $lang_index['text_message'] . "</label>
 	<div class=\"vtop td-fat pd5\">
