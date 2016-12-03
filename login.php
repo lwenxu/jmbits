@@ -50,7 +50,7 @@ if (!empty($_GET["returnto"])) {
 
 	<div class="logo">
 		<a href="index.html">
-			<img src="./styles/BambooGreen/logo-big.png" alt=""> </a>
+			<img src="./styles/BambooGreen/logo-big.png" alt="" height="90px"> </a>
 	</div>
 	<div class="content">
 	<!-- BEGIN LOGIN FORM -->

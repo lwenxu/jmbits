@@ -183,10 +183,10 @@ $BONUS=array(	'donortimes' => '2',
 	'prolinkpoint' => '1',
 	'prolinktime' => '600',
 );
-$CODE=array(	'mainversion' => 'NexusPHP',
-	'subversion' => 'Standard v1.5 Beta 4',
-	'releasedate' => '2010-09-19',
-	'website' => '<a href="http://www.nexusphp.com">http://www.nexusphp.com</a>',
+$CODE=array(	'mainversion' => 'nwupt',
+	'subversion' => 'Standard v1.0',
+	'releasedate' => '2016-12-3',
+	'website' => '',
 );
 $MAIN=array(	'site_online' => 'yes',
 	'max_torrent_size' => '1048576',
@@ -258,7 +258,7 @@ $MAIN=array(	'site_online' => 'yes',
 	'invite_timeout' => '7',
 	'seeding_leeching_time_calc_start' => '',
 	'startsubid' => NULL,
-	'logo' => './styles/BambooGreen/banner.jpg',
+	'logo' => './styles/BambooGreen/banner1.jpg',
 );
 $SECURITY=array(	'securelogin' => 'no',
 	'securetracker' => 'no',

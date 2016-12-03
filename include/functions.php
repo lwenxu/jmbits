@@ -2384,26 +2384,29 @@ function stdhead($title = "", $msgalert = true, $script = "", $place = "")
 	}
 	header("Content-Type: text/html; charset=utf-8; Cache-control:private");
 	//header("Pragma: No-cache");
-	if ($title == "")
-	$title = $SITENAME;
-	else
-	$title = $SITENAME." :: " . htmlspecialchars($title);
-	if ($titlekeywords_tweak)
-		$title .= " ".htmlspecialchars($titlekeywords_tweak);
-	$title .= $showversion;
-	if ($SITE_ONLINE == "no") {
-		if (get_user_class() < UC_ADMINISTRATOR) {
-			die($lang_functions['std_site_down_for_maintenance']);
-		}
-		else
-		{
-			$offlinemsg = true;
-		}
-	}
+//	if ($title == "")
+//	$title = $SITENAME;
+//	else
+//	$title = $SITENAME." :: " . htmlspecialchars($title);
+//	if ($titlekeywords_tweak)
+//		$title .= " ".htmlspecialchars($titlekeywords_tweak);
+//	$title .= $showversion;
+//	if ($SITE_ONLINE == "no") {
+//		if (get_user_class() < UC_ADMINISTRATOR) {
+//			die($lang_functions['std_site_down_for_maintenance']);
+//		}
+//		else
+//		{
+//			$offlinemsg = true;
+//		}
+//	}
+    $title= $SITENAME."::".htmlspecialchars($title);
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+<meta content="Author by:徐鹏飞">
+<meta content="Powered by:西北大学网络中心光团队">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <?php
 if ($metakeywords_tweak){

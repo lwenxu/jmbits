@@ -6,10 +6,10 @@ body {
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
     /*background: url(bg.jpg) ;*/
     background-size: 100%;
-    /*background-image: url("bg.jpg") ;*/
+    background-image: url("background.jpg") ;
     /*background-position: center top;*/
     /*background-color: mediumaquamarine;*/
-    background-color: #0c203a!important;
+    /*background-color: #0c203a!important;*/
 }
 
 #bannerdown{
