@@ -144,11 +144,11 @@ $subject = $lang_messages['text_no_subject'];
 
 if ($row['unread'] == 'yes')
 {
-echo("<tr>\n<td class=rowfollow align=center><span style=\"font-size: 30px;color: #3CB371\" class=\" icon-envelope-alt\"  alt=\"Unread\" title=".$lang_messages['title_unread']." /></span></td>\n");
+echo("<tr>\n<td class=rowfollow align=center><span style=\"font-size: 30px;color: #3CB371\" class=\"icon-envelope \"  alt=\"Unread\" title=".$lang_messages['title_unread']." /></span></td>\n");
 }
 else
 {
-echo("<tr>\n<td class=rowfollow align=center><span style=\"font-size: 30px;color: #3CB371\" class=\" icon-envelope\"  alt=\"Read\" title=".$lang_messages['title_read']." ></span></td>\n");
+echo("<tr>\n<td class=rowfollow align=center><span style=\"font-size: 30px;color: #3CB371\" class=\"icon-envelope-alt\"  alt=\"Read\" title=".$lang_messages['title_read']." ></span></td>\n");
 }
 echo("<td class=rowfollow align=left><a href=\"messages.php?action=viewmessage&id=" . $row['id'] . "\">" .
 $subject . "</a></td>\n");
