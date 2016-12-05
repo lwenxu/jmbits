@@ -377,7 +377,7 @@ function format_comment($text, $strip_html = true, $xssclean = false, $newtab = 
 	$s = str_replace($originalBbTagArray, $replaceXhtmlTagArray, $s);
 
 	$originalBbTagArray = array("/\[font=([^\[\(&\\;]+?)\]/is", "/\[color=([#0-9a-z]{1,15})\]/is", "/\[color=([a-z]+)\]/is", "/\[size=([1-7])\]/is");
-	$replaceXhtmlTagArray = array("<font face=\"\\1\">", "<span style=\"color: \\1;\">", "<span style=\"color: \\1;\">", "<font size=\"\\1\">");
+	$replaceXhtmlTagArray = array("<font face=\"\\1\">", "<span>", "<span>", "<font size=\"\\1\">");
 	$s = preg_replace($originalBbTagArray, $replaceXhtmlTagArray, $s);
 
 	if ($enableattach_attachment == 'yes' && $imagenum != 1){
@@ -1954,7 +1954,7 @@ function userlogin() {
 			die;
 		}
 	}
-
+    session_start();
 	if (empty($_COOKIE["c_secure_pass"]) || empty($_COOKIE["c_secure_uid"]) || empty($_COOKIE["c_secure_login"]))
 		return;
 	if ($_COOKIE["c_secure_login"] == base64("yeah"))

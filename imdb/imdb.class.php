@@ -1213,7 +1213,7 @@ $responseBody = $response->getBody();
        if ($header = $be->getResponseHeader("Location")){
         if (strpos($header,$this->imdbsite."/find?")) {
           return $this->results($header);
-          break(4);
+//          break(4);
         }
         #--- @moonface variant (not tested)
         # $idpos = strpos($header, "/Title?") + 7;
@@ -1254,4 +1254,3 @@ $responseBody = $response->getBody();
   }
 } // end class imdbsearch
 
-?>

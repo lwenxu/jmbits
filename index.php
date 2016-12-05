@@ -231,9 +231,7 @@ if ($showshoutbox_main == "yes") {
 	panel_head_start();
 	?>
     <script>
-        //var x=document.getElementById("frame1").contentDocument;//Use this or following
         var x = document.getElementById("shutbox").contentWindow.document
-        //alert(document.getElementById("frame1").contentWindow.document==document.getElementById("frame1").contentDocument)
         x.body.scrollTop = x.body.offsetHeight;
     </script>
 	<h3 class="panel-title"><sapn class="icon-comments"></sapn><?php echo $lang_index['text_shoutbox'] ?></h3>
@@ -403,6 +401,7 @@ eve_block_end();
 
 
 // ------------- start: hot and classic movies ------------------//
+// 使用了一个电影的类库，世界上最大的电影数据库  imdb
 eve_block_start();
 if ($showextinfo['imdb'] == 'yes' && ($showmovies['hot'] == "yes" || $showmovies['classic'] == "yes")) {
 	$type = array('hot', 'classic');
@@ -454,9 +453,7 @@ if ($showextinfo['imdb'] == 'yes' && ($showmovies['hot'] == "yes" || $showmovies
 		}
 	}
 }
-
 //if ($showlastxforumposts_main == "yes" && $CURUSER) {
-
 //}
 eve_block_end();
 // ------------- end: hot and classic movies ------------------//

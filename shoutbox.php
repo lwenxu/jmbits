@@ -123,6 +123,7 @@ if (isset($_GET['del']))
 	}
 }
 $where=$_GET["type"];
+//自动刷新时间
 $refresh = ($CURUSER['sbrefresh'] ? $CURUSER['sbrefresh'] : 120)
 ?>
 <html><head>

@@ -2,8 +2,7 @@
 require "include/bittorrent.php";
 dbconn();
 require_once(get_langfile_path());
-//Send some headers to keep the user's browser from caching the response.
-header("Expires: Mon, 26 Jul 1997 05:00:00 GMT" ); 
+header("Expires: Mon, 26 Jul 1997 05:00:00 GMT" );
 header("Last-Modified: " . gmdate( "D, d M Y H:i:s" ) . "GMT" ); 
 header("Cache-Control: no-cache, must-revalidate" ); 
 header("Pragma: no-cache" );

@@ -1,8 +1,8 @@
 <?php
 define('IN_TRACKER', true);
 define("PROJECTNAME","NwuPT");
-define("NEXUSPHPURL","http://www.nexusphp.com");
-define("NEXUSWIKIURL","http://www.nexusphp.com/wiki");
+define("NEXUSPHPURL","");
+define("NEXUSWIKIURL","");
 //define("VERSION","Powered by <a href=\"aboutnexus.php\">".PROJECTNAME."</a>");
 define("VERSION","Powered by <a href='index.php'>".PROJECTNAME."</a>");
 define("THISTRACKER","General");

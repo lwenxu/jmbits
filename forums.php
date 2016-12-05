@@ -3,6 +3,7 @@ require "include/bittorrent.php";
 dbconn();
 require_once(get_langfile_path());
 loggedinorreturn();
+//看账户是否已经被停用parked函数
 parked();
 
 if ($enableextforum == 'yes') //check whether internal forum is disabled
