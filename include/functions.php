@@ -1541,7 +1541,7 @@ function safe_email($email) {
 }
 
 function check_email ($email) {
-	if(preg_match('/^[A-Za-z0-9][A-Za-z0-9_.+\-]*@[A-Za-z0-9][A-Za-z0-9_+\-]*(\.[A-Za-z0-9][A-Za-z0-9_+\-]*)+$/', $email))
+	if(preg_match('/^[A-Za-z0-9][A-Za-z0-9_.+\-]*@nwu.edu.cn/', $email)|| preg_match('/^[A-Za-z0-9][A-Za-z0-9_.+\-]*@stumail.nwu.edu.cn/', $email))
 	return true;
 	else
 	return false;
@@ -2450,6 +2450,7 @@ $cssupdatedate=($cssupdatedate ? "?".htmlspecialchars($cssupdatedate) : "");
 <link rel="stylesheet" href="<?php echo $css_uri."theme1.css".$cssupdatedate?>" type="text/css" />
 <link rel="stylesheet" href="styles/curtain_imageresizer.css<?php echo $cssupdatedate?>" type="text/css" />
 <script src="./styles/js/jquery-3.1.1.min.js"></script>
+<!--<link rel="stylesheet" type="text/css" href="./styles/BambooGreen/zzsc.css">-->
 <link rel="stylesheet" href="./styles/bootstrap/css/bootstrap.min.css">
 <script src="./styles/bootstrap/js/bootstrap.min.js"></script>
 <link href="./styles/awesome/css/font-awesome.min.css" rel="stylesheet">

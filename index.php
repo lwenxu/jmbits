@@ -128,19 +128,62 @@ if (!$Cache->get_page()){
 			$Cache->add_row();
 			$Cache->add_part();
 			if ($news_flag < 1) {
-				print("<h3><a href=\"javascript: klappe_news('a".$array['id']."')\"><span class='icon-tags' style='color:#2DCB70'></span>&nbsp;"."". $array['title'] . "(".date("Y.m.d",strtotime($array['added'])).")</a></h3>");
-				print("<div class='kas' id=\"ka".$array['id']."\" style=\"display: block;\"> ".format_comment($array["body"],0)." </div>");
+				echo "
+				<div class=\"panel panel-default\">
+						<div class=\"panel-heading\" role=\"tab\" id=\"headingOne\">
+							<h3 class=\"panel-title\">
+								<a role=\"button\" data-toggle=\"collapse\" data-parent=\"#accordion\" href=\"#collapseOne\" aria-expanded=\"true\" aria-controls=\"collapseOne\">
+									<span class='icon-tags' style='color:#2DCB70'></span>&nbsp;" . "" . $array['title'] . "(" . date("Y.m.d", strtotime($array['added'])) . ")
+								</a>
+							</h3>
+						</div>
+						<div id=\"collapseOne\" class=\"panel-collapse collapse in\" role=\"tabpanel\" aria-labelledby=\"headingOne\">
+							<div class=\"panel-body\">
+							<p>";
+                    echo format_comment($array["body"],0);
+                    echo "
+                        <br><br>
+                            <span class='icon-edit' style='color:#2DCB70'></span> <a class=\"faqlink\" href=\"news.php?action=edit&amp;newsid=" . $array['id'] . "\">" . $lang_index['text_e'] . "</a>
+                            <span class='icon-trash' style='color: tomato'></span> <a class=\"faqlink\" href=\"news.php?action=delete&amp;newsid=" . $array['id'] . "\">" . $lang_index['text_d'] . "</a>
+                                </p>
+							</div>
+						</div>
+					</div>
+				";
+//				print("<h3><a href=\"javascript: klappe_news('a".$array['id']."')\"><span class='icon-tags' style='color:#2DCB70'></span>&nbsp;"."". $array['title'] . "(".date("Y.m.d",strtotime($array['added'])).")</a></h3>");
+//				print("<div class='kas' id=\"ka".$array['id']."\" style=\"display: block;\"> ".format_comment($array["body"],0)." </div>");
 				$news_flag = $news_flag + 1;
 			}
 			else
 			{
-				print("<h3><a href=\"javascript: klappe_news('a".$array['id']."')\"><br /><span class='icon-tags' style='color:#2DCB70'></span>&nbsp;"."". $array['title'] . "(".date("Y.m.d",strtotime($array['added'])).")</a></h3>");
-				print("<div class='alttext' id=\"ka".$array['id']."\" style=\"display: none;\"> ".format_comment($array["body"],0)." </div> ");
+
+				echo "
+				<div class=\"panel panel-default\">
+						<div class=\"panel-heading\" role=\"tab\" id=\"headingTwo\">
+							<h3 class=\"panel-title\">
+								<a class=\"collapsed\" role=\"button\" data-toggle=\"collapse\" data-parent=\"#accordion\" href=\"#collapseTwo\" aria-expanded=\"false\" aria-controls=\"collapseTwo\">
+									<span class='icon-tags' style='color:#2DCB70'></span>&nbsp;" . "" . $array['title'] . "(" . date("Y.m.d", strtotime($array['added'])) . ")
+								</a>
+							</h3>
+						</div>
+						<div id=\"collapseTwo\" class=\"panel-collapse collapse\" role=\"tabpanel\" aria-labelledby=\"headingTwo\">
+							<div class=\"panel-body\"><p>";
+				echo format_comment($array["body"], 0);
+							echo "
+                            <br><br>
+                            <span class='icon-edit' style='color:#2DCB70'></span> <a class=\"faqlink\" href=\"news.php?action=edit&amp;newsid=" . $array['id'] . "\">" . $lang_index['text_e'] . "</a>
+                            <span class='icon-trash' style='color: tomato'></span> <a class=\"faqlink\" href=\"news.php?action=delete&amp;newsid=" . $array['id'] . "\">" . $lang_index['text_d'] . "</a>
+                            </p></div>
+						</div>
+					</div>
+				";
+//				print("<h3><a href=\"javascript: klappe_news('a".$array['id']."')\"><br /><span class='icon-tags' style='color:#2DCB70'></span>&nbsp;"."". $array['title'] . "(".date("Y.m.d",strtotime($array['added'])).")</a></h3>");
+//				print("<div class='alttext' id=\"ka".$array['id']."\" style=\"display: none;\"> ".format_comment($array["body"],0)." </div> ");
 			}
 			$Cache->end_part();
 			$Cache->add_part();
-			print("  &nbsp;<span class='icon-edit' style='color:#2DCB70'></span> <a class=\"faqlink\" href=\"news.php?action=edit&amp;newsid=" . $array['id'] . "\">".$lang_index['text_e']."</a>");
-			print("  &nbsp;<span class='icon-trash' style='color: tomato'></span> <a class=\"faqlink\" href=\"news.php?action=delete&amp;newsid=" . $array['id'] . "\">".$lang_index['text_d']."</a>");
+//			print("  &nbsp;<span class='icon-edit' style='color:#2DCB70'></span> <a class=\"faqlink\" href=\"news.php?action=edit&amp;newsid=" . $array['id'] . "\">".$lang_index['text_e']."</a>");
+//			print("  &nbsp;<span class='icon-trash' style='color: tomato'></span> <a class=\"faqlink\" href=\"news.php?action=delete&amp;newsid=" . $array['id'] . "\">".$lang_index['text_d']."</a>");
 			$Cache->end_part();
 			$Cache->end_row();
 		}

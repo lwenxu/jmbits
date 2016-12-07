@@ -68,7 +68,7 @@ print("<input type=hidden name=type value='invite'><input type=hidden name=invit
 <p>
 	<div class="logo">
 		<a href="index.html">
-			<img src="./styles/BambooGreen/logo-big.png" alt=""> </a>
+			<img src="./styles/BambooGreen/logo-big.png" alt="" height="90px"> </a>
 	</div>
 	<div class="content">
 		<form class="register-form" method="post" action="takesignup.php" novalidate="novalidate" style="display: block;">
@@ -94,7 +94,7 @@ print("<input type=hidden name=type value='invite'><input type=hidden name=invit
 			<div class="form-group">
 				<!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
 				<label class="control-label visible-ie8 visible-ie9">Email</label>
-				<input class="form-control placeholder-no-fix" type="text" placeholder="Email" name="email"></div>
+				<input class="form-control placeholder-no-fix" type="text" placeholder="Email  目前只支持西大邮箱注册" name="email"></div>
 
 			<div class="form-group">
 				<label class="control-label visible-ie8 visible-ie9">Country</label>

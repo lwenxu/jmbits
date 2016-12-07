@@ -41,7 +41,7 @@ $lang_usercp = array
 	'select_choose_avatar' => "选择头像",
 	'select_nothing' => "默认头像",
 	'text_avatar_note' => "最大宽度为150像素（必要的时候会被缩放）。",
-	'text_bitbucket_note' => "如果你需要上传头像，请使用<a class=faqlink href=bitbucket-upload.php>上传器</a>。",
+	'text_bitbucket_note' => "如果你需要上传头像，请使用<a href=bitbucket-upload.php class='btn btn-success' style='color: white'>上传器</a>。",
 	'row_info' => "个人说明",
 	'text_info_note' => "显示在你的个人信息页面。允许使用<a class=faqlink href=tags.php target=_new>BBCode代码</a>。",
 	'head_tracker_settings' => " - 网站设定",
