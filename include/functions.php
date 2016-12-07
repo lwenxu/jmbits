@@ -2420,6 +2420,7 @@ function stdhead($title = "", $msgalert = true, $script = "", $place = "")
 <meta content="Author by:徐鹏飞">
 <meta content="Powered by:西北大学网络中心光团队">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <?php
 if ($metakeywords_tweak){
 ?>
