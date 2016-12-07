@@ -161,12 +161,12 @@ if (!$Cache->get_page()){
 				<div class=\"panel panel-default\">
 						<div class=\"panel-heading\" role=\"tab\" id=\"headingTwo\">
 							<h3 class=\"panel-title\">
-								<a class=\"collapsed\" role=\"button\" data-toggle=\"collapse\" data-parent=\"#accordion\" href=\"#collapseTwo\" aria-expanded=\"false\" aria-controls=\"collapseTwo\">
+								<a class=\"collapsed\" role=\"button\" data-toggle=\"collapse\" data-parent=\"#accordion\" href=\"#collapseTwo$array[id]\" aria-expanded=\"false\" aria-controls=\"collapseTwo\">
 									<span class='icon-tags' style='color:#2DCB70'></span>&nbsp;" . "" . $array['title'] . "(" . date("Y.m.d", strtotime($array['added'])) . ")
 								</a>
 							</h3>
 						</div>
-						<div id=\"collapseTwo\" class=\"panel-collapse collapse\" role=\"tabpanel\" aria-labelledby=\"headingTwo\">
+						<div id=\"collapseTwo$array[id]\" class=\"panel-collapse collapse\" role=\"tabpanel\" aria-labelledby=\"headingTwo\">
 							<div class=\"panel-body\"><p>";
 				echo format_comment($array["body"], 0);
 							echo "
