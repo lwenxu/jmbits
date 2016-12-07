@@ -176,11 +176,11 @@ $usern = htmlspecialchars($wantusername);
 $title = $SITENAME.$lang_takesignup['mail_title'];
 $body = <<<EOD
 {$lang_takesignup['mail_one']}$usern{$lang_takesignup['mail_two']}($email){$lang_takesignup['mail_three']}$ip{$lang_takesignup['mail_four']}
-<a href="http://$BASEURL/confirm.php?id=$id&secret=$psecret'">点击这里</a>
+<a href="http://$BASEURL/confirm.php?id=$id&secret=$psecret">点击这里</a>
 {$lang_takesignup['mail_this_link']} </a></b><br />
 http://$BASEURL/confirm.php?id=$id&secret=$psecret
 {$lang_takesignup['mail_four_1']}
-<b><a href="http://$BASEURL/confirm_resend.php')">{$lang_takesignup['mail_here']}</a></b><br />
+<b><a href="http://$BASEURL/confirm_resend.php">{$lang_takesignup['mail_here']}</a></b><br />
 http://$BASEURL/confirm_resend.php
 <br />
 {$lang_takesignup['mail_five']}
