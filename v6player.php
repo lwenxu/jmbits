@@ -21,7 +21,7 @@ require "include/bittorrent.php"; dbconn(); loggedinorreturn(); if (!isset($_GET
     <div class="note note-success" style="width: 60%;margin-left: 20%">
         <h2 class="block">下载安装播放器</h2>
         <h4>没有安装v6player比播放器?前往
-            <a href="http://219.245.18.94/nwupt/assets/v6player.rar">这里</a>下载最新安装包
+            <a href="http://219.245.18.94/assets/v6player.rar">这里</a>下载最新安装包
         </h4>
     </div>
 
@@ -42,7 +42,7 @@ require "include/bittorrent.php"; dbconn(); loggedinorreturn(); if (!isset($_GET
 <!--</p>-->
 <?php
 // 将 www.yy.org 替换为你自己站点 地址
-header("Refresh: 5; url=v6player://$id&ty=1&ro=2&id=$id&ua=$u&url=219.245.18.94/nwupt");
+header("Refresh: 5; url=v6player://$id&ty=1&ro=2&id=$id&ua=$u&url=219.245.18.94");
 ?>
 </body>
 </html>

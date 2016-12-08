@@ -150,8 +150,8 @@ $AUTHORITY=array(
 );
 $BASIC=array(
 	'SITENAME' => '嘉木',
-	'BASEURL' => '219.245.18.94',
-	'announce_url' => '219.245.18.94/announce.php',
+	'BASEURL' => '127.0.0.1/nwupt',
+	'announce_url' => '127.0.0.1/nwupt/announce.php',
 	'mysql_host' => '127.0.0.1',
 	'mysql_user' => 'root',
 	'mysql_pass' => 'cetc3117cetc',
