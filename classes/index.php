@@ -1,9 +1,9 @@
-<?php
-/**
- * Created by PhpStorm.
- * User: lwen
- * Date: 2016/12/9
- * Time: 12:37
- */
-
-echo "<h1 style='background: blue;color: red;margin: auto auto'>不要试图访问这个目录或文件</h1>";
+<!DOCTYPE>
+<html>
+<head>
+	<title>Error!</title>
+</head>
+<body style="background-color: blue">
+<h1 style='color: red;text-align: center;margin-top: 20%'>不要试图访问这个目录或文件</h1>
+</body>
+</html>
