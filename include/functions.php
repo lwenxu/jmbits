@@ -4546,6 +4546,23 @@ function return_category_image($categoryid, $link="")
 	}
 	return $catimg;
 }
+function return_search_category_image($categoryid, $link="")
+{
+	static $catImg = array();
+
+	if ($catImg[$categoryid]) {
+		$catimg = $catImg[$categoryid];
+	} else {
+		$categoryrow = get_category_row($categoryid);
+		$catimgurl = get_cat_folder($categoryid);
+
+		$catImg[$categoryid] = $catimg = "<img".($categoryrow['class_name'] ? " class=\"".$categoryrow['class_name']."\"" : "")."   src='$categoryrow[image]' style='width: 60px;margin:7px;height:60px; border:1px dash #888;' alt=\"" . $categoryrow["name"] . "\" title=\"" .$categoryrow["name"]. "\"  />";
+	}
+	if ($link) {
+		$catimg = "<a href=\"".$link."cat=" . $categoryid . "\">".$catimg."</a>";
+	}
+	return $catimg;
+}
 function login_head(){
 echo "
 	<!DOCTYPE html>
