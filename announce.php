@@ -60,7 +60,7 @@ if (!$az) err("Invalid passkey! Re-download the .torrent from $BASEURL");
 $userid = 0+$az['id'];
 
 //3. CHECK IF CLIENT IS ALLOWED
-$clicheck_res = check_client($peer_id,$agent,&$client_familyid);
+$clicheck_res = check_client($peer_id,$agent,$client_familyid);
 if($clicheck_res){
 	if ($az['showclienterror'] == 'no')
 	{
@@ -74,23 +74,10 @@ elseif ($az['showclienterror'] == 'yes'){
 	$Cache->delete_value('user_passkey_'.$passkey.'_content');
 }
 
-function Clean_Free($id, $state, $endtime)	//清除免费标记
-{
-	if($state != "1" && $endtime != "0000-00-00 00:00:00"){
-		if($endtime < date("Y-m-d H:i:s",time())){
-	sql_query("UPDATE torrents SET sp_state = '1' WHERE id=".sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-		return true;
-		}
-	}else{
-		return false;
-	}
-}
 // check torrent based on info_hash
 if (!$torrent = $Cache->get_value('torrent_hash_'.$info_hash.'_content')){
-	$res = sql_query("SELECT id, owner, sp_state, endfree, seeders, leechers, UNIX_TIMESTAMP(added) AS ts, banned FROM torrents WHERE " . hash_where("info_hash", $info_hash));
+	$res = sql_query("SELECT id, owner, sp_state, seeders, leechers, UNIX_TIMESTAMP(added) AS ts, banned FROM torrents WHERE " . hash_where("info_hash", $info_hash));
 	$torrent = mysql_fetch_array($res);
-	if(Clean_Free($torrent['id'],$torrent['sp_state'],$torrent['endfree']))
-		$torrent['sp_state'] = "1";
 	$Cache->cache_value('torrent_hash_'.$info_hash.'_content', $torrent, 350);
 }
 if (!$torrent) err("torrent not registered with this tracker");
@@ -241,12 +228,6 @@ else // continue an existing session
 		}
 	}
 
-	if ($az["class"] == UC_VIP)
-		$downseedbonus = 0;
-	else
-		$downseedbonus = -$truedownthis/1024 * 0.0000005;	//下载影响积分，单位每K
-	$upseedbonus = $trueupthis/1024 * 0.0000012;		//上传影响积分，单位每K
-
 	if (!$is_cheater && ($trueupthis > 0 || $truedownthis > 0))
 	{
 		$global_promotion_state = get_global_sp_state();
@@ -254,18 +235,17 @@ else // continue an existing session
 		{
 			if($torrent['sp_state']==3) //2X
 			{
-				//$USERUPDATESET[] = "uploaded = uploaded + 2*$trueupthis".", seedbonus = seedbonus + 2*$upseedbonus";
-				$USERUPDATESET[] = "uploaded = uploaded + 2*$trueupthis".", seedbonus = seedbonus + $upseedbonus";
-				$USERUPDATESET[] = "downloaded = downloaded + $truedownthis".", seedbonus = seedbonus + $downseedbonus";
+				$USERUPDATESET[] = "uploaded = uploaded + 2*$trueupthis";
+				$USERUPDATESET[] = "downloaded = downloaded + $truedownthis";
 			}
 			elseif($torrent['sp_state']==4) //2X Free
 			{
-				$USERUPDATESET[] = "uploaded = uploaded + 2*$trueupthis".", seedbonus = seedbonus + $upseedbonus";
+				$USERUPDATESET[] = "uploaded = uploaded + 2*$trueupthis";
 			}
 			elseif($torrent['sp_state']==6) //2X 50%
 			{
-				$USERUPDATESET[] = "uploaded = uploaded + 2*$trueupthis".", seedbonus = seedbonus + $upseedbonus";
-				$USERUPDATESET[] = "downloaded = downloaded + $truedownthis/2".", seedbonus = seedbonus + $downseedbonus/2";
+				$USERUPDATESET[] = "uploaded = uploaded + 2*$trueupthis";
+				$USERUPDATESET[] = "downloaded = downloaded + $truedownthis/2";
 			}
 			else{
 				if ($torrent['owner'] == $userid && $uploaderdouble_torrent > 0)
@@ -273,22 +253,22 @@ else // continue an existing session
 
 				if($torrent['sp_state']==2) //Free
 				{
-					$USERUPDATESET[] = "uploaded = uploaded + $upthis".", seedbonus = seedbonus + $upseedbonus";
+					$USERUPDATESET[] = "uploaded = uploaded + $upthis";
 				}
 				elseif($torrent['sp_state']==5) //50%
 				{
-					$USERUPDATESET[] = "uploaded = uploaded + $upthis".", seedbonus = seedbonus + $upseedbonus";
-					$USERUPDATESET[] = "downloaded = downloaded + $truedownthis/2".", seedbonus = seedbonus + $downseedbonus/2";
+					$USERUPDATESET[] = "uploaded = uploaded + $upthis";
+					$USERUPDATESET[] = "downloaded = downloaded + $truedownthis/2";
 				}
 				elseif($torrent['sp_state']==7) //30%
 				{
-					$USERUPDATESET[] = "uploaded = uploaded + $upthis".", seedbonus = seedbonus + $upseedbonus";
-					$USERUPDATESET[] = "downloaded = downloaded + $truedownthis*3/10".", seedbonus = seedbonus + $downseedbonus*3/10";
+					$USERUPDATESET[] = "uploaded = uploaded + $upthis";
+					$USERUPDATESET[] = "downloaded = downloaded + $truedownthis*3/10";
 				}
 				elseif($torrent['sp_state']==1) //Normal
 				{
-					$USERUPDATESET[] = "uploaded = uploaded + $upthis".", seedbonus = seedbonus + $upseedbonus";
-					$USERUPDATESET[] = "downloaded = downloaded + $truedownthis".", seedbonus = seedbonus + $downseedbonus";
+					$USERUPDATESET[] = "uploaded = uploaded + $upthis";
+					$USERUPDATESET[] = "downloaded = downloaded + $truedownthis";
 				}
 			}
 		}
@@ -296,41 +276,41 @@ else // continue an existing session
 		{
 			if ($torrent['owner'] == $userid && $uploaderdouble_torrent > 0)
 				$upthis = $trueupthis * $uploaderdouble_torrent;
-			$USERUPDATESET[] = "uploaded = uploaded + $upthis".", seedbonus = seedbonus + $upseedbonus";
+			$USERUPDATESET[] = "uploaded = uploaded + $upthis";
 		}
 		elseif($global_promotion_state == 3) //2X
 		{
 			if ($uploaderdouble_torrent > 2 && $torrent['owner'] == $userid && $uploaderdouble_torrent > 0)
 				$upthis = $trueupthis * $uploaderdouble_torrent;
 			else $upthis = 2*$trueupthis;
-			$USERUPDATESET[] = "uploaded = uploaded + $upthis".", seedbonus = seedbonus + $upseedbonus";
-			$USERUPDATESET[] = "downloaded = downloaded + $truedownthis".", seedbonus = seedbonus + $downseedbonus";
+			$USERUPDATESET[] = "uploaded = uploaded + $upthis";
+			$USERUPDATESET[] = "downloaded = downloaded + $truedownthis";
 		}
 		elseif($global_promotion_state == 4) //2X Free
 		{
 			if ($uploaderdouble_torrent > 2 && $torrent['owner'] == $userid && $uploaderdouble_torrent > 0)
 				$upthis = $trueupthis * $uploaderdouble_torrent;
 			else $upthis = 2*$trueupthis;
-			$USERUPDATESET[] = "uploaded = uploaded + $upthis".", seedbonus = seedbonus + $upseedbonus";
+			$USERUPDATESET[] = "uploaded = uploaded + $upthis";
 		}
 		elseif($global_promotion_state == 5){ // 50%
 			if ($torrent['owner'] == $userid && $uploaderdouble_torrent > 0)
 				$upthis = $trueupthis * $uploaderdouble_torrent;
-			$USERUPDATESET[] = "uploaded = uploaded + $upthis".", seedbonus = seedbonus + $upseedbonus";
-			$USERUPDATESET[] = "downloaded = downloaded + $truedownthis/2".", seedbonus = seedbonus + $downseedbonus/2";
+			$USERUPDATESET[] = "uploaded = uploaded + $upthis";
+			$USERUPDATESET[] = "downloaded = downloaded + $truedownthis/2";
 		}
 		elseif($global_promotion_state == 6){ //2X 50%
 			if ($uploaderdouble_torrent > 2 && $torrent['owner'] == $userid && $uploaderdouble_torrent > 0)
 				$upthis = $trueupthis * $uploaderdouble_torrent;
 			else $upthis = 2*$trueupthis;
-			$USERUPDATESET[] = "uploaded = uploaded + $upthis".", seedbonus = seedbonus + $upseedbonus";
-			$USERUPDATESET[] = "downloaded = downloaded + $truedownthis/2".", seedbonus = seedbonus + $downseedbonus/2";
+			$USERUPDATESET[] = "uploaded = uploaded + $upthis";
+			$USERUPDATESET[] = "downloaded = downloaded + $truedownthis/2";
 		}
 		elseif($global_promotion_state == 7){ //30%
 			if ($torrent['owner'] == $userid && $uploaderdouble_torrent > 0)
 				$upthis = $trueupthis * $uploaderdouble_torrent;
-			$USERUPDATESET[] = "uploaded = uploaded + $upthis".", seedbonus = seedbonus + $upseedbonus";
-			$USERUPDATESET[] = "downloaded = downloaded + $truedownthis*3/10".", seedbonus = seedbonus + $downseedbonus";
+			$USERUPDATESET[] = "uploaded = uploaded + $upthis";
+			$USERUPDATESET[] = "downloaded = downloaded + $truedownthis*3/10";
 		}
 	}
 }
@@ -370,19 +350,16 @@ elseif(isset($self))
 }
 else
 {
-if(validip($ip)){
-	$sockres = @pfsockopen("[".$ip."]", $port, $errno, $errstr, 5); 
-	//可连接否解决
-}else
 	$sockres = @pfsockopen($ip, $port, $errno, $errstr, 5);
-	if($errno == "111"){
+	if (!$sockres)
+	{
 		$connectable = "no";
-	}else{
-		$connectable = "yes";
 	}
-	@fclose($sockres);
-//	file_put_contents("out.txt",$ip.':'.$port.'--'.$errno.'--'.$errstr."\n",FILE_APPEND);
-//	$connectable = "yes";
+	else
+	{
+		$connectable = "yes";
+		@fclose($sockres);
+	}
 	sql_query("INSERT INTO peers (torrent, userid, peer_id, ip, port, connectable, uploaded, downloaded, to_go, started, last_action, seeder, agent, downloadoffset, uploadoffset, passkey) VALUES ($torrentid, $userid, ".sqlesc($peer_id).", ".sqlesc($ip).", $port, '$connectable', $uploaded, $downloaded, $left, $dt, $dt, '$seeder', ".sqlesc($agent).", $downloaded, $uploaded, ".sqlesc($passkey).")") or err("PL Err 2");
 
 	if (mysql_affected_rows())

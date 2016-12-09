@@ -453,14 +453,14 @@ else {
 		if ($bwrow['upname'] && $bwrow['downname'])
 			tr($lang_details['row_uploader_bandwidth'], "<img class=\"speed_down\" src=\"pic/trans.gif\" alt=\"Downstream Rate\" /> ".$bwrow['downname']."&nbsp;&nbsp;&nbsp;&nbsp;<img class=\"speed_up\" src=\"pic/trans.gif\" alt=\"Upstream Rate\" /> ".$bwrow['upname']."&nbsp;&nbsp;&nbsp;&nbsp;".$bwrow['ispname'],1);
 
-		tr("<span id=\"seeders\"></span><span id=\"leechers\"></span>" . $lang_details['row_peers'] . "<br /><span id=\"showpeer\"><a href=\"javascript: viewpeerlist(" . $row['id'] . ");\" class=\"sublink\">" . $lang_details['text_see_full_list'] . "</a></span><span id=\"hidepeer\" style=\"display: none;\"><a href=\"javascript: hidepeerlist();\" class=\"sublink\">" . $lang_details['text_hide_list'] . "</a></span>", "<div id=\"peercount\"><b>" . $row['seeders'] . $lang_details['text_seeders'] . add_s($row['seeders']) . "</b> | <b>" . $row['leechers'] . $lang_details['text_leechers'] . add_s($row['leechers']) . "</b></div><div id=\"peerlist\"></div>", 1);
-		if ($_GET['dllist'] == 1) {
-			$scronload = "viewpeerlist(" . $row['id'] . ")";
-
-			echo "<script type=\"text/javascript\">\n";
-			echo $scronload;
-			echo "</script>";
-		}
+//		tr("<span id=\"seeders\"></span><span id=\"leechers\"></span>" . $lang_details['row_peers'] . "<br /><span id=\"showpeer\"><a href=\"javascript: viewpeerlist(" . $row['id'] . ");\" class=\"sublink\">" . $lang_details['text_see_full_list'] . "</a></span><span id=\"hidepeer\" style=\"display: none;\"><a href=\"javascript: hidepeerlist();\" class=\"sublink\">" . $lang_details['text_hide_list'] . "</a></span>", "<div id=\"peercount\"><b>" . $row['seeders'] . $lang_details['text_seeders'] . add_s($row['seeders']) . "</b> | <b>" . $row['leechers'] . $lang_details['text_leechers'] . add_s($row['leechers']) . "</b></div><div id=\"peerlist\"></div>", 1);
+//		if ($_GET['dllist'] == 1) {
+//			$scronload = "viewpeerlist(" . $row['id'] . ")";
+//
+//			echo "<script type=\"text/javascript\">\n";
+//			echo $scronload;
+//			echo "</script>";
+//		}
 
 
 		// ------------- start thanked-by block--------------//
