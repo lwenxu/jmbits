@@ -22,7 +22,7 @@ $row = mysql_fetch_array($res);
 //if (get_user_class() >= UC_STAFFLEADER)
 //{
 
-	if ($row['category'] == '402' ||$row['category'] == '401' || $row['category'] == '405' || $row['category'] == '407') {
+	if ($row['category'] == '403' ||$row['category'] == '402' ||$row['category'] == '401' || $row['category'] == '405' || $row['category'] == '407' || $row['category'] == '410') {
 		$v6button = "| " .
 			"<script type=\"text/javascript\">function play(){window.location.href='6xvod://{$id}&ty=1&ro=1&id={$id}&ua={$CURUSER['passkey']}';}</script>" . "<span class= 'icon-play-circle icon-green'></span>" . "<a href=\"v6player.php?id={$id}&u={$CURUSER['passkey']}\" target=\"_blank\"> 直接播放</a>";
 	} else {
@@ -453,48 +453,48 @@ else {
 		if ($bwrow['upname'] && $bwrow['downname'])
 			tr($lang_details['row_uploader_bandwidth'], "<img class=\"speed_down\" src=\"pic/trans.gif\" alt=\"Downstream Rate\" /> ".$bwrow['downname']."&nbsp;&nbsp;&nbsp;&nbsp;<img class=\"speed_up\" src=\"pic/trans.gif\" alt=\"Upstream Rate\" /> ".$bwrow['upname']."&nbsp;&nbsp;&nbsp;&nbsp;".$bwrow['ispname'],1);
 
-		tr("<span id=\"seeders\"></span><span id=\"leechers\"></span>".$lang_details['row_peers']."<br /><span id=\"showpeer\"><a href=\"javascript: viewpeerlist(".$row['id'].");\" class=\"\">".$lang_details['text_see_full_list']."</a></span><span id=\"hidepeer\" style=\"display: none;\"><a href=\"javascript: hidepeerlist();\" class=\"\">".$lang_details['text_hide_list']."</a></span>", "<div id=\"peercount\">".$row['seeders'].$lang_details['text_seeders'].add_s($row['seeders'])." | ".$row['leechers'].$lang_details['text_leechers'].add_s($row['leechers'])."</div><div id=\"peerlist\"></div>" , 1);
-		if ($_GET['dllist'] == 1)
-		{
-			$scronload = "viewpeerlist(".$row['id'].")";
+		tr("<span id=\"seeders\"></span><span id=\"leechers\"></span>" . $lang_details['row_peers'] . "<br /><span id=\"showpeer\"><a href=\"javascript: viewpeerlist(" . $row['id'] . ");\" class=\"sublink\">" . $lang_details['text_see_full_list'] . "</a></span><span id=\"hidepeer\" style=\"display: none;\"><a href=\"javascript: hidepeerlist();\" class=\"sublink\">" . $lang_details['text_hide_list'] . "</a></span>", "<div id=\"peercount\"><b>" . $row['seeders'] . $lang_details['text_seeders'] . add_s($row['seeders']) . "</b> | <b>" . $row['leechers'] . $lang_details['text_leechers'] . add_s($row['leechers']) . "</b></div><div id=\"peerlist\"></div>", 1);
+		if ($_GET['dllist'] == 1) {
+			$scronload = "viewpeerlist(" . $row['id'] . ")";
 
-echo "<script type=\"text/javascript\">\n";
-echo $scronload;
-echo "</script>";
+			echo "<script type=\"text/javascript\">\n";
+			echo $scronload;
+			echo "</script>";
 		}
+
 
 		// ------------- start thanked-by block--------------//
 
-//		$torrentid = $id;
-//		$thanksby = "";
-//		$nothanks = "";
-//		$thanks_said = 0;
-//		$thanks_sql = sql_query("SELECT userid FROM thanks WHERE torrentid=".sqlesc($torrentid)." ORDER BY id DESC LIMIT 20");
-//		$thanksCount = get_row_count("thanks", "WHERE torrentid=".sqlesc($torrentid));
-//		$thanks_all = mysql_num_rows($thanks_sql);
-//		if ($thanks_all) {
-//			while($rows_t = mysql_fetch_array($thanks_sql)) {
-//				$thanks_userid = $rows_t["userid"];
-//				if ($rows_t["userid"] == $CURUSER['id']) {
-//					$thanks_said = 1;
-//				} else {
-//					$thanksby .= get_username($thanks_userid)." ";
-//				}
-//			}
-//		}
-//		else $nothanks = $lang_details['text_no_thanks_added'];
-//
-//		if (!$thanks_said) {
-//			$thanks_said = get_row_count("thanks", "WHERE torrentid=$torrentid AND userid=".sqlesc($CURUSER['id']));
-//		}
-//		if ($thanks_said == 0) {
-//			$buttonvalue = " value=\"".$lang_details['submit_say_thanks']."\"";
-//		} else {
-//			$buttonvalue = " value=\"".$lang_details['submit_you_said_thanks']."\" disabled=\"disabled\"";
-//			$thanksby = get_username($CURUSER['id'])." ".$thanksby;
-//		}
-//		$thanksbutton = "<input class=\"btn\" type=\"button\" id=\"saythanks\"  onclick=\"saythanks(".$torrentid.");\" ".$buttonvalue." />";
-//		tr($lang_details['row_thanks_by'],"<span id=\"thanksadded\" style=\"display: none;\"><input class=\"btn\" type=\"button\" value=\"".$lang_details['text_thanks_added']."\" disabled=\"disabled\" /></span><span id=\"curuser\" style=\"display: none;\">".get_username($CURUSER['id'])." </span><span id=\"thanksbutton\">".$thanksbutton."</span>&nbsp;&nbsp;<span id=\"nothanks\">".$nothanks."</span><span id=\"addcuruser\"></span>".$thanksby.($thanks_all < $thanksCount ? $lang_details['text_and_more'].$thanksCount.$lang_details['text_users_in_total'] : ""),1);
+		$torrentid = $id;
+		$thanksby = "";
+		$nothanks = "";
+		$thanks_said = 0;
+		$thanks_sql = sql_query("SELECT userid FROM thanks WHERE torrentid=".sqlesc($torrentid)." ORDER BY id DESC LIMIT 20");
+		$thanksCount = get_row_count("thanks", "WHERE torrentid=".sqlesc($torrentid));
+		$thanks_all = mysql_num_rows($thanks_sql);
+		if ($thanks_all) {
+			while($rows_t = mysql_fetch_array($thanks_sql)) {
+				$thanks_userid = $rows_t["userid"];
+				if ($rows_t["userid"] == $CURUSER['id']) {
+					$thanks_said = 1;
+				} else {
+					$thanksby .= get_username($thanks_userid)." ";
+				}
+			}
+		}
+		else $nothanks = $lang_details['text_no_thanks_added'];
+
+		if (!$thanks_said) {
+			$thanks_said = get_row_count("thanks", "WHERE torrentid=$torrentid AND userid=".sqlesc($CURUSER['id']));
+		}
+		if ($thanks_said == 0) {
+			$buttonvalue = " value=\"".$lang_details['submit_say_thanks']."\"";
+		} else {
+			$buttonvalue = " value=\"".$lang_details['submit_you_said_thanks']."\" disabled=\"disabled\"";
+			$thanksby = get_username($CURUSER['id'])." ".$thanksby;
+		}
+		$thanksbutton = "<input class=\"btn btn-success\" type=\"button\" id=\"saythanks\"  onclick=\"saythanks(".$torrentid.");\" ".$buttonvalue." />";
+		tr($lang_details['row_thanks_by'],"<span id=\"thanksadded\" style=\"display: none;\"><input class=\"btn\" type=\"button\" value=\"".$lang_details['text_thanks_added']."\" disabled=\"disabled\" /></span><span id=\"curuser\" style=\"display: none;\">".get_username($CURUSER['id'])." </span><span id=\"thanksbutton\">".$thanksbutton."</span>&nbsp;&nbsp;<span id=\"nothanks\">".$nothanks."</span><span id=\"addcuruser\"></span>".$thanksby.($thanks_all < $thanksCount ? $lang_details['text_and_more'].$thanksCount.$lang_details['text_users_in_total'] : ""),1);
 		// ------------- end thanked-by block--------------//
 
 		print("</table>\n");
@@ -529,4 +529,6 @@ echo "</script>";
 //print("</form></td></tr></table>");
 //print("<p align=\"center\"><a class=\"index\" href=\"".htmlspecialchars("comment.php?action=add&pid=".$id."&type=torrent")."\">".$lang_details['text_add_a_comment']."</a></p>\n");
 }
+
+
 stdfoot();
