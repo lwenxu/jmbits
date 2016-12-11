@@ -1231,21 +1231,21 @@ function insert_suggest($keyword, $userid, $pre_escaped = true)
 	}
 }
 
-function get_external_tr($imdb_url = "")
-{
-	global $lang_functions;
-	global $showextinfo;
-	$imdbNumber = parse_imdb_id($imdb_url);
-	($showextinfo['imdb'] == 'yes' ? tr($lang_functions['row_imdb_url'],  "<input type=\"text\" style=\"width: 650px;\" name=\"url\" value=\"".($imdbNumber ? "http://www.imdb.com/title/tt".parse_imdb_id($imdb_url) : "")."\" /><br /><font class=\"medium\">".$lang_functions['text_imdb_url_note']."</font>", 1) : "");
-}
-//  添加豆瓣信息功能 仅仅写了函数，没写前台，暂时不添加  by lwenxu
-function get_dbexternal_tr($imdb_url = "")
-{
-	global $lang_functions;
-	global $showextinfo;
-	$imdbNumber = parse_douban_id($imdb_url);
-	($showextinfo['imdb'] == 'yes' ? tr($lang_functions['row_douban_url'], "<input type=\"text\" style=\"width: 650px;\" name=\"dburl\" value=\"" . ($imdbNumber ? "http://movie.douban.com/subject/" . parse_douban_id($imdb_url) : "") . "\" /><br /><font class=\"medium\">" . $lang_functions['text_douban_url_note'] . "</font>", 1) : "");
-}
+//function get_external_tr($imdb_url = "")
+//{
+//	global $lang_functions;
+//	global $showextinfo;
+//	$imdbNumber = parse_imdb_id($imdb_url);
+//	($showextinfo['imdb'] == 'yes' ? tr($lang_functions['row_imdb_url'],  "<input type=\"text\" style=\"width: 650px;\" name=\"url\" value=\"".($imdbNumber ? "http://www.imdb.com/title/tt".parse_imdb_id($imdb_url) : "")."\" /><br /><font class=\"medium\">".$lang_functions['text_imdb_url_note']."</font>", 1) : "");
+//}
+////  添加豆瓣信息功能 仅仅写了函数，没写前台，暂时不添加  by lwenxu
+//function get_dbexternal_tr($imdb_url = "")
+//{
+//	global $lang_functions;
+//	global $showextinfo;
+//	$imdbNumber = parse_douban_id($imdb_url);
+//	($showextinfo['imdb'] == 'yes' ? tr($lang_functions['row_douban_url'], "<input type=\"text\" style=\"width: 650px;\" name=\"dburl\" value=\"" . ($imdbNumber ? "http://movie.douban.com/subject/" . parse_douban_id($imdb_url) : "") . "\" /><br /><font class=\"medium\">" . $lang_functions['text_douban_url_note'] . "</font>", 1) : "");
+//}
 
 function parse_douban_id($url)
 {
@@ -3017,6 +3017,22 @@ function genrelist($catmode = 1) {
 	return $ret;
 }
 
+
+function get_external_tr($imdb_url = "")
+{
+	global $lang_functions;
+	global $showextinfo;
+	$imdbNumber = parse_imdb_id($imdb_url);
+	($showextinfo['imdb'] == 'yes' ? tr($lang_functions['row_imdb_url'], "<input type=\"text\" style=\"width: 650px;\" name=\"imdburl\" value=\"" . ($imdbNumber ? "http://www.imdb.com/title/tt" . parse_imdb_id($imdb_url) : "") . "\" /><br /><font class=\"medium\">" . $lang_functions['text_imdb_url_note'] . "</font>", 1) : "");
+}
+
+function get_dbexternal_tr($imdb_url = "")
+{
+	global $lang_functions;
+	global $showextinfo;
+	$imdbNumber = parse_douban_id($imdb_url);
+	($showextinfo['imdb'] == 'yes' ? tr($lang_functions['row_douban_url'], "<input type=\"text\" style=\"width: 650px;\" name=\"dburl\" value=\"" . ($imdbNumber ? "http://movie.douban.com/subject/" . parse_douban_id($imdb_url) : "") . "\" /><br /><font class=\"medium\">" . $lang_functions['text_douban_url_note'] . "</font>", 1) : "");
+}
 function searchbox_item_list($table = "sources"){
 	global $Cache;
 	if (!$ret = $Cache->get_value($table.'_list')){

@@ -49,38 +49,44 @@ stdhead($lang_upload['head_upload']);
 					</td>
 				</tr>
 				<?php
-
+				echo "
+				    <script>
+				    $(function() {
+				      $('#browsecat').change(function(e) {
+				            $(this).val();
+				       });
+				    });
+				    
+                    </script>
+				";
 				if ($allowtorrents) {
 					$disablespecial = " onchange=\"disableother('browsecat','specialcat')\"";
-					$s = "<select class=\"btn btn-info\" style name=\"type\" id=\"browsecat\" " . ($allowtwosec ? $disablespecial : "") . ">\n<option value=\"0\">" . $lang_upload['select_choose_one'] . "</option>\n";
+					$s = "<div id='selectdiv'><select class=\"btn btn-info\" style name=\"type\" id=\"browsecat\" " . ($allowtwosec ? $disablespecial : "") . ">\n<option value=\"0\">" . $lang_upload['select_choose_one'] . "</option>\n";
 					$cats = genrelist($browsecatmode);
-					foreach ($cats as $row)
+					foreach ($cats as $row) {
 						$s .= "<option value=\"" . $row["id"] . "\">" . htmlspecialchars($row["name"]) . "</option>\n";
-					$s .= "</select>\n";
+					}
+					$s .= "</select></div>\n";
 				} else $s = "";
 				if ($allowspecial) {
 					$disablebrowse = " onchange=\"disableother('specialcat','browsecat')\"";
-					$s2 = "<select name=\"type\" id=\"specialcat\" " . $disablebrowse . ">\n<option value=\"0\">" . $lang_upload['select_choose_one'] . "</option>\n";
+					$s2 = "<select name=\"type\" id=\"category_rules\" " . $disablebrowse . ">\n<option value=\"0\">" . $lang_upload['select_choose_one'] . "</option>\n";
 					$cats2 = genrelist($specialcatmode);
 					foreach ($cats2 as $row)
 						$s2 .= "<option value=\"" . $row["id"] . "\">" . htmlspecialchars($row["name"]) . "</option>\n";
 					$s2 .= "</select>\n";
 				} else $s2 = "";
 				tr($lang_upload['row_type'] . "<font color=\"red\">*</font>", ($allowtwosec ? $lang_upload['text_to_browse_section'] : "") . $s . ($allowtwosec ? $lang_upload['text_to_special_section'] : "") . $s2 . ($allowtwosec ? $lang_upload['text_type_note'] : ""), 1);
-
-				tr($lang_upload['row_torrent_file']."<font color=\"red\">*</font>", "
-
-<input class='btn btn-info' type=\"file\"  id=\"torrent\" name=\"file\" onchange=\"getname()\" />
-
-\n", 1);
+				tr($lang_upload['row_torrent_file']."<font color=\"red\">*</font>", "<input class='btn' type=\"file\"  id=\"torrent\" name=\"file\" onchange=\"getname()\" />\n", 1);
+                tr('填写规则',"<a class='btn btn-danger' style='margin-left: 7px;color: white' href='http://219.245.18.94/forums.php?action=viewtopic&topicid=5&page=last#pid6'>种子规则</a><span style='color: red'>标题以及简介必须按照种子规则来填写否则将作为删种处理</span>",1);
 				if ($altname_main == 'yes'){
 					tr($lang_upload['row_torrent_name'], "<b>".$lang_upload['text_english_title']."</b>&nbsp;<input type=\"text\" style=\"width: 250px;\" name=\"name\" />&nbsp;&nbsp;&nbsp;
 <b>".$lang_upload['text_chinese_title']."</b>&nbsp;<input type=\"text\" style=\"width: 250px\" name=\"cnname\"><br /><font class=\"medium\">".$lang_upload['text_titles_note']."</font>", 1);
 				}
 				else
-					tr($lang_upload['row_torrent_name'] . "<font color=\"red\">*</font>", "<input placeholder='标题请不要超过13字，下面还有副标题可填写哦 :) [必填] ）  ' type=\"text\" class=\"input tip-focus fullwidth\"  id=\"name\" name=\"name\" /><br />", 1);
+					tr($lang_upload['row_torrent_name'] . "<font color=\"red\">*</font>", "<input  placeholder='标题请不要超过13字，下面还有副标题可填写哦 :) [必填] ）  ' type=\"text\" class=\"input tip-focus fullwidth\"  id=\"name\" name=\"name\" /><br />", 1);
 				if ($smalldescription_main == 'yes')
-				tr($lang_upload['row_small_description'] . "<font color=\"red\">*</font>", "<input placeholder='这里请填写种子的关键信息，方便大家选种哦^_^[必填]' type=\"text\" style=\"width: 650px;\" name=\"small_descr\" /><br /><font class=\"medium\">".$lang_upload['text_small_description_note']."</font>", 1);
+				tr($lang_upload['row_small_description'] . "<font color=\"red\">*</font>", "<input placeholder='这里请填写种子的关键信息，方便大家选种哦^_^[必填]' type=\"text\" class=\"input tip-focus fullwidth\" id='small_name'  name=\"small_descr\" /><br /><font class=\"medium\">".$lang_upload['text_small_description_note']."</font>", 1);
 				
 				get_external_tr();
 
@@ -161,3 +167,6 @@ stdhead($lang_upload['head_upload']);
 	</form>
 <?php
 stdfoot();
+?>
+
+
