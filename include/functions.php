@@ -816,6 +816,8 @@ function get_elapsed_time($ts,$shortunit = false)
 	return "&lt; 1".($shortunit ? $lang_functions['text_short_min'] : $lang_functions['text_min']);
 }
 
+
+
 function textbbcode($form,$text,$content="",$hastitle=false, $col_num = 130)
 {
 	global $lang_functions;
@@ -3849,8 +3851,10 @@ function quickreply($formname, $taname,$submit){
 }
 
 function smile_row($formname, $taname){
-	$quickSmilesNumbers = array(4, 5, 39, 25, 11, 8, 10, 15, 27, 57, 42, 122, 52, 28, 29, 30, 176);
-	$smilerow = "<div align=\"center\">";
+	for ($i=1;$i<56;$i++){
+	    $quickSmilesNumbers[]=$i;
+    }
+	$smilerow = "<div align=\"center\" style='margin: 2px'>";
 	foreach ($quickSmilesNumbers as $smilyNumber) {
 		$smilerow .= getSmileIt($formname, $taname, $smilyNumber);
 	}

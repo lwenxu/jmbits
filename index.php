@@ -299,8 +299,6 @@ if ($showshoutbox_main == "yes") {
 	print("<input type='reset' class=\"btn btn-danger\" value=\"" . $lang_index['submit_clear'] . "\" /> <input type='hidden' name='sent' value='yes' /><input type='hidden' name='type' value='shoutbox' /><br />\n");
 	print(smile_row("shbox", "shbox_text"));
 	print("</form></td></tr></table>");
-
-
 }
 
 // ------------- end: shut box ------------------//
