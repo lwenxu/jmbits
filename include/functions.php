@@ -352,7 +352,8 @@ function format_urls($text, $newWindow = false) {
 	return preg_replace("/((https?|ftp|gopher|news|telnet|mms|rtsp):\/\/[^()\[\]<>\s]+)/ei",
 	"formatUrl('\\1', ".($newWindow==true ? 1 : 0).", '', 'faqlink')", $text);
 }
-function format_comment($text, $strip_html = true, $xssclean = false, $newtab = false, $imageresizer = true, $image_max_width = 700, $enableimage = true, $enableflash = true , $imagenum = -1, $image_max_height = 0, $adid = 0)
+
+function format_comment($text, $strip_html = true, $xssclean = false, $newtab = false, $imageresizer = true, $image_max_width = 700, $enableimage = true, $enableflash = true, $imagenum = -1, $image_max_height = 0, $adid = 0)
 {
 	global $lang_functions;
 	global $CURUSER, $SITENAME, $BASEURL, $enableattach_attachment;
@@ -368,33 +369,33 @@ function format_comment($text, $strip_html = true, $xssclean = false, $newtab = 
 	// Linebreaks
 	$s = nl2br($s);
 
-	if (strpos($s,"[code]") !== false && strpos($s,"[/code]") !== false) {
-		$s = preg_replace("/\[code\](.+?)\[\/code\]/eis","formatCode('\\1')", $s);
+	if (strpos($s, "[code]") !== false && strpos($s, "[/code]") !== false) {
+		$s = preg_replace("/\[code\](.+?)\[\/code\]/eis", "formatCode('\\1')", $s);
 	}
 
-	$originalBbTagArray = array('[siteurl]', '[site]','[*]', '[b]', '[/b]', '[i]', '[/i]', '[u]', '[/u]', '[pre]', '[/pre]', '[/color]', '[/font]', '[/size]', "  ");
-	$replaceXhtmlTagArray = array(get_protocol_prefix().$BASEURL, $SITENAME, '<img class="listicon listitem" src="pic/trans.gif" alt="list" />', '', '', '<i>', '</i>', '<u>', '</u>', '<pre>', '</pre>', '</span>', '</font>', '</font>', ' &nbsp;');
+	$originalBbTagArray = array('[siteurl]', '[site]', '[*]', '[b]', '[/b]', '[i]', '[/i]', '[u]', '[/u]', '[pre]', '[/pre]', '[/color]', '[/font]', '[/size]', "  ");
+	$replaceXhtmlTagArray = array(get_protocol_prefix() . $BASEURL, $SITENAME, '<img class="listicon listitem" src="pic/trans.gif" alt="list" />', '<b>', '</b>', '<i>', '</i>', '<u>', '</u>', '<pre>', '</pre>', '</span>', '</font>', '</font>', ' &nbsp;');
 	$s = str_replace($originalBbTagArray, $replaceXhtmlTagArray, $s);
 
 	$originalBbTagArray = array("/\[font=([^\[\(&\\;]+?)\]/is", "/\[color=([#0-9a-z]{1,15})\]/is", "/\[color=([a-z]+)\]/is", "/\[size=([1-7])\]/is");
-	$replaceXhtmlTagArray = array("<font face=\"\\1\">", "<span>", "<span>", "<font size=\"\\1\">");
+	$replaceXhtmlTagArray = array("<font face=\"\\1\">", "<span style=\"color: \\1;\">", "<span style=\"color: \\1;\">", "<font size=\"\\1\">");
 	$s = preg_replace($originalBbTagArray, $replaceXhtmlTagArray, $s);
 
-	if ($enableattach_attachment == 'yes' && $imagenum != 1){
+	if ($enableattach_attachment == 'yes' && $imagenum != 1) {
 		$limit = 20;
-		$s = preg_replace("/\[attach\]([0-9a-zA-z][0-9a-zA-z]*)\[\/attach\]/ies", "print_attachment('\\1', ".($enableimage ? 1 : 0).", ".($imageresizer ? 1 : 0).")", $s, $limit);
+		$s = preg_replace("/\[attach\]([0-9a-zA-z][0-9a-zA-z]*)\[\/attach\]/ies", "print_attachment('\\1', " . ($enableimage ? 1 : 0) . ", " . ($imageresizer ? 1 : 0) . ")", $s, $limit);
 	}
 
 	if ($enableimage) {
-		$s = preg_replace("/\[img\]([^\<\r\n\"']+?)\[\/img\]/ei", "formatImg('\\1',".$imageresizer.",".$image_max_width.",".$image_max_height.")", $s, $imagenum, $imgReplaceCount);
-		$s = preg_replace("/\[img=([^\<\r\n\"']+?)\]/ei", "formatImg('\\1',".$imageresizer.",".$image_max_width.",".$image_max_height.")", $s, ($imagenum != -1 ? max($imagenum-$imgReplaceCount, 0) : -1));
+		$s = preg_replace("/\[img\]([^\<\r\n\"']+?)\[\/img\]/ei", "formatImg('\\1'," . $imageresizer . "," . $image_max_width . "," . $image_max_height . ")", $s, $imagenum, $imgReplaceCount);
+		$s = preg_replace("/\[img=([^\<\r\n\"']+?)\]/ei", "formatImg('\\1'," . $imageresizer . "," . $image_max_width . "," . $image_max_height . ")", $s, ($imagenum != -1 ? max($imagenum - $imgReplaceCount, 0) : -1));
 	} else {
 		$s = preg_replace("/\[img\]([^\<\r\n\"']+?)\[\/img\]/i", '', $s, -1);
 		$s = preg_replace("/\[img=([^\<\r\n\"']+?)\]/i", '', $s, -1);
 	}
 
 	// [flash,500,400]http://www/image.swf[/flash]
-	if (strpos($s,"[flash") !== false) { //flash is not often used. Better check if it exist before hand
+	if (strpos($s, "[flash") !== false) { //flash is not often used. Better check if it exist before hand
 		if ($enableflash) {
 			$s = preg_replace("/\[flash(\,([1-9][0-9]*)\,([1-9][0-9]*))?\]((http|ftp):\/\/[^\s'\"<>]+(\.(swf)))\[\/flash\]/ei", "formatFlash('\\4', '\\2', '\\3')", $s);
 		} else {
@@ -402,7 +403,7 @@ function format_comment($text, $strip_html = true, $xssclean = false, $newtab = 
 		}
 	}
 	//[flv,320,240]http://www/a.flv[/flv]
-	if (strpos($s,"[flv") !== false) { //flv is not often used. Better check if it exist before hand
+	if (strpos($s, "[flv") !== false) { //flv is not often used. Better check if it exist before hand
 		if ($enableflash) {
 			$s = preg_replace("/\[flv(\,([1-9][0-9]*)\,([1-9][0-9]*))?\]((http|ftp):\/\/[^\s'\"<>]+(\.(flv)))\[\/flv\]/ei", "formatFlv('\\4', '\\2', '\\3')", $s);
 		} else {
@@ -412,36 +413,132 @@ function format_comment($text, $strip_html = true, $xssclean = false, $newtab = 
 
 	// [url=http://www.example.com]Text[/url]
 	if ($adid) {
-		$s = preg_replace("/\[url=([^\[\s]+?)\](.+?)\[\/url\]/ei", "formatAdUrl(".$adid." ,'\\1', '\\2', ".($newtab==true ? 1 : 0).", 'faqlink')", $s);
+		$s = preg_replace("/\[url=([^\[\s]+?)\](.+?)\[\/url\]/ei", "formatAdUrl(" . $adid . " ,'\\1', '\\2', " . ($newtab == true ? 1 : 0) . ", 'faqlink')", $s);
 	} else {
-		$s = preg_replace("/\[url=([^\[\s]+?)\](.+?)\[\/url\]/ei", "formatUrl('\\1', ".($newtab==true ? 1 : 0).", '\\2', 'faqlink')", $s);
+		$s = preg_replace("/\[url=([^\[\s]+?)\](.+?)\[\/url\]/ei", "formatUrl('\\1', " . ($newtab == true ? 1 : 0) . ", '\\2', 'faqlink')", $s);
 	}
 
 	// [url]http://www.example.com[/url]
 	$s = preg_replace("/\[url\]([^\[\s]+?)\[\/url\]/ei",
-	"formatUrl('\\1', ".($newtab==true ? 1 : 0).", '', 'faqlink')", $s);
+		"formatUrl('\\1', " . ($newtab == true ? 1 : 0) . ", '', 'faqlink')", $s);
 
 	$s = format_urls($s, $newtab);
 	// Quotes
-	if (strpos($s,"[quote") !== false && strpos($s,"[/quote]") !== false) { //format_quote is kind of slow. Better check if [quote] exists beforehand
+	if (strpos($s, "[quote") !== false && strpos($s, "[/quote]") !== false) { //format_quote is kind of slow. Better check if [quote] exists beforehand
 		$s = format_quotes($s);
+	}
+	/* 加入@格式化 */
+
+	if (strpos($s, "[@") !== false) {
+		$s = at_format($s);
 	}
 
 	$s = preg_replace("/\[em([1-9][0-9]*)\]/ie", "(\\1 < 192 ? '<img src=\"pic/smilies/\\1.gif\" alt=\"[em\\1]\" />' : '[em\\1]')", $s);
 	reset($tempCode);
 	$j = 0;
-	while(count($tempCode) || $j > 5) {
-		foreach($tempCode as $key=>$code) {
+	while (count($tempCode) || $j > 5) {
+		foreach ($tempCode as $key => $code) {
 			$s = str_replace("<tempCode_$key>", $code, $s, $count);
 			if ($count) {
 				unset($tempCode[$key]);
-				$i = $i+$count;
+				$i = $i + $count;
 			}
 		}
 		$j++;
 	}
-	return "<span class='alttext' style='word-wrap: break-word;word-break: break-all'>" .$s. "</span>";
+	return $s;
 }
+
+//function format_comment($text, $strip_html = true, $xssclean = false, $newtab = false, $imageresizer = true, $image_max_width = 700, $enableimage = true, $enableflash = true , $imagenum = -1, $image_max_height = 0, $adid = 0)
+//{
+//	global $lang_functions;
+//	global $CURUSER, $SITENAME, $BASEURL, $enableattach_attachment;
+//	global $tempCode, $tempCodeCount;
+//	$tempCode = array();
+//	$tempCodeCount = 0;
+//	$imageresizer = $imageresizer ? 1 : 0;
+//	$s = $text;
+//
+//	if ($strip_html) {
+//		$s = htmlspecialchars($s);
+//	}
+//	// Linebreaks
+//	$s = nl2br($s);
+//
+//	if (strpos($s,"[code]") !== false && strpos($s,"[/code]") !== false) {
+//		$s = preg_replace("/\[code\](.+?)\[\/code\]/eis","formatCode('\\1')", $s);
+//	}
+//
+//	$originalBbTagArray = array('[siteurl]', '[site]','[*]', '[b]', '[/b]', '[i]', '[/i]', '[u]', '[/u]', '[pre]', '[/pre]', '[/color]', '[/font]', '[/size]', "  ");
+//	$replaceXhtmlTagArray = array(get_protocol_prefix().$BASEURL, $SITENAME, '<img class="listicon listitem" src="pic/trans.gif" alt="list" />', '', '', '<i>', '</i>', '<u>', '</u>', '<pre>', '</pre>', '</span>', '</font>', '</font>', ' &nbsp;');
+//	$s = str_replace($originalBbTagArray, $replaceXhtmlTagArray, $s);
+//
+//	$originalBbTagArray = array("/\[font=([^\[\(&\\;]+?)\]/is", "/\[color=([#0-9a-z]{1,15})\]/is", "/\[color=([a-z]+)\]/is", "/\[size=([1-7])\]/is");
+//	$replaceXhtmlTagArray = array("<font face=\"\\1\">", "<span>", "<span>", "<font size=\"\\1\">");
+//	$s = preg_replace($originalBbTagArray, $replaceXhtmlTagArray, $s);
+//
+//	if ($enableattach_attachment == 'yes' && $imagenum != 1){
+//		$limit = 20;
+//		$s = preg_replace("/\[attach\]([0-9a-zA-z][0-9a-zA-z]*)\[\/attach\]/ies", "print_attachment('\\1', ".($enableimage ? 1 : 0).", ".($imageresizer ? 1 : 0).")", $s, $limit);
+//	}
+//
+//	if ($enableimage) {
+//		$s = preg_replace("/\[img\]([^\<\r\n\"']+?)\[\/img\]/ei", "formatImg('\\1',".$imageresizer.",".$image_max_width.",".$image_max_height.")", $s, $imagenum, $imgReplaceCount);
+//		$s = preg_replace("/\[img=([^\<\r\n\"']+?)\]/ei", "formatImg('\\1',".$imageresizer.",".$image_max_width.",".$image_max_height.")", $s, ($imagenum != -1 ? max($imagenum-$imgReplaceCount, 0) : -1));
+//	} else {
+//		$s = preg_replace("/\[img\]([^\<\r\n\"']+?)\[\/img\]/i", '', $s, -1);
+//		$s = preg_replace("/\[img=([^\<\r\n\"']+?)\]/i", '', $s, -1);
+//	}
+//
+//	// [flash,500,400]http://www/image.swf[/flash]
+//	if (strpos($s,"[flash") !== false) { //flash is not often used. Better check if it exist before hand
+//		if ($enableflash) {
+//			$s = preg_replace("/\[flash(\,([1-9][0-9]*)\,([1-9][0-9]*))?\]((http|ftp):\/\/[^\s'\"<>]+(\.(swf)))\[\/flash\]/ei", "formatFlash('\\4', '\\2', '\\3')", $s);
+//		} else {
+//			$s = preg_replace("/\[flash(\,([1-9][0-9]*)\,([1-9][0-9]*))?\]((http|ftp):\/\/[^\s'\"<>]+(\.(swf)))\[\/flash\]/i", '', $s);
+//		}
+//	}
+//	//[flv,320,240]http://www/a.flv[/flv]
+//	if (strpos($s,"[flv") !== false) { //flv is not often used. Better check if it exist before hand
+//		if ($enableflash) {
+//			$s = preg_replace("/\[flv(\,([1-9][0-9]*)\,([1-9][0-9]*))?\]((http|ftp):\/\/[^\s'\"<>]+(\.(flv)))\[\/flv\]/ei", "formatFlv('\\4', '\\2', '\\3')", $s);
+//		} else {
+//			$s = preg_replace("/\[flv(\,([1-9][0-9]*)\,([1-9][0-9]*))?\]((http|ftp):\/\/[^\s'\"<>]+(\.(flv)))\[\/flv\]/i", '', $s);
+//		}
+//	}
+//
+//	// [url=http://www.example.com]Text[/url]
+//	if ($adid) {
+//		$s = preg_replace("/\[url=([^\[\s]+?)\](.+?)\[\/url\]/ei", "formatAdUrl(".$adid." ,'\\1', '\\2', ".($newtab==true ? 1 : 0).", 'faqlink')", $s);
+//	} else {
+//		$s = preg_replace("/\[url=([^\[\s]+?)\](.+?)\[\/url\]/ei", "formatUrl('\\1', ".($newtab==true ? 1 : 0).", '\\2', 'faqlink')", $s);
+//	}
+//
+//	// [url]http://www.example.com[/url]
+//	$s = preg_replace("/\[url\]([^\[\s]+?)\[\/url\]/ei",
+//	"formatUrl('\\1', ".($newtab==true ? 1 : 0).", '', 'faqlink')", $s);
+//
+//	$s = format_urls($s, $newtab);
+//	// Quotes
+//	if (strpos($s,"[quote") !== false && strpos($s,"[/quote]") !== false) { //format_quote is kind of slow. Better check if [quote] exists beforehand
+//		$s = format_quotes($s);
+//	}
+//
+//	$s = preg_replace("/\[em([1-9][0-9]*)\]/ie", "(\\1 < 192 ? '<img src=\"pic/smilies/\\1.gif\" alt=\"[em\\1]\" />' : '[em\\1]')", $s);
+//	reset($tempCode);
+//	$j = 0;
+//	while(count($tempCode) || $j > 5) {
+//		foreach($tempCode as $key=>$code) {
+//			$s = str_replace("<tempCode_$key>", $code, $s, $count);
+//			if ($count) {
+//				unset($tempCode[$key]);
+//				$i = $i+$count;
+//			}
+//		}
+//		$j++;
+//	}
+//	return "<span class='alttext' style='word-wrap: break-word;word-break: break-all'>" .$s. "</span>";
+//}
 
 function highlight($search,$subject,$hlstart='<font class="striking">',$hlend="</font>") 
 {

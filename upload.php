@@ -78,7 +78,7 @@ stdhead($lang_upload['head_upload']);
 				} else $s2 = "";
 				tr($lang_upload['row_type'] . "<font color=\"red\">*</font>", ($allowtwosec ? $lang_upload['text_to_browse_section'] : "") . $s . ($allowtwosec ? $lang_upload['text_to_special_section'] : "") . $s2 . ($allowtwosec ? $lang_upload['text_type_note'] : ""), 1);
 				tr($lang_upload['row_torrent_file']."<font color=\"red\">*</font>", "<input class='btn' type=\"file\"  id=\"torrent\" name=\"file\" onchange=\"getname()\" />\n", 1);
-                tr('填写规则',"<a class='btn btn-danger' style='margin-left: 7px;color: white' href='http://219.245.18.94/forums.php?action=viewtopic&topicid=5&page=last#pid6'>种子规则</a><span style='color: red'>标题以及简介必须按照种子规则来填写否则将作为删种处理</span>",1);
+                tr('填写规则',"<a target='_blank' class='btn btn-danger' style='margin-left: 7px;color: white' href='http://219.245.18.94/forums.php?action=viewtopic&topicid=5&page=last#pid6'>种子规则</a><span style='color: red'>标题以及简介必须按照种子规则来填写否则将作为删种处理</span>",1);
 				if ($altname_main == 'yes'){
 					tr($lang_upload['row_torrent_name'], "<b>".$lang_upload['text_english_title']."</b>&nbsp;<input type=\"text\" style=\"width: 250px;\" name=\"name\" />&nbsp;&nbsp;&nbsp;
 <b>".$lang_upload['text_chinese_title']."</b>&nbsp;<input type=\"text\" style=\"width: 250px\" name=\"cnname\"><br /><font class=\"medium\">".$lang_upload['text_titles_note']."</font>", 1);
