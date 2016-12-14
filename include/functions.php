@@ -241,12 +241,12 @@ function print_thumb($id, $enableimage = true, $imageresizer = true){
 	} else {
 		$id = $row['id'];
 		if ($row['isimage'] == 1) {
-				if ($row['thumb'] == 0) {
-
-					$url = $httpdirectory_attachment . "/" . $row['location'] . ".thumb.jpg";
-				} else {
+//				if ($row['thumb'] == 0) {
+//
+//					$url = $httpdirectory_attachment . "/" . $row['location'] . ".thumb.jpg";
+//				} else {
 					$url = $httpdirectory_attachment . "/" . $row['location'];
-				}
+//				}
 				if ($imageresizer == true){
 					$onclick = " onclick=\"Previewurl('" . $httpdirectory_attachment . "/" . $row['location'] . "')\"";
                 } else {

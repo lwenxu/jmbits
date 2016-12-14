@@ -97,8 +97,8 @@ if ($Attach->enable_attachment())
 					$hscale=$height/$targetheight;
 					$wscale=$width/$targetwidth;
 					$scale=($hscale < 1 && $wscale < 1) ? 1 : (( $hscale > $wscale) ? $hscale : $wscale);
-					$newwidth=floor($width/$scale*2.2);
-					$newheight=floor($height/$scale*2.2);
+					$newwidth=floor($width/$scale*2.8);
+					$newheight=floor($height/$scale*2.8);
 					if ($scale != 1){ //thumbnail is needed
 						if ($it==1)
 							$orig=@imagecreatefromgif($file["tmp_name"]);
