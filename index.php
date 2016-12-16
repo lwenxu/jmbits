@@ -141,17 +141,19 @@ if (!$Cache->get_page()){
 							<div class=\"panel-body\">
 							<p>";
                     echo format_comment($array["body"],0);
-                    if (get_user_class() >= $newsmanage_class){
+                    if (get_user_class() >= 14){
                     echo "
                         <br><br>
                             <span class='icon-edit' style='color:#2DCB70'></span> <a class=\"faqlink\" href=\"news.php?action=edit&amp;newsid=" . $array['id'] . "\">" . $lang_index['text_e'] . "</a>
                             <span class='icon-trash' style='color: tomato'></span> <a class=\"faqlink\" href=\"news.php?action=delete&amp;newsid=" . $array['id'] . "\">" . $lang_index['text_d'] . "</a>
-                                </p>
+                                
+				";
+
+                    }
+				echo "</p>
 							</div>
 						</div>
-					</div>
-				";
-                    }
+					</div>";
 //				print("<h3><a href=\"javascript: klappe_news('a".$array['id']."')\"><span class='icon-tags' style='color:#2DCB70'></span>&nbsp;"."". $array['title'] . "(".date("Y.m.d",strtotime($array['added'])).")</a></h3>");
 //				print("<div class='kas' id=\"ka".$array['id']."\" style=\"display: block;\"> ".format_comment($array["body"],0)." </div>");
 				$news_flag = $news_flag + 1;
@@ -171,15 +173,17 @@ if (!$Cache->get_page()){
 						<div id=\"collapseTwo$array[id]\" class=\"panel-collapse collapse\" role=\"tabpanel\" aria-labelledby=\"headingTwo\">
 							<div class=\"panel-body\"><p>";
 				echo format_comment($array["body"], 0);
-				if (get_user_class() >= $newsmanage_class){
+				if (get_user_class() >= 14){
 							echo "
                             <br><br>
                             <span class='icon-edit' style='color:#2DCB70'></span> <a class=\"faqlink\" href=\"news.php?action=edit&amp;newsid=" . $array['id'] . "\">" . $lang_index['text_e'] . "</a>
                             <span class='icon-trash' style='color: tomato'></span> <a class=\"faqlink\" href=\"news.php?action=delete&amp;newsid=" . $array['id'] . "\">" . $lang_index['text_d'] . "</a>
-                            </p></div>
+                           
+				";
+				}
+				echo " </p></div>
 						</div>
-					</div>
-				";}
+					</div>";
 //				print("<h3><a href=\"javascript: klappe_news('a".$array['id']."')\"><br /><span class='icon-tags' style='color:#2DCB70'></span>&nbsp;"."". $array['title'] . "(".date("Y.m.d",strtotime($array['added'])).")</a></h3>");
 //				print("<div class='alttext' id=\"ka".$array['id']."\" style=\"display: none;\"> ".format_comment($array["body"],0)." </div> ");
 			}
