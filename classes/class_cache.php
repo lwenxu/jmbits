@@ -15,7 +15,7 @@ class CACHE extends Memcache{
 	var $keyHits = array();
 	var $languageFolderArray = array();
 
-	function __construct($host = 'localhost', $port = 11211) {
+	function __construct($host = '127.0.0.1', $port = 11211) {
 		$success = $this->connect($host, $port); // Connect to memcache
 		if ($success) {
 			$this->isEnabled = 1;

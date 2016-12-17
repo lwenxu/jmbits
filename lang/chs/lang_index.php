@@ -70,7 +70,7 @@ $lang_index = array
 	'text_peers_active_now' => "个当前做种或下载的用户。",
 	'text_disclaimer' => "免责条款",
 	'text_disclaimer_content' => "本站列出的文件并没有保存在本站的服务器上。本站仅负责连接，我们对被传播文件的内容一无所知。本站的链接均由用户自发提供。".$SITENAME."的管理员无法对用户的提交内容或其他行为负责。您不能使用".$SITENAME."传播或下载任何您没有使用许可的文件或材料，由此引起的后果由您自己承担。",
-	'text_browser_note' => "获得本站最佳效果，请使用<a href=\"https://www.baidu.com/link?url=K8EEanhbHX9XtOdNkE5tL69n9xv5RRvfwjMI9MLjAvEyXyGAIx2Rn_Tvag7zn2lyGS5lYxLa5NQkzFJXMQCivMl8NZ806o6CBGOvCKb3A1a&wd=&eqid=b4f902bb000a825600000003580afdac\" target=\"_blank\"><img  class=\"ie\" src=\"pic/chrome.jpg\" title=\"下载Chrome\" /></a>或<a href=\"http://www.mozilla.com/en-US/firefox/\" target=\"_blank\"><img class=\"ie\" src=\"pic/firefox.jpg\" alt=\"Firefox\" title=\"下载Firefox\" /></a>且使用大于1024*768的分辨率。推荐BT客户端为<a href=\"http://www.utorrent.com/download.php\" target=\"_blank\"><img class=\"ie\" src=\"pic/utorrent.jpg\" alt=\"uTorrent\" title=\"下载uTorrent\" /></a>",
+	'text_browser_note' => "获得本站最佳效果，请使用<a href=\"https://www.baidu.com/link?url=K8EEanhbHX9XtOdNkE5tL69n9xv5RRvfwjMI9MLjAvEyXyGAIx2Rn_Tvag7zn2lyGS5lYxLa5NQkzFJXMQCivMl8NZ806o6CBGOvCKb3A1a&wd=&eqid=b4f902bb000a825600000003580afdac\" target=\"_blank\"><img  class=\"ie\" src=\"pic/chrome.jpg\" title=\"下载Chrome\" /></a>或<a href=\"http://www.mozilla.com/en-US/firefox/\" target=\"_blank\"><img class=\"ie\" src=\"pic/firefox.jpg\" alt=\"Firefox\" title=\"下载Firefox\" /></a>且使用大于1024*768的分辨率。推荐BT客户端为<a href=\"http://jm.nwu.edu.cn/assets/utorrent_2.2.1.exe\" target=\"_blank\"><img class=\"ie\" src=\"pic/utorrent.jpg\" alt=\"uTorrent\" title=\"下载uTorrent\" /></a>",
 	'title_show_or_hide' => "显示/隐藏",
 	'text_links' => "友情链接",
 	'text_manage_links' => "管理链接",
