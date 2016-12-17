@@ -209,7 +209,8 @@ else
 }
 }
 
-$limit = ($CURUSER['sbnum'] ? $CURUSER['sbnum'] : 70); 
+//$limit = ($CURUSER['sbnum'] ? $CURUSER['sbnum'] : 70);
+$limit=100;
 if ($where == "helpbox")
 {
 $sql = "SELECT * FROM shoutbox WHERE type='hb' ORDER BY date DESC LIMIT ".$limit;

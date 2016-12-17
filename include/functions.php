@@ -2564,7 +2564,13 @@ $cssupdatedate=($cssupdatedate ? "?".htmlspecialchars($cssupdatedate) : "");
 <script src="./styles/bootstrap/js/bootstrap.min.js"></script>
 <link href="./styles/awesome/css/font-awesome.min.css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="./styles/BambooGreen/main.css">
-<?php
+    <!--[if lt IE 9]>
+    <div id="ratioTip" class="alert">
+        <button type="button" class="close" onclick="document.body.removeChild(this.parentNode)">×</button>
+        <strong>提示：</strong>系统检测到您正在使用古董级浏览器，这将严重影响浏览体验。请使用Chrome/FireFox/Safari/Internet Explorer 11或将国产浏览器调为极速模式。
+    </div>
+    <![endif]-->
+    <?php
 if ($CURUSER){
 	$caticonrow = get_category_icon_row($CURUSER['caticon']);
 	if($caticonrow['cssfile']){
