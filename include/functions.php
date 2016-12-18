@@ -2720,7 +2720,7 @@ if ($CURUSER){
 							</td>
 
 							<td class="bottom" ><span class="medium"><span
-										class="icon-time"></span> <?php echo $lang_functions['text_the_time_is_now'] ?><?php echo date('Y-m-d-h:m'); ?>
+										class="icon-time"></span> <?php echo $lang_functions['text_the_time_is_now'] ?><?php echo date('Y-m-d  h:i:sa'); ?>
 									<br/>
 
 									<?php
