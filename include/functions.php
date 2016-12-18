@@ -1639,11 +1639,12 @@ function safe_email($email) {
 	return $email;
 }
 
-function check_email ($email) {
-	if(preg_match('/^[A-Za-z0-9][A-Za-z0-9_.+\-]*@nwu.edu.cn/', $email)|| preg_match('/^[A-Za-z0-9][A-Za-z0-9_.+\-]*@stumail.nwu.edu.cn/', $email))
-	return true;
+function check_email($email)
+{
+	if (preg_match('/^[A-Za-z0-9][A-Za-z0-9_.+\-]*@[A-Za-z0-9][A-Za-z0-9_+\-]*(\.[A-Za-z0-9][A-Za-z0-9_+\-]*)+$/', $email))
+		return true;
 	else
-	return false;
+		return false;
 }
 
 function sent_mail($to,$fromname,$fromemail,$subject,$body,$type = "confirmation",$showmsg=true,$multiple=false,$multiplemail='',$hdr_encoding = 'UTF-8', $specialcase = '') {
