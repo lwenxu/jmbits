@@ -56,7 +56,7 @@ if (!$az) err("Invalid passkey! Re-download the .torrent from $BASEURL");
 $userid = 0 + $az['id'];
 
 //3. CHECK IF CLIENT IS ALLOWED
-$clicheck_res = check_client($peer_id, $agent, &$client_familyid);
+$clicheck_res = check_client($peer_id, $agent, $client_familyid);
 if ($clicheck_res) {
 	if ($az['showclienterror'] == 'no') {
 		sql_query("UPDATE users SET showclienterror = 'yes' WHERE id = " . sqlesc($userid));
