@@ -75,6 +75,7 @@ elseif ($az['showclienterror'] == 'yes'){
 }
 
 // check torrent based on info_hash
+//这个也就是在种子上传以后，pt对种子文件所做的处理就是给他添加hash，没添加的就是没有进行过pt验证的种子
 if (!$torrent = $Cache->get_value('torrent_hash_'.$info_hash.'_content')){
 	$res = sql_query("SELECT id, owner, sp_state, seeders, leechers, UNIX_TIMESTAMP(added) AS ts, banned FROM torrents WHERE " . hash_where("info_hash", $info_hash));
 	$torrent = mysql_fetch_array($res);
@@ -227,7 +228,7 @@ else // continue an existing session
 			$is_cheater = check_cheater($userid, $torrent['id'], $upthis, $downthis, $self['announcetime'], $torrent['seeders'], $torrent['leechers']);
 		}
 	}
-
+//看种子需要消耗多少魔力值
 	if (!$is_cheater && ($trueupthis > 0 || $truedownthis > 0))
 	{
 		$global_promotion_state = get_global_sp_state();
@@ -350,13 +351,31 @@ elseif(isset($self))
 }
 else
 {
-	$sockres = @pfsockopen($ip, $port, $errno, $errstr, 5);
-	if (!$sockres)
-	{
-		$connectable = "no";
-	}
+
+// 只能 ipv4   原生
+//	$sockres = @pfsockopen($ip, $port, $errno, $errstr, 5);
+//	if (!$sockres)
+//	{
+//		$connectable = "no";
+//	}
+//	else
+//	{
+//		$connectable = "yes";
+//		@fclose($sockres);
+//	}
+
+
+//	增加双栈协议
+	if (strlen($ip) > 15) $protocol == 6;
+	if ($protocol == 6)     //判断是否为ipv6地址
+	$sockres = @pfsockopen("tcp://[".$ip."]", $port, $errno, $errstr, 5);
 	else
 	{
+		$sockres = @pfsockopen($ip, $port, $errno, $errstr, 5);
+	}
+	if (!$sockres) {
+		$connectable = "no";
+	} else {
 		$connectable = "yes";
 		@fclose($sockres);
 	}
