@@ -2589,13 +2589,14 @@ if ($CURUSER){
 <script type="text/javascript" src="domTT.js<?php echo $cssupdatedate?>"></script>
 <script type="text/javascript" src="domTT_drag.js<?php echo $cssupdatedate?>"></script>
 <script type="text/javascript" src="fadomatic.js<?php echo $cssupdatedate?>"></script>
+<script type="text/javascript" src="./styles/js/jquery-1.8.js"></script>
 </head>
 
 
 <body class="container-fluid">
 <!-- // add goto top  by lwenxu-->
 <div id="gotop" class="icon-circle-arrow-up m-icon-big"></div>
-<script type="text/javascript" src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
+<!--<script type="text/javascript" src="http://code.jquery.com/jquery-1.8.3.min.js"></script>-->
    <script type="text/javascript">
        $(window).scroll(function () {
            var sc = $(window).scrollTop();
