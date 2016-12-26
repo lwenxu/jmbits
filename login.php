@@ -84,7 +84,7 @@ if (!empty($_GET["returnto"])) {
 			</p>
 		</div>
 	</form>
-
+    </div>
 
 
 
@@ -152,4 +152,6 @@ if (!empty($_GET["returnto"])) {
 //print(smile_row("shbox","shbox_text"));
 //print("</td></tr></table></form></td></tr></table>");
 //}
+
+gethelptips();
 stdfoot();

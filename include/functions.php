@@ -5131,4 +5131,15 @@ function languagetable($res, $frame_caption)
 	end_table();
 	end_frame();
 }
+
+function gethelptips(){
+	echo "
+	    <div class=\"alert alert-block alert-info \">
+	        <div style='text-align: center'>
+            如果您在注册或者登陆中遇到任何错误及问题，您可以添加嘉木官方群：146893295<br/>
+            会有热心的客服以及同学帮您解决问题 ，感谢您的支持！
+            </div>
+	    </div>
+	";
+}
 ?>

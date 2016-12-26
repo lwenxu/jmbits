@@ -13,10 +13,11 @@ stderr($lang_takeinvite['std_error'],$lang_takeinvite['std_invite_denied']);
 if ($CURUSER['invites'] < 1)
 	stderr($lang_takeinvite['std_error'],$lang_takeinvite['std_no_invite']);
 function bark($msg) {
-  stdhead();
-	stdmsg($lang_takeinvite['head_invitation_failed'], $msg);
-  stdfoot();
-  exit;
+	global $lang_takeinvite;
+      login_head();
+	  stdmsg($lang_takeinvite['head_invitation_failed'], $msg);
+	  stdfoot();
+	  exit;
 }
 
 $id = $CURUSER[id];

@@ -46,7 +46,6 @@ else {
 //	stdhead($lang_signup['head_signup']);
 	login_head();
 }
-
 //$s = "<select name=\"sitelanguage\" onchange='submit()'>\n";
 
 //$langs = langlist("site_lang");
@@ -94,13 +93,13 @@ print("<input type=hidden name=type value='invite'><input type=hidden name=invit
 			<div class="form-group">
 				<!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
 				<label class="control-label visible-ie8 visible-ie9">Email</label>
+<!--				<label class="control-label visible-ie8 visible-ie9">(格式example@stumail.nwu.edu.cn)</label>-->
 				<input class="form-control placeholder-no-fix" type="text" placeholder="Email  目前只支持西大邮箱注册" name="email"></div>
-
 			<div class="form-group">
 				<label class="control-label visible-ie8 visible-ie9">Country</label>
 <?php
 
-	$countries = "<option value=\"8\">---- " . $lang_signup['select_none_selected'] . " ----</option>n";
+	$countries = "<option value=\"8\">---- " . $lang_signup['select_none_selected'] . " ----</option>";
 $ct_r = sql_query("SELECT id,name FROM countries ORDER BY name") or die;
 while ($ct_a = mysql_fetch_array($ct_r))
 	$countries .= "<option value=$ct_a[id]" . ($ct_a['id'] == 8 ? " selected" : "") . ">$ct_a[name]</option>n";
@@ -194,4 +193,5 @@ while ($ct_a = mysql_fetch_array($ct_r))
 <!--</table>-->
 <!--</form>-->
 <?php
+gethelptips();
 stdfoot();
