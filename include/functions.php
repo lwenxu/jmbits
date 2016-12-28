@@ -4705,7 +4705,6 @@ echo "
 		";
 
 echo "
-<link href=\"http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&amp;subset=all\" rel=\"stylesheet\" type=\"text/css\">
 <link type='text/css' rel='stylesheet' href='./styles/BambooGreen/components.css'>
 <link type='text/css' rel='stylesheet' href='./styles/BambooGreen/login.css'>
 <link type='text/css' rel='stylesheet' href='./styles/bootstrap/css/bootstrap.min.css'>
