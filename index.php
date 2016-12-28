@@ -141,14 +141,14 @@ if (!$Cache->get_page()){
 							<div class=\"panel-body\">
 							<p>";
                     echo format_comment($array["body"],0);
-                    if (get_user_class() >= 14){
+                    var_dump(get_user_class() >= $newsmanage_class);
+                    if (get_user_class() >= $newsmanage_class){
                     echo "
                         <br><br>
                             <span class='icon-edit' style='color:#2DCB70'></span> <a class=\"faqlink\" href=\"news.php?action=edit&amp;newsid=" . $array['id'] . "\">" . $lang_index['text_e'] . "</a>
                             <span class='icon-trash' style='color: tomato'></span> <a class=\"faqlink\" href=\"news.php?action=delete&amp;newsid=" . $array['id'] . "\">" . $lang_index['text_d'] . "</a>
                                 
 				";
-
                     }
 				echo "</p>
 							</div>
@@ -173,7 +173,7 @@ if (!$Cache->get_page()){
 						<div id=\"collapseTwo$array[id]\" class=\"panel-collapse collapse\" role=\"tabpanel\" aria-labelledby=\"headingTwo\">
 							<div class=\"panel-body\"><p>";
 				echo format_comment($array["body"], 0);
-				if (get_user_class() >= 14){
+				if (get_user_class() >= $newsmanage_class){
 							echo "
                             <br><br>
                             <span class='icon-edit' style='color:#2DCB70'></span> <a class=\"faqlink\" href=\"news.php?action=edit&amp;newsid=" . $array['id'] . "\">" . $lang_index['text_e'] . "</a>
