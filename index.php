@@ -118,15 +118,15 @@ if (!$Cache->get_page()){
 	$res = sql_query("SELECT * FROM news ORDER BY added DESC LIMIT ".(int)$maxnewsnum_main) or sqlerr(__FILE__, __LINE__);
 	if (mysql_num_rows($res) > 0)
 	{
-		$Cache->add_whole_row();
+//		$Cache->add_whole_row();
 		echo  "<div class=\"panel-body scroll\" style=\"overflow: auto; width: auto;height: 400px\">";
 		print("<table class=\"table table-striped\">");
-		$Cache->end_whole_row();
+//		$Cache->end_whole_row();
 		$news_flag = 0;
 		while($array = mysql_fetch_array($res))
 		{
-			$Cache->add_row();
-			$Cache->add_part();
+//			$Cache->add_row();
+//			$Cache->add_part();
 			if ($news_flag < 1) {
 				echo "
 				<div class=\"panel panel-default\">
@@ -186,15 +186,15 @@ if (!$Cache->get_page()){
 //				print("<h3><a href=\"javascript: klappe_news('a".$array['id']."')\"><br /><span class='icon-tags' style='color:#2DCB70'></span>&nbsp;"."". $array['title'] . "(".date("Y.m.d",strtotime($array['added'])).")</a></h3>");
 //				print("<div class='alttext' id=\"ka".$array['id']."\" style=\"display: none;\"> ".format_comment($array["body"],0)." </div> ");
 			}
-			$Cache->end_part();
-			$Cache->add_part();
+//			$Cache->end_part();
+//			$Cache->add_part();
 //			print("  &nbsp;<span class='icon-edit' style='color:#2DCB70'></span> <a class=\"faqlink\" href=\"news.php?action=edit&amp;newsid=" . $array['id'] . "\">".$lang_index['text_e']."</a>");
 //			print("  &nbsp;<span class='icon-trash' style='color: tomato'></span> <a class=\"faqlink\" href=\"news.php?action=delete&amp;newsid=" . $array['id'] . "\">".$lang_index['text_d']."</a>");
-			$Cache->end_part();
-			$Cache->end_row();
+//			$Cache->end_part();
+//			$Cache->end_row();
 		}
-		$Cache->break_loop();
-		$Cache->add_whole_row();
+//		$Cache->break_loop();
+//		$Cache->add_whole_row();
 //	echo "
 //	<div class=\"slimScrollBar\" style=\"background: rgb(0, 0, 0); width: 8px; position: absolute; top: 17px; opacity: 0.4; display: block; border-radius: 7px; z-index: 99; right: 1px; height: 249.231px;\"></div>
 //	<div class=\"slimScrollRail\" style=\"width: 8px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;\"></div>
@@ -202,7 +202,7 @@ if (!$Cache->get_page()){
 		print("</div></td></tr></table>\n");
 		echo "</div>";
 		//
-		$Cache->end_whole_row();
+//		$Cache->end_whole_row();
 	}
 	$Cache->cache_page();
 }
