@@ -141,7 +141,6 @@ if (!$Cache->get_page()){
 							<div class=\"panel-body\">
 							<p>";
                     echo format_comment($array["body"],0);
-                    var_dump(get_user_class() >= $newsmanage_class);
                     if (get_user_class() >= $newsmanage_class){
                     echo "
                         <br><br>
