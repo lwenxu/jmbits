@@ -3,8 +3,6 @@ require "include/bittorrent.php";
 dbconn(true);
 require_once(get_langfile_path());
 loggedinorreturn(true);
-if ($showextinfo['imdb'] == 'yes')
-	require_once ("imdb/imdb.class.php");
 if ($_SERVER["REQUEST_METHOD"] == "POST")
 {
 	if ($showpolls_main == "yes")
@@ -102,11 +100,17 @@ a {
 
 
 //  first  block
-block_start();
-col_start(5);
-eve_block_start();
+//block_start();
+//col_start(5);
+//eve_block_start();
 // ------------- start: new-boxes ------------------//
-panel_head_start();
+//panel_head_start();
+echo "<div class='row'>
+        <div class='col-lg-5 col-md-5 col-sm-5'>
+";
+
+
+echo "<div class='portlet light bordered '>";
 print("<h3 class=\"panel-title\"><span class=' glyphicon glyphicon-bell '></span>&nbsp;".$lang_index['text_recent_news'].(get_user_class() >= $newsmanage_class ? "&nbsp;&nbsp;&nbsp;&nbsp;<a class=\"altlink\" href=\"news.php\"><span class='icon-edit'></span>".$lang_index['text_news_page']."</a></font>" : "")."</h3>");
 panel_head_end();
 $Cache->new_page('recent_news', 86400, true);
