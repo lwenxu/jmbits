@@ -2190,15 +2190,15 @@ function mksize_loose($bytes)
 function mksize($bytes)
 {
 	if ($bytes < 1000 * 1024)
-	return number_format($bytes / 1024, 2) . " KB";
+	return number_format($bytes / 1024, 0) . " K";
 	elseif ($bytes < 1000 * 1048576)
-	return number_format($bytes / 1048576, 2) . " MB";
+	return number_format($bytes / 1048576, 0) . " M";
 	elseif ($bytes < 1000 * 1073741824)
-	return number_format($bytes / 1073741824, 2) . " GB";
+	return number_format($bytes / 1073741824, 1) . " G";
 	elseif ($bytes < 1000 * 1099511627776)
-	return number_format($bytes / 1099511627776, 3) . " TB";
+	return number_format($bytes / 1099511627776, 1) . " T";
 	else
-	return number_format($bytes / 1125899906842624, 3) . " PB";
+	return number_format($bytes / 1125899906842624, 1) . " P";
 }
 
 
@@ -2363,9 +2363,33 @@ function menu ($selected = "home") {
 	$selected = "";
 
 //	navbar  start
+	$datum = getdate();
+	$datum["hours"] = sprintf("%02.0f", $datum["hours"]);
+	$datum["minutes"] = sprintf("%02.0f", $datum["minutes"]);
+	$ratio = get_ratio($CURUSER['id']);
+
+	//// check every 15 minutes //////////////////
+		$messages = get_row_count("messages", "WHERE receiver=" . sqlesc($CURUSER["id"]) . " AND location<>0");
+		$outmessages = get_row_count("messages", "WHERE sender=" . sqlesc($CURUSER["id"]) . " AND saved='yes'");
+
+	//// check every 60 seconds //////////////////
+	if ($activeseed == "") {
+		$activeseed = get_row_count("peers", "WHERE userid=" . sqlesc($CURUSER["id"]) . " AND seeder='yes'");
+	}
+		$activeleech = get_row_count("peers", "WHERE userid=" . sqlesc($CURUSER["id"]) . " AND seeder='no'");
+	$unread = get_row_count("messages", "WHERE receiver=" . sqlesc($CURUSER["id"]) . " AND unread='yes'");
+	$res3 = sql_query("SELECT connectable FROM peers WHERE userid=" . sqlesc($CURUSER["id"]) . " LIMIT 1");
+    if ($row = mysql_fetch_row($res3))
+        $connect = $row[0];
+    else $connect = 'unknown';
+	if ($connect == "yes")
+		$connectable = "<font color=\"green\">" . $lang_functions['text_yes'] . "</font>";
+	elseif ($connect == 'no')
+		$connectable = "<a href=\"faq.php#id21\"><font color=\"red\">" . $lang_functions['text_no'] . "</font></a>";
+	else
+		$connectable = $lang_functions['text_unknown'];
 	echo "
-<nav class=\"navbar navbar-inverse navbar-static-top\" role=\"navigation\">
-<div class='col-lg-12 col-md-12 col-sm-12 col-xs-12'>
+<nav class=\"navbar navbar-inverse navbar-static-top\">
 	<div class=\"container\">
     <div class=\"navbar-header\">
         <a class=\"navbar-brand\" href=\"index.php\" style='color: white'>NWU PT</a>
@@ -2388,7 +2412,146 @@ function menu ($selected = "home") {
 	print ("<li" . ($selected == "topten" ? " class=\"active\"" : "") . "><a href=\"topten.php\">".$lang_functions['text_top_ten']."</a></li>");
 	print ("<li" . ($selected == "faq" ? " class=\"active\"" : "") . "><a href=\"faq.php\">".$lang_functions['text_faq']."</a></li>");
 	print ("<li" . ($selected == "staff" ? " class=\"active\"" : "") . "><a href=\"staff.php\">".$lang_functions['text_staff']."</a></li>");
-	print ("</ul></nav>");
+//	echo "<li><a href='messages.php'><span class='icon-bell'></span>&nbsp;<span class='badge'>$unread</span></a></li>";
+//	echo "<li><a href='torrents.php?inclbookmarked=1&amp;allsec=1&amp;incldead=0'><span class='glyphicon glyphicon-heart'></span>&nbsp;<span class='badge'>$unread</span></a></li>";
+//	echo "<li><a href='messages.php'>"."<span class='icon-bell'></span>&nbsp;<span class='badge'>$unread</span></a></li>";
+//	echo "<li><a href='logout.php'><span class='glyphicon glyphicon-log-out'></span></a></li>";
+
+	echo "</ul>
+
+
+<div class=\"top-menu\">
+                        <ul class=\"nav navbar-nav pull-right\">
+                            <li class=\"dropdown dropdown-extended dropdown-notification\" id=\"header_notification_bar\">
+                                <a href=\"messages.php\">
+                                    <i class=\"icon-bell\"></i>
+                                    <span class=\"badge badge-default\"> $unread </span>
+                                </a>
+                            </li>
+                            
+                            <li class=\"dropdown dropdown-extended dropdown-inbox\" id=\"header_inbox_bar\">
+                                <a href=\"#\" class=\"dropdown-toggle\" >
+                                    <i class=\"glyphicon glyphicon-share-alt\"></i>
+                                    <span class=\"badge badge-default\"> ".get_ratio($CURUSER['id']) ."</span>
+                                </a>
+                            </li>
+                            <li class=\"dropdown dropdown-extended dropdown-tasks\" id=\"header_task_bar\">
+                                <a href=\"#\" class=\"dropdown-toggle\" >
+                                    <i class=\"glyphicon glyphicon-gbp\"></i>
+                                    <span class=\"badge badge-default\"> ". number_format($CURUSER['seedbonus'], 0)." </span>
+                                </a>
+                            </li>
+                            
+                            
+                            <li class=\"dropdown dropdown-user\">
+                                <a href=\"javascript:;\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" data-hover=\"dropdown\" data-close-others=\"true\" aria-expanded=\"false\">
+                                    <img class=\"img-circle\" height='17px' width='17px' src=".$CURUSER['avatar'].">
+                                    
+                                    <i class=\"fa fa-angle-down\"></i>
+                                </a>
+                                <ul class=\"dropdown-menu dropdown-menu-default\">
+                                    <li>
+                                        <a href=\"userdetails.php?id=1\">
+                                            <i class=\"icon-user\"></i> 我的资料 </a>
+                                    </li>
+                                    <li>
+                                        <a href=\"friends.php\">
+                                            <i class=\"icon-group\"></i> 我的好友 </a>
+                                    </li>
+                                     <li>
+                                        <a href=\"faq.php#id75\">
+                                            <i class=\"glyphicon glyphicon-link\"></i> 可连接
+                                            <span class=\"badge badge-success\"> ".$connectable." </span>
+                                        </a>
+                                    </li>
+                                    <li class=\"divider\"> </li>
+                                    <li>
+                                        <a href=\"#\">
+                                            <i class=\"glyphicon glyphicon-open\"></i> 上传量
+                                            <span class=\"badge badge-danger\"> ". mksize($CURUSER['uploaded'])." </span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href=\"#\">
+                                            <i class=\"glyphicon glyphicon-save\"></i> 下载量
+                                            <span class=\"badge badge-danger\"> ". mksize($CURUSER['downloaded'])." </span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href=\"invite.php?id=$CURUSER[id]\">
+                                            <i class=\"glyphicon glyphicon-share\"></i> 邀请
+                                            <span class=\"badge badge-success\"> 7 </span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href=\"#\">
+                                            <i class=\"glyphicon glyphicon-arrow-up info\"></i> 当前上传
+                                            <span class=\"badge badge-success\"> 7 </span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href=\"#\">
+                                            <i class=\"glyphicon glyphicon-arrow-down \"></i> 当前下载
+                                            <span class=\"badge badge-success\"> 7 </span>
+                                        </a>
+                                    </li>
+                                    <li class=\"divider\"> </li>";
+                                if (get_user_class() >= UC_MODERATOR) {
+	                                $totalreports = get_row_count("reports");
+	                                $totalsm = get_row_count("staffmessages");
+	                                $totalcheaters = get_row_count("cheaters");
+	                                echo "<li>
+                                        <a href=\"staffpanel.php\">
+                                            <i class=\"icon-cogs\"></i> 管理组
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href=\"settings.php\">
+                                            <i class=\"icon-wrench\"></i> 站点后台
+                                        </a>
+                                    </li>
+                                     <li>
+                                        <a href=\"reports.php\">
+                                            <i class=\"icon-exclamation-sign\"></i> 举报信箱
+                                            <span class=\"badge badge - success\"> $totalreports </span>
+                                        </a>
+                                    </li>
+                                     <li>
+                                        <a href=\"staffbox.php\">
+                                            <i class=\"icon-envelope-alt\"></i> 管理组信箱
+                                            <span class=\"badge badge - success\"> $totalsm </span>
+                                        </a>
+                                    </li>
+                                     <li>
+                                        <a href=\"cheaterbox.php\">
+                                            <i class=\"icon-ban-circle\"></i> 作弊者
+                                            <span class=\"badge badge-success\"> $totalcheaters </span>
+                                            
+                                        </a>
+                                    </li>
+                                    ";
+                                }
+                                   echo  "<li>
+                                        <a href=\"logout.php\">
+                                            <i class=\"icon-key\"></i> 退出 </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <!-- END USER LOGIN DROPDOWN -->
+                            <!-- BEGIN QUICK SIDEBAR TOGGLER -->
+                            <!-- DOC: Apply \"dropdown-dark\" class after below \"dropdown-extended\" to change the dropdown styte -->
+                            <li class=\"dropdown dropdown-quick-sidebar-toggler\">
+                                <a href=\"javascript:;\" class=\"dropdown-toggle\">
+                                    <i class=\"icon-logout\"></i>
+                                </a>
+                            </li>
+                            <!-- END QUICK SIDEBAR TOGGLER -->
+                        </ul>
+                    </div>
+                    </div>
+</nav>";
+
+
 
 	if ($CURUSER){
 		if ($where_tweak == 'yes')
@@ -2669,92 +2832,92 @@ if ($CURUSER){
 			$activeleech = get_row_count("peers", "WHERE userid=" . sqlesc($CURUSER["id"]) . " AND seeder='no'");
 			$Cache->cache_value('user_' . $CURUSER["id"] . '_active_leech_count', $activeleech, 60);
 		}
-		$unread = $Cache->get_value('user_' . $CURUSER["id"] . '_unread_message_count');
-		if ($unread == "") {
-			$unread = get_row_count("messages", "WHERE receiver=" . sqlesc($CURUSER["id"]) . " AND unread='yes'");
-			$Cache->cache_value('user_' . $CURUSER["id"] . '_unread_message_count', $unread, 60);
-		}
-        $deepico='icon-envelope-alt';
-		$lightico=' icon-envelope';
-		$inboxpic = "<span class=\"".($unread ?$lightico:$deepico)."\"title=\"" . ($unread ? $lang_functions['title_inbox_new_messages'] : $lang_functions['title_inbox_no_new_messages']) . "\"></span>";
+//		$unread = $Cache->get_value('user_' . $CURUSER["id"] . '_unread_message_count');
+//		if ($unread == "") {
+//			$unread = get_row_count("messages", "WHERE receiver=" . sqlesc($CURUSER["id"]) . " AND unread='yes'");
+//			$Cache->cache_value('user_' . $CURUSER["id"] . '_unread_message_count', $unread, 60);
+//		}
+//        $deepico='icon-envelope-alt';
+//		$lightico=' icon-envelope';
+//		$inboxpic = "<span class=\"".($unread ?$lightico:$deepico)."\"title=\"" . ($unread ? $lang_functions['title_inbox_new_messages'] : $lang_functions['title_inbox_no_new_messages']) . "\"></span>";
 		?>
 
-		<table id="info_block" class="table table-noborder zeromp" cellpadding="4" cellspacing="0" border="0"
-		       width="100%">
-			<tr>
-				<td>
-					<table width="100%" cellspacing="0" cellpadding="0" border="0">
-						<tr>
-							<td class="bottom" ><span
-									class="medium"><?php echo $lang_functions['text_welcome_back'] ?>, <span
-										class="icon-user"></span><?php echo get_username($CURUSER['id']) ?> <span
-										class="icon-signout"></span><a
-										href="logout.php"><?php echo $lang_functions['text_logout'] ?></a><?php if (get_user_class() >= UC_MODERATOR) { ?>
-										<span class="icon-cogs"></span><a
-											href="staffpanel.php"><?php echo $lang_functions['text_staff_panel'] ?></a> <?php } ?> <?php if (get_user_class() >= UC_SYSOP) { ?>
-										<span class="icon-wrench"></span><a
-											href="settings.php"><?php echo $lang_functions['text_site_settings'] ?></a><?php } ?>
-									<span class="icon-star"></span><a
-										href="torrents.php?inclbookmarked=1&amp;allsec=1&amp;incldead=0"><?php echo $lang_functions['text_bookmarks'] ?></a> <font
-										class='color_bonus'><?php echo $lang_functions['text_bonus'] ?></font><span
-										class=" icon-pinterest"></span><a
-										href="mybonus.php"><?php echo $lang_functions['text_use'] ?></a>: <?php echo number_format($CURUSER['seedbonus'], 1) ?>
-									<font class='color_invite'><?php echo $lang_functions['text_invite'] ?></font><span
-										class="icon-share-alt"></span><a
-										href="invite.php?id=<?php echo $CURUSER['id'] ?>"><?php echo $lang_functions['text_send'] ?></a>: <?php echo $CURUSER['invites'] ?>
-									<br/>
-
-	<font class="color_ratio"><?php echo $lang_functions['text_ratio'] ?></font> <?php echo $ratio ?> <font
-										class='color_uploaded'><?php echo $lang_functions['text_uploaded'] ?></font> <?php echo mksize($CURUSER['uploaded']) ?>
-									<font
-										class='color_downloaded'> <?php echo $lang_functions['text_downloaded'] ?></font> <?php echo mksize($CURUSER['downloaded']) ?>
-									<font
-										class='color_active'><?php echo $lang_functions['text_active_torrents'] ?></font><span
-										class="icon-circle-arrow-up"
-										title="<?php echo $lang_functions['title_torrents_seeding'] ?>"></span><?php echo $activeseed ?>
-									<span class="icon-circle-arrow-down"
-									      title="<?php echo $lang_functions['title_torrents_leeching'] ?>"></span><?php echo $activeleech ?>
-									&nbsp;&nbsp;<font
-										class='color_connectable'><?php echo $lang_functions['text_connectable'] ?></font><?php echo $connectable ?> <?php echo maxslots(); ?></span>
-							</td>
-
-							<td class="bottom" ><span class="medium"><span
-										class="icon-time"></span> <?php echo $lang_functions['text_the_time_is_now'] ?><?php echo date('Y-m-d  h:i:sa'); ?>
-									<br/>
-
-									<?php
-									if (get_user_class() >= $staffmem_class) {
-										$totalreports = $Cache->get_value('staff_report_count');
-										if ($totalreports == "") {
-											$totalreports = get_row_count("reports");
-											$Cache->cache_value('staff_report_count', $totalreports, 900);
-										}
-										$totalsm = $Cache->get_value('staff_message_count');
-										if ($totalsm == "") {
-											$totalsm = get_row_count("staffmessages");
-											$Cache->cache_value('staff_message_count', $totalsm, 900);
-										}
-										$totalcheaters = $Cache->get_value('staff_cheater_count');
-										if ($totalcheaters == "") {
-											$totalcheaters = get_row_count("cheaters");
-											$Cache->cache_value('staff_cheater_count', $totalcheaters, 900);
-										}
-										print("<a href=\"cheaterbox.php\"><span class='icon-ban-circle' title=\"" . $lang_functions['title_cheaterbox'] . "\"></span>  </a>" . $totalcheaters . "  <a href=\"reports.php\"><span class='icon-exclamation-sign' title=\"" . $lang_functions['title_reportbox'] . "\"></span>  </a>" . $totalreports . "  <a href=\"staffbox.php\"><span class='icon-envelope-alt' title=\"" . $lang_functions['title_staffbox'] . "\"></span>  </a>" . $totalsm . "  ");
-									}
-
-//									print("<a href=\"messages.php\">" . $inboxpic . "</a> " . ($messages ? $messages . " (" . $unread . $lang_functions['text_message_new'] . ")" : "0"));
-									print("<a href=\"messages.php\">" . $inboxpic . "</a> " . ($messages ?  $unread  : "0"));
-									print("  <a href=\"messages.php?action=viewmailbox&amp;box=-1\"><span class='icon-comment-alt' title=\"" . $lang_functions['title_sentbox'] . "\"></span></a> " . ($outmessages ? $outmessages : "0"));
-									print(" <a href=\"friends.php\"><span class='icon-group' title=\"" . $lang_functions['title_buddylist'] . "\"></span></a>");
-									//	print(" <a href=\"getrss.php\"><span class='icon-rss' title=\"".$lang_functions['title_get_rss']."\"></span></a>");
-									?>
-
-	</span></td>
-						</tr>
-					</table>
-				</td>
-			</tr>
-		</table>
+<!--		<table id="info_block" class="table table-noborder zeromp" cellpadding="4" cellspacing="0" border="0"-->
+<!--		       width="100%">-->
+<!--			<tr>-->
+<!--				<td>-->
+<!--					<table width="100%" cellspacing="0" cellpadding="0" border="0">-->
+<!--						<tr>-->
+<!--							<td class="bottom" ><span-->
+<!--									class="medium">--><?php //echo $lang_functions['text_welcome_back'] ?><!--, <span-->
+<!--										class="icon-user"></span>--><?php //echo get_username($CURUSER['id']) ?><!-- <span-->
+<!--										class="icon-signout"></span><a-->
+<!--										href="logout.php">--><?php //echo $lang_functions['text_logout'] ?><!--</a>--><?php //if (get_user_class() >= UC_MODERATOR) { ?>
+<!--										<span class="icon-cogs"></span><a-->
+<!--											href="staffpanel.php">--><?php //echo $lang_functions['text_staff_panel'] ?><!--</a> --><?php //} ?><!-- --><?php //if (get_user_class() >= UC_SYSOP) { ?>
+<!--										<span class="icon-wrench"></span><a-->
+<!--											href="settings.php">--><?php //echo $lang_functions['text_site_settings'] ?><!--</a>--><?php //} ?>
+<!--									<span class="icon-star"></span><a-->
+<!--										href="torrents.php?inclbookmarked=1&amp;allsec=1&amp;incldead=0">--><?php //echo $lang_functions['text_bookmarks'] ?><!--</a> <font-->
+<!--										class='color_bonus'>--><?php //echo $lang_functions['text_bonus'] ?><!--</font><span-->
+<!--										class=" icon-pinterest"></span><a-->
+<!--										href="mybonus.php">--><?php //echo $lang_functions['text_use'] ?><!--</a>: --><?php //echo number_format($CURUSER['seedbonus'], 1) ?>
+<!--									<font class='color_invite'>--><?php //echo $lang_functions['text_invite'] ?><!--</font><span-->
+<!--										class="icon-share-alt"></span><a-->
+<!--										href="invite.php?id=--><?php //echo $CURUSER['id'] ?><!--">--><?php //echo $lang_functions['text_send'] ?><!--</a>: --><?php //echo $CURUSER['invites'] ?>
+<!--									<br/>-->
+<!---->
+<!--	<font class="color_ratio">--><?php //echo $lang_functions['text_ratio'] ?><!--</font> --><?php //echo $ratio ?><!-- <font-->
+<!--										class='color_uploaded'>--><?php //echo $lang_functions['text_uploaded'] ?><!--</font> --><?php //echo mksize($CURUSER['uploaded']) ?>
+<!--									<font-->
+<!--										class='color_downloaded'> --><?php //echo $lang_functions['text_downloaded'] ?><!--</font> --><?php //echo mksize($CURUSER['downloaded']) ?>
+<!--									<font-->
+<!--										class='color_active'>--><?php //echo $lang_functions['text_active_torrents'] ?><!--</font><span-->
+<!--										class="icon-circle-arrow-up"-->
+<!--										title="--><?php //echo $lang_functions['title_torrents_seeding'] ?><!--"></span>--><?php //echo $activeseed ?>
+<!--									<span class="icon-circle-arrow-down"-->
+<!--									      title="--><?php //echo $lang_functions['title_torrents_leeching'] ?><!--"></span>--><?php //echo $activeleech ?>
+<!--									&nbsp;&nbsp;<font-->
+<!--										class='color_connectable'>--><?php //echo $lang_functions['text_connectable'] ?><!--</font>--><?php //echo $connectable ?><!-- --><?php //echo maxslots(); ?><!--</span>-->
+<!--							</td>-->
+<!---->
+<!--							<td class="bottom" ><span class="medium"><span-->
+<!--										class="icon-time"></span> --><?php //echo $lang_functions['text_the_time_is_now'] ?><!----><?php //echo date('Y-m-d  h:i:sa'); ?>
+<!--									<br/>-->
+<!---->
+<!--									--><?php
+//									if (get_user_class() >= $staffmem_class) {
+//										$totalreports = $Cache->get_value('staff_report_count');
+//										if ($totalreports == "") {
+//											$totalreports = get_row_count("reports");
+//											$Cache->cache_value('staff_report_count', $totalreports, 900);
+//										}
+//										$totalsm = $Cache->get_value('staff_message_count');
+//										if ($totalsm == "") {
+//											$totalsm = get_row_count("staffmessages");
+//											$Cache->cache_value('staff_message_count', $totalsm, 900);
+//										}
+//										$totalcheaters = $Cache->get_value('staff_cheater_count');
+//										if ($totalcheaters == "") {
+//											$totalcheaters = get_row_count("cheaters");
+//											$Cache->cache_value('staff_cheater_count', $totalcheaters, 900);
+//										}
+//										print("<a href=\"cheaterbox.php\"><span class='icon-ban-circle' title=\"" . $lang_functions['title_cheaterbox'] . "\"></span>  </a>" . $totalcheaters . "  <a href=\"reports.php\"><span class='icon-exclamation-sign' title=\"" . $lang_functions['title_reportbox'] . "\"></span>  </a>" . $totalreports . "  <a href=\"staffbox.php\"><span class='icon-envelope-alt' title=\"" . $lang_functions['title_staffbox'] . "\"></span>  </a>" . $totalsm . "  ");
+//									}
+//
+////									print("<a href=\"messages.php\">" . $inboxpic . "</a> " . ($messages ? $messages . " (" . $unread . $lang_functions['text_message_new'] . ")" : "0"));
+//									print("<a href=\"messages.php\">" . $inboxpic . "</a> " . ($messages ?  $unread  : "0"));
+//									print("  <a href=\"messages.php?action=viewmailbox&amp;box=-1\"><span class='icon-comment-alt' title=\"" . $lang_functions['title_sentbox'] . "\"></span></a> " . ($outmessages ? $outmessages : "0"));
+//									print(" <a href=\"friends.php\"><span class='icon-group' title=\"" . $lang_functions['title_buddylist'] . "\"></span></a>");
+//									//	print(" <a href=\"getrss.php\"><span class='icon-rss' title=\"".$lang_functions['title_get_rss']."\"></span></a>");
+//									?>
+<!---->
+<!--	</span></td>-->
+<!--						</tr>-->
+<!--					</table>-->
+<!--				</td>-->
+<!--			</tr>-->
+<!--		</table>-->
 
 	</td>
 </div>
@@ -3616,10 +3779,9 @@ function get_username($id, $big = false, $link = true, $bold = true, $target = f
 		else
 			$pics .= "<img class=\"".$disabledpic."\" src=\"pic/trans.gif\" alt=\"Disabled\" ".$style." />\n";
 
-		$username = ($underline == false ? "<u>" . $arr['username'] . "</u>" : $arr['username']);
-		$username = ($bold == true ? "" . $username . "" : $username);
+//		$username = ($underline == false ? "<u>" . $arr['username'] . "</u>" : $arr['username']);
+//		$username = ($bold == true ? "" . $username . "" : $username);
 		$username = ($link == true ? "<a ". $link_ext . " href=\"userdetails.php?id=" . $id . "\"" . ($target == true ? " target=\"_blank\"" : "") . " class='". get_user_class_name($arr['class'],true) . "_Name'>" . $username . "</a>" : $username) . $pics . ($withtitle == true ? " (" . ($arr['title'] == "" ?  get_user_class_name($arr['class'],false,true,true) : "<span class='".get_user_class_name($arr['class'],true) . "_Name'>".htmlspecialchars($arr['title'])) . "</span>)" : "");
-
 		$username = "<span class=\"nowrap\">" . ( $bracket == true ? "(" . $username . ")" : $username) . "</span>";
 	}
 	else
@@ -3630,7 +3792,7 @@ function get_username($id, $big = false, $link = true, $bold = true, $target = f
 	if (func_num_args() == 1) { //One argument=is default display of username, save it in static array
 		$usernameArray[$id] = $username;
 	}
-	return $username;
+	return $arr['username'];
 }
 
 function get_percent_completed_image($p) {

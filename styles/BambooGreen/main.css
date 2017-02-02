@@ -89,3 +89,14 @@
 link:focus{
     outline: none;
 }
+
+#navbg{
+    background-color: rgba(0, 0, 0, 0.6);;
+    width: 1303px;
+    margin: 0 auto;
+}
+
+#navicon{
+    font-size: 17px;
+    margin-left: 60px;
+}
