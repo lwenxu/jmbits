@@ -38,81 +38,34 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 stdhead($lang_index['head_home']);
 begin_main_frame();
 main_content_start();
-echo "
-<style>
-a {
-    color: #337ab7;
-    text-decoration: none;
-    background-color: transparent;
-}
-</style>
-";
-
-// ------------- start:  fun box ------------------//
-//if ($showfunbox_main == "yes" && (!isset($CURUSER) || $CURUSER['showfb'] == "yes")){
-//	// Get the newest fun stuff
-//	if (!$row = $Cache->get_value('current_fun_content')){
-//		$result = sql_query("SELECT fun.*, IF(ADDTIME(added, '1 0:0:0') < NOW(),true,false) AS neednew FROM fun WHERE status != 'banned' AND status != 'dull' ORDER BY added DESC LIMIT 1") or sqlerr(__FILE__,__LINE__);
-//		$row = mysql_fetch_array($result);
-//		$Cache->cache_value('current_fun_content', $row, 1043);
-//	}
-//	if (!$row) //There is no funbox item
-//	{
-//		print("<h4>".$lang_index['text_funbox'].(get_user_class() >= $newfunitem_class ? "<font class=\"small\"> - [<a class=\"altlink\" href=\"fun.php?action=new\">".$lang_index['text_new_fun']."</a>]</font>" : "")."</h4>");
-//	}
-//	else
-//	{
-//		$totalvote = $Cache->get_value('current_fun_vote_count');
-//		if ($totalvote == ""){
-//			$totalvote = get_row_count("funvotes", "WHERE funid = ".sqlesc($row['id']));
-//			$Cache->cache_value('current_fun_vote_count', $totalvote, 756);
-//		}
-//		$funvote = $Cache->get_value('current_fun_vote_funny_count');
-//		if ($funvote == ""){
-//			$funvote = get_row_count("funvotes", "WHERE funid = ".sqlesc($row['id'])." AND vote='fun'");
-//			$Cache->cache_value('current_fun_vote_funny_count', $funvote, 756);
-//		}
-////check whether current user has voted
-//		$funvoted = get_row_count("funvotes", "WHERE funid = ".sqlesc($row['id'])." AND userid=".sqlesc($CURUSER[id]));
-//		print ("<h4><span class='icon-trophy'></span>".$lang_index['text_funbox']);
-//		if ($CURUSER)
-//		{
-//			print("<font class=\"small\">".(get_user_class() >= $log_class ? " &nbsp;&nbsp;&nbsp;<a class=\"altlink\" href=\"log.php?action=funbox\"><span class='icon-quote-left'></span>".$lang_index['text_more_fun']."</a>": "").($row['neednew'] && get_user_class() >= $newfunitem_class ? " &nbsp;<a class=altlink href=\"fun.php?action=new\">".$lang_index['text_new_fun']."</a>" : "" ).( ($CURUSER['id'] == $row['userid'] || get_user_class() >= $funmanage_class) ? " &nbsp;<a class=\"altlink\" href=\"fun.php?action=edit&amp;id=".$row['id']."&amp;returnto=index.php\"><span class='icon-edit'></span>".$lang_index['text_edit']."</a>" : "").(get_user_class() >= $funmanage_class ? " &nbsp;<a class=\"altlink\" href=\"fun.php?action=delete&amp;id=".$row['id']."&amp;returnto=index.php\"><b ><sapn class='icon-trash'></sapn>".$lang_index['text_delete']."</a>&nbsp;&nbsp;<a class=\"altlink\" href=\"fun.php?action=ban&amp;id=".$row['id']."&amp;returnto=index.php\"><sapn class='icon-ban-circle'></sapn>".$lang_index['text_ban']."</a>" : "")."</font>") ;
-//		}
-//		print("</h2>");
-//
-//		print("<table width=\"100%\"><tr><td class=\"text\">");
-//		print("<iframe src=\"fun.php?action=view\" width='100%' height='300' frameborder='0' name='funbox' marginwidth='0' marginheight='0'></iframe><br /><br />\n");
-//
-//		if ($CURUSER)
-//		{
-//			$funonclick = " onclick=\"funvote(".$row['id'].",'fun'".")\"";
-//			$dullonclick = " onclick=\"funvote(".$row['id'].",'dull'".")\"";
-//			print("<span id=\"funvote\">".$funvote."".$lang_index['text_out_of'].$totalvote.$lang_index['text_people_found_it'].($funvoted ? "" : "<font class=\"striking\">".$lang_index['text_your_opinion']."</font>&nbsp;&nbsp;<input type=\"button\" class='btn' name='fun' id='fun' ".$funonclick." value=\"".$lang_index['submit_fun']."\" />&nbsp;<input type=\"button\" class='btn' name='dull' id='dull' ".$dullonclick." value=\"".$lang_index['submit_dull']."\" />")."</span><span id=\"voteaccept\" style=\"display: none;\">".$lang_index['text_vote_accepted']."</span>");
-//		}
-//		print("</td></tr></table>");
-//	}
-//}
-// ------------- end: fun box ------------------//
-
-
-
-
 
 //  first  block
-//block_start();
-//col_start(5);
-//eve_block_start();
+block_start();
+col_start(5);
+eve_block_start();
 // ------------- start: new-boxes ------------------//
 //panel_head_start();
-echo "<div class='row'>
-        <div class='col-lg-5 col-md-5 col-sm-5'>
+
+
+echo "            <div class='portlet light bordered '>
+                        <div class=\"portlet-title\">
+                                        <div class=\"caption font-purple-plum\">
+                                            <i class=\" glyphicon glyphicon-bell \"></i>
+                                            <span class=\"caption-subject bold uppercase\">最新公告</span>
+                                        </div>
+                                        ";
+if (get_user_class() >= $newsmanage_class) {
+	echo "
+                                        <div class=\"actions\">
+                                            <a class=\"btn btn-circle btn-icon-only btn-default\" href=\"news.php\">
+                                                <i class=\"icon-wrench\"></i>
+                                            </a>
+                                        </div>
+                                    </div>
 ";
+}
+//print("<h3 class=\"panel-title\"><span class=' glyphicon glyphicon-bell '></span>&nbsp;".$lang_index['text_recent_news'].(get_user_class() >= $newsmanage_class ? "&nbsp;&nbsp;&nbsp;&nbsp;<a class=\"altlink\" href=\"news.php\"><span class='icon-edit'></span>".$lang_index['text_news_page']."</a></font>" : "")."</h3>");
 
-
-echo "<div class='portlet light bordered '>";
-print("<h3 class=\"panel-title\"><span class=' glyphicon glyphicon-bell '></span>&nbsp;".$lang_index['text_recent_news'].(get_user_class() >= $newsmanage_class ? "&nbsp;&nbsp;&nbsp;&nbsp;<a class=\"altlink\" href=\"news.php\"><span class='icon-edit'></span>".$lang_index['text_news_page']."</a></font>" : "")."</h3>");
-panel_head_end();
 $Cache->new_page('recent_news', 86400, true);
 if (!$Cache->get_page()){
 	$res = sql_query("SELECT * FROM news ORDER BY added DESC LIMIT ".(int)$maxnewsnum_main) or sqlerr(__FILE__, __LINE__);
@@ -213,7 +166,8 @@ while($Cache->next_row()){
 		echo $Cache->next_part();
 }
 echo $Cache->next_row();
-eve_block_end();
+panel_head_end();
+//eve_block_end();
 // ------------- end : new box  ------------------//
 
 // ------------- start: latest torrents ------------------//
