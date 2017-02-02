@@ -86,4 +86,6 @@
     color: #00a2d4;
 }
 
-
+link:focus{
+    outline: none;
+}

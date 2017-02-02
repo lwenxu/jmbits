@@ -36,14 +36,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 }
 
 
-
 // ------------------------------------------  index strat ---------------------------------------------------------------
 stdhead($lang_index['head_home']);
-
-
 begin_main_frame();
 main_content_start();
-
 echo "
 <style>
 a {

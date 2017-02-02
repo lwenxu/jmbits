@@ -796,14 +796,15 @@ function noborder($class){
 		</style>
 	";
 }
-function begin_frame($caption = "", $center = false, $padding = 10, $width="100%", $caption_center="left")
+
+function begin_frame($caption = "", $center = false, $padding = 10, $width = "100%", $caption_center = "left")
 {
 	$tdextra = "";
 
 	if ($center)
-	$tdextra .= " align=\"center\"";
-//	panel_start();
-	print(($caption ? "<h3 style='float: left;margin-left:1%' align=\"".$caption_center."\"><sapn class='icon-tags' style='color: #5cb85c '></sapn>".$caption."</h3>" : "") . "<table width=\"".$width."\"  cellspacing=\"0\" cellpadding=\"".$padding."\">" . "<tr><td class=\"text\" $tdextra>\n");
+		$tdextra .= " align=\"center\"";
+
+	print(($caption ? "<h2 align=\"" . $caption_center . "\">" . $caption . "</h2>" : "") . "<table width=\"" . $width . "\" border=\"1\" cellspacing=\"0\" cellpadding=\"" . $padding . "\">" . "<tr><td class=\"text\" $tdextra>\n");
 
 }
 
@@ -2363,33 +2364,28 @@ function menu ($selected = "home") {
 
 //	navbar  start
 	echo "
-<nav class=\"navbar navbar-inverse navbar-static-top navbar-custom\" role=\"navigation\">
-<div class='col-xs-12 col-md-12'>
-	<div class=\"container-fluid\">
+<nav class=\"navbar navbar-inverse navbar-static-top\" role=\"navigation\">
+<div class='col-lg-12 col-md-12 col-sm-12 col-xs-12'>
+	<div class=\"container\">
     <div class=\"navbar-header\">
-        <a class=\"navbar-brand\" href=\"index.php\" style='margin-right: 20px;color: white'>NWU PT</a>
+        <a class=\"navbar-brand\" href=\"index.php\" style='color: white'>NWU PT</a>
     </div>
         <ul class=\"nav navbar-nav\">
     ";
 	print ("<li" . ($selected == "home" ? " class=\"active\"" : "") . "><a href=\"index.php\">" . $lang_functions['text_home'] . "</a></li>");
+
 	if ($enableextforum != 'yes')
 	print ("<li" . ($selected == "forums" ? " class=\"active\"" : "") . "><a href=\"forums.php\">".$lang_functions['text_forums']."</a></li>");
 	else
 	print ("<li" . ($selected == "forums" ? " class=\"active\"" : "") . "><a href=\"" . $extforumurl."\" target=\"_blank\">".$lang_functions['text_forums']."</a></li>");
+
 	print ("<li" . ($selected == "torrents" ? " class=\"active\"" : "") . "><a href=\"torrents.php\">".$lang_functions['text_torrents']."</a></li>");
-	if ($enablespecial == 'yes')
-	print ("<li" . ($selected == "music" ? " class=\"active\"" : "") . "><a href=\"music.php\">".$lang_functions['text_music']."</a></li>");
 	if ($enableoffer == 'yes')
 	print ("<li" . ($selected == "offers" ? " class=\"active\"" : "") . "><a href=\"offers.php\">".$lang_functions['text_offers']."</a></li>");
 	print ("<li" . ($selected == "viewrequest" ? " class=\"active\"" : "") . "><a href=\"viewrequest.php\">".$lang_functions['text_request']."</a></li>");
 	print ("<li" . ($selected == "upload" ? " class=\"active\"" : "") . "><a href=\"upload.php\">".$lang_functions['text_upload']."</a></li>");
-//	print ("<li" . ($selected == "subtitles" ? " class=\"active\"" : "") . "><a href=\"subtitles.php\">".$lang_functions['text_subtitles']."</a></li>");
-	print ("<li" . ($selected == "usercp" ? " class=\"active\"" : "") . "><a href=\"usercp.php\">".$lang_functions['text_user_cp']."</a></li>");
+	print ("<li" . ($selected == "subtitles" ? " class=\"active\"" : "") . "><a href=\"subtitles.php\">".$lang_functions['text_subtitles']."</a></li>");
 	print ("<li" . ($selected == "topten" ? " class=\"active\"" : "") . "><a href=\"topten.php\">".$lang_functions['text_top_ten']."</a></li>");
-
-	//delete logs by lwenxu
-//	print ("<li" . ($selected == "log" ? " class=\"active\"" : "") . "><a href=\"log.php\">".$lang_functions['text_log']."</a></li>");
-	print ("<li" . ($selected == "rules" ? " class=\"active\"" : "") . "><a href=\"rules.php\">".$lang_functions['text_rules']."</a></li>");
 	print ("<li" . ($selected == "faq" ? " class=\"active\"" : "") . "><a href=\"faq.php\">".$lang_functions['text_faq']."</a></li>");
 	print ("<li" . ($selected == "staff" ? " class=\"active\"" : "") . "><a href=\"staff.php\">".$lang_functions['text_staff']."</a></li>");
 	print ("</ul></nav>");
@@ -2517,8 +2513,9 @@ function stdhead($title = "", $msgalert = true, $script = "", $place = "")
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta content="Author by:徐鹏飞">
-<meta content="Powered by:西北大学网络中心光团队">
+<meta name="author" content="徐鹏飞">
+<meta name="powered by" content="西北大学网络中心光团队">
+<meta name="keywords" content="pt private tracker nwu jm 嘉木">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <?php
