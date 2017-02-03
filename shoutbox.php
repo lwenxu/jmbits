@@ -1,114 +1,4 @@
 <?php
-
-function at_user_message($body,$username="jghgj")
-{
-	global $Cache;
-	$subject = "有关于你的消息啦！(From: $username)";
-	$content = $body;
-	preg_match_all("/\[@([0-9]+?)\]/ei", $body, $useridget);
-	$useridget[1] = array_unique($useridget[1]);
-	for ($i = 0; $i < min(10, count($useridget[1])); $i++) {
-		sql_query("INSERT INTO messages (sender, receiver, subject, msg, added) VALUES(0, " . $useridget[1][$i] . ",'$subject','$content', " . sqlesc(date("Y-m-d H:i:s")) . ")");
-		$Cache->delete_value('user_' . $useridget[1][$i] . '_unread_message_count');
-		$Cache->delete_value('user_' . $useridget[1][$i] . '_inbox_count');
-	}
-}
-echo "
-<style>
-.bubble {
-    background-color: #ececec;
-    border-radius: 5px;
-    box-shadow: 0 0 6px #b2b2b2;
-    display: table-cell;
-    padding: 10px 18px;
-    position: relative;
-    max-width: 350px;
-    min-width: 200px;
-    word-break: break-all;
-    vertical-align: middle;
-    text-align: left
-}
-
-.bubble-betbox {
-    padding: 5px 9px;
-    max-width: 250px;
-    min-width: 100px;
-    font-size: 16px;
-    font-family: sans-serif;
-}
-
-.bubble::before {
-    background-color: #ececec;
-    content: \"\00a0\";
-    display: block;
-    height: 16px;
-    position: absolute;
-    top: 11px;
-    transform: rotate(29deg) skew(-35deg);
-    -moz-transform: rotate(29deg) skew(-35deg);
-    -ms-transform: rotate(29deg) skew(-35deg);
-    -o-transform: rotate(29deg) skew(-35deg);
-    -webkit-transform: rotate(29deg) skew(-35deg);
-    width: 20px
-}
-
-.bubble-betbox::before {
-    height: 8px;
-    width: 10px
-}
-
-.bubble-left {
-    margin: 5px 45px 5px 20px
-}
-
-.bubble-left::before {
-    box-shadow: -2px 2px 2px 0 rgba(178,178,178,.4);
-    left: -9px
-}
-
-.bubble-right {
-    margin: 5px 20px 5px 45px
-}
-
-.bubble-right::before {
-    box-shadow: 2px -2px 2px 0 rgba(178,178,178,.4);
-    right: -9px
-}
-
-.bubble-left-betbox::before {
-    left: -5px
-}
-
-.bubble-right-betbox::before {
-    right: -5px
-}
-
-.bubble-time {
-    margin: 10px;
-    font-size: 10px;
-    background-color: #F19483;
-    font-weight: normal
-}
-
-.bubble-time-outer {
-    display: table-cell;
-    vertical-align: middle
-}
-
-.bubble-time-outer-betbox {
-    display: inline-block;
-    margin-bottom: 15px
-}
-a{
-	text-decoration: none;
-}
-#dellink{
-	color: crimson;
-}
-</style>
-
-";
-
 require_once("include/bittorrent.php");
 dbconn();
 require_once(get_langfile_path());
@@ -130,9 +20,10 @@ $refresh = ($CURUSER['sbrefresh'] ? $CURUSER['sbrefresh'] : 120)
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta http-equiv="Refresh" content="<?php echo $refresh?>; url=<?php echo get_protocol_prefix() . $BASEURL?>/shoutbox.php?type=<?php echo $where?>">
 <link rel="stylesheet" href="<?php echo get_font_css_uri()?>" type="text/css">
-<link rel="stylesheet" href="<?php echo get_css_uri()."theme.css"?>" type="text/css">
 <link rel="stylesheet" href="styles/curtain_imageresizer.css" type="text/css">
 <link href="./styles/awesome/css/font-awesome.min.css" rel="stylesheet">
+<link href="./styles/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link href="./styles/BambooGreen/components.min.css" rel="stylesheet">
 <script src="curtain_imageresizer.js" type="text/javascript"></script><style type="text/css">body {overflow-y:scroll; overflow-x: hidden}</style>
 <?php
 print(get_style_addicode());
@@ -261,16 +152,16 @@ else
 		}
 		if ($rand%2==0) {
 			print("<tr><td>
-			<img src=$avatar height='50px' width='50px' style='float: right;border-radius: 8px'/>
-			<div style='float: right;font-size: 15px' class=\"bubble bubble-right bubble-shoutbox bubble-right-shoutbox\">
-			<span class='date'><span class='icon-time'></span>&nbsp;" . $time."</span> " . "<span class=' icon-trash'></span>&nbsp;" . $del . "&nbsp;<span class='icon-user'></span>&nbsp; " . $username . "<br><br>" . format_comment($arr["text"], true, false, true, true, 600, true, false) . "
+			<img src=$avatar height='50px' width='50px' class='img img-circle pull-right'/>
+			<div style='float: right;font-size: 15px' class=\"pull-right alert alert-info\">
+			<span class='date'><span class='icon-time'></span>&nbsp" . $time."</span> " . "<span class=' icon-trash'></span>&nbsp;" . $del . "&nbsp;<span class='icon-user'></span>&nbsp; " . $username . "<br><br>" . format_comment($arr["text"], true, false, true, true, 600, true, false) . "
 			</td></tr>\n");
 		}
 		else {
 			print("<tr><td>
-			<img src=$avatar height='50px' width='50px' style='float: left;border-radius: 8px'/>
-			<div style='float: left;font-size: 15px' class=\"bubble bubble-left bubble-shoutbox bubble-right-shoutbox\">
-			<span class='date' style=''><span class='icon-time'></span>&nbsp;" . $time . "</span> " . "<span class=' icon-trash'></span>&nbsp;" . $del . "&nbsp;<span class=' icon-user'></span>&nbsp; " . $username . "<br><br>" . format_comment($arr["text"], true, false, true, true, 600, true, false) . "
+			<img src=$avatar height='50px' width='50px' class='img img-circle pull-left'/>
+			<div class=\"pull-left alert alert-success\">
+			<span class='date' style=''><span class='icon-time'></span>&nbsp " . $time . "</span> " . "<span class=' icon-trash'></span>&nbsp;" . $del . "&nbsp;<span class=' icon-user'></span>&nbsp; " . $username . "<br><br>" . format_comment($arr["text"], true, false, true, true, 600, true, false) . "
 			</td></tr>\n");
 		}
 	}

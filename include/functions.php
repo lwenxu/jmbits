@@ -804,7 +804,7 @@ function begin_frame($caption = "", $center = false, $padding = 10, $width = "10
 	if ($center)
 		$tdextra .= " align=\"center\"";
 
-	print(($caption ? "<h2 align=\"" . $caption_center . "\">" . $caption . "</h2>" : "") . "<table width=\"" . $width . "\" border=\"1\" cellspacing=\"0\" cellpadding=\"" . $padding . "\">" . "<tr><td class=\"text\" $tdextra>\n");
+	print(($caption ? "<h2 align=\"" . $caption_center . "\">" . $caption . "</h2>" : "") . "<table width=\"" . $width . "\"  cellspacing=\"0\" cellpadding=\"" . $padding . "\">" . "<tr><td class=\"text\" $tdextra>\n");
 
 }
 
@@ -2700,16 +2700,7 @@ $css_uri = get_css_uri();
 $cssupdatedate=($cssupdatedate ? "?".htmlspecialchars($cssupdatedate) : "");
 ?>
 <title><?php echo $title?></title>
-    <script>
-        var _hmt = _hmt || [];
-        (function () {
-            var hm = document.createElement("script");
-            hm.src = "https://hm.baidu.com/hm.js?160ea490dce5fdebed9f1eee1dd47dd8";
-            var s = document.getElementsByTagName("script")[0];
-            s.parentNode.insertBefore(hm, s);
-        })();
-    </script>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
 <link rel="search" type="application/opensearchdescription+xml" title="<?php echo $SITENAME?> Torrents" href="opensearch.php" />
 <link rel="stylesheet" href="<?php echo get_font_css_uri().$cssupdatedate?>" type="text/css" />
@@ -2719,10 +2710,10 @@ $cssupdatedate=($cssupdatedate ? "?".htmlspecialchars($cssupdatedate) : "");
 <link rel="stylesheet" href="<?php echo $css_uri."DomTT1.css".$cssupdatedate?>" type="text/css" />
 <link rel="stylesheet" href="<?php echo $css_uri."theme1.css".$cssupdatedate?>" type="text/css" />
 <link rel="stylesheet" href="styles/curtain_imageresizer.css<?php echo $cssupdatedate?>" type="text/css" />
-<script src="./styles/js/jquery-3.1.1.min.js"></script>
+<!--<script src="./styles/js/jquery-3.1.1.min.js"></script>-->
 <!--<link rel="stylesheet" type="text/css" href="./styles/BambooGreen/zzsc.css">-->
 <link rel="stylesheet" href="./styles/bootstrap/css/bootstrap.min.css">
-<script src="./styles/bootstrap/js/bootstrap.min.js"></script>
+<!--<script src="./styles/bootstrap/js/bootstrap.min.js"></script>-->
 <link href="./styles/awesome/css/font-awesome.min.css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="./styles/BambooGreen/main.css">
     <!--[if lt IE 9]>
@@ -2755,7 +2746,7 @@ if ($CURUSER){
 
 <body class="container-fluid">
 <!-- // add goto top  by lwenxu-->
-<div id="gotop" class="icon-circle-arrow-up m-icon-big"></div>
+<i id="gotop" class="icon-arrow-up"></i>
 <!--<script type="text/javascript" src="http://code.jquery.com/jquery-1.8.3.min.js"></script>-->
    <script type="text/javascript">
        $(window).scroll(function () {
@@ -2763,7 +2754,7 @@ if ($CURUSER){
            var rwidth = $(window).width();
            if (sc > 400) {
                $("#gotop").css("display", "block");
-               $("#gotop").css("left", (rwidth - 100) + "px")
+               $("#gotop").css("left", (rwidth - 60) + "px")
            } else {
                $("#gotop").css("display", "none");
            }
@@ -2926,7 +2917,7 @@ if ($CURUSER){
 <!--<table class="mainouter" id="bannerdown" width="100%" cellspacing="0" cellpadding="5" align="center">-->
 <!--<div class="container">-->
 <div class="container" id="main_content">
-<div id="main" class="well no-border-radius">
+<div id="main" class="no-border-radius page-content">
 
 	<td id="outer" align="center" class="outer" style=" padding-bottom: 20px">
 <?php
@@ -2950,28 +2941,21 @@ if ($CURUSER){
 
 
 function stdfoot() {
-
 	global $SITENAME,$BASEURL,$Cache,$datefounded,$tstart,$icplicense_main,$add_key_shortcut,$query_name, $USERUPDATESET, $CURUSER, $enablesqldebug_tweak, $sqldebug_tweak, $Advertisement, $analyticscode_tweak;
 	print("</td></tr></table>");
-	print("<div id=\"footer\">");
-	if ($Advertisement->enable_ad()){
-			$footerad=$Advertisement->get_ad('footer');
-			if ($footerad)
-			echo "<div align=\"center\" style=\"margin-top: 10px\" id=\"ad_footer\">".$footerad[0]."</div>";
-
-	}
+//	echo "
+//	<script>
+//		function pageScroll(){
+//			window.scrollBy(0,-10);
+//			scrolldelay=setTimeout('pageScroll()',100);
+//		}
+//		if(document.documentElement.scrollTop==0)clearTimeout(scrolldelay);
+//	</script>
+//	";
 	echo "
-	<script>
-		function pageScroll(){
-			window.scrollBy(0,-10);
-			scrolldelay=setTimeout('pageScroll()',100);
-		}
-		if(document.documentElement.scrollTop==0)clearTimeout(scrolldelay);
-	</script>
-	";
-//	echo "<a href='pageScroll();'>ad</a>";
-//	echo "<a id=\"gotop\" class=\"fa fa-arrow-circle-up\" href=\"gotop();\" style=\"display: none; visibility: visible; color: black;\">casdc</a>";
-	print("<div style=\"margin-top: 10px; margin-bottom: 30px;\" align=\"center\">");
+    <footer class='footer'>
+        <div class='container'  style=\"margin-top: 10px; margin-bottom: 30px;\" align=\"center\">
+";
 	if ($CURUSER){
 		sql_query("UPDATE users SET " . join(",", $USERUPDATESET) . " WHERE id = ".$CURUSER['id']);
 	}
@@ -2981,9 +2965,8 @@ function stdfoot() {
 	$year = substr($datefounded, 0, 4);
 	$yearfounded = ($year ? $year : 2007);
 	print(" (c) "." <a href=\"" . get_protocol_prefix() . $BASEURL."\" target=\"_self\">".$SITENAME."</a> ".($icplicense_main ? " ".$icplicense_main." " : "").(date("Y") != $yearfounded ? $yearfounded."-" : "").date("Y")." ".VERSION."<br /><br />");
-	printf ("[page created in  %f  sec", $totaltime);
-	print (" with ".count($query_name)." db queries, ".$Cache->getCacheReadTimes()." reads and ".$Cache->getCacheWriteTimes()." writes of memcached and ".mksize(memory_get_usage())." ram]");
-	print ("</div>\n");
+	printf ("page created in  %f  sec", $totaltime);
+	print (" with ".count($query_name)." db queries, ".$Cache->getCacheReadTimes()." reads and ".$Cache->getCacheWriteTimes()." writes of memcached and ".mksize(memory_get_usage())." ram");
 	if ($enablesqldebug_tweak == 'yes' && get_user_class() >= $sqldebug_tweak) {
 		print("<div id=\"sql_debug\">SQL query list: <ul>");
 		foreach($query_name as $query) {
@@ -3002,16 +2985,16 @@ function stdfoot() {
 		print("</ul>");
 		print("</div>");
 	}
-	print ("<div style=\"display: none;\" id=\"lightbox\" class=\"lightbox\"></div><div style=\"display: none;\" id=\"curtain\" class=\"curtain\"></div>");
 	if ($add_key_shortcut != "")
 	print($add_key_shortcut);
 	print("</div>");
 	if ($analyticscode_tweak)
 		print("\n".$analyticscode_tweak."\n");
-	print("</body></html>");
-
-	//echo replacePngTags(ob_get_clean());
-
+	print ("</div>");
+	echo "</footer></div>
+<script src=\"./styles/js/jquery-3.1.1.min.js\"></script>
+<script src=\"./styles/bootstrap/js/bootstrap.min.js\"></script>
+    </body></html>";
 	unset($_SESSION['queries']);
 }
 
@@ -4111,18 +4094,6 @@ $smallth
 	}
 }
 
-function quickreply($formname, $taname,$submit){
-	print("<textarea id=qrbody class='input fullwidth inputor' name='".$taname."' cols=\"100\" rows=\"8\" style=\"width: 80%;margin-left:10%\" onkeydown=\"ctrlenter(event,'compose','qr')\"></textarea>");
-	print(smile_row($formname, $taname));
-	print("<br />");
- 	print("<input style='margin-left:50%' type=\"submit\" id=\"qr\" class=\"btn btn-success\" value=\"".$submit."\" />");
-	// add @ module by lwenxu
-	echo "<link rel=\"stylesheet\" href=\"userAutoTips.css\" type=\"text/css\">
- <script type=\"text/javascript\" src=\"userAutoTips.js\"></script>
- <script type=\"text/javascript\">userAutoTips({id:'qrbody'});$(window).bind('scroll resize', function(e){userAutoTips({id:'qrbody'})})</script>";
-	// end
-}
-
 function smile_row($formname, $taname){
 	for ($i=1;$i<56;$i++){
 	    $quickSmilesNumbers[]=$i;
@@ -4818,7 +4789,7 @@ function valid_class_name($filename)
 function return_avatar_image($url)
 {
 	global $CURLANGDIR;
-	return "<img src=\"".$url."\" style='border-radius:5px;margin:4px' alt=\"avatar\" width=\"140px\"  />";
+	return "<img class='img img-thumbnail' src=\"".$url."\"  alt=\"avatar\" width=\"140px\" height=\"140px\"  />";
 }
 
 

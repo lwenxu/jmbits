@@ -1320,15 +1320,16 @@ td .text{
     /*color: #1e9765;*/
     /*display: none;*/
     position: fixed;
-    line-height: 36px;
-    width: 36px;
-    bottom: 35px;
-    height: 36px;
+    bottom: 10px;
+    right: 20px;
     cursor: pointer;
-    display: none;
-    font-size: 48px;
     z-index: 10;
-    color: #1BA39C;
+    display: inline-block;
+    color: #687991;
+    font-size: 30px;
+    opacity: .6;
+    padding: 1px;
+    /*right: 10px;*/
 }
 
 /*#gotop span {*/
@@ -1438,6 +1439,9 @@ img {
     text-align: center;
 }
 
+#main{
+    background-color: white;
+}
 
 
 

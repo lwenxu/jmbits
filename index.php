@@ -38,15 +38,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 stdhead($lang_index['head_home']);
 begin_main_frame();
 main_content_start();
-echo "<div class='row'>";
+echo "<div class='row' id='indexmain'>";
 
 echo "<div class='col-md-6'>";
 // ------------- start: new-boxes ------------------//
 echo "                     <div class='portlet light bordered '>
                                 <div class=\"portlet-title\">
-                                        <div class=\"caption font-purple-plum\">
-                                            <i class=\" glyphicon glyphicon-bell \"></i>
-                                            <span class=\"caption-subject bold uppercase\">最新公告</span>
+                                        <div class=\"caption \">
+                                        <h3>
+                                            <i class=\" glyphicon glyphicon-bell font-purple-plum\"></i>
+                                            <span class=\"caption-subject bold uppercase font-purple-plum\">最新公告</span>
+                                        </h3>
                                         </div>
                                         ";
 if (get_user_class() >= $newsmanage_class) {
@@ -98,7 +100,7 @@ if (!$Cache->get_page()) {
 			} else {
 
 				echo "
-				<div class=\"panel panel-default\">
+				<div class=\"panel panel-success\">
 						<div class=\"panel-heading\" role=\"tab\" id=\"headingTwo\">
 							<h2 class=\"panel-title\">
 								<a class=\"collapsed\" role=\"button\" data-toggle=\"collapse\" data-parent=\"#accordion\" href=\"#collapseTwo$array[id]\" aria-expanded=\"false\" aria-controls=\"collapseTwo\">
@@ -136,10 +138,12 @@ while ($Cache->next_row()) {
 echo $Cache->next_row();
 // ------------- end : new box  ------------------//
 echo "            <div class='portlet light bordered '>
-                        <div class=\"portlet-title\">
+                                    <div class=\"portlet-title\">
                                         <div class=\"caption\">
+                                        <h3>
                                             <i class=\"icon-cloud-upload font-red-sunglo\"></i>
                                             <span class=\"caption-subject font-red-sunglo bold uppercase\">最近的种子</span>
+                                         </h3>
                                         </div>
                                     </div>
                                         ";
@@ -177,23 +181,25 @@ echo "<table  class='table' width=\"100%\">
 		print ("</tbody></table></div>");
 	}
 }
+echo "</div>";
 // ------------- end: latest torrents ------------------//
 
 echo "            <div class='portlet light bordered '>
                         <div class=\"portlet-title\">
                                         <div class=\"caption font-purple-plum\">
-                                            <i class=\" glyphicon glyphicon-link \"></i>
+                                        <h3>
+                                            <i class=\" glyphicon glyphicon-link font-green-sharp\"></i>
                                             <span class=\"caption-subject font-green-sharp bold uppercase\">友情链接</span>
+                                         </h3>
                                         </div>
+                                        <div class=\"actions\">
                                         ";
 if (get_user_class() >= $newsmanage_class) {
 	echo "
-                                        <div class=\"actions\">
                                             <a class=\"btn btn-circle btn-icon-only btn-default\" href=\"linksmanage.php\">
                                                 <i class=\"icon-wrench\" alt='你好'></i>
                                             </a>
                                             <span data-toggle='tooltip' title='连接管理' id='linksadmin'></span>
-                                     
 ";
 }
 echo "
@@ -203,6 +209,7 @@ echo "
        </div>
            
 ";
+echo "</div>";
 // ------------- start: links ------------------//-->
 print("</h3>");
 
@@ -215,7 +222,7 @@ if (!$Cache->get_page()) {
 		while ($array = mysql_fetch_array($res)) {
 			$links .= "&nbsp;&nbsp;&nbsp;<a class='altlink' href=\"" . $array['url'] . "\" title=\"" . $array['title'] . "\" target=\"_blank\">" . $array['name'] . "</a>&nbsp;&nbsp;&nbsp;";
 		}
-		print("<table class='table table-striped' width=\"100%\"><tr><td class=\"text\" >" . trim($links) . "</td></tr></table>");
+		print("<table class='table table-hover' width=\"100%\"><tr><td class=\"text\" >" . trim($links) . "</td></tr></table>");
 	}
 	$Cache->end_whole_row();
 	$Cache->cache_page();
@@ -227,10 +234,13 @@ echo "</div>";
 // ------------- start: polls ------------------//
 if ($CURUSER && $showpolls_main == "yes") {
 
-	echo "                        <div class=\"portlet-title\">
+	echo "          <div class='portlet light bordered '>          
+                        <div class=\"portlet-title\">
                                         <div class=\"caption font-purple-plum\">
-                                            <i class=\"glyphicon glyphicon-th\"></i>
-                                            <span class=\"caption-subject bold uppercase\"> 投票 </span>
+                                        <h3>
+                                            <i class=\"glyphicon glyphicon-th font-purple-plum\"></i>
+                                            <span class=\"caption-subject bold uppercase font-purple-plum\"> 投票 </span>
+                                        </h3>
                                         </div>";
 if (get_user_class() >= $pollmanage_class) {
 	echo "
@@ -317,10 +327,12 @@ if (get_user_class() >= $pollmanage_class) {
 						$p = round($a[0] / $tvotes * 100);
 					$Cache->add_row();
 					$Cache->add_part();
-					print("<tr><td width=\"1%\" class=\"embedded nowrap\">" . $a[1] . "&nbsp;&nbsp;</td><td width=\"99%\" class=\"embedded nowrap\"><img class=\"bar_end\" src=\"pic/trans.gif\" alt=\"\" /><img ");
-					$Cache->end_part();
-					$Cache->add_part();
-					print(" src=\"pic/trans.gif\" style=\"width: " . ($p * 3) . "px;\" alt=\"\" /><img class=\"bar_end\" src=\"pic/trans.gif\" alt=\"\" /> $p%</td></tr>\n");
+					echo "
+                        $a[1] 
+					    <div class='progress'>
+					        <div class='progress-bar progress-bar-success' style=\"width: " . ($p) . "%;\">$p%</div>
+                        </div>
+					";
 					$Cache->end_part();
 					$Cache->end_row();
 					++$i;
@@ -337,10 +349,6 @@ if (get_user_class() >= $pollmanage_class) {
 			$i = 0;
 			while ($Cache->next_row()) {
 				echo $Cache->next_part();
-				if ($i == $uservote)
-					echo "class=\"sltbar\"";
-				else
-					echo "class=\"unsltbar\"";
 				echo $Cache->next_part();
 				$i++;
 			}
@@ -378,400 +386,285 @@ if (get_user_class() >= $pollmanage_class) {
 }
 echo "</div>";
 // ------------- end: polls ------------------//
-
-echo "</div>";  //col-md-6
-
-
-
-
-
-echo "<div class='col-md-6'></div>";
+echo "          <div class=\"portlet light bordered \">
+                        <div class=\"portlet-title\">
+                                        <div class=\"caption font-red-sunglo\">
+                                            <h3><i class=\"icon-tasks\"></i>
+                                            <span class=\"caption-subject font-red-sunglo bold uppercase\"> 免责声明 </span></h3>
+                                        </div>
+                        </div>
+                    ";
+// ------------- start: disclaimer  免责声明   ----------//-->
+echo "
+<table width=\"100%\">
+    <tr>
+        <td style=\"border: 0px\">
+";
+echo "<blockquote style='font-size: 12px'>" . $lang_index['text_disclaimer_content'] . "</blockquote></td>
+    </tr>
+</table>";
 echo "</div>";
+// ------------- end: disclaimer ------------------//-->
+
+echo "          <div class=\"portlet light bordered \">
+                        <div class=\"portlet-title\">
+                                        <div class=\"caption font - purple - plum\">
+                                            <h3><i class=\"glyphicon glyphicon-list font-green-meadow\"></i>
+                                            <span class=\"caption-subject font-green-meadow bold uppercase\"> 温馨提示 </span></h3>
+                                        </div>
+                        </div>
+                    ";
+echo "
+<table style=\"margin-left: 5%\" width=\"90%\" class=\"main\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\"><tr ><td class=\"embedded\" >
+<div align=\"center\"><br /><font class=\"medium\">";
+echo $lang_index['text_browser_note'] ."</font></div>
+</td></tr></table>
+";
+echo "</div>";
+echo "</div>";  //-------------col-md-6 end------------------------//
 
 
 
 
-
-
+//---------------------col-6-md  start----------------------------------//
+echo "<div class='col-md-6'>";
+	echo "          <div class=\"portlet light bordered \">
+                        <div class=\"portlet-title\">
+                                        <div class=\"caption font - purple - plum\">
+                                            <h3><i class=\"icon-comments\"></i>
+                                            <span class=\"caption-subject font-red-sunglo bold uppercase\"> 群聊区 </span></h3>
+                                        </div>
+                        </div>
+                    ";
 // ------------- start: shut box box ------------------//
 
 if ($showshoutbox_main == "yes") {
 	?>
-    <script>
-        var x = document.getElementById("shutbox").contentWindow.document
-        x.body.scrollTop = x.body.offsetHeight;
-    </script>
-	<h3 class="panel-title"><sapn class="icon-comments"></sapn><?php echo $lang_index['text_shoutbox'] ?></h3>
+
+
 	<?php
-	print("<table style='width: 100%;height: 805px;'><tr><td class=\"text\" style='width: 100px'>\n");
+	print("<table style='width: 100%;;'><tr><td class=\"text\" style='width: 100px'>\n");
 	print("<iframe id='shutbox' src='shoutbox.php?type=shoutbox' width='100%' height='520' frameborder='0' name='sbox' marginwidth='0' marginheight='0'></iframe><br /><br />\n");
 	print("<form action='shoutbox.php' method='get' target='sbox' name='shbox'>\n");
 	print("<label for='shbox_text'>" . $lang_index['text_message'] . "</label>
 	<div class=\"vtop td-fat pd5\">
-	<textarea id=\"qrbody\" class=\"input fullwidth inputor\" name='shbox_text' id='shbox_text' rows=\"2\" placeholder=\"请输入聊天内容\" style=\"height: 4em; background-color: rgb(255, 255, 255);width:98%;margin-left:1%\"></textarea>
-	<link rel=\"stylesheet\" href=\"userAutoTips.css\" type=\"text/css\">
-    <script type=\"text/javascript\" src=\"userAutoTips.js\"></script>
-    <script type=\"text/javascript\">userAutoTips({id:'qrbody'});$(window).bind('scroll resize', function(e){userAutoTips({id:'qrbody'})})</script>
+	<textarea class=\"input fullwidth inputor\" name='shbox_text' id='shbox_text' rows=\"2\" placeholder=\"请输入聊天内容\" style=\"height: 4em; background-color: rgb(255, 255, 255);width:98%;margin-left:1%\"></textarea>
     </div>
 	<input style='margin:7px' type='submit' id='hbsubmit' class=\"btn btn-success\" name='shout' value=\"" . $lang_index['sumbit_shout'] . "\" />");
 	if ($CURUSER['hidehb'] != 'yes' && $showhelpbox_main == 'yes')
-		print("<input type='submit' class='btn' name='toguest' value=\"" . $lang_index['sumbit_to_guest'] . "\" />");
-	print("<input type='reset' class=\"btn btn-danger\" value=\"" . $lang_index['submit_clear'] . "\" /> <input type='hidden' name='sent' value='yes' /><input type='hidden' name='type' value='shoutbox' /><br />\n");
+//		print("<input type='submit' class='btn' name='toguest' value=\"" . $lang_index['sumbit_to_guest'] . "\" />");
+	print("<input type='reset' class=\"btn btn-danger\" value=\"" . $lang_index['submit_clear'] . "\" /> <input type='hidden' name='sent' value='yes' /><input type='hidden' name='type' value='shoutbox' />");
+	echo "
+	<div class='dropdown pull-left' style='margin:7px'>
+        <button class='btn btn-success dropdown-toggle' data-toggle='dropdown'>
+        <span class='glyphicon glyphicon-heart-empty fa-lg'></span>
+           表情
+          </button>
+           <ul class='dropdown-menu'>
+                <li>";
 	print(smile_row("shbox", "shbox_text"));
+	echo "      </li>
+            </ul>
+    </div>";
+
 	print("</form></td></tr></table>");
 }
-
+echo "</div>";
 // ------------- end: shut box ------------------//
-
-
-
-// ------------- start: hot and classic movies ------------------//
-// 使用了一个电影的类库，世界上最大的电影数据库  imdb
-if ($showextinfo['imdb'] == 'yes' && ($showmovies['hot'] == "yes" || $showmovies['classic'] == "yes")) {
-	$type = array('hot', 'classic');
-	foreach ($type as $type_each) {
-		if ($showmovies[$type_each] == 'yes' && (!isset($CURUSER) || $CURUSER['show' . $type_each] == 'yes')) {
-			$Cache->new_page($type_each . '_resources', 900, true);
+    echo "
+    <div class=\"portlet light bordered \">
+    <div class=\"portlet-title\">
+        <div class=\"caption font - purple - plum\">
+        <h3><i class=\"icon-comments\"></i>
+            <span class=\"caption-subject font-red-sunglo bold uppercase\"> 站点数据 </span></h3>
+        </div>
+    </div>
+    ";
+if ($showstats_main == "yes") {
+?>
+        <table width="100%" class="table">
+            <tr>
+				<?php
+				$Cache->new_page('stats_users', 3000, true);
+				if (!$Cache->get_page()) {
+				$Cache->add_whole_row();
+				$registered = number_format(get_row_count("users"));
+				$unverified = number_format(get_row_count("users", "WHERE status='pending'"));
+				$totalonlinetoday = number_format(get_row_count("users", "WHERE last_access >= " . sqlesc(date("Y-m-d H:i:s", (TIMENOW - 86400)))));
+				$totalonlineweek = number_format(get_row_count("users", "WHERE last_access >= " . sqlesc(date("Y-m-d H:i:s", (TIMENOW - 604800)))));
+				$VIP = number_format(get_row_count("users", "WHERE class=" . UC_VIP));
+				$donated = number_format(get_row_count("users", "WHERE donor = 'yes'"));
+				$warned = number_format(get_row_count("users", "WHERE warned='yes'"));
+				$disabled = number_format(get_row_count("users", "WHERE enabled='no'"));
+				$registered_male = number_format(get_row_count("users", "WHERE gender='Male'"));
+				$registered_female = number_format(get_row_count("users", "WHERE gender='Female'"));
+				?>
+            <tr>
+				<?php
+				twotd($lang_index['row_users_active_today'], $totalonlinetoday);
+				twotd($lang_index['row_users_active_this_week'], $totalonlineweek);
+				?>
+            </tr>
+            <tr>
+				<?php
+				twotd($lang_index['row_registered_users'], $registered . " / " . number_format($maxusers));
+				twotd($lang_index['row_unconfirmed_users'], $unverified);
+				?>
+            </tr>
+            <tr>
+				<?php
+				twotd(get_user_class_name(UC_VIP, false, false, true), $VIP);
+				twotd($lang_index['row_donors'], $donated);
+				?>
+            </tr>
+            <tr>
+				<?php
+				twotd($lang_index['row_warned_users'], $warned);
+				twotd($lang_index['row_banned_users'], $disabled);
+				?>
+            </tr>
+            <tr>
+				<?php
+				twotd($lang_index['row_male_users'], $registered_male);
+				twotd($lang_index['row_female_users'], $registered_female);
+				?>
+            </tr>
+			<?php
+			$Cache->end_whole_row();
+			$Cache->cache_page();
+			}
+			echo $Cache->next_row();
+			?>
+            <tr>
+                <td colspan="4" class="rowhead">&nbsp;</td>
+            </tr>
+			<?php
+			$Cache->new_page('stats_torrents', 1800, true);
 			if (!$Cache->get_page()) {
 				$Cache->add_whole_row();
-
-				$imdbcfg = new imdb_config();
-				$res = sql_query("SELECT * FROM torrents WHERE picktype = " . sqlesc($type_each) . " AND seeders > 0 AND url != '' ORDER BY id DESC LIMIT 30") or sqlerr(__FILE__, __LINE__);
-				if (mysql_num_rows($res) > 0) {
-					$movies_list = "";
-					$count = 0;
-					$allImdb = array();
-					while ($array = mysql_fetch_array($res)) {
-						$pro_torrent = get_torrent_promotion_append($array[sp_state], 'word');
-						if ($imdb_id = parse_imdb_id($array["url"])) {
-							if (array_search($imdb_id, $allImdb) !== false) { //a torrent with the same IMDb url already exists
-								continue;
-							}
-							$allImdb[] = $imdb_id;
-							$photo_url = $imdbcfg->photodir . $imdb_id . $imdbcfg->imageext;
-
-							if (file_exists($photo_url))
-								$thumbnail = "<img width=\"101\" height=\"140\" src=\"" . $photo_url . "\" border=\"0\" alt=\"poster\" />";
-							else continue;
-						} else continue;
-						$thumbnail = "<a href=\"details.php?id=" . $array['id'] . "&amp;hit=1\" onmouseover=\"domTT_activate(this, event, 'content', '" . htmlspecialchars("<font class=\'big\'>" . (addslashes($array['name'] . $pro_torrent)) . "</font><br /><font class=\'medium\'>" . (addslashes($array['small_descr'])) . "</font>") . "', 'trail', true, 'delay', 0,'lifetime',5000,'styleClass','niceTitle','maxWidth', 600);\">" . $thumbnail . "</a>";
-						$movies_list .= $thumbnail;
-						$count++;
-						if ($count >= 9)
-							break;
-					}
-					?>
-                    <h2><?php echo $lang_index['text_' . $type_each . 'movies'] ?></h2>
-                    <table width="100%" cellspacing="0" cellpadding="5">
-                        <tr>
-                            <td class="text nowrap" align="center">
-								<?php echo $movies_list ?></td>
-                        </tr>
-                    </table>
+				$torrents = number_format(get_row_count("torrents"));
+				$dead = number_format(get_row_count("torrents", "WHERE visible='no'"));
+				$seeders = get_row_count("peers", "WHERE seeder='yes'");
+				$leechers = get_row_count("peers", "WHERE seeder='no'");
+				if ($leechers == 0)
+					$ratio = 0;
+				else
+					$ratio = round($seeders / $leechers * 100);
+				$activewebusernow = get_row_count("users", "WHERE last_access >= " . sqlesc(date("Y-m-d H:i:s", (TIMENOW - 900))));
+				$activewebusernow = number_format($activewebusernow);
+				$activetrackerusernow = number_format(get_single_value("peers", "COUNT(DISTINCT(userid))"));
+				$peers = number_format($seeders + $leechers);
+				$seeders = number_format($seeders);
+				$leechers = number_format($leechers);
+				$totaltorrentssize = mksize(get_row_sum("torrents", "size"));
+				$totaluploaded = get_row_sum("users", "uploaded");
+				$totaldownloaded = get_row_sum("users", "downloaded");
+				$totaldata = $totaldownloaded + $totaluploaded;
+				?>
+                <tr>
 					<?php
-				}
+					twotd($lang_index['row_torrents'], $torrents);
+					twotd($lang_index['row_dead_torrents'], $dead);
+					?>
+                </tr>
+                <tr>
+					<?php
+					twotd($lang_index['row_seeders'], $seeders);
+					twotd($lang_index['row_leechers'], $leechers);
+					?>
+                </tr>
+                <tr>
+					<?php
+					twotd($lang_index['row_peers'], $peers);
+					twotd($lang_index['row_seeder_leecher_ratio'], $ratio . "%");
+					?>
+                </tr>
+                <tr>
+					<?php
+					twotd($lang_index['row_active_browsing_users'], $activewebusernow);
+					twotd($lang_index['row_tracker_active_users'], $activetrackerusernow);
+					?>
+                </tr>
+                <tr>
+					<?php
+					twotd($lang_index['row_total_size_of_torrents'], $totaltorrentssize);
+					twotd($lang_index['row_total_uploaded'], mksize($totaluploaded));
+					?>
+                </tr>
+                <tr>
+					<?php
+					twotd($lang_index['row_total_downloaded'], mksize($totaldownloaded));
+					twotd($lang_index['row_total_data'], mksize($totaldata));
+					?>
+                </tr>
+				<?php
 				$Cache->end_whole_row();
 				$Cache->cache_page();
 			}
 			echo $Cache->next_row();
-		}
-	}
-}
-//if ($showlastxforumposts_main == "yes" && $CURUSER) {
-//}
-// ------------- end: hot and classic movies ------------------//
+			?>
+            <tr>
+                <td colspan="4" class="rowhead">&nbsp;</td>
+            </tr>
+			<?php
+			$Cache->new_page('stats_classes', 4535, true);
+			if (!$Cache->get_page()) {
+				$Cache->add_whole_row();
+				$peasants = number_format(get_row_count("users", "WHERE class=" . UC_PEASANT));
+				$users = number_format(get_row_count("users", "WHERE class=" . UC_USER));
+				$powerusers = number_format(get_row_count("users", "WHERE class=" . UC_POWER_USER));
+				$eliteusers = number_format(get_row_count("users", "WHERE class=" . UC_ELITE_USER));
+				$crazyusers = number_format(get_row_count("users", "WHERE class=" . UC_CRAZY_USER));
+				$insaneusers = number_format(get_row_count("users", "WHERE class=" . UC_INSANE_USER));
+				$veteranusers = number_format(get_row_count("users", "WHERE class=" . UC_VETERAN_USER));
+				$extremeusers = number_format(get_row_count("users", "WHERE class=" . UC_EXTREME_USER));
+				$ultimateusers = number_format(get_row_count("users", "WHERE class=" . UC_ULTIMATE_USER));
+				$nexusmasters = number_format(get_row_count("users", "WHERE class=" . UC_NEXUS_MASTER));
+				?>
+                <tr>
+					<?php
+					twotd(get_user_class_name(UC_PEASANT, false, false, true), $peasants);
+					twotd(get_user_class_name(UC_USER, false, false, true), $users);
+					?>
+                </tr>
+                <tr>
+					<?php
+					twotd(get_user_class_name(UC_POWER_USER, false, false, true), $powerusers);
+					twotd(get_user_class_name(UC_ELITE_USER, false, false, true), $eliteusers);
+					?>
+                </tr>
+                <tr>
+					<?php
+					twotd(get_user_class_name(UC_CRAZY_USER, false, false, true), $crazyusers);
+					twotd(get_user_class_name(UC_INSANE_USER, false, false, true), $insaneusers);
+					?>
+                </tr>
+                <tr>
+					<?php
+					twotd(get_user_class_name(UC_VETERAN_USER, false, false, true), $veteranusers);
+					twotd(get_user_class_name(UC_EXTREME_USER, false, false, true), $extremeusers);
+					?>
+                </tr>
+                <tr>
+					<?php
+					twotd(get_user_class_name(UC_ULTIMATE_USER, false, false, true), $ultimateusers);
+					twotd(get_user_class_name(UC_NEXUS_MASTER, false, false, true), $nexusmasters);
+					?>
+                </tr>
+				<?php
+				$Cache->end_whole_row();
+				$Cache->cache_page();
+			}
+			echo $Cache->next_row();
+			}
+			?>
 
-
-
-// ------------- start: forums post ------------------//
-
-
-//$res = sql_query("SELECT posts.id AS pid, posts.userid AS userpost, posts.added, topics.id AS tid, topics.subject, topics.forumid, topics.views, forums.name FROM posts, topics, forums WHERE posts.topicid = topics.id AND topics.forumid = forums.id AND minclassread <=" . sqlesc(get_user_class()) . " ORDER BY posts.id DESC LIMIT 5") or sqlerr(__FILE__, __LINE__);
-//if (mysql_num_rows($res) != 0) {
-//	panel_head_start();
-//	print("<h3 class='panel-title'>" . $lang_index['text_last_five_posts'] . "</h3>");
-//	panel_head_end();
-//	print("
-//<table  class='table table-striped'  width=\"100%\"  cellspacing=\"0\" cellpadding=\"5\">
-//<tr>
-//<td class=\"colhead\" align=\"left\">" . $lang_index['col_topic_title'] . "</td>
-//<td class=\"colhead\" align=\"center\">" . $lang_index['col_view'] . "</td>
-//<td class=\"colhead\" align=\"center\">" . $lang_index['col_author'] . "</td>
-//<td class=\"colhead\" align=\"left\">" . $lang_index['col_posted_at'] . "</td>
-//</tr>");
-//	echo "
-//			<style>
-//				.links-blue{
-//				    font-family: \"Helvetica Neue\", Helvetica, Arial, sans-serif;
-//				    font-size: 14px;
-//				    color: #337ab7;
-//					}
-//			</style>
-//		";
-//	while ($postsx = mysql_fetch_assoc($res)) {
-//
-//		print("
-//<tr>
-//<td>
-//	[<a class='links-blue' href=\"forums.php ? action = viewforum & amp;forumid =  '. $postsx[forumid].\" >" . htmlspecialchars($postsx["name"]) . "</a>]
-//	<a class='links-blue' href=\"forums.php?action=viewtopic&amp;topicid=" . $postsx["tid"] . "&amp;page=p" . $postsx["pid"] . "#pid" . $postsx["pid"] . "\">" . htmlspecialchars($postsx["subject"]) . "</a>
-//</td>
-//<td align=\"center\">" . $postsx["views"] . "</td><td align=\"center\">" . get_username($postsx["userpost"]) . "</td>
-//<td>" . gettime($postsx["added"]) . "</td>
-//</tr>");
-//	}
-//	print("</table>");
-//}
-// ------------- end: latest forum posts ------------------//
-
-
-// ------------- start: tracker load   服务器负载    ---//
-//if ($showtrackerload == "yes") {
-//$uptimeresult=exec('uptime');
-//if ($uptimeresult){
-//?>
-<!--<h2>--><?php //echo $lang_index['text_tracker_load'] ?><!--</h2>-->
-<!--<!--<table width="100%"  cellspacing="0" cellpadding="10"><tr><td class="text" align="center">-->
-<?php
-//			//uptime, work in *nix system
-//			print ("<div align=\"center\">" . trim($uptimeresult) . "</div>");
-//			print("</td></tr></table>");
-//			}
-//			}
-//?>
-<!--// ------------- end: tracker load ------------------//-->
-
-<!--// ------------- start: disclaimer  免责声明   ----------//-->
-<h3 class="panel-title"><span class=" icon-tasks"></span>&nbsp;<?php echo $lang_index['text_disclaimer'] ?></h3>
-<table width="100%">
-	<tr>
-		<td style="border: 0px">
-			<?php echo "<blockquote style='font-size: 12px'>" . $lang_index['text_disclaimer_content'] . "</blockquote>" ?></td>
-	</tr>
-</table>
-<!--// ------------- end: disclaimer ------------------//-->
-
-
-
-
-<!--// ------------- start: stats -------------------->
-
-<!--echo "<div class='row'>";-->
-<?php
-if ($showstats_main == "yes") {
-	?>
-	<h3 class="panel-title">
-		<sapn class=" icon-dashboard"></sapn>
-		&nbsp;<?php echo $lang_index['text_tracker_statistics'] ?>
-	</h3>
-	<div class="panel panel-default">
-	<table  width="100%" class="table table-striped" >
-	<tr>
-	<!--<table width="60%" class="table table-bordered"  cellspacing="0" cellpadding="10">-->
-	<?php
-	$Cache->new_page('stats_users', 3000, true);
-	if (!$Cache->get_page()) {
-		$Cache->add_whole_row();
-		$registered = number_format(get_row_count("users"));
-		$unverified = number_format(get_row_count("users", "WHERE status='pending'"));
-		$totalonlinetoday = number_format(get_row_count("users", "WHERE last_access >= " . sqlesc(date("Y-m-d H:i:s", (TIMENOW - 86400)))));
-		$totalonlineweek = number_format(get_row_count("users", "WHERE last_access >= " . sqlesc(date("Y-m-d H:i:s", (TIMENOW - 604800)))));
-		$VIP = number_format(get_row_count("users", "WHERE class=" . UC_VIP));
-		$donated = number_format(get_row_count("users", "WHERE donor = 'yes'"));
-		$warned = number_format(get_row_count("users", "WHERE warned='yes'"));
-		$disabled = number_format(get_row_count("users", "WHERE enabled='no'"));
-		$registered_male = number_format(get_row_count("users", "WHERE gender='Male'"));
-		$registered_female = number_format(get_row_count("users", "WHERE gender='Female'"));
-		?>
-		<tr>
-			<?php
-			twotd($lang_index['row_users_active_today'], $totalonlinetoday);
-			twotd($lang_index['row_users_active_this_week'], $totalonlineweek);
-			?>
-		</tr>
-		<tr>
-			<?php
-			twotd($lang_index['row_registered_users'], $registered . " / " . number_format($maxusers));
-			twotd($lang_index['row_unconfirmed_users'], $unverified);
-			?>
-		</tr>
-		<tr>
-			<?php
-			twotd(get_user_class_name(UC_VIP, false, false, true), $VIP);
-			twotd($lang_index['row_donors'], $donated);
-			?>
-		</tr>
-		<tr>
-			<?php
-			twotd($lang_index['row_warned_users'], $warned);
-			twotd($lang_index['row_banned_users'], $disabled);
-			?>
-		</tr>
-		<tr>
-			<?php
-			twotd($lang_index['row_male_users'], $registered_male);
-			twotd($lang_index['row_female_users'], $registered_female);
-			?>
-		</tr>
-		<?php
-		$Cache->end_whole_row();
-		$Cache->cache_page();
-	}
-	echo $Cache->next_row();
-	?>
-	<tr>
-		<td colspan="4" class="rowhead">&nbsp;</td>
-	</tr>
-	<?php
-	$Cache->new_page('stats_torrents', 1800, true);
-	if (!$Cache->get_page()) {
-		$Cache->add_whole_row();
-		$torrents = number_format(get_row_count("torrents"));
-		$dead = number_format(get_row_count("torrents", "WHERE visible='no'"));
-		$seeders = get_row_count("peers", "WHERE seeder='yes'");
-		$leechers = get_row_count("peers", "WHERE seeder='no'");
-		if ($leechers == 0)
-			$ratio = 0;
-		else
-			$ratio = round($seeders / $leechers * 100);
-		$activewebusernow = get_row_count("users", "WHERE last_access >= " . sqlesc(date("Y-m-d H:i:s", (TIMENOW - 900))));
-		$activewebusernow = number_format($activewebusernow);
-		$activetrackerusernow = number_format(get_single_value("peers", "COUNT(DISTINCT(userid))"));
-		$peers = number_format($seeders + $leechers);
-		$seeders = number_format($seeders);
-		$leechers = number_format($leechers);
-		$totaltorrentssize = mksize(get_row_sum("torrents", "size"));
-		$totaluploaded = get_row_sum("users", "uploaded");
-		$totaldownloaded = get_row_sum("users", "downloaded");
-		$totaldata = $totaldownloaded + $totaluploaded;
-		?>
-		<tr>
-			<?php
-			twotd($lang_index['row_torrents'], $torrents);
-			twotd($lang_index['row_dead_torrents'], $dead);
-			?>
-		</tr>
-		<tr>
-			<?php
-			twotd($lang_index['row_seeders'], $seeders);
-			twotd($lang_index['row_leechers'], $leechers);
-			?>
-		</tr>
-		<tr>
-			<?php
-			twotd($lang_index['row_peers'], $peers);
-			twotd($lang_index['row_seeder_leecher_ratio'], $ratio . "%");
-			?>
-		</tr>
-		<tr>
-			<?php
-			twotd($lang_index['row_active_browsing_users'], $activewebusernow);
-			twotd($lang_index['row_tracker_active_users'], $activetrackerusernow);
-			?>
-		</tr>
-		<tr>
-			<?php
-			twotd($lang_index['row_total_size_of_torrents'], $totaltorrentssize);
-			twotd($lang_index['row_total_uploaded'], mksize($totaluploaded));
-			?>
-		</tr>
-		<tr>
-			<?php
-			twotd($lang_index['row_total_downloaded'], mksize($totaldownloaded));
-			twotd($lang_index['row_total_data'], mksize($totaldata));
-			?>
-		</tr>
-		<?php
-		$Cache->end_whole_row();
-		$Cache->cache_page();
-	}
-	echo $Cache->next_row();
-	?>
-	<tr>
-		<td colspan="4" class="rowhead">&nbsp;</td>
-	</tr>
-	<?php
-	$Cache->new_page('stats_classes', 4535, true);
-	if (!$Cache->get_page()) {
-		$Cache->add_whole_row();
-		$peasants = number_format(get_row_count("users", "WHERE class=" . UC_PEASANT));
-		$users = number_format(get_row_count("users", "WHERE class=" . UC_USER));
-		$powerusers = number_format(get_row_count("users", "WHERE class=" . UC_POWER_USER));
-		$eliteusers = number_format(get_row_count("users", "WHERE class=" . UC_ELITE_USER));
-		$crazyusers = number_format(get_row_count("users", "WHERE class=" . UC_CRAZY_USER));
-		$insaneusers = number_format(get_row_count("users", "WHERE class=" . UC_INSANE_USER));
-		$veteranusers = number_format(get_row_count("users", "WHERE class=" . UC_VETERAN_USER));
-		$extremeusers = number_format(get_row_count("users", "WHERE class=" . UC_EXTREME_USER));
-		$ultimateusers = number_format(get_row_count("users", "WHERE class=" . UC_ULTIMATE_USER));
-		$nexusmasters = number_format(get_row_count("users", "WHERE class=" . UC_NEXUS_MASTER));
-		?>
-		<tr>
-			<?php
-			twotd(get_user_class_name(UC_PEASANT, false, false, true), $peasants);
-			twotd(get_user_class_name(UC_USER, false, false, true), $users);
-			?>
-		</tr>
-		<tr>
-			<?php
-			twotd(get_user_class_name(UC_POWER_USER, false, false, true), $powerusers);
-			twotd(get_user_class_name(UC_ELITE_USER, false, false, true), $eliteusers);
-			?>
-		</tr>
-		<tr>
-			<?php
-			twotd(get_user_class_name(UC_CRAZY_USER, false, false, true), $crazyusers);
-			twotd(get_user_class_name(UC_INSANE_USER, false, false, true), $insaneusers);
-			?>
-		</tr>
-		<tr>
-			<?php
-			twotd(get_user_class_name(UC_VETERAN_USER, false, false, true), $veteranusers);
-			twotd(get_user_class_name(UC_EXTREME_USER, false, false, true), $extremeusers);
-			?>
-		</tr>
-		<tr>
-			<?php
-			twotd(get_user_class_name(UC_ULTIMATE_USER, false, false, true), $ultimateusers);
-			twotd(get_user_class_name(UC_NEXUS_MASTER, false, false, true), $nexusmasters);
-			?>
-		</tr>
-		<?php
-		$Cache->end_whole_row();
-		$Cache->cache_page();
-	}
-	echo $Cache->next_row();
-}
-		?>
-
-		</td></tr></table>
+            </td></tr></table>
     </div>
-
+</div>
+</div>
+<!--row end -->
 <?php
-?>
-<!--// ------------- end: stats ------------------//-->
-
-
-
-
-
-<?php
-			
-// ------------- start: browser, client and code note ------------------//
-?>
-<table style="margin-left: 5%" width="90%" class="main" border="0" cellspacing="0" cellpadding="0"><tr ><td class="embedded" >
-<div align="center"><br /><font class="medium"><?php echo $lang_index['text_browser_note'] ?></font></div>
-<!--<div align="center"><a href="http://www.nexusphp.com" title="--><?php //echo PROJECTNAME?><!--" target="_blank"><img src="pic/nexus.png" alt="--><?php //echo PROJECTNAME?><!--" /></a></div>-->
-</td></tr></table>
-<script>
-    $("#linksadmin").tooltip({
-        data-trigger:"hover foucs",
-    });
-</script>
-<?php
-// ------------- end: browser, client and code note ------------------//
-if ($CURUSER)
-	$USERUPDATESET[] = "last_home = ".sqlesc(date("Y-m-d H:i:s"));
-$Cache->delete_value('user_'.$CURUSER["id"].'_unread_news_count');
 end_main_frame();
 stdfoot();
 ?>

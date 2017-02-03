@@ -100,3 +100,19 @@ link:focus{
     font-size: 17px;
     margin-left: 60px;
 }
+
+.indexicon{
+    font-size: 20px;
+}
+
+.footer {
+    color: #777;
+    padding: 30px 0;
+    border-top: 1px solid #e5e5e5;
+    margin-top: 70px;
+}
+
+#indexmain{
+    margin: 0px auto;
+    padding-top: 10px;
+}
