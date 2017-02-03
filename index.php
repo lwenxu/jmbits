@@ -38,17 +38,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 stdhead($lang_index['head_home']);
 begin_main_frame();
 main_content_start();
+echo "<div class='row'>";
 
-//  first  block
-block_start();
-col_start(5);
-eve_block_start();
+echo "<div class='col-md-6'>";
 // ------------- start: new-boxes ------------------//
-//panel_head_start();
-
-
-echo "            <div class='portlet light bordered '>
-                        <div class=\"portlet-title\">
+echo "                     <div class='portlet light bordered '>
+                                <div class=\"portlet-title\">
                                         <div class=\"caption font-purple-plum\">
                                             <i class=\" glyphicon glyphicon-bell \"></i>
                                             <span class=\"caption-subject bold uppercase\">最新公告</span>
@@ -61,72 +56,61 @@ if (get_user_class() >= $newsmanage_class) {
                                                 <i class=\"icon-wrench\"></i>
                                             </a>
                                         </div>
-                                    </div>
 ";
 }
-//print("<h3 class=\"panel-title\"><span class=' glyphicon glyphicon-bell '></span>&nbsp;".$lang_index['text_recent_news'].(get_user_class() >= $newsmanage_class ? "&nbsp;&nbsp;&nbsp;&nbsp;<a class=\"altlink\" href=\"news.php\"><span class='icon-edit'></span>".$lang_index['text_news_page']."</a></font>" : "")."</h3>");
-
+echo "</div>";
 $Cache->new_page('recent_news', 86400, true);
-if (!$Cache->get_page()){
-	$res = sql_query("SELECT * FROM news ORDER BY added DESC LIMIT ".(int)$maxnewsnum_main) or sqlerr(__FILE__, __LINE__);
-	if (mysql_num_rows($res) > 0)
-	{
-//		$Cache->add_whole_row();
-		echo  "<div class=\"panel-body scroll\" style=\"overflow: auto; width: auto;height: 400px\">";
-		print("<table class=\"table table-striped\">");
-//		$Cache->end_whole_row();
+if (!$Cache->get_page()) {
+	$res = sql_query("SELECT * FROM news ORDER BY added DESC LIMIT " . (int)$maxnewsnum_main) or sqlerr(__FILE__, __LINE__);
+	if (mysql_num_rows($res) > 0) {
+		echo "<div class=\"panel-body scroll\" style=\"overflow: auto; width: auto;height: 400px\">";
+		print("<table class=\"table\">");
 		$news_flag = 0;
-		while($array = mysql_fetch_array($res))
-		{
-//			$Cache->add_row();
-//			$Cache->add_part();
+		echo "<div class='panel-group' id='accordion'>";
+		while ($array = mysql_fetch_array($res)) {
 			if ($news_flag < 1) {
 				echo "
-				<div class=\"panel panel-default\">
+				<div class=\"panel panel-success\">
 						<div class=\"panel-heading\" role=\"tab\" id=\"headingOne\">
-							<h3 class=\"panel-title\">
+							<h2 class=\"panel-title\">
 								<a role=\"button\" data-toggle=\"collapse\" data-parent=\"#accordion\" href=\"#collapseOne\" aria-expanded=\"true\" aria-controls=\"collapseOne\">
 									<span class='icon-tags' style='color:#2DCB70'></span>&nbsp;" . "" . $array['title'] . "(" . date("Y.m.d", strtotime($array['added'])) . ")
 								</a>
-							</h3>
+							</h2>
 						</div>
 						<div id=\"collapseOne\" class=\"panel-collapse collapse in\" role=\"tabpanel\" aria-labelledby=\"headingOne\">
 							<div class=\"panel-body\">
 							<p>";
-                    echo format_comment($array["body"],0);
-                    if (get_user_class() >= $newsmanage_class){
-                    echo "
+				echo format_comment($array["body"], 0);
+				if (get_user_class() >= $newsmanage_class) {
+					echo "
                         <br><br>
                             <span class='icon-edit' style='color:#2DCB70'></span> <a class=\"faqlink\" href=\"news.php?action=edit&amp;newsid=" . $array['id'] . "\">" . $lang_index['text_e'] . "</a>
                             <span class='icon-trash' style='color: tomato'></span> <a class=\"faqlink\" href=\"news.php?action=delete&amp;newsid=" . $array['id'] . "\">" . $lang_index['text_d'] . "</a>
                                 
 				";
-                    }
+				}
 				echo "</p>
 							</div>
 						</div>
 					</div>";
-//				print("<h3><a href=\"javascript: klappe_news('a".$array['id']."')\"><span class='icon-tags' style='color:#2DCB70'></span>&nbsp;"."". $array['title'] . "(".date("Y.m.d",strtotime($array['added'])).")</a></h3>");
-//				print("<div class='kas' id=\"ka".$array['id']."\" style=\"display: block;\"> ".format_comment($array["body"],0)." </div>");
 				$news_flag = $news_flag + 1;
-			}
-			else
-			{
+			} else {
 
 				echo "
 				<div class=\"panel panel-default\">
 						<div class=\"panel-heading\" role=\"tab\" id=\"headingTwo\">
-							<h3 class=\"panel-title\">
+							<h2 class=\"panel-title\">
 								<a class=\"collapsed\" role=\"button\" data-toggle=\"collapse\" data-parent=\"#accordion\" href=\"#collapseTwo$array[id]\" aria-expanded=\"false\" aria-controls=\"collapseTwo\">
 									<span class='icon-tags' style='color:#2DCB70'></span>&nbsp;" . "" . $array['title'] . "(" . date("Y.m.d", strtotime($array['added'])) . ")
 								</a>
-							</h3>
+							</h2>
 						</div>
 						<div id=\"collapseTwo$array[id]\" class=\"panel-collapse collapse\" role=\"tabpanel\" aria-labelledby=\"headingTwo\">
 							<div class=\"panel-body\"><p>";
 				echo format_comment($array["body"], 0);
-				if (get_user_class() >= $newsmanage_class){
-							echo "
+				if (get_user_class() >= $newsmanage_class) {
+					echo "
                             <br><br>
                             <span class='icon-edit' style='color:#2DCB70'></span> <a class=\"faqlink\" href=\"news.php?action=edit&amp;newsid=" . $array['id'] . "\">" . $lang_index['text_e'] . "</a>
                             <span class='icon-trash' style='color: tomato'></span> <a class=\"faqlink\" href=\"news.php?action=delete&amp;newsid=" . $array['id'] . "\">" . $lang_index['text_d'] . "</a>
@@ -136,76 +120,91 @@ if (!$Cache->get_page()){
 				echo " </p></div>
 						</div>
 					</div>";
-//				print("<h3><a href=\"javascript: klappe_news('a".$array['id']."')\"><br /><span class='icon-tags' style='color:#2DCB70'></span>&nbsp;"."". $array['title'] . "(".date("Y.m.d",strtotime($array['added'])).")</a></h3>");
-//				print("<div class='alttext' id=\"ka".$array['id']."\" style=\"display: none;\"> ".format_comment($array["body"],0)." </div> ");
 			}
-//			$Cache->end_part();
-//			$Cache->add_part();
-//			print("  &nbsp;<span class='icon-edit' style='color:#2DCB70'></span> <a class=\"faqlink\" href=\"news.php?action=edit&amp;newsid=" . $array['id'] . "\">".$lang_index['text_e']."</a>");
-//			print("  &nbsp;<span class='icon-trash' style='color: tomato'></span> <a class=\"faqlink\" href=\"news.php?action=delete&amp;newsid=" . $array['id'] . "\">".$lang_index['text_d']."</a>");
-//			$Cache->end_part();
-//			$Cache->end_row();
 		}
-//		$Cache->break_loop();
-//		$Cache->add_whole_row();
-//	echo "
-//	<div class=\"slimScrollBar\" style=\"background: rgb(0, 0, 0); width: 8px; position: absolute; top: 17px; opacity: 0.4; display: block; border-radius: 7px; z-index: 99; right: 1px; height: 249.231px;\"></div>
-//	<div class=\"slimScrollRail\" style=\"width: 8px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;\"></div>
-//	";
 		print("</div></td></tr></table>\n");
-		echo "</div>";
-		//
-//		$Cache->end_whole_row();
+		echo "</div></div>";
 	}
 	$Cache->cache_page();
 }
 echo $Cache->next_row();
-while($Cache->next_row()){
+while ($Cache->next_row()) {
 	echo $Cache->next_part();
 	if (get_user_class() >= $newsmanage_class)
 		echo $Cache->next_part();
 }
 echo $Cache->next_row();
-panel_head_end();
-//eve_block_end();
 // ------------- end : new box  ------------------//
-
+echo "            <div class='portlet light bordered '>
+                        <div class=\"portlet-title\">
+                                        <div class=\"caption\">
+                                            <i class=\"icon-cloud-upload font-red-sunglo\"></i>
+                                            <span class=\"caption-subject font-red-sunglo bold uppercase\">最近的种子</span>
+                                        </div>
+                                    </div>
+                                        ";
 // ------------- start: latest torrents ------------------//
-eve_block_start();
 if ($showlastxtorrents_main == "yes") {
 	$result = sql_query("SELECT * FROM torrents where visible='yes' ORDER BY added DESC LIMIT 5") or sqlerr(__FILE__, __LINE__);
 	if (mysql_num_rows($result) != 0) {
-		panel_head_start();
-		print ("<h3 class='panel-title'><span class='icon-cloud-upload' ></span>&nbsp;" . $lang_index['text_last_five_torrent'] . "</h3>");
-		panel_head_end();
-		print ("<table  class='table table-striped' width=\"100%\"  cellspacing=\"0\" cellpadding=\"5\">
-<tr><td class=\"colhead\" >" . $lang_index['col_name'] . "</td><td class=\"colhead\" align=\"center\">" . $lang_index['col_seeder'] . "</td><td class=\"colhead\" align=\"center\">" . $lang_index['col_leecher'] . "</td></tr>");
+echo "<table  class='table' width=\"100%\">
+        <thead>
+            <tr>
+                <th>" . $lang_index['col_name'] . "</th>
+                <th>" . $lang_index['col_seeder'] . "</td>
+                <th>" . $lang_index['col_leecher'] . "</td>
+            </tr>
+        </thead>
+        <tbody>";
 
 		while ($row = mysql_fetch_assoc($result)) {
-		    if (strlen($row['name'])>30){
-		        $title=mb_substr($row['name'],0,20)."...";
-            }else{
-		        $title=$row['name'];
-            }
-			print ("<tr><a href=\"details.php?id=" . $row['id'] . "&amp;hit=1\"><td><a class='sans' href=\"details.php?id=" . $row['id'] . "&amp;hit=1\">" . htmlspecialchars($title) . "</td></a><td align=\"center\" class='sans'>" . $row['seeders'] . "</td><td align=\"center\" class='sans'>" . $row['leechers'] . "</td></tr>");
+			if (strlen($row['name']) > 30) {
+				$title = mb_substr($row['name'], 0, 20) . "...";
+			} else {
+				$title = $row['name'];
+			}
+			echo "
+
+<tr>
+<a href=\"details.php?id=" . $row['id'] . "&amp;hit=1\">
+<td><a class='sans' href=\"details.php?id=" . $row['id'] . "&amp;hit=1\">" . htmlspecialchars($title) . "</td>
+</a>
+<td align=\"center\" class='sans'>" . $row['seeders'] . "</td>
+<td align=\"center\" class='sans'>" . $row['leechers'] . "</td>
+</tr>
+";
 		}
-		print ("</table>");
+		print ("</tbody></table></div>");
 	}
 }
-eve_block_end();
 // ------------- end: latest torrents ------------------//
 
-// ------------- start: links ------------------//-->
-eve_block_start();
-panel_head_start();
-print("<h3 class='panel-title' ><span class='icon-link'></span>&nbsp;" . $lang_index['text_links']);
-if (get_user_class() >= $applylink_class)
-	print("&nbsp;<a class=\"altlink\"  href=\"linksmanage.php?action=apply\">" . $lang_index['text_apply_for_link'] . "</a>");
-if (get_user_class() >= $linkmanage_class) {
-	print("  &nbsp;<a class=\"altlink\" href=\"linksmanage.php\">" . $lang_index['text_manage_links'] . "</a>");
+echo "            <div class='portlet light bordered '>
+                        <div class=\"portlet-title\">
+                                        <div class=\"caption font-purple-plum\">
+                                            <i class=\" glyphicon glyphicon-link \"></i>
+                                            <span class=\"caption-subject font-green-sharp bold uppercase\">友情链接</span>
+                                        </div>
+                                        ";
+if (get_user_class() >= $newsmanage_class) {
+	echo "
+                                        <div class=\"actions\">
+                                            <a class=\"btn btn-circle btn-icon-only btn-default\" href=\"linksmanage.php\">
+                                                <i class=\"icon-wrench\" alt='你好'></i>
+                                            </a>
+                                            <span data-toggle='tooltip' title='连接管理' id='linksadmin'></span>
+                                     
+";
 }
+echo "
+     <a class=\"btn btn-circle btn-icon-only btn-default\" href=\"linksmanage.php?action=apply\">
+            <i class=\"glyphicon glyphicon-send\"></i>
+     </a>
+       </div>
+           
+";
+// ------------- start: links ------------------//-->
 print("</h3>");
-panel_head_end();
 
 $Cache->new_page('links', 86400, false);
 if (!$Cache->get_page()) {
@@ -222,53 +221,34 @@ if (!$Cache->get_page()) {
 	$Cache->cache_page();
 }
 echo $Cache->next_row();
-col_end();
-eve_block_end();
+echo "</div>";
 // ------------- end: links ------------------//
 
-// ------------- start: shut box box ------------------//
-col_start(7);
-eve_block_start();
-
-if ($showshoutbox_main == "yes") {
-	panel_head_start();
-	?>
-    <script>
-        var x = document.getElementById("shutbox").contentWindow.document
-        x.body.scrollTop = x.body.offsetHeight;
-    </script>
-	<h3 class="panel-title"><sapn class="icon-comments"></sapn><?php echo $lang_index['text_shoutbox'] ?></h3>
-	<?php
-	panel_head_end();
-	print("<table style='width: 100%;height: 805px;'><tr><td class=\"text\" style='width: 100px'>\n");
-	print("<iframe id='shutbox' src='shoutbox.php?type=shoutbox' width='100%' height='520' frameborder='0' name='sbox' marginwidth='0' marginheight='0'></iframe><br /><br />\n");
-	print("<form action='shoutbox.php' method='get' target='sbox' name='shbox'>\n");
-	print("<label for='shbox_text'>" . $lang_index['text_message'] . "</label>
-	<div class=\"vtop td-fat pd5\">
-	<textarea id=\"qrbody\" class=\"input fullwidth inputor\" name='shbox_text' id='shbox_text' rows=\"2\" placeholder=\"请输入聊天内容\" style=\"height: 4em; background-color: rgb(255, 255, 255);width:98%;margin-left:1%\"></textarea>
-	<link rel=\"stylesheet\" href=\"userAutoTips.css\" type=\"text/css\">
-    <script type=\"text/javascript\" src=\"userAutoTips.js\"></script>
-    <script type=\"text/javascript\">userAutoTips({id:'qrbody'});$(window).bind('scroll resize', function(e){userAutoTips({id:'qrbody'})})</script>
-    </div>
-	<input style='margin:7px' type='submit' id='hbsubmit' class=\"btn btn-success\" name='shout' value=\"" . $lang_index['sumbit_shout'] . "\" />");
-	if ($CURUSER['hidehb'] != 'yes' && $showhelpbox_main == 'yes')
-		print("<input type='submit' class='btn' name='toguest' value=\"" . $lang_index['sumbit_to_guest'] . "\" />");
-	print("<input type='reset' class=\"btn btn-danger\" value=\"" . $lang_index['submit_clear'] . "\" /> <input type='hidden' name='sent' value='yes' /><input type='hidden' name='type' value='shoutbox' /><br />\n");
-	print(smile_row("shbox", "shbox_text"));
-	print("</form></td></tr></table>");
-}
-
-// ------------- end: shut box ------------------//
-col_end();
-block_end();
-
-block_start();
-
-
-col_start(5);
 // ------------- start: polls ------------------//
-eve_block_start();
 if ($CURUSER && $showpolls_main == "yes") {
+
+	echo "                        <div class=\"portlet-title\">
+                                        <div class=\"caption font-purple-plum\">
+                                            <i class=\"glyphicon glyphicon-th\"></i>
+                                            <span class=\"caption-subject bold uppercase\"> 投票 </span>
+                                        </div>";
+if (get_user_class() >= $pollmanage_class) {
+	echo "
+                                        <div class=\"actions\">
+                                            <a class=\"btn btn-circle btn-icon-only btn-default\" href=\"makepoll.php?returnto=main\">
+                                                <i class=\"icon-cloud-upload\"></i>
+                                            </a>
+                                            <a class=\"btn btn-circle btn-icon-only btn-default\" href=\"makepoll.php?action=edit&amp;pollid=" . $arr[id] . "&amp;returnto=main\">
+                                                <i class=\"icon-wrench\"></i>
+                                            </a>
+                                            <a class=\"btn btn-circle btn-icon-only btn-default\" href=\"log.php?action=poll&amp;do=delete&amp;pollid=" . $arr[id] . "&amp;returnto=main\">
+                                                <i class=\"icon-trash\"></i>
+                                            </a>
+                                            <a class=\"btn btn-circle btn-icon-only btn-default fullscreen\" href=\"polloverview.php?id=" . $arr[id] . "\" data-original-title=\"\" title=\"\"> </a>
+                                        </div>
+                                    ";
+}
+	echo "</div>";
 	// Get current poll
 	if (!$arr = $Cache->get_value('current_poll_content')) {
 		$res = sql_query("SELECT * FROM polls ORDER BY id DESC LIMIT 1") or sqlerr(__FILE__, __LINE__);
@@ -278,19 +258,7 @@ if ($CURUSER && $showpolls_main == "yes") {
 	if (!$arr)
 		$pollexists = false;
 	else $pollexists = true;
-	panel_head_start();
-	print("<h3 class='panel-title'><sapn class='icon-bookmark'></sapn>" . $lang_index['text_polls']);
-	if (get_user_class() >= $pollmanage_class) {
-		print("&nbsp;<sapn class='icon-pencil'></sapn><a class=\"altlink\" href=\"makepoll.php?returnto=main\">" . $lang_index['text_new'] . "</a></h>\n");
-		if ($pollexists) {
-			print("&nbsp;<sapn class='icon-edit'></sapn><a class=\"altlink\" href=\"makepoll.php?action=edit&amp;pollid=" . $arr[id] . "&amp;returnto=main\">" . $lang_index['text_edit'] . "</a>\n");
-			print("&nbsp;<span class='icon-trash'></span><a class=\"altlink\" href=\"log.php?action=poll&amp;do=delete&amp;pollid=" . $arr[id] . "&amp;returnto=main\">" . $lang_index['text_delete'] . "</a>");
-			print("&nbsp;<span class='icon-spinner'></span><a class=\"altlink\" href=\"polloverview.php?id=" . $arr[id] . "\">" . $lang_index['text_detail'] . "</a>");
-		}
-		print("</font>");
-	}
-	print("</h4>");
-	panel_head_end();
+
 	if ($pollexists) {
 		$pollid = 0 + $arr["id"];
 		$userid = 0 + $CURUSER["id"];
@@ -381,12 +349,23 @@ if ($CURUSER && $showpolls_main == "yes") {
 		{
 			print("<form method=\"post\" action=\"index.php\">\n");
 			$i = 0;
+			echo "<div class=\"mt-radio-list\" style='margin-left: 190px'>";
 			while ($a = $o[$i]) {
-				print("<label class=\"checkbox\"><input style='margin-left: 20%' type=\"radio\" name=\"choice\" value=\"" . $i . "\">" . $a . "<br /></label>\n");
+				echo "
+                                                            <label class=\"mt-radio\">
+                                                                <input type=\"radio\" name=\"choice\" id=\"optionsRadios22\" value=\"" . $i . "\">" . $a . "
+                                                                <span></span>
+                                                            </label>
+				";
 				++$i;
 			}
-			print("<br />");
-			print("<label class=\"checkbox\"><input style='margin-left: 20%' type=\"radio\" name=\"choice\" value=\"255\">" . $lang_index['radio_blank_vote'] . "<br />\n");
+			echo "
+			                                                <label class=\"mt-radio\">
+                                                                <input type=\"radio\" name=\"choice\" id=\"optionsRadios22\" value=\"255\">" . $lang_index['radio_blank_vote'] . "
+                                                                <span></span>
+                                                            </label>
+			";
+			echo "</div>";
 			print("<p align=\"center\"><input  type=\"submit\" class=\"btn btn-success\" value=\"" . $lang_index['submit_vote'] . "\" /></p></label>");
 		}
 		print("</table>");
@@ -394,16 +373,60 @@ if ($CURUSER && $showpolls_main == "yes") {
 		if ($voted && get_user_class() >= $log_class)
 			print("<p align=\"center\"><a href=\"log.php?action=poll\">" . $lang_index['text_previous_polls'] . "</a></p>\n");
 
-		print("	</table>");
+		print("</table>");
 	}
 }
-eve_block_end();
+echo "</div>";
 // ------------- end: polls ------------------//
+
+echo "</div>";  //col-md-6
+
+
+
+
+
+echo "<div class='col-md-6'></div>";
+echo "</div>";
+
+
+
+
+
+
+// ------------- start: shut box box ------------------//
+
+if ($showshoutbox_main == "yes") {
+	?>
+    <script>
+        var x = document.getElementById("shutbox").contentWindow.document
+        x.body.scrollTop = x.body.offsetHeight;
+    </script>
+	<h3 class="panel-title"><sapn class="icon-comments"></sapn><?php echo $lang_index['text_shoutbox'] ?></h3>
+	<?php
+	print("<table style='width: 100%;height: 805px;'><tr><td class=\"text\" style='width: 100px'>\n");
+	print("<iframe id='shutbox' src='shoutbox.php?type=shoutbox' width='100%' height='520' frameborder='0' name='sbox' marginwidth='0' marginheight='0'></iframe><br /><br />\n");
+	print("<form action='shoutbox.php' method='get' target='sbox' name='shbox'>\n");
+	print("<label for='shbox_text'>" . $lang_index['text_message'] . "</label>
+	<div class=\"vtop td-fat pd5\">
+	<textarea id=\"qrbody\" class=\"input fullwidth inputor\" name='shbox_text' id='shbox_text' rows=\"2\" placeholder=\"请输入聊天内容\" style=\"height: 4em; background-color: rgb(255, 255, 255);width:98%;margin-left:1%\"></textarea>
+	<link rel=\"stylesheet\" href=\"userAutoTips.css\" type=\"text/css\">
+    <script type=\"text/javascript\" src=\"userAutoTips.js\"></script>
+    <script type=\"text/javascript\">userAutoTips({id:'qrbody'});$(window).bind('scroll resize', function(e){userAutoTips({id:'qrbody'})})</script>
+    </div>
+	<input style='margin:7px' type='submit' id='hbsubmit' class=\"btn btn-success\" name='shout' value=\"" . $lang_index['sumbit_shout'] . "\" />");
+	if ($CURUSER['hidehb'] != 'yes' && $showhelpbox_main == 'yes')
+		print("<input type='submit' class='btn' name='toguest' value=\"" . $lang_index['sumbit_to_guest'] . "\" />");
+	print("<input type='reset' class=\"btn btn-danger\" value=\"" . $lang_index['submit_clear'] . "\" /> <input type='hidden' name='sent' value='yes' /><input type='hidden' name='type' value='shoutbox' /><br />\n");
+	print(smile_row("shbox", "shbox_text"));
+	print("</form></td></tr></table>");
+}
+
+// ------------- end: shut box ------------------//
+
 
 
 // ------------- start: hot and classic movies ------------------//
 // 使用了一个电影的类库，世界上最大的电影数据库  imdb
-eve_block_start();
 if ($showextinfo['imdb'] == 'yes' && ($showmovies['hot'] == "yes" || $showmovies['classic'] == "yes")) {
 	$type = array('hot', 'classic');
 	foreach ($type as $type_each) {
@@ -456,7 +479,6 @@ if ($showextinfo['imdb'] == 'yes' && ($showmovies['hot'] == "yes" || $showmovies
 }
 //if ($showlastxforumposts_main == "yes" && $CURUSER) {
 //}
-eve_block_end();
 // ------------- end: hot and classic movies ------------------//
 
 
@@ -520,21 +542,13 @@ eve_block_end();
 <!--// ------------- end: tracker load ------------------//-->
 
 <!--// ------------- start: disclaimer  免责声明   ----------//-->
-<?php
-eve_block_start();
-panel_head_start(); ?>
 <h3 class="panel-title"><span class=" icon-tasks"></span>&nbsp;<?php echo $lang_index['text_disclaimer'] ?></h3>
-<?php panel_head_end(); ?>
 <table width="100%">
 	<tr>
 		<td style="border: 0px">
 			<?php echo "<blockquote style='font-size: 12px'>" . $lang_index['text_disclaimer_content'] . "</blockquote>" ?></td>
 	</tr>
 </table>
-<?php
-eve_block_end();
-col_end();
-?>
 <!--// ------------- end: disclaimer ------------------//-->
 
 
@@ -544,10 +558,7 @@ col_end();
 
 <!--echo "<div class='row'>";-->
 <?php
-col_start(7);
-eve_block_start();
 if ($showstats_main == "yes") {
-	panel_head_start();
 	?>
 	<h3 class="panel-title">
 		<sapn class=" icon-dashboard"></sapn>
@@ -736,9 +747,6 @@ if ($showstats_main == "yes") {
     </div>
 
 <?php
-eve_block_end();
-col_end();
-block_end();
 ?>
 <!--// ------------- end: stats ------------------//-->
 
@@ -754,6 +762,11 @@ block_end();
 <div align="center"><br /><font class="medium"><?php echo $lang_index['text_browser_note'] ?></font></div>
 <!--<div align="center"><a href="http://www.nexusphp.com" title="--><?php //echo PROJECTNAME?><!--" target="_blank"><img src="pic/nexus.png" alt="--><?php //echo PROJECTNAME?><!--" /></a></div>-->
 </td></tr></table>
+<script>
+    $("#linksadmin").tooltip({
+        data-trigger:"hover foucs",
+    });
+</script>
 <?php
 // ------------- end: browser, client and code note ------------------//
 if ($CURUSER)
