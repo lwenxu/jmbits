@@ -5,96 +5,117 @@ require_once(get_langfile_path());
 loggedinorreturn();
 
 stdhead($lang_faq['head_faq']);
+//TODO  缓存关闭修改完成后必须还原
 $Cache->new_page('faq', 900, true);
+//TODO    以上为注释的缓存
+//TODO    完成
 if (!$Cache->get_page())
 {
 $Cache->add_whole_row();
 //make_folder("cache/" , get_langfolder_cookie());
 //cache_check ('faq');
-begin_main_frame();
+	$lang_id = get_guest_lang_id();
+	$is_rulelang = get_single_value("language", "rule_lang", "WHERE id = " . sqlesc($lang_id));
+	if (!$is_rulelang) {
+		$lang_id = 6; //English
+	}
+	$res = sql_query("SELECT `id`, `link_id`, `question`, `flag` FROM `faq` WHERE `type`='categ' AND `lang_id` = " . sqlesc($lang_id) . " ORDER BY `order` ASC");
+	while ($arr = mysql_fetch_array($res)) {
+		$faq_categ[$arr[link_id]][title] = $arr[question];
+		$faq_categ[$arr[link_id]][flag] = $arr[flag];
+		$faq_categ[$arr[link_id]][link_id] = $arr[link_id];
+	}
 
-begin_frame($lang_faq['text_welcome_to'].$SITENAME." - ".$SLOGAN);
-print($lang_faq['text_welcome_content_one'].$lang_faq['text_welcome_content_two']);
-end_frame();
-
-$lang_id = get_guest_lang_id();
-$is_rulelang = get_single_value("language","rule_lang","WHERE id = ".sqlesc($lang_id));
-if (!$is_rulelang){
-	$lang_id = 6; //English
-}
-$res = sql_query("SELECT `id`, `link_id`, `question`, `flag` FROM `faq` WHERE `type`='categ' AND `lang_id` = ".sqlesc($lang_id)." ORDER BY `order` ASC");
-while ($arr = mysql_fetch_array($res)) {
-	$faq_categ[$arr[link_id]][title] = $arr[question];
-	$faq_categ[$arr[link_id]][flag] = $arr[flag];
-	$faq_categ[$arr[link_id]][link_id] = $arr[link_id];
-}
-
-$res = sql_query("SELECT `id`, `link_id`, `question`, `answer`, `flag`, `categ` FROM `faq` WHERE `type`='item' AND `lang_id` = ".sqlesc($lang_id)." ORDER BY `order` ASC");
-while ($arr = mysql_fetch_array($res, MYSQL_BOTH)) {
-	$faq_categ[$arr[categ]][items][$arr[id]][question] = $arr[question];
-	$faq_categ[$arr[categ]][items][$arr[id]][answer] = $arr[answer];
-	$faq_categ[$arr[categ]][items][$arr[id]][flag] = $arr[flag];
-	$faq_categ[$arr[categ]][items][$arr[id]][link_id] = $arr[link_id];
-}
-
-if (isset($faq_categ)) {
-	// gather orphaned items
-	/*
-	foreach ($faq_categ as $id => $temp)
-	{
-		if (!array_key_exists("title", $faq_categ[$id]))
-		{
-			foreach ($faq_categ[$id][items] as $id2 => $temp)
-			{
-				$faq_orphaned[$id2][question] = $faq_categ[$id][items][$id2][question];
-				$faq_orphaned[$id2][answer] = $faq_categ[$id][items][$id2][answer];
-				$faq_orphaned[$id2][flag] = $faq_categ[$id][items][$id2][flag];
-				unset($faq_categ[$id]);
+	$res = sql_query("SELECT `id`, `link_id`, `question`, `answer`, `flag`, `categ` FROM `faq` WHERE `type`='item' AND `lang_id` = " . sqlesc($lang_id) . " ORDER BY `order` ASC");
+	while ($arr = mysql_fetch_array($res, MYSQL_BOTH)) {
+		$faq_categ[$arr[categ]][items][$arr[id]][question] = $arr[question];
+		$faq_categ[$arr[categ]][items][$arr[id]][answer] = $arr[answer];
+		$faq_categ[$arr[categ]][items][$arr[id]][flag] = $arr[flag];
+		$faq_categ[$arr[categ]][items][$arr[id]][link_id] = $arr[link_id];
+	}
+	if (isset($faq_categ)) {
+		begin_main_frame();
+		echo "
+		<div class=\"panel panel-success\" >
+		     <div class=\"panel-heading\">
+		           <h2 class=\"panel-title\" style='font-size: 33px;text-align: center'>". $lang_faq['text_welcome_to'] . $SITENAME."</h2>
+		     </div>
+		     <div class=\"panel-body\" style='margin-left:220px'>". $lang_faq['text_welcome_content_one'] . $lang_faq['text_welcome_content_two']."</div>
+	    </div>
+		";
+		echo "<div class='faq-content-container' style='background-color: #eef1f5;margin-top: 10px'>
+				<div class='row'>
+					<div class='col-lg-6 col-md-6 col-sm-6 col-xs-6' style='margin-top: 20px'>
+	";//-----start col-1-6--------//
+		foreach ($faq_categ as $id => $temp) {
+			if ($faq_categ[$id][flag] == "1" && $id<5) {
+				echo "<div class=\"faq-section \">
+	                                            <h2 class=\"faq-title uppercase font-blue\">" . $faq_categ[$id]['title'] . "</h2>
+	                                            <div class=\"panel-group accordion faq-content\" id=".$id.">";
+				if (array_key_exists("items", $faq_categ[$id])) {
+					foreach ($faq_categ[$id][items] as $id2 => $temp) {
+				echo "
+	                                                <div class=\"panel panel-default\">
+	                                                    <div class=\"panel-heading\">
+	                                                        <h4 class=\"panel-title\">
+	                                                            <i class=\"fa fa-circle\"></i>
+	                                                            <a class=\"accordion-toggle collapsed\" data-toggle=\"collapse\" data-parent=#".$id." href=#id".$faq_categ[$id][items][$id2][link_id]. ">" . $faq_categ[$id][items][$id2][question] . "</a>";
+				echo                                            "
+	                                                        </h4>
+	                                                    </div>
+	                                                    <div id=id".$faq_categ[$id][items][$id2][link_id]." class=\"panel-collapse collapse\" aria-expanded=\"false\" style=\"height: 0px;\">
+	                                                        <div class=\"panel-body\">";
+						echo $faq_categ[$id][items][$id2][answer];
+	                                                        echo "
+															</div></div></div>
+	                                                    ";
+																}
+	                                                            }
+	                                                        echo "
+	                                            </div>
+	                                        </div>";
 			}
 		}
-	}
-	*/
+		echo "		</div>";//-----end col-1-6--------//
 
-	begin_frame("<span id=\"top\">".$lang_faq['text_contents'] . "</span>");
-	foreach ($faq_categ as $id => $temp)
-	{
-		if ($faq_categ[$id][flag] == "1")
-		{
-			print("<ul><li><a href=\"#id". $faq_categ[$id][link_id] ."\">". $faq_categ[$id][title] ."</a><ul>\n");
-   			if (array_key_exists("items", $faq_categ[$id])) 
-			{
-    				foreach ($faq_categ[$id][items] as $id2 => $temp)
-				{
-	 				if ($faq_categ[$id][items][$id2][flag] == "1") print("<li><a href=\"#id". $faq_categ[$id][items][$id2][link_id] ."\" class=\"faqlink\">". $faq_categ[$id][items][$id2][question] ."</a></li>\n");
-	 				elseif ($faq_categ[$id][items][$id2][flag] == "2") print("<li><a href=\"#id". $faq_categ[$id][items][$id2][link_id] ."\" class=\"faqlink\">". $faq_categ[$id][items][$id2][question] ."</a> <img class=\"faq_updated\" src=\"pic/trans.gif\" alt=\"Updated\" /></li>\n");
-	 				elseif ($faq_categ[$id][items][$id2][flag] == "3") print("<li><a href=\"#id". $faq_categ[$id][items][$id2][link_id] ."\" class=\"faqlink\">". $faq_categ[$id][items][$id2][question] ."</a> <img class=\"faq_new\" src=\"pic/trans.gif\" alt=\"New\" /></li>\n");
-    				}
-			}
-			print("</ul></li></ul><br />");
-		}
-	}
-	end_frame();
 
-	foreach ($faq_categ as $id => $temp) {
-		if ($faq_categ[$id][flag] == "1")
-		{
-			$frame = $faq_categ[$id][title] ." - <a href=\"#top\"><img class=\"top\" src=\"pic/trans.gif\" alt=\"Top\" title=\"Top\" /></a>";
-			begin_frame($frame);
-			print("<span id=\"id". $faq_categ[$id][link_id] ."\"></span>");
-			if (array_key_exists("items", $faq_categ[$id]))
-			{
-				foreach ($faq_categ[$id][items] as $id2 => $temp)
-				{
-					if ($faq_categ[$id][items][$id2][flag] != "0")
-					{
-						print("<br /><span id=\"id".$faq_categ[$id][items][$id2][link_id]."\">". $faq_categ[$id][items][$id2][question] ."</span><br />\n");
-						print("<br />". $faq_categ[$id][items][$id2][answer] ."\n<br /><br />\n");
+		echo "      <div class='col-lg-6 col-md-6 col-sm-6 col-xs-6' style='margin-top: 20px'>";//-----start col-2-6--------//
+		foreach ($faq_categ as $id => $temp) {
+			if ($faq_categ[$id][flag] == "1" && $id > 4) {
+				echo "<div class=\"faq-section \">
+	                                            <h2 class=\"faq-title uppercase font-blue\">" . $faq_categ[$id]['title'] . "</h2>
+	                                            <div class=\"panel-group accordion faq-content\" id=" . $id . ">";
+				if (array_key_exists("items", $faq_categ[$id])) {
+					foreach ($faq_categ[$id][items] as $id2 => $temp) {
+						echo "
+	                                                <div class=\"panel panel-default\">
+	                                                    <div class=\"panel-heading\">
+	                                                        <h4 class=\"panel-title\">
+	                                                            <i class=\"fa fa-circle\"></i>
+	                                                            <a class=\"accordion-toggle collapsed\" data-toggle=\"collapse\" data-parent=#" . $id . " href=#id" . $faq_categ[$id][items][$id2][link_id] . ">" . $faq_categ[$id][items][$id2][question] . "</a>";
+						echo "
+	                                                        </h4>
+	                                                    </div>
+	                                                    <div id=id" . $faq_categ[$id][items][$id2][link_id] . " class=\"panel-collapse collapse\" aria-expanded=\"false\" style=\"height: 0px;\">
+	                                                        <div class=\"panel-body\">";
+						echo $faq_categ[$id][items][$id2][answer];
+//	                                                            <p> Duis autem vel eum iriure dolor in hendrerit in vulputate. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut. </p>
+						echo "
+															</div></div></div>
+	                                                    ";
 					}
 				}
+				echo "
+	                                            </div>
+	                                        </div>";
 			}
-			end_frame();
 		}
-	}
+		echo "		</div>";//-----end col-2-6--------//
+		echo "  </div>";
+		echo "</div>";
+
+	end_frame();
+
 }
 end_main_frame();
 	$Cache->end_whole_row();

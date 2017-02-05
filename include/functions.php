@@ -2706,7 +2706,6 @@ $cssupdatedate=($cssupdatedate ? "?".htmlspecialchars($cssupdatedate) : "");
 <link rel="stylesheet" href="<?php echo get_font_css_uri().$cssupdatedate?>" type="text/css" />
 <link rel="stylesheet" href="styles/sprites.css<?php echo $cssupdatedate?>" type="text/css" />
 <link rel="stylesheet" href="<?php echo get_forum_pic_folder()."/forumsprites.css".$cssupdatedate?>" type="text/css" />
-<link rel="stylesheet" type="text/css" href="./styles/BambooGreen/components.min.css">
 <link rel="stylesheet" href="<?php echo $css_uri."DomTT1.css".$cssupdatedate?>" type="text/css" />
 <link rel="stylesheet" href="<?php echo $css_uri."theme1.css".$cssupdatedate?>" type="text/css" />
 <link rel="stylesheet" href="styles/curtain_imageresizer.css<?php echo $cssupdatedate?>" type="text/css" />
@@ -2716,6 +2715,7 @@ $cssupdatedate=($cssupdatedate ? "?".htmlspecialchars($cssupdatedate) : "");
 <!--<script src="./styles/bootstrap/js/bootstrap.min.js"></script>-->
 <link href="./styles/awesome/css/font-awesome.min.css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="./styles/BambooGreen/main.css">
+<link rel="stylesheet" type="text/css" href="./styles/BambooGreen/components.min.css">
     <!--[if lt IE 9]>
     <div id="ratioTip" class="alert">
         <button type="button" class="close" onclick="document.body.removeChild(this.parentNode)">×</button>
