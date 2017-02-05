@@ -2,6 +2,10 @@
 
 $lang_staff = array
 (
+	'text_uploader_note'>'专注的发布者，请对他们表示感谢！ ',
+	'text_coder_note'=>'负责对站点的开发，维护，更新。以及服务器的维护！所花的时间和精力都是无回报的，请对他们表示感谢！',
+	'text_admin_staff_note'=>'负责站点的运维，管理组成员的组织，以及站点的决策。一般问题请向客服及资源版主和管理员联系。',
+	'text_retiree_note'=>'他们是对嘉木做出过特殊贡献的管理组成员，请大家对他们表示尊重！',
 	'head_staff' => "管理组",
 	'text_staff' => "管理组",
 	'text_firstline_support' => "一线客服",

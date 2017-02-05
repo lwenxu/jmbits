@@ -1,4 +1,5 @@
 <?php
+//TODO:事务管理设置已读由于button的原因有的浏览器无法点击，注意修改
 require "include/bittorrent.php";
 dbconn();
 require_once(get_langfile_path());
