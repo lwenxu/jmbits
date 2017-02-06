@@ -20,20 +20,16 @@ $type = 1;
 $limit = isset($_GET["lim"]) ? 0 + $_GET["lim"] : false;
 $subtype = isset($_GET["subtype"]) ? $_GET["subtype"] : false;
 
-print("<div id=\"usercpnav\" style='margin-left: 36%'>
-  <ul id=\"\" class=\"nav nav-pills\">"  .
+print("<div id=\"topnav\">
+  <ul id=\"\" class=\"nav nav-tabs nav-justified success\">"  .
 ($type != 1 || $limit ? "<li class='nav-settings-item'><a href='topten.php?type=1'>".$lang_topten['text_users']."</a></li>" : "<li class=\"active\"><a class=\"nav-settings-item\" href=\"topten.php?type=1\">".$lang_topten['text_users']."</a></li>")  .
 ($type != 2 || $limit ? "<li class='nav-settings-item'><a href='topten.php?type=2'>".$lang_topten['text_torrents']."</a></li>" : "<li class=\"active\"><a class=\"nav-settings-item\" href=\"topten.php?type=2\">".$lang_topten['text_torrents']."</a></li>")  .
-
-($type != 4 || $limit ? "<li class='nav-settings-item'><a href='topten.php?type=4'>".$lang_topten['text_peers']."</a></li>" : "<li class=\"active\"><a class=\"nav-settings-item\" href=\"topten.php?type=4\">".$lang_topten['text_peers']."</a></li>")   .
-($type != 5 || $limit ? "<li class='nav-settings-item'><a href='topten.php?type=5'>".$lang_topten['text_community']."</a></li>" : "<li class=\"active\"><a class=\"nav-settings-item\" href=\"topten.php?type=5\">".$lang_topten['text_community']."</a></li>")   .
-($type != 7 || $limit ? "<li class='nav-settings-item'> <a href='topten.php?type=7'> ".$lang_topten['text_search']."</a></li>" : "<li class=\"active\"><a class=\"nav-settings-item\" href=\"topten.php?type=7\">".$lang_topten['text_search']."</a></li>")   .
+//($type != 4 || $limit ? "<li class='nav-settings-item'><a href='topten.php?type=4'>".$lang_topten['text_peers']."</a></li>" : "<li class=\"active\"><a class=\"nav-settings-item\" href=\"topten.php?type=4\">".$lang_topten['text_peers']."</a></li>")   .
+//($type != 5 || $limit ? "<li class='nav-settings-item'><a href='topten.php?type=5'>".$lang_topten['text_community']."</a></li>" : "<li class=\"active\"><a class=\"nav-settings-item\" href=\"topten.php?type=5\">".$lang_topten['text_community']."</a></li>")   .
+//($type != 7 || $limit ? "<li class='nav-settings-item'> <a href='topten.php?type=7'> ".$lang_topten['text_search']."</a></li>" : "<li class=\"active\"><a class=\"nav-settings-item\" href=\"topten.php?type=7\">".$lang_topten['text_search']."</a></li>")   .
 ($type != 6 || $limit ? "<li class='nav-settings-item'><a href='topten.php?type=6'>".$lang_topten['text_other']."</a></li>" : "<li class=\"active\"><a class=\"nav-settings-item\" href=\"topten.php?type=6\">".$lang_topten['text_other']."</a></li>")  . " 
  </ul>
-</div>\n");
-//去掉国家
-//($type != 3 || $limit ? "<li class='nav-settings-item'><a href='topten.php?type=3'>" . $lang_topten['text_countries'] . "</a></li>" : "<li class=\"active\"><a class=\"nav-settings-item\" href=\"topten.php?type=3\">" . $lang_topten['text_countries'] . "</a></li>") .
-
+</div>");
 
 if (!$limit || $limit > 250)
 $limit = 10;
@@ -41,30 +37,33 @@ $limit = 10;
 $cachename = "topten_type_".$type."_limit_".$limit."_subtype_".$subtype;
 $cachetime = 60 * 60; // 60 minutes
 // START CACHE
+//TODO  关闭cache             已开启
 $Cache->new_page($cachename, $cachetime, true);
 if (!$Cache->get_page())
 {
+//TODO  关闭cache    已开启
 $Cache->add_whole_row();
 
 /////////////////////////////////////////////////////////
 
 if ($type == 1)
 {
-	$mainquery = "SELECT id as userid, username, added, uploaded, downloaded, uploaded / (UNIX_TIMESTAMP(NOW()) - UNIX_TIMESTAMP(added)) AS upspeed, downloaded / (UNIX_TIMESTAMP(NOW()) - UNIX_TIMESTAMP(added)) AS downspeed FROM users WHERE enabled = 'yes'";
+	$mainquery = "SELECT id as userid,avatar, username, added, uploaded, downloaded, uploaded / (UNIX_TIMESTAMP(NOW()) - UNIX_TIMESTAMP(added)) AS upspeed, downloaded / (UNIX_TIMESTAMP(NOW()) - UNIX_TIMESTAMP(added)) AS downspeed FROM users WHERE enabled = 'yes'";
 
-
+	begin_row_col();
 	if ($limit == 10 || $subtype == "ul")
 	{
 		$order = "uploaded DESC";
 		$r = sql_query($mainquery . " ORDER BY $order " . " LIMIT $limit") or sqlerr();
-		usershare_table($r, $lang_topten['text_top']."$limit ".$lang_topten['text_uploaders'] . ($limit == 10 ? " <font class=\"small\"> - [<a class=\"altlink\" href=\"topten.php?type=$type&amp;lim=100&amp;subtype=ul\">".$lang_topten['text_one_hundred']."</a>] - [<a class=\"altlink\" href=\"topten.php?type=$type&amp;lim=250&amp;subtype=ul\">".$lang_topten['text_top_250']."</a>]</font>" : ""));
+
+		usershare_table($r, $lang_topten['text_top']."$limit ".$lang_topten['text_uploaders'] ,$lang_topten['text_one_hundred'],'topten.php?type=$type&amp;lim=100&amp;subtype=ul',' glyphicon glyphicon-share-alt','font-purple-seance');
 	}
 
 	if ($limit == 10 || $subtype == "dl")
 	{
 		$order = "downloaded DESC";
 		$r = sql_query($mainquery . " ORDER BY $order " . " LIMIT $limit") or sqlerr();
-		usershare_table($r, $lang_topten['text_top']."$limit ".$lang_topten['text_downloaders']  . ($limit == 10 ? " <font class=\"small\"> - [<a class=\"altlink\" href=\"topten.php?type=$type&amp;lim=100&amp;subtype=dl\">".$lang_topten['text_one_hundred']."</a>] - [<a class=\"altlink\" href=\"topten.php?type=$type&amp;lim=250&amp;subtype=dl\">".$lang_topten['text_top_250']."</a>]</font>" : ""));
+		usershare_table($r, $lang_topten['text_top']."$limit ".$lang_topten['text_downloaders']  , $lang_topten['text_one_hundred'],'topten.php?type=$type&amp;lim=100&amp;subtype=dl',' glyphicon glyphicon-arrow-down','font-yellow-lemon');
 	}
 
 	if ($limit == 10 || $subtype == "uls")
@@ -72,14 +71,15 @@ if ($type == 1)
 		$order = "upspeed DESC";
 		$extrawhere = " AND uploaded > 53687091200";
 		$r = sql_query($mainquery . $extrawhere . " ORDER BY $order " . " LIMIT $limit") or sqlerr();
-		usershare_table($r, $lang_topten['text_top']."$limit ".$lang_topten['text_fastest_uploaders'] . "<font class=\"small\">".$lang_topten['text_fastest_up_note'] . "</font>" . ($limit == 10 ? " <font class=\"small\"> - [<a class=\"altlink\" href=\"topten.php?type=$type&amp;lim=100&amp;subtype=uls\">".$lang_topten['text_one_hundred']."</a>] - [<a class=\"altlink\" href=\"topten.php?type=$type&amp;lim=250&amp;subtype=uls\">".$lang_topten['text_top_250']."</a>]</font>" : ""));
+		usershare_table($r, $lang_topten['text_top']."$limit ".$lang_topten['text_fastest_uploaders'] . "<font class=\"small\">".$lang_topten['text_fastest_up_note'] . "</font>" , $lang_topten['text_one_hundred'],'topten.php?type=$type&amp;lim=100&amp;subtype=uls','glyphicon glyphicon-arrow-up','font-red');
 	}
-
+	end_col();
+	begin_col();
 	if ($limit == 10 || $subtype == "dls")
 	{
 		$order = "downspeed DESC";
 		$r = sql_query($mainquery . " ORDER BY $order " . " LIMIT $limit") or sqlerr();
-		usershare_table($r, $lang_topten['text_top']."$limit ".$lang_topten['text_fastest_downloaders'] ."<font class=\"small\">" . $lang_topten['text_fastest_note'] . "</font>" . ($limit == 10 ? " <font class=\"small\"> - [<a class=\"altlink\" href=\"topten.php?type=$type&amp;lim=100&amp;subtype=dls\">".$lang_topten['text_one_hundred']."</a>] - [<a class=\"altlink\" href=\"topten.php?type=$type&amp;lim=250&amp;subtype=dls\">".$lang_topten['text_top_250']."</a>]</font>" : ""));
+		usershare_table($r, $lang_topten['text_top']."$limit ".$lang_topten['text_fastest_downloaders'] ."<font class=\"small\">" . $lang_topten['text_fastest_note'] . "</font>", $lang_topten['text_one_hundred'],'topten.php?type=$type&amp;lim=100&amp;subtype=dls','glyphicon glyphicon-ok','font-green-turquoise');
 	}
 
 	if ($limit == 10 || $subtype == "bsh")
@@ -87,7 +87,7 @@ if ($type == 1)
 		$order = "uploaded / downloaded DESC";
 		$extrawhere = " AND downloaded > 53687091200";
 		$r = sql_query($mainquery . $extrawhere . " ORDER BY $order " . " LIMIT $limit") or sqlerr();
-		usershare_table($r, $lang_topten['text_top']."$limit ".$lang_topten['text_best_sharers'] ."<font class=\"small\">".$lang_topten['text_sharers_note']."</font>"  . ($limit == 10 ? " <font class=\"small\"> - [<a class=\"altlink\" href=\"topten.php?type=$type&amp;lim=100&amp;subtype=bsh\">".$lang_topten['text_one_hundred']."</a>] - [<a class=\"altlink\" href=\"topten.php?type=$type&amp;lim=250&amp;subtype=bsh\">".$lang_topten['text_top_250']."</a>]</font>" : ""));
+		usershare_table($r, $lang_topten['text_top']."$limit ".$lang_topten['text_best_sharers'] ."<font class=\"small\">".$lang_topten['text_sharers_note']."</font>", $lang_topten['text_one_hundred'],'topten.php?type=$type&amp;lim=100&amp;subtype=bsh',' glyphicon glyphicon-upload','font-blue-sharp');
 	}
 
 	if ($limit == 10 || $subtype == "wsh")
@@ -95,8 +95,10 @@ if ($type == 1)
 		$order = "uploaded / downloaded ASC, downloaded DESC";
 		$extrawhere = " AND downloaded > 53687091200";
 		$r = sql_query($mainquery . $extrawhere . " ORDER BY $order " . " LIMIT $limit") or sqlerr();
-		usershare_table($r, $lang_topten['text_top']."$limit ".$lang_topten['text_worst_sharers'] .$lang_topten['text_sharers_note'] . ($limit == 10 ? " <font class=\"small\"> - [<a class=\"altlink\" href=\"topten.php?type=$type&amp;lim=100&amp;subtype=wsh\">".$lang_topten['text_one_hundred']."</a>] - [<a class=\"altlink\" href=\"topten.php?type=$type&amp;lim=250&amp;subtype=wsh\">".$lang_topten['text_top_250']."</a>]</font>" : ""));
+		usershare_table($r, $lang_topten['text_top']." $limit " . $lang_topten['text_worst_sharers'] ."<font class=\"small\">" .$lang_topten['text_sharers_note'] . "</font>", $lang_topten['text_one_hundred'],'topten.php?type=$type&amp;lim=100&amp;subtype=wsh','  glyphicon glyphicon-download ','font-blue-steel');
 	}
+	end_col();
+	end_row();
 /*
 	if ($limit == 10 || $subtype == "sp")
 	{
@@ -113,62 +115,66 @@ if ($type == 1)
 }
 elseif ($type == 2)
 {
+	begin_row_col();
 	if ($limit == 10 || $subtype == "act")
 	{
 		$r = sql_query("SELECT t.*, (t.size * t.times_completed + SUM(p.downloaded)) AS data FROM torrents AS t LEFT JOIN peers AS p ON t.id = p.torrent WHERE p.seeder = 'no' GROUP BY t.id ORDER BY seeders + leechers DESC, seeders DESC, added ASC LIMIT $limit") or sqlerr();
-		_torrenttable($r, $lang_topten['text_top']."$limit ".$lang_topten['text_most_active_torrents']. ($limit == 10 ? " <font class=\"small\"> - [<a class=\"altlink\" href=\"topten.php?type=$type&amp;lim=25&amp;subtype=act\">Top 25</a>] - [<a class=\"altlink\" href=\"topten.php?type=$type&amp;lim=50&amp;subtype=act\">Top 50</a>]</font>" : ""));
+		_torrenttable($r, $lang_topten['text_top']."$limit ".$lang_topten['text_most_active_torrents'],'TOP 50','topten.php?type=$type&amp;lim=50&amp;subtype=act','glyphicon glyphicon-cloud','font-green-steel');
 	}
 
 	if ($limit == 10 || $subtype == "sna")
 	{
 		$r = sql_query("SELECT t.*, (t.size * t.times_completed + SUM(p.downloaded)) AS data FROM torrents AS t LEFT JOIN peers AS p ON t.id = p.torrent WHERE p.seeder = 'no' GROUP BY t.id ORDER BY times_completed DESC LIMIT $limit") or sqlerr();
-		_torrenttable($r, $lang_topten['text_top']."$limit ".$lang_topten['text_most_snatched_torrents']. ($limit == 10 ? " <font class=\"small\"> - [<a class=\"altlink\" href=\"topten.php?type=$type&lim=25&subtype=sna\">Top 25</a>] - [<a class=\"altlink\" href=\"topten.php?type=$type&amp;lim=50&amp;subtype=sna\">Top 50</a>]</font>" : ""));
+		_torrenttable($r, $lang_topten['text_top']."$limit ".$lang_topten['text_most_snatched_torrents'], 'TOP 50', 'topten.php?type=$type&amp;lim=50&amp;subtype=sna', 'glyphicon glyphicon-ok', 'font-red');
 	}
 
 	if ($limit == 10 || $subtype == "mdt")
 	{
 		$r = sql_query("SELECT t.*, (t.size * t.times_completed + SUM(p.downloaded)) AS data FROM torrents AS t LEFT JOIN peers AS p ON t.id = p.torrent WHERE p.seeder = 'no' AND times_completed > 0 GROUP BY t.id ORDER BY data DESC, added ASC LIMIT $limit") or sqlerr();
-		_torrenttable($r, $lang_topten['text_top']."$limit ".$lang_topten['text_most_data_transferred_torrents']. ($limit == 10 ? " <font class=\"small\"> - [<a class=\"altlink\" href=\"topten.php?type=$type&amp;lim=25&amp;subtype=mdt\">Top 25</a>] - [<a class=\"altlink\" href=\"topten.php?type=$type&amp;lim=50&amp;subtype=mdt\">Top 50</a>]</font>" : ""));
+		_torrenttable($r, $lang_topten['text_top']."$limit ".$lang_topten['text_most_data_transferred_torrents'], 'TOP 50', 'topten.php?type=$type&amp;lim=50&amp;subtype=mdt', ' glyphicon glyphicon-download', 'font-purple-medium');
 	}
-
+	end_col();
+	begin_col();
 	if ($limit == 10 || $subtype == "bse")
 	{
 		$r = sql_query("SELECT t.*, (t.size * t.times_completed + SUM(p.downloaded)) AS data FROM torrents AS t LEFT JOIN peers AS p ON t.id = p.torrent WHERE p.seeder = 'no' AND seeders >= 5 GROUP BY t.id ORDER BY seeders / leechers DESC, seeders DESC, added ASC LIMIT $limit") or sqlerr();
-		_torrenttable($r, $lang_topten['text_top']."$limit ".$lang_topten['text_best_seeded_torrents']."<font class=\"small\">".$lang_topten['text_best_seeded_torrents_note']."</font>" . ($limit == 10 ? " <font class=\"small\"> - [<a class=\"altlink\" href=\"topten.php?type=$type&amp;lim=25&amp;subtype=bse\">Top 25</a>] - [<a class=\"altlink\" href=\"topten.php?type=$type&amp;lim=50&amp;subtype=bse\">Top 50</a>]</font>" : ""));
+		_torrenttable($r, $lang_topten['text_top']."$limit ".$lang_topten['text_best_seeded_torrents']."<font class=\"small\">".$lang_topten['text_best_seeded_torrents_note']."</font>", 'TOP 50', 'topten.php?type=$type&amp;lim=50&amp;subtype=bse', ' glyphicon glyphicon-ok-sign', 'font-purple-intense');
 	}
 
 	if ($limit == 10 || $subtype == "wse")
 	{
 		$r = sql_query("SELECT t.*, (t.size * t.times_completed) AS data FROM torrents AS t WHERE leechers > 0 AND times_completed > 0 ORDER BY seeders / leechers ASC, leechers DESC LIMIT $limit") or sqlerr();
-		_torrenttable($r, $lang_topten['text_top']."$limit ".$lang_topten['text_worst_seeded_torrents']."<font class=\"small\">" . $lang_topten['text_worst_seeded_torrents_note'] . "</font>" . ($limit == 10 ? " <font class=\"small\"> - [<a class=\"altlink\" href=\"topten.php?type=$type&amp;lim=25&amp;subtype=wse\">Top 25</a>] - [<a class=\"altlink\" href=\"topten.php?type=$type&amp;lim=50&amp;subtype=wse\">Top 50</a>]</font>" : ""));
+		_torrenttable($r, $lang_topten['text_top']."$limit ".$lang_topten['text_worst_seeded_torrents'], 'TOP 50', 'topten.php?type=$type&amp;lim=50&amp;subtype=sna', 'glyphicon glyphicon-hdd', 'font-blue');
 	}
+	end_col();
+	end_row();
 }
-elseif ($type == 3)
-{
-	if ($limit == 10 || $subtype == "us")
-	{
-		$r = sql_query("SELECT name, flagpic, COUNT(users.country) as num FROM countries LEFT JOIN users ON users.country = countries.id GROUP BY name ORDER BY num DESC LIMIT $limit") or sqlerr();
-		countriestable($r, $lang_topten['text_top']."$limit ".$lang_topten['text_countries_users']. ($limit == 10 ? " <font class=\"small\"> - [<a class=\"altlink\" href=\"topten.php?type=$type&amp;lim=25&amp;subtype=us\">Top 25</a>]</font>" : ""),$lang_topten['col_users']);
-	}
-
-	if ($limit == 10 || $subtype == "ul")
-	{
-		$r = sql_query("SELECT c.name, c.flagpic, sum(u.uploaded) AS ul FROM users AS u LEFT JOIN countries AS c ON u.country = c.id WHERE u.enabled = 'yes' GROUP BY c.name ORDER BY ul DESC LIMIT $limit") or sqlerr();
-		countriestable($r, $lang_topten['text_top']."$limit ".$lang_topten['text_countries_uploaded']. ($limit == 10 ? " <font class=\"small\"> - [<a class=\"altlink\" href=\"topten.php?type=$type&amp;lim=25&amp;subtype=ul\">Top 25</a>]</font>" : ""),$lang_topten['col_uploaded']);
-	}
-
-	if ($limit == 10 || $subtype == "avg")
-	{
-		$r = sql_query("SELECT c.name, c.flagpic, sum(u.uploaded)/count(u.id) AS ul_avg FROM users AS u LEFT JOIN countries AS c ON u.country = c.id WHERE u.enabled = 'yes' GROUP BY c.name HAVING sum(u.uploaded) > 1099511627776 AND count(u.id) >= 100 ORDER BY ul_avg DESC LIMIT $limit") or sqlerr();
-		countriestable($r, $lang_topten['text_top']."$limit ".$lang_topten['text_countries_per_user']. ($limit == 10 ? " <font class=\"small\"> - [<a class=\"altlink\" href=\"topten.php?type=$type&amp;lim=25&amp;subtype=avg\">Top 25</a>]</font>" : ""),$lang_topten['col_average']);
-	}
-
-	if ($limit == 10 || $subtype == "r")
-	{
-		$r = sql_query("SELECT c.name, c.flagpic, sum(u.uploaded)/sum(u.downloaded) AS r FROM users AS u LEFT JOIN countries AS c ON u.country = c.id WHERE u.enabled = 'yes' GROUP BY c.name HAVING sum(u.uploaded) > 1099511627776 AND sum(u.downloaded) > 1099511627776 AND count(u.id) >= 100 ORDER BY r DESC LIMIT $limit") or sqlerr();
-		countriestable($r, $lang_topten['text_top']."$limit ".$lang_topten['text_countries_ratio']. ($limit == 10 ? " <font class=\"small\"> - [<a class=\"altlink\" href=\"topten.php?type=$type&amp;lim=25&amp;subtype=r\">Top 25</a>]</font>" : ""),$lang_topten['col_ratio']);
-	}
-}
+//elseif ($type == 3)
+//{
+//	if ($limit == 10 || $subtype == "us")
+//	{
+//		$r = sql_query("SELECT name, flagpic, COUNT(users.country) as num FROM countries LEFT JOIN users ON users.country = countries.id GROUP BY name ORDER BY num DESC LIMIT $limit") or sqlerr();
+//		countriestable($r, $lang_topten['text_top']."$limit ".$lang_topten['text_countries_users']. ($limit == 10 ? " <font class=\"small\"> - [<a class=\"altlink\" href=\"topten.php?type=$type&amp;lim=25&amp;subtype=us\">Top 25</a>]</font>" : ""),$lang_topten['col_users']);
+//	}
+//
+//	if ($limit == 10 || $subtype == "ul")
+//	{
+//		$r = sql_query("SELECT c.name, c.flagpic, sum(u.uploaded) AS ul FROM users AS u LEFT JOIN countries AS c ON u.country = c.id WHERE u.enabled = 'yes' GROUP BY c.name ORDER BY ul DESC LIMIT $limit") or sqlerr();
+//		countriestable($r, $lang_topten['text_top']."$limit ".$lang_topten['text_countries_uploaded']. ($limit == 10 ? " <font class=\"small\"> - [<a class=\"altlink\" href=\"topten.php?type=$type&amp;lim=25&amp;subtype=ul\">Top 25</a>]</font>" : ""),$lang_topten['col_uploaded']);
+//	}
+//
+//	if ($limit == 10 || $subtype == "avg")
+//	{
+//		$r = sql_query("SELECT c.name, c.flagpic, sum(u.uploaded)/count(u.id) AS ul_avg FROM users AS u LEFT JOIN countries AS c ON u.country = c.id WHERE u.enabled = 'yes' GROUP BY c.name HAVING sum(u.uploaded) > 1099511627776 AND count(u.id) >= 100 ORDER BY ul_avg DESC LIMIT $limit") or sqlerr();
+//		countriestable($r, $lang_topten['text_top']."$limit ".$lang_topten['text_countries_per_user']. ($limit == 10 ? " <font class=\"small\"> - [<a class=\"altlink\" href=\"topten.php?type=$type&amp;lim=25&amp;subtype=avg\">Top 25</a>]</font>" : ""),$lang_topten['col_average']);
+//	}
+//
+//	if ($limit == 10 || $subtype == "r")
+//	{
+//		$r = sql_query("SELECT c.name, c.flagpic, sum(u.uploaded)/sum(u.downloaded) AS r FROM users AS u LEFT JOIN countries AS c ON u.country = c.id WHERE u.enabled = 'yes' GROUP BY c.name HAVING sum(u.uploaded) > 1099511627776 AND sum(u.downloaded) > 1099511627776 AND count(u.id) >= 100 ORDER BY r DESC LIMIT $limit") or sqlerr();
+//		countriestable($r, $lang_topten['text_top']."$limit ".$lang_topten['text_countries_ratio']. ($limit == 10 ? " <font class=\"small\"> - [<a class=\"altlink\" href=\"topten.php?type=$type&amp;lim=25&amp;subtype=r\">Top 25</a>]</font>" : ""),$lang_topten['col_ratio']);
+//	}
+//}
 /*
 elseif ($type == 4)
 {
@@ -192,97 +198,64 @@ elseif ($type == 4)
 	}
 }
 */
-elseif ($type == 5)
-{
-	if ($limit == 10 || $subtype == "mtop")
-	{
-		$r = sql_query( "SELECT users_topics.userid,  users_topics.usertopics, COUNT(posts.id) as userposts FROM (SELECT users.id as userid, COUNT(topics.id) as usertopics from users LEFT JOIN topics ON users.id = topics.userid GROUP BY users.id) as users_topics LEFT JOIN posts ON users_topics.userid = posts.userid GROUP BY users_topics.userid ORDER BY usertopics DESC LIMIT $limit") or sqlerr();
-		postable($r, $lang_topten['text_top']."$limit ".$lang_topten['text_most_topic'] . ($limit == 10 ? " <font class=\"small\"> - [<a class=\"altlink\" href=\"topten.php?type=$type&amp;lim=100&amp;subtype=mtop\">".$lang_topten['text_one_hundred']."</a>] - [<a class=\"altlink\" href=\"topten.php?type=$type&amp;lim=250&amp;subtype=mtop\">".$lang_topten['text_top_250']."</a>]</font>" : ""));
-	}
-	
-	if ($limit == 10 || $subtype == "mpos")
-	{
-		$r = sql_query( "SELECT users_topics.userid,  users_topics.usertopics, COUNT(posts.id) as userposts FROM (SELECT users.id as userid, COUNT(topics.id) as usertopics from users LEFT JOIN topics ON users.id = topics.userid GROUP BY users.id) as users_topics LEFT JOIN posts ON users_topics.userid = posts.userid GROUP BY users_topics.userid ORDER BY userposts DESC LIMIT $limit") or sqlerr();
-		postable($r, $lang_topten['text_top']."$limit ".$lang_topten['text_most_post'] . ($limit == 10 ? " <font class=\"small\"> - [<a class=\"altlink\" href=\"topten.php?type=$type&amp;lim=100&amp;subtype=mpos\">".$lang_topten['text_one_hundred']."</a>] - [<a class=\"altlink\" href=\"topten.php?type=$type&amp;lim=250&amp;subtype=mpos\">".$lang_topten['text_top_250']."</a>]</font>" : ""));
-	}
-	
-	if ($reviewenabled == 'yes' && ($limit == 10 || $subtype == "mrev"))
-	{
-		$r = sql_query( "SELECT users.id as userid, COUNT(reviews.id) as num FROM users LEFT JOIN reviews ON users.id = reviews.user GROUP BY users.id ORDER BY num DESC LIMIT $limit") or sqlerr();
-		cmttable($r, $lang_topten['text_top']."$limit ".$lang_topten['text_most_reviewer'] . ($limit == 10 ? " <font class=\"small\"> - [<a class=\"altlink\" href=\"topten.php?type=$type&amp;lim=100&amp;subtype=mrev\">".$lang_topten['text_one_hundred']."</a>] - [<a class=\"altlink\" href=\"topten.php?type=$type&amp;lim=250&amp;subtype=mrev\">".$lang_topten['text_top_250']."</a>]</font>" : ""), $lang_topten['col_reviews']);
-	}	
-
-	if ($limit == 10 || $subtype == "mcmt")
-	{
-		$r = sql_query( "SELECT users.id as userid, COUNT(comments.id) as num FROM users LEFT JOIN comments ON users.id = comments.user GROUP BY users.id ORDER BY num DESC LIMIT $limit") or sqlerr();
-		cmttable($r, $lang_topten['text_top']."$limit ".$lang_topten['text_most_commenter'] . ($limit == 10 ? " <font class=\"small\"> - [<a class=\"altlink\" href=\"topten.php?type=$type&amp;lim=100&amp;subtype=mcmt\">".$lang_topten['text_one_hundred']."</a>] - [<a class=\"altlink\" href=\"topten.php?type=$type&amp;lim=250&amp;subtype=mcmt\">".$lang_topten['text_top_250']."</a>]</font>" : ""), $lang_topten['col_comments']);
-	}
-	
-	if ($limit == 10 || $subtype == "btop")
-	{
-		$r = sql_query("SELECT topics_posts.topicid, topics_posts.topicsubject, topics_posts.postnum, forums.id as forumid FROM (SELECT topics.id as topicid, topics.subject as topicsubject, COUNT(posts.id) as postnum, topics.forumid FROM topics LEFT JOIN posts ON topics.id = posts.topicid GROUP BY topics.id) as topics_posts LEFT JOIN forums ON topics_posts.forumid = forums.id AND forums.minclassread <= 1 ORDER BY postnum DESC LIMIT $limit") or sqlerr();
-		bigtopic_table($r, $lang_topten['text_top']."$limit ".$lang_topten['text_biggest_topics'] . ($limit == 10 ? " <font class=\"small\"> - [<a class=\"altlink\" href=\"topten.php?type=$type&amp;lim=100&amp;subtype=btop\">".$lang_topten['text_one_hundred']."</a>] - [<a class=\"altlink\" href=\"topten.php?type=$type&amp;lim=250&amp;subtype=btop\">".$lang_topten['text_top_250']."</a>]</font>" : ""));
-	}
-}
+//elseif ($type == 5)
+//{
+//	if ($limit == 10 || $subtype == "mtop")
+//	{
+//		$r = sql_query( "SELECT users_topics.userid,  users_topics.usertopics, COUNT(posts.id) as userposts FROM (SELECT users.id as userid, COUNT(topics.id) as usertopics from users LEFT JOIN topics ON users.id = topics.userid GROUP BY users.id) as users_topics LEFT JOIN posts ON users_topics.userid = posts.userid GROUP BY users_topics.userid ORDER BY usertopics DESC LIMIT $limit") or sqlerr();
+//		postable($r, $lang_topten['text_top']."$limit ".$lang_topten['text_most_topic'] . ($limit == 10 ? " <font class=\"small\"> - [<a class=\"altlink\" href=\"topten.php?type=$type&amp;lim=100&amp;subtype=mtop\">".$lang_topten['text_one_hundred']."</a>] - [<a class=\"altlink\" href=\"topten.php?type=$type&amp;lim=250&amp;subtype=mtop\">".$lang_topten['text_top_250']."</a>]</font>" : ""));
+//	}
+//
+//	if ($limit == 10 || $subtype == "mpos")
+//	{
+//		$r = sql_query( "SELECT users_topics.userid,  users_topics.usertopics, COUNT(posts.id) as userposts FROM (SELECT users.id as userid, COUNT(topics.id) as usertopics from users LEFT JOIN topics ON users.id = topics.userid GROUP BY users.id) as users_topics LEFT JOIN posts ON users_topics.userid = posts.userid GROUP BY users_topics.userid ORDER BY userposts DESC LIMIT $limit") or sqlerr();
+//		postable($r, $lang_topten['text_top']."$limit ".$lang_topten['text_most_post'] . ($limit == 10 ? " <font class=\"small\"> - [<a class=\"altlink\" href=\"topten.php?type=$type&amp;lim=100&amp;subtype=mpos\">".$lang_topten['text_one_hundred']."</a>] - [<a class=\"altlink\" href=\"topten.php?type=$type&amp;lim=250&amp;subtype=mpos\">".$lang_topten['text_top_250']."</a>]</font>" : ""));
+//	}
+//
+//	if ($reviewenabled == 'yes' && ($limit == 10 || $subtype == "mrev"))
+//	{
+//		$r = sql_query( "SELECT users.id as userid, COUNT(reviews.id) as num FROM users LEFT JOIN reviews ON users.id = reviews.user GROUP BY users.id ORDER BY num DESC LIMIT $limit") or sqlerr();
+//		cmttable($r, $lang_topten['text_top']."$limit ".$lang_topten['text_most_reviewer'] . ($limit == 10 ? " <font class=\"small\"> - [<a class=\"altlink\" href=\"topten.php?type=$type&amp;lim=100&amp;subtype=mrev\">".$lang_topten['text_one_hundred']."</a>] - [<a class=\"altlink\" href=\"topten.php?type=$type&amp;lim=250&amp;subtype=mrev\">".$lang_topten['text_top_250']."</a>]</font>" : ""), $lang_topten['col_reviews']);
+//	}
+//
+//	if ($limit == 10 || $subtype == "mcmt")
+//	{
+//		$r = sql_query( "SELECT users.id as userid, COUNT(comments.id) as num FROM users LEFT JOIN comments ON users.id = comments.user GROUP BY users.id ORDER BY num DESC LIMIT $limit") or sqlerr();
+//		cmttable($r, $lang_topten['text_top']."$limit ".$lang_topten['text_most_commenter'] . ($limit == 10 ? " <font class=\"small\"> - [<a class=\"altlink\" href=\"topten.php?type=$type&amp;lim=100&amp;subtype=mcmt\">".$lang_topten['text_one_hundred']."</a>] - [<a class=\"altlink\" href=\"topten.php?type=$type&amp;lim=250&amp;subtype=mcmt\">".$lang_topten['text_top_250']."</a>]</font>" : ""), $lang_topten['col_comments']);
+//	}
+//
+//	if ($limit == 10 || $subtype == "btop")
+//	{
+//		$r = sql_query("SELECT topics_posts.topicid, topics_posts.topicsubject, topics_posts.postnum, forums.id as forumid FROM (SELECT topics.id as topicid, topics.subject as topicsubject, COUNT(posts.id) as postnum, topics.forumid FROM topics LEFT JOIN posts ON topics.id = posts.topicid GROUP BY topics.id) as topics_posts LEFT JOIN forums ON topics_posts.forumid = forums.id AND forums.minclassread <= 1 ORDER BY postnum DESC LIMIT $limit") or sqlerr();
+//		bigtopic_table($r, $lang_topten['text_top']."$limit ".$lang_topten['text_biggest_topics'] . ($limit == 10 ? " <font class=\"small\"> - [<a class=\"altlink\" href=\"topten.php?type=$type&amp;lim=100&amp;subtype=btop\">".$lang_topten['text_one_hundred']."</a>] - [<a class=\"altlink\" href=\"topten.php?type=$type&amp;lim=250&amp;subtype=btop\">".$lang_topten['text_top_250']."</a>]</font>" : ""));
+//	}
+//}
 elseif ($type == 6)
 {
-	if ($limit == 10 || $subtype == "bo")
+	begin_row_col();
+
+if ($limit == 10 || $subtype == "bo")
 	{
 		$r = sql_query("SELECT * FROM users ORDER BY seedbonus DESC LIMIT $limit") or sqlerr();
-		bonustable($r, $lang_topten['text_top']."$limit ".$lang_topten['text_most_bonuses'] . ($limit == 10 ? " <font class=\"small\"> - [<a class=\"altlink\" href=\"topten.php?type=$type&amp;lim=100&amp;subtype=bo\">".$lang_topten['text_one_hundred']."</a>] - [<a class=\"altlink\" href=\"topten.php?type=$type&amp;lim=250&amp;subtype=bo\">".$lang_topten['text_top_250']."</a>]</font>" : ""));
+		bonustable($r, $lang_topten['text_top']."$limit ".$lang_topten['text_most_bonuses'], 'TOP 100', 'topten.php?type=$type&amp;lim=100&amp;subtype=bo', 'glyphicon glyphicon-cloud', 'font-green-steel');
 	}
-
+	end_col();
+	begin_col();
 if ($prolinkpoint_bonus){
 	if ($limit == 10 || $subtype == "pl")
 	{
 		$r = sql_query("SELECT userid, COUNT(id) AS count FROM prolinkclicks GROUP BY userid ORDER BY count DESC LIMIT $limit") or sqlerr();
-		prolinkclicktable($r, $lang_topten['text_top']."$limit ".$lang_topten['text_most_clicks'] . ($limit == 10 ? " <font class=\"small\"> - [<a class=\"altlink\" href=\"topten.php?type=$type&amp;lim=100&amp;subtype=pl\">".$lang_topten['text_one_hundred']."</a>] - [<a class=\"altlink\" href=\"topten.php?type=$type&amp;lim=250&amp;subtype=pl\">".$lang_topten['text_top_250']."</a>]</font>" : ""));
+		prolinkclicktable($r, $lang_topten['text_top']."$limit ".$lang_topten['text_most_clicks'] ,'TOP 100', 'topten.php?type=$type&amp;lim=100&amp;subtype=pl', 'glyphicon glyphicon-link', 'font-blue');
 	}
 }
 
-	if ($limit == 10 || $subtype == "charity")
-	{
-		$r = sql_query("SELECT * FROM users ORDER BY charity DESC LIMIT $limit") or sqlerr();
-		charityTable($r, $lang_topten['text_top']."$limit ".$lang_topten['text_charity_giver'] . ($limit == 10 ? " <font class=\"small\"> - [<a class=\"altlink\" href=\"topten.php?type=$type&amp;lim=100&amp;subtype=charity\">".$lang_topten['text_one_hundred']."</a>] - [<a class=\"altlink\" href=\"topten.php?type=$type&amp;lim=250&amp;subtype=charity\">".$lang_topten['text_top_250']."</a>]</font>" : ""));
-	}
-
-if ($enabledonation == 'yes'){
-	if ($limit == 10 || $subtype == "do_usd")
-	{
-		$r = sql_query( "SELECT id, donated, donated_cny from users where donated > 0 ORDER BY donated DESC, donated_cny DESC LIMIT $limit") or sqlerr();
-		donortable($r, $lang_topten['text_top']."$limit ".$lang_topten['text_most_donated_USD'] . ($limit == 10 ? " <font class=\"small\"> - [<a class=\"altlink\" href=\"topten.php?type=$type&amp;lim=100&amp;subtype=do_usd\">".$lang_topten['text_one_hundred']."</a>] - [<a class=\"altlink\" href=\"topten.php?type=$type&amp;lim=250&amp;subtype=do_usd\">".$lang_topten['text_top_250']."</a>]</font>" : ""));
-	}
-
-	if ($limit == 10 || $subtype == "do_cny")
-	{
-		$r = sql_query( "SELECT id, donated, donated_cny from users where donated_cny > 0 ORDER BY donated DESC, donated_cny DESC LIMIT $limit") or sqlerr();
-		donortable($r, $lang_topten['text_top']."$limit ".$lang_topten['text_most_donated_CNY'] . ($limit == 10 ? " <font class=\"small\"> - [<a class=\"altlink\" href=\"topten.php?type=$type&amp;lim=100&amp;subtype=do_cny\">".$lang_topten['text_one_hundred']."</a>] - [<a class=\"altlink\" href=\"topten.php?type=$type&amp;lim=250&amp;subtype=do_cny\">".$lang_topten['text_top_250']."</a>]</font>" : ""));
-	}
-}
-	
-	/*
-	if ($limit == 10 || $subtype == "mbro")
-	{
-		$r = sql_query( "SELECT id, donated, donated_cny from users where donated_cny > 0 ORDER BY donated DESC, donated_cny DESC LIMIT $limit") or sqlerr();
-		donortable($r, $lang_topten['text_top']."$limit ".$lang_topten['text_most_browser'] . ($limit == 10 ? " <font class=\"small\"> - [<a href=\"topten.php?type=$type&amp;lim=100&amp;subtype=mbro\">".$lang_topten['text_one_hundred']."</a>] - [<a href=\"topten.php?type=$type&amp;lim=250&amp;subtype=mbro\">".$lang_topten['text_top_250']."</a>]</font>" : ""));
-	}
-	*/
-	
 	if ($limit == 10 || $subtype == "mcli")
 	{
 		$r = sql_query( "SELECT agent_allowed_family.family as client_name, COUNT(users.id) as client_num from users RIGHT JOIN agent_allowed_family ON agent_allowed_family.id = users.clientselect GROUP BY clientselect ORDER BY client_num DESC LIMIT $limit") or sqlerr();
-		clienttable($r, $lang_topten['text_top']."$limit ".$lang_topten['text_most_client'] . ($limit == 10 ? " <font class=\"small\"> - [<a class=\"altlink\" href=\"topten.php?type=$type&amp;lim=100&amp;subtype=mcli\">".$lang_topten['text_one_hundred']."</a>] - [<a class=\"altlink\" href=\"topten.php?type=$type&amp;lim=250&amp;subtype=mcli\">".$lang_topten['text_top_250']."</a>]</font>" : ""));
+		clienttable($r, $lang_topten['text_top']."$limit ".$lang_topten['text_most_client'], 'TOP 100', 'topten.php?type=$type&amp;lim=100&amp;subtype=pl', ' glyphicon glyphicon-phone', 'font-yellow  ');
 	}
-	if ($limit == 10 || $subtype == "ss")
-	{
-		$r = sql_query( "SELECT stylesheets.name as stylesheet_name, COUNT(users.id) as stylesheet_num from users JOIN stylesheets ON stylesheets.id = users.stylesheet GROUP BY stylesheet ORDER BY stylesheet_num DESC LIMIT $limit") or sqlerr();
-		stylesheettable($r, $lang_topten['text_top']."$limit ".$lang_topten['text_most_stylesheet'] . ($limit == 10 ? "<font class=\"small\"> - [<a class=\"altlink\" href=\"topten.php?type=$type&amp;lim=25&amp;subtype=ss\">Top 25</a>] - [<a class=\"altlink\" href=\"topten.php?type=$type&amp;lim=50&amp;subtype=ss\">Top 50</a>]</font>" : ""));
-	}
-	if ($limit == 10 || $subtype == "lang")
-	{
-		$r = sql_query( "SELECT language.lang_name as lang_name, COUNT(users.id) as lang_num from users JOIN language ON language.id = users.lang WHERE site_lang=1 GROUP BY lang ORDER BY lang_num DESC LIMIT $limit") or sqlerr();
-		languagetable($r, $lang_topten['text_top']."$limit ".$lang_topten['text_most_language'] . ($limit == 10 ? "<font class=\"small\"> - [<a class=\"altlink\" href=\"topten.php?type=$type&amp;lim=25&amp;subtype=lang\">Top 25</a>]</font>" : ""));
-	}
+	end_col();
+	end_row();
 }
 /*
 elseif ($type == 7)	// search
