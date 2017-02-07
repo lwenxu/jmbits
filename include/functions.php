@@ -80,6 +80,50 @@ function stdmsg($heading, $text, $htmlstrip = false)
 	</div>
 	\n");
 }
+function error_msg($heading, $text, $htmlstrip = false)
+{
+	if ($htmlstrip) {
+		$heading = htmlspecialchars(trim($heading));
+		$text = htmlspecialchars(trim($text));
+	}
+echo "
+    <div class='panel panel-danger'>
+        <div class='panel-heading'>
+            <div class='panel-title'><h2 style='text-align: center;font-family: Microsoft YaHei'>" . $heading . "</h2></div>
+        </div>
+        <div class='panel-body' style='text-align:center'>$text</div>
+    </div>";
+}
+function success_msg($heading, $text, $htmlstrip = false)
+{
+	if ($htmlstrip) {
+		$heading = htmlspecialchars(trim($heading));
+		$text = htmlspecialchars(trim($text));
+	}
+echo "
+    <div class='panel panel-success'>
+        <div class='panel-heading'>
+            <div class='panel-title'><h2 style='text-align: center;font-family: Microsoft YaHei'>" . $heading . "</h2></div>
+        </div>
+        <div class='panel-body' style='text-align:center'>$text</div>
+    </div>";
+}
+function info_msg($heading, $text, $htmlstrip = false)
+{
+	if ($htmlstrip) {
+		$heading = htmlspecialchars(trim($heading));
+		$text = htmlspecialchars(trim($text));
+	}
+echo "
+    <div class='panel panel-info'>
+        <div class='panel-heading'>
+            <div class='panel-title'><h2 style='text-align: center;font-family: Microsoft YaHei'>" . $heading . "</h2></div>
+        </div>
+        <div class='panel-body' style='text-align:center'>$text</div>
+    </div>";
+}
+
+
 
 function stderr($heading, $text, $htmlstrip = true, $head = true, $foot = true, $die = true)
 {
@@ -802,7 +846,7 @@ function begin_frame($caption = "", $center = false, $padding = 10, $width = "10
 	$tdextra = "";
 
 	if ($center)
-		$tdextra .= " align=\"center\"";
+		$tdextra .= " align=\"left\"";
 
 	print(($caption ? "<h2 align=\"" . $caption_center . "\">" . $caption . "</h2>" : "") . "<table width=\"" . $width . "\"  cellspacing=\"0\" cellpadding=\"" . $padding . "\">" . "<tr><td class=\"text\" $tdextra>\n");
 
@@ -2754,6 +2798,10 @@ $cssupdatedate=($cssupdatedate ? "?".htmlspecialchars($cssupdatedate) : "");
 <link href="./styles/awesome/css/font-awesome.min.css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="./styles/BambooGreen/main.css">
 <link rel="stylesheet" type="text/css" href="./styles/BambooGreen/components.min.css">
+<link rel="stylesheet" type="text/css" href="./styles/BambooGreen/file-input.css">
+  <script src="./styles/js/jquery-3.1.1.min.js"></script>
+  <script src="./styles/bootstrap/js/bootstrap.min.js"></script>
+  <script src='./styles/BambooGreen/file-input.js'></script>
     <!--[if lt IE 9]>
     <div id="ratioTip" class="alert">
         <button type="button" class="close" onclick="document.body.removeChild(this.parentNode)">×</button>
@@ -3030,8 +3078,15 @@ function stdfoot() {
 		print("\n".$analyticscode_tweak."\n");
 	print ("</div>");
 	echo "</footer></div>
-<script src=\"./styles/js/jquery-3.1.1.min.js\"></script>
-<script src=\"./styles/bootstrap/js/bootstrap.min.js\"></script>
+
+<script>
+    $('#torrent_tooltip').tooltip({
+       trigger:'foucs'
+    });
+    $('#torrent_title_tooltip').tooltip({
+       trigger:'foucs'
+    });
+</script>
     </body></html>";
 	unset($_SESSION['queries']);
 }
