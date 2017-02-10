@@ -4,8 +4,6 @@ dbconn(true);
 require_once(get_langfile_path("torrents.php"));
 loggedinorreturn();
 parked();
-if ($showextinfo['imdb'] == 'yes')
-	require_once ("imdb/imdb.class.php");
 //check searchbox
 $sectiontype = $browsecatmode;
 $showsubcat = get_searchbox_value($sectiontype, 'showsubcat');//whether show subcategory (i.e. sources, codecs) or not
@@ -865,191 +863,132 @@ elseif ($sectiontype == $browsecatmode)
 	stdhead($lang_torrents['head_torrents']);
 else stdhead($lang_torrents['head_music']);
 print("<table width=\"97%\" class=\"main\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\"><tr><td class=\"embedded\">");
+
+
+	$secs = 3 * 24 * 60 * 60;
+	$dt = sqlesc(date("Y-m-d H:i:s", (TIMENOW - $secs)));
+	$dt2 = sqlesc(date("Y-m-d H:i:s", (TIMENOW - $secs * 2)));
+	sql_query("DELETE FROM suggest WHERE adddate <" . $dt2) or sqlerr();
+	$searchres = sql_query("SELECT keywords, COUNT(DISTINCT userid) as count FROM suggest WHERE adddate >" . $dt . " GROUP BY keywords ORDER BY count DESC LIMIT 15") or sqlerr();
+	$hotcount = 0;
+	$hotsearch = "";
+	while ($searchrow = mysql_fetch_assoc($searchres)) {
+		$hotsearch .= "<li><a href=\"" . htmlspecialchars("?search=" . rawurlencode($searchrow["keywords"]) . "&notnewword=1") . "\">" . $searchrow["keywords"] . "</a></li>";
+		$hotcount += mb_strlen($searchrow["keywords"], "UTF-8");
+		if ($hotcount > 60)
+			break;
+	}
+
+
 if ($allsec != 1 || $enablespecial != 'yes'){ //do not print searchbox if showing bookmarked torrents from all sections;
 ?>
 	<style>
 		td{
 			font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 			font-size: 15px;
-
 		}
 	</style>
-<form method="get" name="searchbox" action="?">
-	<table  class="searchbox" cellspacing="0" cellpadding="5" width="100%">
-		<tbody>
-		<tr>
-		<td class="colhead" align="center" colspan="2"><a href="javascript: klappe_news('searchboxmain')"><span class="icon-search" style="font-size: 33px;color: #00a2d4">&nbsp;&nbsp;<?php echo $lang_torrents['text_search_box'] ?></a></span></td>
-		</tr></tbody>
-		<tbody id="ksearchboxmain">
-		<tr>
-			<td class="rowfollow" style="padding-left: 15%">
-				<table>
-					<?php
-						function printcat($name, $listarray, $cbname, $wherelistina, $btname, $showimg = false)
-						{
-							global $catpadding,$catsperrow,$lang_torrents,$CURUSER,$CURLANGDIR,$catimgurl;
-							$i = 0;
-							foreach($listarray as $list){
-								if ($i && $i % $catsperrow == 0){
-									print("</tr><tr>");
-								}
-//								return_category_image  修改图片的函数
-								print("<td align=\"left\" class=\"bottom\" style=\"padding-bottom: 4px;\">".($showimg ? return_search_category_image($list[id], "?") : "<a title=\"" .$list[name] . "\" href=\"?".$cbname."=".$list[id]."\">".$list[name]."</a>")."</td>\n");
-								$i++;
-							}
-//							$checker = "<input name=\"".$btname."\" value='" .  $lang_torrents['input_check_all'] . "' class=\"btn btn-success\" type=\"button\" onclick=\"javascript:SetChecked('".$cbname."','".$btname."','". $lang_torrents['input_check_all'] ."','" . $lang_torrents['input_uncheck_all'] . "',-1,10)\" />";
-//							print("<td colspan=\"2\" class=\"bottom\" align=\"left\" style=\"padding-left: 15px\">".$checker."</td>\n");
-							print("</tr>");
-						}
-					printcat($lang_torrents['text_category'],$cats,"cat",$wherecatina,"cat_check",true);
 
-					if ($showsubcat){
-						if ($showsource)
-							printcat($lang_torrents['text_source'], $sources, "source", $wheresourceina, "source_check");
-//						if ($showmedium)
-//							printcat($lang_torrents['text_medium'], $media, "medium", $wheremediumina, "medium_check");
-//						if ($showcodec)
-//							printcat($lang_torrents['text_codec'], $codecs, "codec", $wherecodecina, "codec_check");
-//						if ($showaudiocodec)
-//							printcat($lang_torrents['text_audio_codec'], $audiocodecs, "audiocodec", $whereaudiocodecina, "audiocodec_check");
-//						if ($showstandard)
-//							printcat($lang_torrents['text_standard'], $standards, "standard", $wherestandardina, "standard_check");
-//						if ($showprocessing)
-//							printcat($lang_torrents['text_processing'], $processings, "processing", $whereprocessingina, "processing_check");
-//						if ($showteam)
-//							printcat($lang_torrents['text_team'], $teams, "team", $whereteamina, "team_check");
-					}
-					?>
-				</table>
-			</td>
-			
-			<td class="rowfollow" valign="middle">
-<!--				<table>-->
+    <div class='row'>
+    <div class='col-md-12 col-lg-12 col-xs-12 col-sm-12'>
+    <div class='portlet light form-fit bordered'>
+    <div class='portlet-title'>
+        <div class='caption'>
+            <h2>
+                <i class='glyphicon glyphicon-search font-green-jungle'></i>
+                <span class='caption-subject font-green-jungle sbold uppercase'>搜索 </span>
+            </h2>
+        </div>
+    </div>
+    <div class='portlet-body form'>
+    <form class='form-horizontal form-bordered' method=get name='searchbox' action=?>
+        <div class='form-body'>
+            <div class='form-group'>
+                <label class='control-label col-md-3'>搜索 </label>
+                <div class=col-md-9>
+                    <div class='input-group'>
+                        <span class='input-group-addon'><span class='glyphicon glyphicon-search'></span></span>
+                        <input id="searchinput" class="form-control " name="search" type="text" value="<?php echo $searchstr_ori ?>" autocomplete="off"/>
+                    </div>
+                </div>
+            </div>
+            <div class='form-group'>
+                <label class='control-label col-md-3'>断种/活种 </label>
+                <div class=col-md-9>
+                    <div class='input-group'>
+                        <select class="form-control" name="incldead">
+                            <option value="0"><?php echo $lang_torrents['select_including_dead'] ?></option>
+                            <option value="1"<?php print($include_dead == 1 ? " selected=\"selected\"" : ""); ?>><?php echo $lang_torrents['select_active'] ?> </option>
+                            <option value="2"<?php print($include_dead == 2 ? " selected=\"selected\"" : ""); ?>><?php echo $lang_torrents['select_dead'] ?></option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class='form-group'>
+                <label class='control-label col-md-3'>促销种子 </label>
+                <div class=col-md-9>
+                    <div class='input-group'>
+                        <select class="form-control" name="spstate">
+                            <option value="0"><?php echo $lang_torrents['select_all'] ?></option>
+		                    <?php echo promotion_selection($special_state, 0) ?>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class='form-group'>
+                <label class='control-label col-md-3'>热搜 </label>
+                <div class=col-md-9>
+                    <div class='input-group'>
+                        <ul class="pagination">
+                           <?php
+                                if ($hotsearch){
+                                    echo $hotsearch;
+                                }
+                           ?>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class='form-group'>
+                <label class='control-label col-md-3'>分类 </label>
+                <div class=col-md-9>
+                    <div class='input-group'>
+                           <?php
+                           function printcat($name, $listarray, $cbname, $wherelistina, $btname, $showimg = false)
+                           {
+	                           global $catpadding, $catsperrow, $lang_torrents, $CURUSER, $CURLANGDIR, $catimgurl;
+	                           $i = 0;
+	                           foreach ($listarray as $list) {
+		                           print(($showimg ? return_search_category_image($list[id], "?") : "<a title=\"" . $list[name] . "\" href=\"?" . $cbname . "=" . $list[id] . "\">" . $list[name] . "</a>"));
+		                           $i++;
+	                           }
+                           }
 
-			<div>
-				<div style="margin-bottom: 20px">
-					<font class="medium"><?php echo $lang_torrents['text_show_dead_active'] ?></font>
-					<select class="btn btn-warning" name="incldead" style="width: 120px;">
-						<option value="0"><?php echo $lang_torrents['select_including_dead'] ?></option>
-						<option value="1"<?php print($include_dead == 1 ? " selected=\"selected\"" : ""); ?>><?php echo $lang_torrents['select_active'] ?> </option>
-						<option value="2"<?php print($include_dead == 2 ? " selected=\"selected\"" : ""); ?>><?php echo $lang_torrents['select_dead'] ?></option>
-					</select>
-				</div>
-				<div style="margin-bottom: 20px">
-					<font class="medium"><?php echo $lang_torrents['text_show_special_torrents'] ?></font>
-					<select class="btn btn-warning" name="spstate" style="width: 120px;">
-						<option value="0"><?php echo $lang_torrents['select_all'] ?></option>
-						<?php echo promotion_selection($special_state, 0)?>
-					</select>
-				</div>
-				<div>
-					<font class="medium"><?php echo $lang_torrents['text_show_bookmarked'] ?></font>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					<select class="btn btn-warning" name="inclbookmarked" style="width: 120px;">
-						<option value="0"><?php echo $lang_torrents['select_all'] ?></option>
-						<option value="1"<?php print($inclbookmarked == 1 ? " selected=\"selected\"" : ""); ?>><?php echo $lang_torrents['select_bookmarked'] ?></option>
-						<option value="2"<?php print($inclbookmarked == 2 ? " selected=\"selected\"" : ""); ?>><?php echo $lang_torrents['select_bookmarked_exclude'] ?></option>
-					</select>
-				</div>
-			</div>
-<!--				</table>-->
+                           printcat($lang_torrents['text_category'], $cats, "cat", $wherecatina, "cat_check", true);
+                           ?>
+                    </div>
+                </div>
+            </div>
+            <div class='form-group'>
+                <label class='control-label col-md-3'>检索 </label>
+                <div class=col-md-9>
+                    <div class='input-group'>
+                        <input type=submit class='btn btn-success' value='开始检索'>
+                    </div>
+                </div>
+            </div>
+    </form>
+    </div>
+    </div>
+    </div>
+    </div>
+</div>
 
 
 
 
-
-
-			</td>
-		</tr>
-		</tbody>
-		<tbody>
-		<tr>
-			<td class="rowfollow" align="center">
-				<table>
-					<tr>
-						<td class="embedded">
-							<?php echo $lang_torrents['text_search'] ?>&nbsp;&nbsp;
-						</td>
-						<td class="embedded">
-							<table>
-								<tr>
-									<td class="embedded">
-										<input id="searchinput" class="input tip-focus" name="search" type="text" value="<?php echo  $searchstr_ori ?>" autocomplete="off" style="width: 200px" ondblclick="suggest(event.keyCode,this.value);" onkeyup="suggest(event.keyCode,this.value);" onkeypress="return noenter(event.keyCode);"/>
-										<script src="suggest.js" type="text/javascript"></script>
-										<div id="suggcontainer" style="text-align: left; width:100px;  display: none;">
-											<div id="suggestions" style="width:204px; border: 1px solid rgb(119, 119, 119); cursor: default; position: absolute; color: rgb(0,0,0); background-color: rgb(255, 255, 255);"></div>
-										</div>
-									</td>
-								</tr>
-							</table>
-						</td>
-						<td class="embedded">
-							<?php echo "&nbsp;" . $lang_torrents['text_in'] ?>
-
-							<select name="search_area" class="btn btn-warning">
-								<option value="0"><?php echo $lang_torrents['select_title'] ?></option>
-								<option value="1"<?php print($_GET["search_area"] == 1 ? " selected=\"selected\"" : ""); ?>><?php echo $lang_torrents['select_description'] ?></option>
-								<?php
-								/*if ($smalldescription_main == 'yes'){
-								?>
-								<option value="2"<?php print($_GET["search_area"] == 2 ? " selected=\"selected\"" : ""); ?>><?php echo $lang_torrents['select_small_description'] ?></option>
-								<?php
-								}*/
-								?>
-								<option value="3"<?php print($_GET["search_area"] == 3 ? " selected=\"selected\"" : ""); ?>><?php echo $lang_torrents['select_uploader'] ?></option>
-								<option value="4"<?php print($_GET["search_area"] == 4 ? " selected=\"selected\"" : ""); ?>><?php echo $lang_torrents['select_imdb_url'] ?></option>
-							</select>
-
-							<?php echo $lang_torrents['text_with'] ?>
-
-							<select name="search_mode" class="btn btn-warning" style="width: 90px;">
-								<option value="0"><?php echo $lang_torrents['select_and'] ?></option>
-								<option value="1"<?php echo $_GET["search_mode"] == 1 ? " selected=\"selected\"" : "" ?>><?php echo $lang_torrents['select_or'] ?></option>
-								<option value="2"<?php echo $_GET["search_mode"] == 2 ? " selected=\"selected\"" : "" ?>><?php echo $lang_torrents['select_exact'] ?></option>
-							</select>
-							
-							<?php echo $lang_torrents['text_mode'] ?>
-						</td>
-					</tr>
-<?php
-$Cache->new_page('hot_search', 3670, true);
-if (!$Cache->get_page()){
-	$secs = 3*24*60*60;
-	$dt = sqlesc(date("Y-m-d H:i:s",(TIMENOW - $secs)));
-	$dt2 = sqlesc(date("Y-m-d H:i:s",(TIMENOW - $secs*2)));
-	sql_query("DELETE FROM suggest WHERE adddate <" . $dt2) or sqlerr();
-	$searchres = sql_query("SELECT keywords, COUNT(DISTINCT userid) as count FROM suggest WHERE adddate >" . $dt . " GROUP BY keywords ORDER BY count DESC LIMIT 15") or sqlerr();
-	$hotcount = 0;
-	$hotsearch = "";
-	while ($searchrow = mysql_fetch_assoc($searchres))
-	{
-		$hotsearch .= "<a href=\"".htmlspecialchars("?search=" . rawurlencode($searchrow["keywords"]) . "&notnewword=1")."\"><u>" . $searchrow["keywords"] . "</u></a>&nbsp;&nbsp;";
-		$hotcount += mb_strlen($searchrow["keywords"],"UTF-8");
-		if ($hotcount > 60)
-			break;
-	}
-	$Cache->add_whole_row();
-	if ($hotsearch)
-	print("<tr><td class=\"embedded\" colspan=\"3\">&nbsp;&nbsp;".$hotsearch."</td></tr>");
-	$Cache->end_whole_row();
-	$Cache->cache_page();
-}
-echo $Cache->next_row();
-?>
-				</table>
-			</td>
-			<td class="rowfollow" align="center">
-				<input type="submit" class="btn btn-success" value="<?php echo $lang_torrents['submit_go'] ?>" />
-			</td>
-		</tr>
-		</tbody>
-	</table>
-	</form>
 <?php
 }
-	if ($Advertisement->enable_ad()){
-			$belowsearchboxad = $Advertisement->get_ad('belowsearchbox');
-			echo "<div align=\"center\" style=\"margin-top: 10px\" id=\"ad_belowsearchbox\">".$belowsearchboxad[0]."</div>";
-	}
 if($inclbookmarked == 1)
 {
 	print("<h1 align=\"center\">" . get_username($CURUSER['id']) . $lang_torrents['text_s_bookmarked_torrent'] . "</h1>");
@@ -1060,8 +999,6 @@ elseif($inclbookmarked == 2)
 }
 
 if ($count) {
-	print($pagertop);
-	print("<p align=\"center\"> ".$lang_functions['text_promoted_torrents_note']."</p>\n");
 	if ($sectiontype == $browsecatmode)
 		torrenttable($res, "torrents");
 	elseif ($sectiontype == $specialcatmode)

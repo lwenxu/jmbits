@@ -1413,18 +1413,14 @@ img {
 }
 
 .category_image_outer {
-    display: table;
     position: relative;
-    width: 52px;
-    height: 64px;
-    border: 1px solid #CCC;
 }
 
 .category_text {
     position: absolute;
-    top: 0;
-    left: 0;
-    padding: 1px 5px 1px 1px;
+    top: 8px;
+    left: 8px;
+    padding: 4px 9px;
     font-size: 10px;
     color: white;
     background: #999;

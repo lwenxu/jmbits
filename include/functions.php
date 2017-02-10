@@ -289,6 +289,30 @@ function get_offer_thumb($id){
 	}
 	return $return;
 }
+function get_torrent_thumb($id){
+    global $httpdirectory_attachment;
+    $res=sql_query("SELECT descr,category FROM torrents WHERE id=$id LIMIT 1") or sqlerr(__FILE__, __LINE__);
+    $attachment=mysql_fetch_array($res);
+    $patten="/\[attach\]([0-9a-zA-z][0-9a-zA-z]*)\[\/attach\]/ies";
+    preg_match_all($patten,$attachment[0],$match);
+    $key=$match[1][0];
+	if (strlen($key) == 32) {
+		$res = sql_query("SELECT * FROM attachments WHERE dlkey=" . sqlesc($key) . " LIMIT 1") or sqlerr(__FILE__, __LINE__);
+		$row = mysql_fetch_array($res);
+	}
+	if (!$row) {
+		 $return = return_category_image($attachment[1]);
+	} else {
+		$id = $row['id'];
+		if ($row['isimage'] == 1) {
+			$url = $httpdirectory_attachment . "/" . $row['location'];
+            $return =$url;
+		} else {
+            $return = return_category_image($attachment[1]);
+		}
+	}
+	return $return;
+}
 //by lwenxu
 function print_thumb($id, $enableimage = true, $imageresizer = true){
 	global $Cache, $httpdirectory_attachment;
@@ -3519,59 +3543,62 @@ function torrenttable($res, $variant = "torrent") {
 		else $wait = 0;
 	}
 ?>
-<table class="table table-striped" cellspacing="0" cellpadding="5" width="100%" style="table-layout: fixed;">
-<tr>
-<?php
-$count_get = 0;
-$oldlink = "";
-foreach ($_GET as $get_name => $get_value) {
-	$get_name = mysql_real_escape_string(strip_tags(str_replace(array("\"","'"),array("",""),$get_name)));
-	$get_value = mysql_real_escape_string(strip_tags(str_replace(array("\"","'"),array("",""),$get_value)));
+<div class='row'>
+    <div class='col-md-12 col-lg-12 col-xs-12 col-sm-12'>
+        <div class='portlet light form-fit bordered'>
+            <div class='portlet-title'>
+                <div class='caption'>
+                    <h2>
+                        <i class='glyphicon glyphicon-tasks font-green-steel'></i>
+                        <span class='caption-subject font-green-steel sbold uppercase'>种子列表 </span>
+                    </h2>
+                </div>
+            </div>
+            <div class='portlet-body'>
 
-	if ($get_name != "sort" && $get_name != "type") {
-		if ($count_get > 0) {
-			$oldlink .= "&amp;" . $get_name . "=" . $get_value;
-		}
-		else {
-			$oldlink .= $get_name . "=" . $get_value;
-		}
-		$count_get++;
-	}
-}
-if ($count_get > 0) {
-	$oldlink = $oldlink . "&amp;";
-}
-$sort = $_GET['sort'];
-$link = array();
-for ($i=1; $i<=9; $i++){
-	if ($sort == $i)
-		$link[$i] = ($_GET['type'] == "desc" ? "asc" : "desc");
-	else $link[$i] = ($i == 1 ? "asc" : "desc");
-}
-?>
-<td class="colhead" style="padding: 7px;" width="5.5%"><?php echo $lang_functions['col_type'] ?></td>
-<td class="colhead" style="text-align: center" width="60%"><a class="colhead"  href="?<?php echo $oldlink?>sort=1&amp;type=<?php echo $link[1]?>"><?php echo $lang_functions['col_name'] ?></a></td>
-<?php
+            <?php
+            $count_get = 0;
+            $oldlink = "";
+            foreach ($_GET as $get_name => $get_value) {
+                $get_name = mysql_real_escape_string(strip_tags(str_replace(array("\"","'"),array("",""),$get_name)));
+                $get_value = mysql_real_escape_string(strip_tags(str_replace(array("\"","'"),array("",""),$get_value)));
 
-if ($wait)
-{
-	print("<td align=\"center\">".$lang_functions['col_wait']."</td>\n");
-}
-if ($CURUSER['showcomnum'] != 'no') { ?>
-<td class="colhead" align="center"></td>
-<?php } ?>
-
-<td class="colhead" align="center" width="6%"><a href="?<?php echo $oldlink?>sort=4&amp;type=<?php echo $link[4]?>"><span class=" icon-time icos-download" alt="time" title="<?php echo ($CURUSER['timetype'] != 'timealive' ? $lang_functions['title_time_added'] : $lang_functions['title_time_alive'])?>" ></span></a></td>
-<td class="colhead" align="center" width="6%"><a href="?<?php echo $oldlink?>sort=5&amp;type=<?php echo $link[5]?>"><span class="icon-hdd icos-download" alt="size" title="<?php echo $lang_functions['title_size'] ?>" /></a></td>
-<td class="colhead" align="center"><a href="?<?php echo $oldlink?>sort=7&amp;type=<?php echo $link[7]?>"><span class="icon-tasks icos-download" alt="seeders" title="<?php echo $lang_functions['title_number_of_seeders'] ?>" ></span></a></td>
-<td class="colhead" align="center"><a href="?<?php echo $oldlink?>sort=8&amp;type=<?php echo $link[8]?>"><span class="icon-cloud-download icos-download" alt="leechers" title="<?php echo $lang_functions['title_number_of_leechers'] ?>" ></span></a></td>
-<td class="colhead" align="center"><a href="?<?php echo $oldlink?>sort=6&amp;type=<?php echo $link[6]?>"><span class="icon-check  icos-download" alt="snatched" title="<?php echo $lang_functions['title_number_of_snatched']?>" ></span></a></td>
-<td class="colhead"><a href="?<?php echo $oldlink?>sort=9&amp;type=<?php echo $link[9]?>"><?php echo $lang_functions['col_uploader']?></a></td>
-<?php
-if (get_user_class() >= $torrentmanage_class) { ?>
-	<td class="colhead" align="center"><?php echo $lang_functions['col_action'] ?></td>
-<?php } ?>
-</tr>
+                if ($get_name != "sort" && $get_name != "type") {
+                    if ($count_get > 0) {
+                        $oldlink .= "&amp;" . $get_name . "=" . $get_value;
+                    }
+                    else {
+                        $oldlink .= $get_name . "=" . $get_value;
+                    }
+                    $count_get++;
+                }
+            }
+            if ($count_get > 0) {
+                $oldlink = $oldlink . "&amp;";
+            }
+            $sort = $_GET['sort'];
+            $link = array();
+            for ($i=1; $i<=9; $i++){
+                if ($sort == $i)
+                    $link[$i] = ($_GET['type'] == "desc" ? "asc" : "desc");
+                else $link[$i] = ($i == 1 ? "asc" : "desc");
+            }
+            ?>
+ <table class="table table-hover">
+     <tr>
+        <td align="center" >类型</td>
+        <td align="center" ><a  href="?<?php echo $oldlink?>sort=1&amp;type=<?php echo $link[1]?>">标题</a></td>
+        <td align="center" ><a href="?<?php echo $oldlink?>sort=4&amp;type=<?php echo $link[4]?>">时间</a></td>
+        <td align="center" ><a href="?<?php echo $oldlink?>sort=5&amp;type=<?php echo $link[5]?>">大小</a></td>
+        <td align="center" ><a href="?<?php echo $oldlink?>sort=7&amp;type=<?php echo $link[7]?>">种子数</a></td>
+        <td align="center" ><a href="?<?php echo $oldlink?>sort=8&amp;type=<?php echo $link[8]?>">下载数</a></td>
+         <td align="center" ><a href="?<?php echo $oldlink?>sort=6&amp;type=<?php echo $link[6]?>">完成数</a></td>
+        <td align="center" ><a href="?<?php echo $oldlink?>sort=9&amp;type=<?php echo $link[9]?>"> 发布者 </a></td>
+        <?php
+        if (get_user_class() >= $torrentmanage_class) { ?>
+            <td class="" align="center">行为</td>
+        <?php } ?>
+        </tr>
 <?php
 $caticonrow = get_category_icon_row($CURUSER['caticon']);
 if ($caticonrow['secondicon'] == 'yes')
@@ -3588,34 +3615,22 @@ while ($row = mysql_fetch_assoc($res))
 	print("<tr" . $sphighlight . ">\n");
 
 	echo "
-	<td class=\"rowfollow\">    
-	    <div class=\"category_image_outer\">
-	    ";
+	<td class='category_image_outer'>";
 	echo GetCategoriesPic($id);
-    echo"
-        <div class=\"category_image_middle\">
-        ";
 		if (isset($row["category"])) {
-	    print_thumb($id);
+	        $img=get_torrent_thumb($id);
+	        echo "
+<div>
+    <img src=$img  width='70px' class='img img-thumbnail '>
+</div>
+";
 	    }
 	    else
 		    print("");
-    echo "</div>
-    </div>
+    echo "
 </td>
 	";
 
-//	print("<td class=\"rowfollow nowrap\" valign=\"middle\" style='padding: 5px'>");
-//	if (isset($row["category"])) {
-//	    print_thumb($id);
-////		print(return_category_image($row["category"], "?"));
-////		if ($has_secondicon){
-////			print(get_second_icon($row, "pic/".$catimgurl."additional/"));
-////		}
-//	}
-//	else
-//		print("-");
-//	print("</td>\n");
 
 	//torrent name
 	$dispname = trim($row["name"]);
@@ -3673,22 +3688,22 @@ while ($row = mysql_fetch_assoc($res))
 	if ($row['pos_state'] == 'sticky' && $CURUSER['appendsticky'] == 'yes')
 		$stickyicon = "<img class=\"sticky\" src=\"pic/trans.gif\" alt=\"Sticky\" title=\"".$lang_functions['title_sticky']."\" />&nbsp;";
 	else $stickyicon = "";
-
-	print("<td class=\"rowfollow\" width=\"100%\" align=\"center\"><table class=\"sans\" width=\"100%\"><tr" . $sphighlight . "><td class=\"sans\">".$stickyicon."<a $short_torrent_name_alt $mouseovertorrent href=\"details.php?id=".$id."&amp;hit=1\">".htmlspecialchars($dispname)."</a>");
+//标题
+	print("<td class=\"rowfollow\" width=\"48%\" align=\"center\"><table class=\"sans\" width=\"100%\"><tr" . $sphighlight . "><td class=\"sans\">".$stickyicon."<a $short_torrent_name_alt $mouseovertorrent href=\"details.php?id=".$id."&amp;hit=1\">".htmlspecialchars($dispname)."</a>");
 	$sp_torrent = get_torrent_promotion_append($row['sp_state'],"",true,$row["added"], $row['promotion_time_type'], $row['promotion_until']);
 	$picked_torrent = "";
 	if ($CURUSER['appendpicked'] != 'no'){
 	if($row['picktype']=="hot")
-	$picked_torrent = " [<font class='hot'>".$lang_functions['text_hot']."</font>]";
+	$picked_torrent = " <font class='label label-danger'>".$lang_functions['text_hot']."</font>";
 	elseif($row['picktype']=="classic")
-	$picked_torrent = " [<font class='classic'>".$lang_functions['text_classic']."</font>]";
+	$picked_torrent = " <font class='label label-info'>".$lang_functions['text_classic']."</font>";
 	elseif($row['picktype']=="recommended")
-	$picked_torrent = " [<font class='recommended'>".$lang_functions['text_recommended']."</font>]";
+	$picked_torrent = " <font class='label label-default'>".$lang_functions['text_recommended']."</font>";
 	}
 	if ($CURUSER['appendnew'] != 'no' && strtotime($row["added"]) >= $last_browse)
-		print(" (<font class='new'>".$lang_functions['text_new_uppercase']."</font>)");
+		print(" <font class='label label-success'>".$lang_functions['text_new_uppercase']."</font>");
 
-	$banned_torrent = ($row["banned"] == 'yes' ? " (<font class=\"striking\">".$lang_functions['text_banned']."</font>)" : "");
+	$banned_torrent = ($row["banned"] == 'yes' ? " <font class=\"label label-danger\">".$lang_functions['text_banned']."</font>" : "");
 	print($banned_torrent.$picked_torrent.$sp_torrent);
 	if ($displaysmalldescr){
 		//small descr
@@ -3708,63 +3723,12 @@ while ($row = mysql_fetch_assoc($res))
 		$act .= "<a href=\"download.php?id=".$id."\"><span class=\"icon-download-alt icos-download\" style='padding-bottom: 2px;' alt=\"download\" title=\"".$lang_functions['title_download_torrent']."\" ></span></a>" ;
 		if ($CURUSER["bmicon"] == 'yes'){
 			$bookmark = " href=\"javascript: bookmark(".$id.",".$counter.");\"";
-			$act .= ($act ? "<br />" : "")."<a id=\"bookmark".$counter."\" ".$bookmark." >".get_torrent_bookmark_state($CURUSER['id'], $id)."</a>";
+			$act .= ($act ? "<br><br>" : "")."<a id=\"bookmark".$counter."\" ".$bookmark." >".get_torrent_bookmark_state($CURUSER['id'], $id)."</a>";
 		}
-
 	print("<td width=\"20\" class=\"embedded\" style=\"text-align: right; \" valign=\"middle\">".$act."</td>\n");
 
 	print("</tr></table></td>");
-	if ($wait)
-	{
-		$elapsed = floor((TIMENOW - strtotime($row["added"])) / 3600);
-		if ($elapsed < $wait)
-		{
-			$color = dechex(floor(127*($wait - $elapsed)/48 + 128)*65536);
-			print("<td class=\"rowfollow nowrap\"><a href=\"faq.php#id46\"><font color=\"".$color."\">" . number_format($wait - $elapsed) . $lang_functions['text_h']."</font></a></td>\n");
-		}
-		else
-		print("<td class=\"rowfollow nowrap\">".$lang_functions['text_none']."</td>\n");
-	}
-
-	if ($CURUSER['showcomnum'] != 'no')
-	{
-	print("<td class=\"rowfollow\">");
-	$nl = "";
-
-	//comments
-
-	$nl = "<br />";
-	if (!$row["comments"]) {
-//		print("<a href=\"comment.php?action=add&amp;pid=".$id."&amp;type=torrent\" title=\"".$lang_functions['title_add_comments']."\">" . $row["comments"] .  "</a>");
-	} else {
-		if ($enabletooltip_tweak == 'yes' && $CURUSER['showlastcom'] != 'no')
-		{
-			if (!$lastcom = $Cache->get_value('torrent_'.$id.'_last_comment_content')){
-				$res2 = sql_query("SELECT user, added, text FROM comments WHERE torrent = $id ORDER BY id DESC LIMIT 1");
-				$lastcom = mysql_fetch_array($res2);
-				$Cache->cache_value('torrent_'.$id.'_last_comment_content', $lastcom, 1855);
-			}
-			$timestamp = strtotime($lastcom["added"]);
-			$hasnewcom = ($lastcom['user'] != $CURUSER['id'] && $timestamp >= $last_browse);
-			if ($lastcom)
-			{
-				if ($CURUSER['timetype'] != 'timealive')
-					$lastcomtime = $lang_functions['text_at_time'].$lastcom['added'];
-				else
-					$lastcomtime = $lang_functions['text_blank'].gettime($lastcom["added"],true,false,true);
-					$lastcom_tooltip[$counter]['id'] = "lastcom_" . $counter;
-					$lastcom_tooltip[$counter]['content'] = ($hasnewcom ? "(<font class='new'>".$lang_functions['text_new_uppercase']."</font>) " : "").$lang_functions['text_last_commented_by'].get_username($lastcom['user']) . $lastcomtime."<br />". format_comment(mb_substr($lastcom['text'],0,100,"UTF-8") . (mb_strlen($lastcom['text'],"UTF-8") > 100 ? " ......" : "" ),true,false,false,true,600,false,false);
-					$onmouseover = "onmouseover=\"domTT_activate(this, event, 'content', document.getElementById('" . $lastcom_tooltip[$counter]['id'] . "'), 'trail', false, 'delay', 500,'lifetime',3000,'fade','both','styleClass','niceTitle','fadeMax', 87,'maxWidth', 400);\"";
-			}
-		} else {
-			$hasnewcom = false;
-			$onmouseover = "";
-		}
-		print("<a href=\"details.php?id=".$id."&amp;hit=1&amp;cmtpage=1#startcomments\" ".$onmouseover.">". ($hasnewcom ? "<font class='new'>" : ""). $row["comments"] .($hasnewcom ? "</font>" : ""). "</a>");
-	}
-
-	print("</td>");
-	}
+	//标题结束
 
 	$time = $row["added"];
 	$time = gettime($time,false,true);
