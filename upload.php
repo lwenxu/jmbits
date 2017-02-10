@@ -30,143 +30,124 @@ $showteam = (($allowtorrents && get_searchbox_value($brsectiontype, 'showteam'))
 $showaudiocodec = (($allowtorrents && get_searchbox_value($brsectiontype, 'showaudiocodec')) || ($allowspecial && get_searchbox_value($spsectiontype, 'showaudiocodec'))); //whether show languages or not
 
 stdhead($lang_upload['head_upload']);
+if (!is_writable($torrent_dir))
+    error_msg('ATTENTION','Torrent directory isn\'t writable. Please contact the administrator about this problem!');
+if (!$max_torrent_size)
+    error_msg('ATTENTION','Max. Torrent Size not set. Please contact the administrator about this problem!');
+
+
 ?>
-	<form id="compose" enctype="multipart/form-data" action="takeupload.php" method="post" name="upload">
-<!--			--><?php
-//			print("<p align=\"center\">".$lang_upload['text_red_star_required']."</p>");
-//			?>
-			<table class="table table-striped" border="0" cellspacing="0" cellpadding="5" width="940">
 
-				<tr>
-					<td class='colhead' colspan='2' align='center'>
-						<?php echo "<div style='font-size: 17px;color: #00ccff'>".$lang_upload['text_tracker_url'] ?>: &nbsp;&nbsp;&nbsp;&nbsp;<b><?php echo  get_protocol_prefix() . $announce_urls[0]?></b></div>
-						<?php
-						if(!is_writable($torrent_dir))
-						print("<br /><br /><b>ATTENTION</b>: Torrent directory isn't writable. Please contact the administrator about this problem!");
-						if(!$max_torrent_size)
-						print("<br /><br /><b>ATTENTION</b>: Max. Torrent Size not set. Please contact the administrator about this problem!");
-						?>
-					</td>
-				</tr>
-				<?php
-				echo "
-				    <script>
-				    $(function() {
-				      $('#browsecat').change(function(e) {
-				            $(this).val();
-				       });
-				    });
-				    
-                    </script>
-				";
-				if ($allowtorrents) {
-					$disablespecial = " onchange=\"disableother('browsecat','specialcat')\"";
-					$s = "<div id='selectdiv'><select class=\"btn btn-info\" style name=\"type\" id=\"browsecat\" " . ($allowtwosec ? $disablespecial : "") . ">\n<option value=\"0\">" . $lang_upload['select_choose_one'] . "</option>\n";
-					$cats = genrelist($browsecatmode);
-					foreach ($cats as $row) {
-						$s .= "<option value=\"" . $row["id"] . "\">" . htmlspecialchars($row["name"]) . "</option>\n";
-					}
-					$s .= "</select></div>\n";
-				} else $s = "";
-				if ($allowspecial) {
-					$disablebrowse = " onchange=\"disableother('specialcat','browsecat')\"";
-					$s2 = "<select name=\"type\" id=\"category_rules\" " . $disablebrowse . ">\n<option value=\"0\">" . $lang_upload['select_choose_one'] . "</option>\n";
-					$cats2 = genrelist($specialcatmode);
-					foreach ($cats2 as $row)
-						$s2 .= "<option value=\"" . $row["id"] . "\">" . htmlspecialchars($row["name"]) . "</option>\n";
-					$s2 .= "</select>\n";
-				} else $s2 = "";
-				tr($lang_upload['row_type'] . "<font color=\"red\">*</font>", ($allowtwosec ? $lang_upload['text_to_browse_section'] : "") . $s . ($allowtwosec ? $lang_upload['text_to_special_section'] : "") . $s2 . ($allowtwosec ? $lang_upload['text_type_note'] : ""), 1);
-				tr($lang_upload['row_torrent_file']."<font color=\"red\">*</font>", "<input class='btn' type=\"file\"  id=\"torrent\" name=\"file\" onchange=\"getname()\" />\n", 1);
-                tr('填写规则',"<a target='_blank' class='btn btn-danger' style='margin-left: 7px;color: white' href='http://jm.nwu.edu.cn/forums.php?action=viewtopic&forumid=22&topicid=5'>种子规则</a><span style='color: red'>标题以及简介必须按照种子规则来填写否则将作为删种处理</span>",1);
-				if ($altname_main == 'yes'){
-					tr($lang_upload['row_torrent_name'], "<b>".$lang_upload['text_english_title']."</b>&nbsp;<input type=\"text\" style=\"width: 250px;\" name=\"name\" />&nbsp;&nbsp;&nbsp;
-<b>".$lang_upload['text_chinese_title']."</b>&nbsp;<input type=\"text\" style=\"width: 250px\" name=\"cnname\"><br /><font class=\"medium\">".$lang_upload['text_titles_note']."</font>", 1);
-				}
-				else
-					tr($lang_upload['row_torrent_name'] . "<font color=\"red\">*</font>", "<input  placeholder='标题请不要超过13字，下面还有副标题可填写哦 :) [必填] ）  ' type=\"text\" class=\"input tip-focus fullwidth\"  id=\"name\" name=\"name\" /><br />", 1);
-				if ($smalldescription_main == 'yes')
-				tr($lang_upload['row_small_description'] . "<font color=\"red\">*</font>", "<input placeholder='这里请填写种子的关键信息，方便大家选种哦^_^[必填]' type=\"text\" class=\"input tip-focus fullwidth\" id='small_name'  name=\"small_descr\" /><br /><font class=\"medium\">".$lang_upload['text_small_description_note']."</font>", 1);
-				
-				get_external_tr();
+    <div class="row">
+        <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+            <div class="portlet light form-fit bordered">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <h2>
+                            <i class="glyphicon glyphicon-open font-green"></i>
+                            <span class="caption-subject font-green sbold uppercase">种子发布 <span
+                                        class="small font-red   ">星号部分为必填</span></span>
+                        </h2>
+                    </div>
+                </div>
+                <div class="portlet-body form">
+                    <form class="form-horizontal form-bordered" id="compose" enctype="multipart/form-data" action="takeupload.php" method="post" name="upload">
+                        <div class="form-body">
+                            <div class="form-group">
+                                <label class="control-label col-md-3">分类 <font color="red">*</font> </label>
+                                <div class="col-md-4">
+                                    <?php
+                                    if ($allowtorrents) {
+	                                    $disablespecial = " onchange=\"disableother('browsecat','specialcat')\"";
+	                                    $s = "<select class=\"form-control input-large\" name=\"type\" id=\"browsecat\" " . ($allowtwosec ? $disablespecial : "") . ">\n<option value=\"0\">" . $lang_upload['select_choose_one'] . "</option>\n";
+	                                    $cats = genrelist($browsecatmode);
+	                                    foreach ($cats as $row)
+		                                    $s .= "<option value=\"" . $row["id"] . "\">" . htmlspecialchars($row["name"]) . "</option>\n";
+	                                    $s .= "</select>";
+                                    } else $s = "";
+                                    echo $s;
+                                    ?>
+                                </div>
+                                <div class="col-md-5" id="secondcategory">
 
-				if ($enablenfo_main == 'yes')
-					tr($lang_upload['row_nfo_file'], "<input type=\"file\" class=\"file\" name=\"nfo\" /><br /><font class=\"medium\">" . $lang_upload['text_only_viewed_by'] . get_user_class_name($viewnfo_class, false, true, true) . $lang_upload['text_or_above'] . "</font>", 1);
-				print("<tr><td class=\"rowhead\" style='padding: 3px' valign=\"top\">".$lang_upload['row_description']."<font color=\"red\">*</font></td><td class=\"rowfollow\">");
-				textbbcode("upload","descr","",false);
-				print("</td></tr>\n");
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-3">文件<font color="red"> *</font></label>
+                                <div class="col-md-9">
+                                    <div class="fileinput fileinput-new" data-provides="fileinput">
+                                        <div class="input-group input-large">
+                                            <div class="form-control uneditable-input input-fixed input-medium"
+                                                 data-trigger="fileinput">
+                                                <i class="fa fa-file fileinput-exists"></i>&nbsp;
+                                                <span class="fileinput-filename"> </span>
+                                            </div>
+                                            <span class="input-group-addon btn default btn-file">
+                            <span class="fileinput-new"> 选择文件 </span>
+                            <span class="fileinput-exists"> 修改文件 </span>
+                            <input name="file" type="file" id="torrent" onchange="getname()"> </span>
+                                            <a href="javascript:;" class="input-group-addon btn red fileinput-exists"
+                                               data-dismiss="fileinput"> 删除 </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-3">标题 <font color="red"> *</font></label>
+                                <div class="col-md-9">
+                                    <input class="form-control inline" id="name" name="name" type="text">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-3">副标题 </label>
+                                <div class="col-md-9">
+                                    <input class="form-control " name="small_descr">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-3">简介 <font color="red"> *</font></label>
+                                <div class="col-md-9">
+                                    <?php textbbcode("upload", "descr", "", false); ?>
+                                </div>
+                            </div>
+                            <?php
+                            $offerres = sql_query("SELECT id, name FROM offers WHERE userid = ".sqlesc($CURUSER[id])." AND allowed = 'allowed' ORDER BY name ASC") or sqlerr(__FILE__, __LINE__);
+                                if (mysql_num_rows($offerres) > 0) {
+	                                $offer = "<div class='col-md-4'><select class='form-control ' name=\"offer\"><option value=\"0\">" . $lang_upload['select_choose_one'] . "</option>";
+	                                while ($offerrow = mysql_fetch_array($offerres))
+		                                $offer .= "<option value=\"" . $offerrow["id"] . "\">" . htmlspecialchars($offerrow["name"]) . "</option>";
+	                                $offer .= "</select></div>";
+	                                echo "
+	                                  <div class=\"form-group\">
+                                        <label class=\"control-label col-md-3\">候选 <font color=\"red\"> *</font></label>
+                                        <div class=\"col-md-9\">
+                                            $offer
+                                        </div>
+                                    </div>
+	                                ";
+                                }
+                            ?>
 
-
-
-
-//				---------show the encode and makers info------
-
-
-//				if ($showsource || $showmedium || $showcodec || $showaudiocodec || $showstandard || $showprocessing){
-//					if ($showsource){
-//						$source_select = torrent_selection($lang_upload['text_source'],"source_sel","sources");
-//					}
-//					else $source_select = "";
-//
-//					if ($showmedium){
-//						$medium_select = torrent_selection($lang_upload['text_medium'],"medium_sel","media");
-//					}
-//					else $medium_select = "";
-//
-//					if ($showcodec){
-//						$codec_select = torrent_selection($lang_upload['text_codec'],"codec_sel","codecs");
-//					}
-//					else $codec_select = "";
-//
-//					if ($showaudiocodec){
-//						$audiocodec_select = torrent_selection($lang_upload['text_audio_codec'],"audiocodec_sel","audiocodecs");
-//					}
-//					else $audiocodec_select = "";
-//
-//					if ($showstandard){
-//						$standard_select = torrent_selection($lang_upload['text_standard'],"standard_sel","standards");
-//					}
-//					else $standard_select = "";
-//
-//					if ($showprocessing){
-//						$processing_select = torrent_selection($lang_upload['text_processing'],"processing_sel","processings");
-//					}
-//					else $processing_select = "";
-//
-//					tr($lang_upload['row_quality'], $source_select . $medium_select. $codec_select . $audiocodec_select. $standard_select . $processing_select, 1 );
-//				}
-
-//				if ($showteam){
-//					if ($showteam){
-//						$team_select = torrent_selection($lang_upload['text_team'],"team_sel","teams");
-//					}
-//					else $showteam = "";
-//
-//					tr($lang_upload['row_content'],$team_select,1);
-//				}
-
-				//==== offer dropdown for offer mod  from code by S4NE
-				$offerres = sql_query("SELECT id, name FROM offers WHERE userid = ".sqlesc($CURUSER[id])." AND allowed = 'allowed' ORDER BY name ASC") or sqlerr(__FILE__, __LINE__);
-				if (mysql_num_rows($offerres) > 0)
-				{
-					$offer = "<select  name=\"offer\"><option value=\"0\">".$lang_upload['select_choose_one']."</option>";
-					while($offerrow = mysql_fetch_array($offerres))
-						$offer .= "<option value=\"" . $offerrow["id"] . "\">" . htmlspecialchars($offerrow["name"]) . "</option>";
-					$offer .= "</select>";
-					tr($lang_upload['row_your_offer']. (!$uploadfreely && !$allowspecial ? "<font color=red>*</font>" : ""), $offer.$lang_upload['text_please_select_offer'] , 1);
-				}
-				//===end
-
-				if(get_user_class()>=$beanonymous_class)
-				{
-					tr($lang_upload['row_show_uploader'], "<input style='margin: 10px'  type=\"checkbox\" name=\"uplver\" value=\"yes\" />".$lang_upload['checkbox_hide_uploader_note'], 1);
-				}
-				?>
-				<tr><td class="toolbox" align="center" colspan="2"> <input style="margin-left: 9%" id="qr" type="submit" class="btn btn-success" value="<?php echo $lang_upload['submit_upload']."(".$lang_upload['text_read_rules'].")"?>" /></td></tr>
-		</table>
-	</form>
+                            <?php if (get_user_class() >= $beanonymous_class) { ?>
+                                <div class="form-group">
+                                    <label class="control-label col-md-3">匿名上传 </label>
+                                    <div class="col-md-9">
+                                        <label class="mt-checkbox">
+                                            <input name="uplver" value="yes" type="checkbox"> 不要显示我的用户名。
+                                            <span></span>
+                                        </label>
+                                    </div>
+                                </div>
+	                            <?php
+                                    }
+                                ?>
+                            <div class="toolbox" colspan="2" style="margin-left: 60%">
+                                <input id="qr" type="submit" class="btn btn-success" value="<?php echo $lang_upload['submit_upload'] ?>"/>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 <?php
 stdfoot();
-?>
-
-

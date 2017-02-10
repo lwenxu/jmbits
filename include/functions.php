@@ -264,6 +264,31 @@ function print_attachment($dlkey, $enableimage = true, $imageresizer = true)
 	return $return;
 	}
 }
+
+function get_offer_thumb($id){
+    global $httpdirectory_attachment;
+    $res=sql_query("SELECT descr,category FROM offers WHERE id=$id LIMIT 1") or sqlerr(__FILE__, __LINE__);
+    $attachment=mysql_fetch_array($res);
+    $patten="/\[attach\]([0-9a-zA-z][0-9a-zA-z]*)\[\/attach\]/ies";
+    preg_match_all($patten,$attachment[0],$match);
+    $key=$match[1][0];
+	if (strlen($key) == 32) {
+		$res = sql_query("SELECT * FROM attachments WHERE dlkey=" . sqlesc($key) . " LIMIT 1") or sqlerr(__FILE__, __LINE__);
+		$row = mysql_fetch_array($res);
+	}
+	if (!$row) {
+		 $return = return_category_image($attachment[1]);
+	} else {
+		$id = $row['id'];
+		if ($row['isimage'] == 1) {
+			$url = $httpdirectory_attachment . "/" . $row['location'];
+            $return =$url;
+		} else {
+            $return = return_category_image($attachment[1]);
+		}
+	}
+	return $return;
+}
 //by lwenxu
 function print_thumb($id, $enableimage = true, $imageresizer = true){
 	global $Cache, $httpdirectory_attachment;
@@ -1209,20 +1234,27 @@ function simpletag(thetag)
 <tr style="border: 0px"><td  colspan="2" style="border: 0px">
 <table cellspacing="1" cellpadding="2" border="0">
 <tr>
-<td class="embedded-add"><input class="btn btn-info" style="font-weight: bold;font-size:11px; margin:7px" type="button" name="b" value="B" onclick="javascript: simpletag('b')" /></td>
-<td class="embedded-add"><input class="btn btn-info" style="font-style: italic;font-size:11px;margin-right:3px" type="button" name="i" value="I" onclick="javascript: simpletag('i')" /></td>
-<td class="embedded-add"><input class="btn btn-info" style="text-decoration: underline;font-size:11px;margin-right:3px" type="button" name="u" value="U" onclick="javascript: simpletag('u')" /></td>
-<?php
-print("<td class=\"embedded\"><input class=\"btn btn-info\" style=\"font-size:11px;margin-right:3px\" type=\"button\" name='url' value='URL' onclick=\"javascript:tag_url('" . $lang_functions['js_prompt_enter_url'] . "','" . $lang_functions['js_prompt_enter_title'] . "','" . $lang_functions['js_prompt_error'] . "')\" /></td>");
+<td class="embedded-add"><inpu
+        t class="btn " style="font-weight: bold;font-size:11px; margin:7px" type="button" name="b" value="B"
+        onclick="javascript: simpletag('b')" /></td>
+    <td class="embedded-add"><input class="btn " style="font-style: italic;font-size:11px;margin-right:3px"
+                                    type="button" name="i" value="I" onclick="javascript: simpletag('i')"/></td>
+    <td class="embedded-add"><input class="btn " style="text-decoration: underline;font-size:11px;margin-right:3px"
+                                    type="button" name="u" value="U" onclick="javascript: simpletag('u')"/></td>
+	<?php
+	print("<td class=\"embedded\"><input class=\"btn \" style=\"font-size:11px;margin-right:3px\" type=\"button\" name='url' value='URL' onclick=\"javascript:tag_url('" . $lang_functions['js_prompt_enter_url'] . "','" . $lang_functions['js_prompt_enter_title'] . "','" . $lang_functions['js_prompt_error'] . "')\" /></td>");
 
-print("<td class=\"embedded\"><input class=\"btn btn-info\" style=\"font-size:11px;margin-right:3px\" type=\"button\" name=\"IMG\" value=\"IMG\" onclick=\"javascript: tag_image('" . $lang_functions['js_prompt_enter_image_url'] . "','" . $lang_functions['js_prompt_error'] . "')\" /></td>");
-print("<td class=\"embedded\"><input class=\"btn btn-info\" type=\"button\" style=\"font-size:11px;margin-right:3px\" name=\"list\" value=\"List\" onclick=\"tag_list('" . addslashes($lang_functions['js_prompt_enter_item']) . "','" . $lang_functions['js_prompt_error'] . "')\" /></td>");
-?>
-<td class="embedded-add"><input class="btn btn-info" style="font-size:11px;margin-right:3px" type="button" name="quote" value="QUOTE" onclick="javascript: simpletag('quote')" /></td>
-<td class="embedded-add"><input class="btn btn-info" style="font-size:11px;margin-right:3px" type="button" onclick='javascript:closeall();' name='tagcount' value="Close all tags" /></td>
-<td class="embedded-add"><select class="med btn btn-info" style="margin-right:3px" name='color' onchange="alterfont(this.options[this.selectedIndex].value, 'color')">
-<option value='0'>--- <?php echo $lang_functions['select_color'] ?> ---</option>
-<option style="background-color: black" value="Black">Black</option>
+	print("<td class=\"embedded\"><input class=\"btn \" style=\"font-size:11px;margin-right:3px\" type=\"button\" name=\"IMG\" value=\"IMG\" onclick=\"javascript: tag_image('" . $lang_functions['js_prompt_enter_image_url'] . "','" . $lang_functions['js_prompt_error'] . "')\" /></td>");
+	print("<td class=\"embedded\"><input class=\"btn \" type=\"button\" style=\"font-size:11px;margin-right:3px\" name=\"list\" value=\"List\" onclick=\"tag_list('" . addslashes($lang_functions['js_prompt_enter_item']) . "','" . $lang_functions['js_prompt_error'] . "')\" /></td>");
+	?>
+    <td class="embedded-add"><input class="btn " style="font-size:11px;margin-right:3px" type="button" name="quote"
+                                    value="QUOTE" onclick="javascript: simpletag('quote')"/></td>
+    <td class="embedded-add"><input class="btn " style="font-size:11px;margin-right:3px" type="button"
+                                    onclick='javascript:closeall();' name='tagcount' value="Close all tags"/></td>
+    <td class="embedded-add"><select class="med btn " style="margin-right:3px" name='color'
+                                     onchange="alterfont(this.options[this.selectedIndex].value, 'color')">
+            <option value='0'>--- <?php echo $lang_functions['select_color'] ?> ---</option>
+            <option style="background-color: black" value="Black">Black</option>
 <option style="background-color: sienna" value="Sienna">Sienna</option>
 <option style="background-color: darkolivegreen" value="DarkOliveGreen">Dark Olive Green</option>
 <option style="background-color: darkgreen" value="DarkGreen">Dark Green</option>
@@ -1264,7 +1296,7 @@ print("<td class=\"embedded\"><input class=\"btn btn-info\" type=\"button\" styl
 <option style="background-color: white" value="White">White</option>
 </select></td>
 <td class="embedded-add">
-<select class="med btn btn-info" name='font' onchange="alterfont(this.options[this.selectedIndex].value, 'font')">
+<select class="med btn" name='font' onchange="alterfont(this.options[this.selectedIndex].value, 'font')">
 <option value="0">--- <?php echo $lang_functions['select_font'] ?> ---</option>
 <option value="Arial">Arial</option>
 <option value="Arial Black">Arial Black</option>
@@ -1289,7 +1321,7 @@ print("<td class=\"embedded\"><input class=\"btn btn-info\" type=\"button\" styl
 </select>
 </td>
 <td class="embedded-add" style="border: 0px">
-<select  class="med btn btn-info" name='size' onchange="alterfont(this.options[this.selectedIndex].value, 'size')">
+<select  class="med btn " name='size' onchange="alterfont(this.options[this.selectedIndex].value, 'size')">
 <option value="0">--- <?php echo $lang_functions['select_size'] ?> ---</option>
 <option value="1">1</option>
 <option value="2">2</option>
@@ -1307,7 +1339,9 @@ if ($enableattach_attachment == 'yes'){
 ?>
 <tr>
 <td colspan="5" valign="middle" style="border: 0px">
-<iframe src="<?php echo get_protocol_prefix() . $BASEURL?>/attachment.php" width="100%" height="50" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
+    <iframe src="<?php echo get_protocol_prefix() . $BASEURL ?>/attachment.php"
+            width="100%" height="50" frameborder="0" scrolling="no" marginheight="0"
+            marginwidth="0"></iframe>
 </td>
 </tr>
 <?php
@@ -1315,16 +1349,6 @@ if ($enableattach_attachment == 'yes'){
 print("<tr>");
 
 ?>
-
-<!--	// add module @ someone by lwenxu-->
-	<link rel="stylesheet" href="userAutoTips.css" type="text/css">
-	<script type="text/javascript" src="userAutoTips.js"></script>
-	<script type="text/javascript">userAutoTips({id: '<?php  echo $text?>'});
-		$(window).bind('scroll resize', function (e) {
-			userAutoTips({id: '<?php  echo $text?>'})
-		})
-	</script>
-<!--	// end of moudle-->
 
 </td>
 <td align="center" width="90%" style="border: 0px;">
@@ -2799,9 +2823,7 @@ $cssupdatedate=($cssupdatedate ? "?".htmlspecialchars($cssupdatedate) : "");
 <link rel="stylesheet" type="text/css" href="./styles/BambooGreen/main.css">
 <link rel="stylesheet" type="text/css" href="./styles/BambooGreen/components.min.css">
 <link rel="stylesheet" type="text/css" href="./styles/BambooGreen/file-input.css">
-  <script src="./styles/js/jquery-3.1.1.min.js"></script>
-  <script src="./styles/bootstrap/js/bootstrap.min.js"></script>
-  <script src='./styles/BambooGreen/file-input.js'></script>
+
     <!--[if lt IE 9]>
     <div id="ratioTip" class="alert">
         <button type="button" class="close" onclick="document.body.removeChild(this.parentNode)">×</button>
@@ -3078,15 +3100,10 @@ function stdfoot() {
 		print("\n".$analyticscode_tweak."\n");
 	print ("</div>");
 	echo "</footer></div>
-
-<script>
-    $('#torrent_tooltip').tooltip({
-       trigger:'foucs'
-    });
-    $('#torrent_title_tooltip').tooltip({
-       trigger:'foucs'
-    });
-</script>
+<script src=\"./styles/js/jquery-3.1.1.min.js\"></script>
+<script src=\"./styles/bootstrap/js/bootstrap.min.js\"></script>
+<script src='./styles/BambooGreen/file-input.js'></script>
+<script src='./styles/BambooGreen/main.js'></script>
     </body></html>";
 	unset($_SESSION['queries']);
 }
@@ -3868,6 +3885,10 @@ function get_username($id, $big = false, $link = true, $bold = false, $target = 
 	return $username;
 }
 
+function get_user_avatar_url($id){
+    $arr=get_user_row($id);
+    return $arr['avatar']!='' ? $arr['avatar']: 'pic/default_avatar.png';
+}
 
 function get_percent_completed_image($p) {
 	$maxpx = "45"; // Maximum amount of pixels for the progress bar
@@ -4899,7 +4920,8 @@ function return_category_image($categoryid, $link="")
 	if ($link) {
 		$catimg = "<a href=\"".$link."cat=" . $categoryid . "\">".$catimg."</a>";
 	}
-	return $catimg;
+//	return $catimg;
+    return $categoryrow[image];
 }
 function return_search_category_image($categoryid, $link="")
 {

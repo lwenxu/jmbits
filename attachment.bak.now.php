@@ -19,7 +19,8 @@ $altsize = $_POST['altsize'];
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <link rel="stylesheet" href="<?php echo get_font_css_uri()?>" type="text/css">
 <link rel="stylesheet" href="<?php echo $css_uri."theme.css"?>" type="text/css">
-<link rel="stylesheet" type="text/css" href="./styles/BambooGreen/file-input.css">
+    <link rel="stylesheet" href="styles/bootstrap/css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="styles/BambooGreen/components.css">
 </head>
 <body class="inframe">
 <table width="100%">
@@ -96,8 +97,8 @@ if ($Attach->enable_attachment())
 					$hscale=$height/$targetheight;
 					$wscale=$width/$targetwidth;
 					$scale=($hscale < 1 && $wscale < 1) ? 1 : (( $hscale > $wscale) ? $hscale : $wscale);
-					$newwidth=floor($width/$scale);
-					$newheight=floor($height/$scale);
+					$newwidth=floor($width/$scale*2.8);
+					$newheight=floor($height/$scale*2.8);
 					if ($scale != 1){ //thumbnail is needed
 						if ($it==1)
 							$orig=@imagecreatefromgif($file["tmp_name"]);
@@ -227,6 +228,7 @@ if ($Attach->enable_attachment())
 			if (!$warning) //insert into database and add code to editor
 			{
 				$dlkey = md5($db_file_location.".".$ext);
+				//缩列图在此。。。。。。。。。
 				sql_query("INSERT INTO attachments (userid, width, added, filename, filetype, filesize, location, dlkey, isimage, thumb) VALUES (".$CURUSER['id'].", ".$width.", ".sqlesc(date("Y-m-d H:i:s")).", ".sqlesc($origfilename).", ".sqlesc($filetype).", ".$filesize.", ".sqlesc($db_file_location.".".$ext).", ".sqlesc($dlkey).", ".($isimage ? 1 : 0).", ".($hasthumb ? 1 : 0).")") or sqlerr(__FILE__, __LINE__);
 				$count_left--;
 				echo("<script type=\"text/javascript\">parent.tag_extimage('". "[attach]" . $dlkey . "[/attach]" . "');</script>");
@@ -236,13 +238,13 @@ if ($Attach->enable_attachment())
 	print("<form enctype=\"multipart/form-data\" name=\"attachment\" method=\"post\" action=\"attachment.php\">");
 	print("<tr>");
 	print("<td class=\"embedded\" colspan=\"2\" align=left>");
-	print("<input type=\"file\" name=\"file\"".($count_left ? "" : " disabled=\"disabled\"")." />&nbsp;");
-	print("<input hidden type=\"checkbox\" name=\"altsize\" value=\"yes\"".($altsize == 'yes' ? " checked=\"checked\"" : "")." />");
-	print("<input type=\"submit\" name=\"submit\" value=\"".$lang_attachment['submit_upload']."\"".($count_left ? "" : " disabled=\"disabled\"")." /> ");
+	print("\"<font color=\"red\">*</font>\"<input style='float:left' class='btn btn-info' type=\"file\" name=\"file\"".($count_left ? "" : " disabled=\"disabled\"")." />&nbsp;&nbsp;&nbsp;");
+	print("<input type=\"checkbox\" name=\"altsize\" value=\"yes\"".($altsize == 'yes' ? " checked=\"checked\"" : "")." />".$lang_attachment['text_small_thumbnail']."&nbsp;");
+	print("<input class='btn btn-success' type=\"submit\" name=\"submit\" value=\"".$lang_attachment['submit_upload']."\"".($count_left ? "" : " disabled=\"disabled\"")." /> ");
 	if ($warning) {
 		print('<span class="striking">'.$warning.'</span>');
 	} else {
-		print($lang_attachment['text_left']."<font color=\"red\">".$count_left."</font>".$lang_attachment['text_of'].$count_limit."&nbsp;&nbsp;&nbsp;".$lang_attachment['text_size_limit'].mksize($size_limit)."&nbsp;&nbsp;&nbsp;".$lang_attachment['text_file_extensions']);
+		print("<b>".$lang_attachment['text_left']."</b><font color=\"red\">".$count_left."</font>".$lang_attachment['text_of'].$count_limit."&nbsp;&nbsp;&nbsp;<b>".$lang_attachment['text_size_limit']."</b>".mksize($size_limit)."&nbsp;&nbsp;&nbsp;<b>".$lang_attachment['text_file_extensions']."</b>");
 		$allowedextsblock = "";
 		foreach($allowed_exts as $ext) {
 			$allowedextsblock .= $ext."/";
@@ -260,6 +262,5 @@ if ($Attach->enable_attachment())
 }
 ?>
 </table>
-<script src='./styles/BambooGreen/file-input.js'></script>
 </body>
 </html>

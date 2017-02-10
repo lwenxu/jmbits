@@ -69,7 +69,13 @@ else {
 			global $title;
 			$title = $lang_req ['head_req'];
 			reqmenu();
-
+			echo "
+				<ul class='nav nav-tabs nav-justified'>
+				<li class=".($_GET[finished]=='all' ? 'active':'')."><a href='viewrequest.php?finished=all'>查看所有</a></li>
+				<li class=" . ($_GET[finished] == 'yes' ? 'active' : '') . "><a href='viewrequest.php?finished=yes'>查看已解决</a></li>
+				<li class=" . ($_GET[finished] == 'no' ? 'active' : '') . "><a href='viewrequest.php?finished=no'>查看未解决</a></li>
+				</ul>
+			";
 			$count_get = 0;
 			$count_order = 0;
 			$oldlink = "";
@@ -128,7 +134,7 @@ else {
 			$rows = sql_query("SELECT count(*) FROM req WHERE " . $limit) or sqlerr(__FILE__, __LINE__);
 			$rownumber = mysql_fetch_array($rows);
 			if ($rownumber [0] == 0)
-				stderr("没有求种", "没有符合条件的求种项目，<a href=viewrequest.php?action=new>点击这里增加新求种</a>", 0, 0, 0, 0);
+				error_msg("没有求种", "没有符合条件的求种项目，<a href=viewrequest.php?action=new>点击这里增加新求种</a>", 0, 0, 0, 0);
 			else {
 				$addparam = $oldlink;
 				list ($pagertop, $pagerbottom, $page) = pager($torrentsperpage, $rownumber [0], "?" . $addparam);
@@ -187,40 +193,71 @@ else {
 					$order .= " amount DESC";
 
 				$rows = sql_query("SELECT * FROM req WHERE " . $limit . "  ORDER BY $order $page") or sqlerr(__FILE__, __LINE__);
-				print ("<h2 align=center><a href=viewrequest.php?action=new><input class='btn btn-success' type=\"button\" value=\"" . $lang_req ['head_req'] . "\" onclick=\"window.location='viewrequest.php?action=new';\" style=\"font-weight: bold\"/></a> <a href=forums.php?action=viewtopic&topicid=1&page=0><input class='btn btn-danger' type=\"button\" value=\"规则\" onclick=\"window.location='forums.php?action=viewtopic&topicid=1';\"/></a></h2>");
-//					print ($pagertop) ;
-				print ("<table class='table table-striped' width=100% border=1 cellspacing=0 cellpadding=5 style=border-collapse:collapse >\n");
+				echo "<div class='portlet light form-fit bordered'>
+						<div class=\"portlet-title\">
+                        <div class=\"caption\">
+                            <h2>
+                                <i class=\"glyphicon glyphicon-list-alt font-green-jungle\"></i>
+                                <span class=\"caption-subject font-green-jungle sbold uppercase\">求种列表 </span>
+                            </h2>
+                        </div>
+                        <div class='tools' style='margin-top: 28px'>
+                        	<div class='label label-success label-lg' ><a href='viewrequest.php?action=new' style='color: white'><i class='glyphicon glyphicon-plus'></i>悬赏求种</a></div>
+						</div>					
+                    	</div>
+						<div class='portlet-body'>
+			";
+				print ("<table class='table ' width=100%  >\n");
 				if (get_user_class() >= 13) {
 					print ("<form action=\"viewrequest.php\" method=\"GET\">\n");
 					print ("<input type=\"hidden\" name=\"action\" value=\"fastdel\" />");
 				}
-				print ("<table class=\"table table-striped\" cellspacing=\"0\" cellpadding=\"5\" width=\"100%\">\n");
-				print ("<tr>" . "<td class=colhead width=3% align=center><a href=?" . $orderlink . "sort=1&type=" . ($column == "catid" && $ascdesc == "ASC," ? "desc" : "asc") . ">类型</a></td>" . "<td class=colhead width=35% align=left><a href=?" . $orderlink . "sort=2&type=" . ($column == "name" && $ascdesc == "ASC," ? "desc" : "asc") . ">" . $lang_req ['name'] . "</a></td>" . "<td class=colhead width=7% align=center><a href=?" . $orderlink . "sort=4&type=" . ($column == "ori_amount" && $ascdesc == "DESC," ? "asc" : "desc") . ">" . $lang_req ['ori_amount'] . "</a></td>" . "<td class=colhead width=7% align=center><a href=?" . $orderlink . "sort=3&type=" . ($column == "amount" && $ascdesc == "DESC," ? "asc" : "desc") . ">" . $lang_req ['new_amount'] . "</a></td>" . "<td class=colhead width=7% align=center><a href=?" . $orderlink . "sort=5&type=" . ($column == "userid" && $ascdesc == "ASC," ? "desc" : "asc") . ">" . $lang_req ['addedby'] . "</a></td>" . "<td class=colhead width=4% align=center><a href=?" . $orderlink . "sort=6&type=" . ($column == "comments" && $ascdesc == "DESC," ? "asc" : "desc") . ">评论</a></td>" . "<td class=colhead width=4% align=center ><font color=black>应求</font></a></td>" . "<td class=colhead width=9% align=center><a href=?" . $orderlink . "sort=7&type=" . ($column == "added" && $ascdesc == "DESC," ? "asc" : "desc") . ">" . $lang_req ['addedtime'] . "</a></td>" . "<td class=colhead width=8% align=center><a href=?" . $orderlink . "sort=9&type=" . ($column == "resetdate" && $ascdesc == "DESC," ? "asc" : "desc") . ">最后悬赏</a></td>" . "<td class=colhead width=8% align=center><a href=?" . $orderlink . "sort=8&type=" . ($column == "finish" && $ascdesc == "DESC," ? "asc" : "desc") . ">" . $lang_req ['state'] . "</a></td>\n" . (get_user_class() >= 13 ? "<td width=13% class=colhead align=center><font color=black>行为</font></td>\n" : "") . "</tr>");
 
-				// $cat = mysql_fetch_array($cat);
-				// $cat=array(
-				// 401=>"电影",402=>"剧集",403=>"综艺",404=>"资料",405=>"动漫",406=>"音乐",407=>"体育",408=>"软件",409=>"游戏",410=>"其他",411=>"纪录片",4013=>"试种");
+				print ("<table class=\"table\"  width=\"100%\">\n");
+				print ("<tr>" . "
+				<td class= width=3% align=left><a href=?" . $orderlink . "sort=1&type=" . ($column == "catid" && $ascdesc == "ASC," ? "desc" : "asc") . ">类型</a></td>" . "
+				<td class= width=35% align=left><a href=?" . $orderlink . "sort=2&type=" . ($column == "name" && $ascdesc == "ASC," ? "desc" : "asc") . ">" . $lang_req ['name'] . "</a></td>" . "
+				<td class= width=7% align=left><a href=?" . $orderlink . "sort=4&type=" . ($column == "ori_amount" && $ascdesc == "DESC," ? "asc" : "desc") . ">" . $lang_req ['ori_amount'] . "</a></td>" . "
+				<td class= width=7% align=left><a href=?" . $orderlink . "sort=3&type=" . ($column == "amount" && $ascdesc == "DESC," ? "asc" : "desc") . ">" . $lang_req ['new_amount'] . "</a></td>" . "
+				<td class= width=7% align=left><a href=?" . $orderlink . "sort=5&type=" . ($column == "userid" && $ascdesc == "ASC," ? "desc" : "asc") . ">" . $lang_req ['addedby'] . "</a></td>" . "
+				<td class= width=4% align=left><a href=?" . $orderlink . "sort=6&type=" . ($column == "comments" && $ascdesc == "DESC," ? "asc" : "desc") . ">评论</a></td>" . "
+				<td class= width=4% align=left ><font color=black>应求</font></a></td>" . "
+				<td class= width=9% align=left><a href=?" . $orderlink . "sort=7&type=" . ($column == "added" && $ascdesc == "DESC," ? "asc" : "desc") . ">" . $lang_req ['addedtime'] . "</a></td>" . "
+				<td class= width=8% align=left><a href=?" . $orderlink . "sort=9&type=" . ($column == "resetdate" && $ascdesc == "DESC," ? "asc" : "desc") . ">最后悬赏</a></td>" . "
+				<td class= width=8% align=left><a href=?" . $orderlink . "sort=8&type=" . ($column == "finish" && $ascdesc == "DESC," ? "asc" : "desc") . ">" . $lang_req ['state'] . "</a></td>" . (get_user_class() >= 13 ? "
+				<td width=13% class= align=left><font color=black>行为</font></td>\n" : "") . "</tr>");
+
 				while ($row = mysql_fetch_array($rows)) {
 					$cat = mysql_fetch_array(sql_query("SELECT name FROM categories where id={$row["catid"]}"));
 					// if
 					$count = mysql_fetch_assoc(sql_query("SELECT count(*) FROM resreq WHERE reqid=" . $row ["id"]));
 					$man = (get_user_class() >= 13) ? "<input type=\"checkbox\" name=\"id[]\" value=\"{$row['id']}\"/> " : '';
-					print ("<tr>" . "<td  align=center>" . $cat ["name"] . "</td>" . "<td align=left>{$man}<a href=viewrequest.php?action=view&id=" . $row ["id"] . "><span>" . $row ["name"] . "</span></a></td>" . "<td align=center>" . $row ['ori_amount'] . "</td>" . "<td align=center><font color=#ff0000><span>" . ($row ['amount'] - $row ['ori_amount']) . "</span></font></td>" . "<td align=center>" . get_username($row ['userid']) . "</td>" . "<td align=center>" . $row ['comments'] . "</td>" . "<td align=center>" . $count ["count(*)"] . "</td>" . "<td align=center>" . gettime($row ['added'], true, false) . "</td>" . "<td align=center>" . gettime($row ['resetdate'], true, false) . "</td>" . "<td align=center>" . ($row ['finish'] == "yes" ? $lang_req ['finished'] : ($row ['finish'] == "cancel" ? "已撤消" : ($row ['userid'] == $CURUSER [id] ? $lang_req ['unfinished'] : "<a href=viewrequest.php?action=res&id=" . $row ["id"] . " >" . $lang_req ['unfinished'] . "</a>"))) . "</td>" . (get_user_class() >= 13 ? "<td align=center><font color=black><a href=viewrequest.php?action=fastdel&id=" . $row ["id"] . " >删</a> <a href=viewrequest.php?action=edit&id=" . $row ["id"] . " >改</a> <a href=viewrequest.php?action=cancel&id=" . $row ["id"] . " >撤</a></td>\n" : "") .
+					print ("<tr>" . "
+					<td  align=left>" . $cat ["name"] . "</td>" . "
+					<td align=left>{$man}<a href=viewrequest.php?action=view&id=" . $row ["id"] . "><span>" . $row ["name"] . "</span></a></td>" . "
+					<td align=left>" . $row ['ori_amount'] . "</td>" . "
+					<td align=left><font color=#ff0000><span>" . ($row ['amount'] - $row ['ori_amount']) . "</span></font></td>" . "
+					<td align=left>" . get_username($row ['userid']) . "</td>" . "
+					<td align=left>" . $row ['comments'] . "</td>" . "
+					<td align=left>" . $count ["count(*)"] . "</td>" . "
+					<td align=left>" . gettime($row ['added'], true, false) . "</td>" . "
+					<td align=left>" . gettime($row ['resetdate'], true, false) . "</td>" . "
+					<td align=left>" . ($row ['finish'] == "yes" ? $lang_req ['finished'] : ($row ['finish'] == "cancel" ? "已撤消" : ($row ['userid'] == $CURUSER [id] ? $lang_req ['unfinished'] : "<a href=viewrequest.php?action=res&id=" . $row ["id"] . " >" . $lang_req ['unfinished'] . "</a>"))) . "</td>" . (get_user_class() >= 13 ? "
+					<td align=left><font color=black><a href=viewrequest.php?action=fastdel&id=" . $row ["id"] . " >删</a> <a href=viewrequest.php?action=edit&id=" . $row ["id"] . " >改</a> <a href=viewrequest.php?action=cancel&id=" . $row ["id"] . " >撤</a></td>\n" : "") .
 
 						"</tr>");
 				}
 
 				if (get_user_class() >= 13) {
 					print ("<tr>");
-					print ("<td class=\"rowfollow\" colspan=\"11\"><a class='btn btn-success' href=\"#\" onclick=\"set_checked_torrent(true); return false;\">全选</a> <a class='btn btn-success' href=\"#\" onclick=\"set_checked_torrent(false); return false;\">全不选</a>, 选中项: <input class='btn btn-danger' type=\"submit\" name=\"job\" value=\"删除\"> <input class='btn btn-success' type=\"submit\" name=\"job\" value=\"撤销\"></td>\n");
-					print ("</tr>\n");
+					print ("<td class=\"rowfollow\" colspan=\"11\"><a class='btn btn-success' href=\"#\" onclick=\"set_checked_torrent(true); return false;\">全选</a> <a class='btn btn-success' href=\"#\" onclick=\"set_checked_torrent(false); return false;\">全不选</a> 批量处理: <input class='btn btn-danger' type=\"submit\" name=\"job\" value=\"删除\"> <input class='btn btn-success' type=\"submit\" name=\"job\" value=\"撤销\"></td>\n");
+					print ("</tr>");
 					print ("</form>");
 					print ("<script type=\"text/javascript\">function set_checked_torrent(val){var checkboxs=document.getElementsByName(\"id[]\"); for (var i=0; i<checkboxs.length; i++) checkboxs[i].checked=val; }</script>");
 				}
 				print ("</table>\n");
 				print ($pagerbottom);
 			}
-			print ("<spanr><a class='btn btn-success' style='color:white' href=viewrequest.php?finished=all>查看所有</a> <a class='btn btn-success' style='color:white'href=viewrequest.php?finished=yes>查看已解决</a> <a class='btn btn-success' style='color:white'href=viewrequest.php?finished=no>查看未解决</a> <a class='btn btn-success' style='color:white'href=viewrequest.php?finished=cancel>查看已关闭</a>\n");
 			stdfoot();
 			die ();
 			break;
@@ -350,18 +387,18 @@ else {
 					410 => "其他",
 					411 => "纪录片"
 				);
-				$select = "<select  name = catid>";
+				$select = "<select class='form-control'  name = catid>";
 				foreach ($cat as $name => $value)
 					$select .= "<option value=\"" . $name . "\" " . ($arr ["catid"] == $name ? "selected " : "") . ">" . $value . "</option>";
 				$select .= "</select>";
 
 				print ("<table class='table table-striped' width=100% cellspacing=0 cellpadding=3><tr><td class=colhead align=center colspan=2>编辑求种</td></tr>");
 				tr("类型：", $select, 401);
-				tr("标题：", "<input name=name value=\"" . $arr ["name"] . "\" size=134 ><spanr/>", 1);
+				tr("标题：", "<input class='form-control' name=name value=\"" . $arr ["name"] . "\" size=134 ><spanr/>", 1);
 				print ("<tr><td class=rowhead align=right valign=top><span>介绍：</span></td><td class=rowfollow align=left>");
 				textbbcode("edit", "introduce", $arr ["introduce"]);
 				print ("</td></tr>");
-				print ("</td></tr><tr><td class=toolbox align=center colspan=2><input id=qr type=submit class=btn value=编辑求种 ></td></tr></table></form><spanr />\n");
+				print ("</td></tr><tr><td class=toolbox  colspan=2><input id=qr style='margin-left: 51%' type=submit class='btn btn-success' value=编辑求种 ></td></tr></table></form><spanr />\n");
 				stdfoot();
 				die ();
 			} else
@@ -375,21 +412,12 @@ else {
 				$cat = sql_query("SELECT id,name FROM categories");
 				// $cat=array(
 				// 401=>"电影",402=>"剧集",403=>"综艺",404=>"资料",405=>"动漫",406=>"音乐",407=>"体育",408=>"软件",409=>"游戏",410=>"其他",411=>"纪录片");
-				$select = "<select class='btn btn-success' name = catid>";
+				$select = "<select class='form-control' name = catid>";
 				$select .= "<option value=\"\">- 请选择 -</option>";
 				while ($rows = mysql_fetch_array($cat)) {
 					$select .= "<option value=\"" . $rows ["id"] . "\">" . $rows ["name"] . "</option>";
 				}
 				$select .= "</select>";
-				print ("
-<h2 align=center>
-<a href=viewrequest.php?action=new>
-<input class='btn btn-success' type=\"button\" value=\"" . $lang_req ['head_req'] . "\" onclick=\"window.location='viewrequest.php?action=new';\" style=\"font-weight: bold\"/>
-</a>
- <a href=forums.php?action=viewtopic&topicid=4818>
- <input class='btn btn-danger' type=\"button\" value=\"规则\" onclick=\"window.location='forums.php?action=viewtopic&topicid=1';\"/>
- </a>
-</h2>");
 				print ("<form id=edit method=post name=edit action='viewrequest.php' >
 							<input type=hidden name=action  value=takeadded >\n");
 				print ("<table class='table table-striped' width=100% cellspacing=0 cellpadding=3>
@@ -411,7 +439,7 @@ else {
 				stdfoot();
 				die ();
 			} else
-				stderr("出错了！！！", "你没有该权限！！！<a href=viewrequest.php>点击这里返回</a>", 0);
+				error_msg("出错了！！！", "你没有该权限！！！<a href=viewrequest.php>点击这里返回</a>", 0);
 		}
 
 		case "takeadded" : {
