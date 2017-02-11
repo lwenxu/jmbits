@@ -178,7 +178,7 @@ echo "<table  class='table' width=\"100%\">
 </tr>
 ";
 		}
-		print ("</tbody></table></div>");
+		print ("</tbody></table>");
 	}
 }
 echo "</div>";

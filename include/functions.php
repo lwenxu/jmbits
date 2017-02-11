@@ -5349,4 +5349,12 @@ function gethelptips(){
 	    </div>
 	";
 }
+
+function quickreply($formname, $taname, $submit)
+{
+	print("<textarea name='" . $taname . "' id=\"replaytext\" cols=\"100\" rows=\"8\" style=\"width: 450px\" onkeydown=\"ctrlenter(event,'compose','qr')\"></textarea>");
+	print(smile_row($formname, $taname));
+	print("<br />");
+	print("<input type=\"submit\" id=\"qr\" class=\"btn\" value=\"" . $submit . "\" />");
+}
 ?>
