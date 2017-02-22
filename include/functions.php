@@ -2519,10 +2519,10 @@ function menu ($selected = "home") {
 	else
 		$connectable = $lang_functions['text_unknown'];
 	echo "
-<nav class=\"navbar navbar-inverse navbar-static-top\">
+<nav class=\"navbar navbar-default navbar-static-top\">
 	<div class=\"container\">
     <div class=\"navbar-header\">
-        <a class=\"navbar-brand\" href=\"index.php\" style='color: white'>NWU PT</a>
+        <a class=\"navbar-brand\" href=\"index.php\" >NWU PT</a>
     </div>
         <ul class=\"nav navbar-nav\">
     ";
@@ -2561,14 +2561,13 @@ function menu ($selected = "home") {
                             
                             <li class=\"dropdown dropdown-extended dropdown-inbox\" id=\"header_inbox_bar\">
                                 <a href=\"#\" class=\"dropdown-toggle\" >
-                                    <i class=\"glyphicon glyphicon-share-alt\"></i>
+                                    <span>分享率</span>
                                     <span class=\"badge badge-default\"> ".get_ratio($CURUSER['id']) ."</span>
                                 </a>
                             </li>
                             <li class=\"dropdown dropdown-extended dropdown-tasks\" id=\"header_task_bar\">
                                 <a href=\"#\" class=\"dropdown-toggle\" >
-                                    <i class=\"glyphicon glyphicon-gbp\"></i>
-                                    <span class=\"badge badge-default\"> ". number_format($CURUSER['seedbonus'], 0)." </span>
+                                    
                                 </a>
                             </li>
                             
@@ -2587,6 +2586,12 @@ function menu ($selected = "home") {
                                     <li>
                                         <a href=\"friends.php\">
                                             <i class=\"icon-group\"></i> 我的好友 </a>
+                                    </li>
+                                    <li>
+                                    <a>
+                                    <i class='glyphicon glyphicon-eur'></i>魔力值
+                                        <span class=\"badge badge-info\"> " . number_format($CURUSER['seedbonus'], 0) . " </span>
+                                        </a>
                                     </li>
                                      <li>
                                         <a href=\"faq.php#id75\">

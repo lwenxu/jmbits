@@ -28,8 +28,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 			header("Location: " . get_protocol_prefix() . "$BASEURL/");
 			die;
 		}
-		else
-		stderr($lang_index['std_error'], $lang_index['std_option_unselected']);
+		else{
+			stderr($lang_index['std_error'], $lang_index['std_option_unselected']);
+		}
 	}
 }
 
