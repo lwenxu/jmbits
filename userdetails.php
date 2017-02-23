@@ -65,7 +65,7 @@ $gender = "<img class='female' src='pic/trans.gif' alt='Female' title='".$lang_u
 elseif ($user["gender"] == "N/A")
 $gender = "<img class='no_gender' src='pic/trans.gif' alt='N/A' title='".$lang_userdetails['title_not_available']."' style='margin-left: 4pt' />";
 
-stdhead($lang_userdetails['head_details_for']. $user["username"]);
+stdhead();
 $enabled = $user["enabled"] == 'yes';
 $moviepicker = $user["picker"] == 'yes';
 
@@ -81,18 +81,18 @@ elseif ($CURUSER["id"] <> $user["id"])
 	$block = mysql_num_rows($r);
 
 	if ($friend)
-	print("<p>(<a href=\"friends.php?action=delete&amp;type=friend&amp;targetid=".$id."\">".$lang_userdetails['text_remove_from_friends']."</a>)</p>\n");
+	print("<a style='color: white' class='btn btn-danger' href=\"friends.php?action=delete&amp;type=friend&amp;targetid=".$id."\">".$lang_userdetails['text_remove_from_friends']."</a>");
 	elseif($block)
-	print("<p>(<a href=\"friends.php?action=delete&amp;type=block&amp;targetid=".$id."\">".$lang_userdetails['text_remove_from_blocks']."</a>)</p>\n");
+	print("<a style='color: white' class='btn btn-danger' href=\"friends.php?action=delete&amp;type=block&amp;targetid=".$id."\">".$lang_userdetails['text_remove_from_blocks']."</a>");
 	else
 	{
-		print("<p>(<a href=\"friends.php?action=add&amp;type=friend&amp;targetid=".$id."\">".$lang_userdetails['text_add_to_friends']."</a>)");
-		print(" - (<a href=\"friends.php?action=add&amp;type=block&amp;targetid=".$id."\">".$lang_userdetails['text_add_to_blocks']."</a>)</p>");
+		print("<a  style='color: white;margin:5px' class='btn btn-success' href=\"friends.php?action=add&amp;type=friend&amp;targetid=".$id."\">".$lang_userdetails['text_add_to_friends']."</a>");
+		print("<a style='color: white;margin:5px' class='btn btn-danger' href=\"friends.php?action=add&amp;type=block&amp;targetid=".$id."\">".$lang_userdetails['text_add_to_blocks']."</a>");
 	}
 }
 begin_main_frame();
 if ($CURUSER[id] == $user[id] || get_user_class() >= $cruprfmanage_class)
-	print("<center style='margin-bottom: 18px'><a class=\"btn btn-success\" href=\"takeflush.php?id=".$id."\">".$lang_userdetails['text_here']."</a></center>\n");
+	print("<a style='color: white' class=\"btn btn-info\" href=\"takeflush.php?id=".$id."\">".$lang_userdetails['text_here']."</a>");
 ?>
 <table width="100%"  cellspacing="0" cellpadding="5" class="table table-striped">
 <?php
@@ -308,9 +308,9 @@ elseif ($user["acceptpms"] == "friends")
 if ($CURUSER["id"] != $user["id"]){
 print("<tr><td colspan=\"2\" align=\"center\">");
 if ($showpmbutton)
-print("<a href=\"sendmessage.php?receiver=".htmlspecialchars($user[id])."\"><img class=\"f_pm\" src=\"pic/trans.gif\" alt=\"PM\" title=\"".$lang_userdetails['title_send_pm']."\" /></a>");
+print("<a style='color:white;' class='btn btn-warning' href=\"sendmessage.php?receiver=".htmlspecialchars($user[id])."\">私信</a>");
 
-print("<a href=\"report.php?user=".htmlspecialchars($user[id])."\"><img class=\"f_report\" src=\"pic/trans.gif\" alt=\"Report\" title=\"".$lang_userdetails['title_report_user']."\" /></a>");
+print("<a style='color:white;' class='btn btn-danger' href=\"report.php?user=".htmlspecialchars($user[id])."\">举报</a>");
 print("</td></tr>");
 }
 print("</table>\n");

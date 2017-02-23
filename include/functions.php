@@ -1399,35 +1399,35 @@ $quickSmilies = array(1, 2, 3, 5, 6, 7, 8, 9, 10, 11, 13, 16, 17, 19, 20, 21, 24
 
 function begin_compose($title = "",$type="new", $body="", $hassubject=true, $subject="", $maxsubjectlength=100){
 	global $lang_functions;
-	if ($title)
-		print("<h3 align=\"center\">".$title."</h3>");
-	switch ($type){
-		case 'new':
-		{
-			$framename = $lang_functions['text_new'];
-			break;
-		}
-		case 'reply':
-		{
-			$framename = $lang_functions['text_reply'];
-			break;
-		}
-		case 'quote':
-		{
-			$framename = $lang_functions['text_quote'];
-			break;
-		}
-		case 'edit':
-		{
-			$framename = $lang_functions['text_edit'];
-			break;
-		}
-		default:
-		{
-			$framename = $lang_functions['text_new'];
-			break;
-		}
-	}
+//	if ($title)
+//		print("<h3 align=\"center\">".$title."</h3>");
+//	switch ($type){
+//		case 'new':
+//		{
+//			$framename = $lang_functions['text_new'];
+//			break;
+//		}
+//		case 'reply':
+//		{
+//			$framename = $lang_functions['text_reply'];
+//			break;
+//		}
+//		case 'quote':
+//		{
+//			$framename = $lang_functions['text_quote'];
+//			break;
+//		}
+//		case 'edit':
+//		{
+//			$framename = $lang_functions['text_edit'];
+//			break;
+//		}
+//		default:
+//		{
+//			$framename = $lang_functions['text_new'];
+//			break;
+//		}
+//	}
 	begin_frame($framename, true);
 	print("<table class='table table-striped' width=\"100%\"  cellspacing=\"0\" cellpadding=\"5\">\n");
 	if ($hassubject)
@@ -2546,7 +2546,7 @@ function menu ($selected = "home") {
 //	echo "<li><a href='torrents.php?inclbookmarked=1&amp;allsec=1&amp;incldead=0'><span class='glyphicon glyphicon-heart'></span>&nbsp;<span class='badge'>$unread</span></a></li>";
 //	echo "<li><a href='messages.php'>"."<span class='icon-bell'></span>&nbsp;<span class='badge'>$unread</span></a></li>";
 //	echo "<li><a href='logout.php'><span class='glyphicon glyphicon-log-out'></span></a></li>";
-
+    $avatar= $CURUSER['avatar']? $CURUSER['avatar']: 'pic/default_avatar.png';
 	echo "</ul>
 
 
@@ -2574,13 +2574,13 @@ function menu ($selected = "home") {
                             
                             <li class=\"dropdown dropdown-user\">
                                 <a href=\"javascript:;\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" data-hover=\"dropdown\" data-close-others=\"true\" aria-expanded=\"false\">
-                                    <img class=\"img-circle\" height='17px' width='17px' src=".$CURUSER['avatar'].">
+                                    <img class=\"img-circle\" height='17px' width='17px' src=".$avatar.">
                                     
                                     <i class=\"fa fa-angle-down\"></i>
                                 </a>
                                 <ul class=\"dropdown-menu dropdown-menu-default\">
                                     <li>
-                                        <a href=\"userdetails.php?id=1\">
+                                        <a href=\"userdetails.php?id=$CURUSER[id]\">
                                             <i class=\"icon-user\"></i> 我的资料 </a>
                                     </li>
                                     <li>
@@ -2615,19 +2615,19 @@ function menu ($selected = "home") {
                                     <li>
                                         <a href=\"invite.php?id=$CURUSER[id]\">
                                             <i class=\"glyphicon glyphicon-share\"></i> 邀请
-                                            <span class=\"badge badge-success\"> 7 </span>
+                                            <span class=\"badge badge-success\">". $CURUSER['invites'] ."</span>
                                         </a>
                                     </li>
                                     <li>
                                         <a href=\"#\">
                                             <i class=\"glyphicon glyphicon-arrow-up info\"></i> 当前上传
-                                            <span class=\"badge badge-success\"> 7 </span>
+                                            <span class=\"badge badge-success\"> $activeseed </span>
                                         </a>
                                     </li>
                                     <li>
                                         <a href=\"#\">
                                             <i class=\"glyphicon glyphicon-arrow-down \"></i> 当前下载
-                                            <span class=\"badge badge-success\"> 7 </span>
+                                            <span class=\"badge badge-success\"> $activeleech </span>
                                         </a>
                                     </li>
                                     <li class=\"divider\"> </li>";
@@ -2661,6 +2661,13 @@ function menu ($selected = "home") {
                                         <a href=\"cheaterbox.php\">
                                             <i class=\"icon-ban-circle\"></i> 作弊者
                                             <span class=\"badge badge-success\"> $totalcheaters </span>
+                                            
+                                        </a>
+                                    </li>
+                                     <li>
+                                        <a href=\"log.php\">
+                                            <i class=\"glyphicon glyphicon-calendar\"></i> 日志
+                                            <span class=\"badge badge-info\"> $totalcheaters </span>
                                             
                                         </a>
                                     </li>
@@ -4905,7 +4912,7 @@ function return_search_category_image($categoryid, $link="")
 		$catImg[$categoryid] = $catimg = "<img".($categoryrow['class_name'] ? " class=\"".$categoryrow['class_name']."\"" : "")."   src='$categoryrow[image]' style='width: 60px;margin:7px;height:60px; border:1px dash #888;' alt=\"" . $categoryrow["name"] . "\" title=\"" .$categoryrow["name"]. "\"  />";
 	}
 	if ($link) {
-		$catimg = "<a href=\"".$link."cat=" . $categoryid . "\">".$catimg."</a>";
+		$catimg = "<a class='catePic' id=cate$categoryid href=\"".$link."cat=" . $categoryid . "\">".$catimg."</a>";
 	}
 	return $catimg;
 }

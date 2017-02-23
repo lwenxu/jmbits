@@ -4,7 +4,7 @@ dbconn();
 require_once(get_langfile_path());
 
 loggedinorreturn();
-stdhead($lang_contactstaff['head_contact_staff'], false);
+stdhead();
 begin_main_frame();
 print("<form id=compose method=post name=\"compose\" action=takecontact.php>");
 if ($_GET["returnto"] || $_SERVER["HTTP_REFERER"])

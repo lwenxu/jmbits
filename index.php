@@ -445,7 +445,7 @@ if ($showshoutbox_main == "yes") {
 
 	<?php
 	print("<table style='width: 100%;;'><tr><td class=\"text\" style='width: 100px'>\n");
-	print("<iframe id='shutbox' src='shoutbox.php?type=shoutbox' width='100%' height='520' frameborder='0' name='sbox' marginwidth='0' marginheight='0'></iframe><br /><br />\n");
+	print("<iframe  id='shutbox' src='shoutbox.php?type=shoutbox' width='100%' height='520' frameborder='0' name='sbox' marginwidth='0' marginheight='0'></iframe><br /><br />\n");
 	print("<form action='shoutbox.php' method='get' target='sbox' name='shbox'>\n");
 	print("<label for='shbox_text'>" . $lang_index['text_message'] . "</label>
 	<div class=\"vtop td-fat pd5\">

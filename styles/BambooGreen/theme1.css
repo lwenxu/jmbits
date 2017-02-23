@@ -1443,3 +1443,46 @@ img {
     background-color: burlywood;
 }
 
+/*.m-i{*/
+    /*float: left;*/
+    /*position: relative;*/
+    /*font-size: 14px;*/
+    /*display: block;*/
+    /*height: 50px;*/
+/*}*/
+
+/*.catePic{*/
+    /*position: relative;*/
+    /*float: left;*/
+    /*z-index: 10;*/
+/*}*/
+
+.cateDialog{
+    height: auto;
+    width: 100px;
+    background: #fff;;
+    padding-left: 0;
+    margin-left: 20px;
+    position: absolute;
+    z-index: 100;
+    left: -10px;
+    top: 68px;
+    overflow: hidden;
+    border: 1px solid #e5e9ef;
+    border-top: 0;
+    box-shadow: rgba(0, 0, 0, 0.16) 0 2px 4px;
+    border-radius: 0 0 4px 4px;
+}
+
+.cateDialog li{
+    padding: 5px;
+    height: 30px;
+    margin: 3px 0;
+    list-style: none;
+}
+
+.cateDialog li:hover{
+    background-color: #00BFFF;
+    cursor: pointer;
+    display: block;
+}

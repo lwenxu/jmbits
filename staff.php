@@ -93,6 +93,7 @@ $sendpmimg = "<sapn class=\" icon-envelope-alt\" style='color:#5cb85c' alt=\"pm\
 	$res = sql_query("SELECT forummods.userid AS userid, users.last_access, users.country FROM forummods LEFT JOIN users ON forummods.userid = users.id GROUP BY userid ORDER BY forummods.forumid, forummods.userid") or sqlerr();
 	while ($arr = mysql_fetch_assoc($res)) {
 		$countryrow = get_country_row($arr['country']);
+		$avatar = $arr['avatar'] ? $arr['avatar'] : 'pic/default_avatar.png';
 		$forums = "";
 		$forumres = sql_query("SELECT forums.id, forums.name FROM forums LEFT JOIN forummods ON forums.id = forummods.forumid WHERE forummods.userid = " . sqlesc($arr[userid]));
 		while ($forumrow = mysql_fetch_array($forumres)) {
@@ -156,6 +157,7 @@ $sendpmimg = "<sapn class=\" icon-envelope-alt\" style='color:#5cb85c' alt=\"pm\
 	$res = sql_query("SELECT * FROM users WHERE class=" . UC_VIP . " AND status='confirmed' ORDER BY username") or sqlerr();
 	while ($arr = mysql_fetch_assoc($res)) {
 		$countryrow = get_country_row($arr['country']);
+		$avatar = $arr['avatar'] ? $arr['avatar'] : 'pic/default_avatar.png';
 		$ppl .= "
             <tr  style='margin-left:5%'>
             <td class=embedded-add align=left><img class='img img-circle' height='30px' width='30px ' src=" . $avatar . "> " . get_username($arr['id']) . "</td>
@@ -211,6 +213,7 @@ $sendpmimg = "<sapn class=\" icon-envelope-alt\" style='color:#5cb85c' alt=\"pm\
 		if ($curr_class != $arr['class']) {
 			$curr_class = $arr['class'];
 		}
+		$avatar = $arr['avatar'] ? $arr['avatar'] : 'pic/default_avatar.png';
 		$countryrow = get_country_row($arr['country']);
 		$ppl .= "
             <tr  style='margin-left:5%'>
@@ -264,6 +267,7 @@ $sendpmimg = "<sapn class=\" icon-envelope-alt\" style='color:#5cb85c' alt=\"pm\
 		if ($curr_class != $arr['class']) {
 			$curr_class = $arr['class'];
 		}
+		$avatar = $arr['avatar'] ? $arr['avatar'] : 'pic/default_avatar.png';
 		$countryrow = get_country_row($arr['country']);
 		$ppl .= "
             <tr  style='margin-left:5%'>
@@ -325,6 +329,7 @@ $sendpmimg = "<sapn class=\" icon-envelope-alt\" style='color:#5cb85c' alt=\"pm\
 	$res = sql_query("SELECT * FROM users WHERE users.picker='yes' AND users.status='confirmed' ORDER BY users.username") or sqlerr();
 	while ($arr = mysql_fetch_assoc($res)) {
 		$countryrow = get_country_row($arr['country']);
+		$avatar = $arr['avatar'] ? $arr['avatar'] : 'pic/default_avatar.png';
 		$ppl .= "
             <tr  style='margin-left:5%'>
             <td class=embedded-add align=left><img class='img img-circle' height='30px' width='30px ' src=" . $avatar . "> " . get_username($arr['id']) . "</td>
@@ -378,6 +383,7 @@ $sendpmimg = "<sapn class=\" icon-envelope-alt\" style='color:#5cb85c' alt=\"pm\
 		if ($curr_class != $arr['class']) {
 			$curr_class = $arr['class'];
 		}
+		$avatar = $arr['avatar'] ? $arr['avatar'] : 'pic/default_avatar.png';
 		$countryrow = get_country_row($arr['country']);
 		$ppl .= "
             <tr  style='margin-left:5%'>
@@ -430,10 +436,11 @@ $sendpmimg = "<sapn class=\" icon-envelope-alt\" style='color:#5cb85c' alt=\"pm\
 		if ($curr_class != $arr['class']) {
 			$curr_class = $arr['class'];
 		}
+		$avatar=$arr['avatar']? $arr['avatar']:'pic/default_avatar.png';
 		$countryrow = get_country_row($arr['country']);
 		$ppl .= "
             <tr  style='margin-left:5%'>
-            <td class=embedded-add align=left><img class='img img-circle' height='30px' width='30px ' src=" . $avatar . "> " . get_username($arr['id']) . "</td>
+            <td class=embedded-add align=left><img class='img img-circle' height='30px' width='30px ' src=" . $avatar . "> ". get_username($arr['id']) . "</td>
             <td class=embedded-add align=left> " . (strtotime($arr['last_access']) > $dt ? $onlineimg : $offlineimg) . "</td>" .
 			"<td class=embedded-add align=left><a href=sendmessage.php?receiver=" . $arr['id'] . " title=\"" . $lang_staff['title_send_pm'] . "\">" . $sendpmimg . "</a></td>" .
 			"<td class=embedded-add align=left>" . $arr['stafffor'] . "</td></tr>\n";
@@ -484,6 +491,7 @@ $sendpmimg = "<sapn class=\" icon-envelope-alt\" style='color:#5cb85c' alt=\"pm\
 		if ($curr_class != $arr['class']) {
 			$curr_class = $arr['class'];
 		}
+		$avatar = $arr['avatar'] ? $arr['avatar'] : 'pic/default_avatar.png';
 		$countryrow = get_country_row($arr['country']);
 		$ppl .= "
             <tr  style='margin-left:5%'>

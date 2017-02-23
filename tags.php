@@ -8,7 +8,7 @@ function insert_tag($name, $description, $syntax, $example, $remarks)
 	global $lang_tags;
 	$result = format_comment($example);
 	print("<p class=sub><b>$name</b></p>\n");
-	print("<table class=main width=100% border=1 cellspacing=0 cellpadding=5>\n");
+	print("<table class='table table-bordered' width=100% border=1 cellspacing=0 cellpadding=5>\n");
 	print("<tr valign=top><td width=25%>".$lang_tags['text_description']."</td><td>$description\n");
 	print("<tr valign=top><td>".$lang_tags['text_syntax']."</td><td><tt>$syntax</tt>\n");
 	print("<tr valign=top><td>".$lang_tags['text_example']."</td><td><tt>$example</tt>\n");
@@ -27,7 +27,7 @@ $test = $_POST["test"];
 
 <form method=post action=?>
 <textarea name=test cols=60 rows=3><?php print($test ? htmlspecialchars($test) : "")?></textarea>
-<input type=submit style='height: 23px; margin-left: 5px' value=<?php echo $lang_tags['submit_test_this_code'] ?>>
+<input class="btn btn-success" type=submit style='margin-left: 5px' value=<?php echo $lang_tags['submit_test_this_code'] ?>>
 </form>
 <?php
 

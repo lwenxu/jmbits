@@ -290,6 +290,7 @@ elseif ($special_state == 7)	//30% down
 }
 
 $category_get = 0 + $_GET["cat"];
+$cate2_get=$_GET['cate2id'];
 if ($showsubcat){
 if ($showsource) $source_get = 0 + $_GET["source"];
 if ($showmedium) $medium_get = 0 + $_GET["medium"];
@@ -459,7 +460,11 @@ if (!$all)
 		int_check($category_get,true,true,true);
 		$wherecatina[] = $category_get;
 		$addparam .= "cat=$category_get&";
-	}
+	}elseif ($cate2_get){
+		int_check($cate2_get, true, true, true);
+		$wherecat2id[] = $cate2_get;
+		$addparam .= "cate2id=$cate2_get&";
+    }
 	elseif ($medium_get)
 	{
 		int_check($medium_get,true,true,true);
@@ -593,6 +598,7 @@ if ($all)
 {
 	//stderr("in if all","");
 	$wherecatina = array();
+	$wherecat2id =array();
 	if ($showsubcat){
 	$wheresourceina = array();
 	$wheremediumina = array();
@@ -609,6 +615,10 @@ if (count($wherecatina) > 1)
 $wherecatin = implode(",",$wherecatina);
 elseif (count($wherecatina) == 1)
 $wherea[] = "category = $wherecatina[0]";
+
+if ($wherecat2id){
+	$wherea[] = "secondcate = $wherecat2id[0]";
+}
 
 if ($showsubcat){
 if ($showsource){
@@ -777,6 +787,9 @@ $where = implode(" AND ", $wherea);
 
 if ($wherecatin)
 $where .= ($where ? " AND " : "") . "category IN(" . $wherecatin . ")";
+if ($wherecat2id){
+$where .= ($where ? " AND " : "") . "secondcate IN(" . $wherecat2id[0] . ")";
+}
 if ($showsubcat){
 if ($wheresourcein)
 $where .= ($where ? " AND " : "") . "source IN(" . $wheresourcein . ")";
@@ -959,13 +972,189 @@ if ($allsec != 1 || $enablespecial != 'yes'){ //do not print searchbox if showin
 	                           global $catpadding, $catsperrow, $lang_torrents, $CURUSER, $CURLANGDIR, $catimgurl;
 	                           $i = 0;
 	                           foreach ($listarray as $list) {
-		                           print(($showimg ? return_search_category_image($list[id], "?") : "<a title=\"" . $list[name] . "\" href=\"?" . $cbname . "=" . $list[id] . "\">" . $list[name] . "</a>"));
+		                           print(($showimg ? return_search_category_image($list[id], "?") : "<a class='catePic' id='cat$list[id]' title=\"" . $list[name] . "\" href=\"?" . $cbname . "=" . $list[id] . "\">" . $list[name] . "</a>"));
 		                           $i++;
+
+//		                           echo "
+////		                           <script>
+////		                            $('#cate$list[id]').hover(
+////		                                function() {
+//////   		                                    alert($('#cate$list[id]').attr('id'));
+////   		                                    var id=$list[id];
+////                                            $.post('secondcategory.php',
+////                                                {
+////                                                    cate_id:id
+////                                                },
+////                                                function (response,status,xhr) {
+//////                                                 alert(response);
+//////                                                $('#secondcategory').children().remove();
+////                                                    var arr=response.split(',');
+////                                                    var str='';
+////                                                    for (var i=0;i<arr.length-1;i+=2){
+////                                                        str+='<li><a href='+'torrents.php?cat2id='+arr[i]+'>'+arr[i+1]+'</a></li>';
+////                                                    }
+////                                                    $('#cat$list[id]').append(str);
+////                                            });
+////                                        },function() {
+////                                            $('#cat$list[id]').children().remove();
+////                                        });
+////                                    </script>
+//		                           ";
 	                           }
                            }
 
                            printcat($lang_torrents['text_category'], $cats, "cat", $wherecatina, "cat_check", true);
                            ?>
+                    </div>
+                </div>
+            </div>
+            <div class='form-group'>
+                <label class='control-label col-md-3'>二级分类 </label>
+                <div class=col-md-9>
+                    <div class='input-group'>
+                        <table class=" ">
+                            <tr>
+                                <td colspan="2">电影&nbsp;&nbsp;</td>
+                                <td>
+                                    <ul class="pagination">
+                                        <li><a href="torrents.php?cate2id=4011">华语</a></li>
+                                        <li><a href="torrents.php?cate2id=4012">欧美</a></li>
+                                        <li><a href="torrents.php?cate2id=4013">日韩</a></li>
+                                        <li><a href="torrents.php?cate2id=4014">合集</a></li>
+                                        <li><a href="torrents.php?cate2id=4015">其他</a></li>
+                                    </ul>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">电视剧&nbsp;&nbsp;</td>
+                                <td>
+                                    <ul class="pagination">
+                                        <li><a href="torrents.php?cate2id=4021">大陆</a></li>
+                                        <li><a href="torrents.php?cate2id=4022">港台</a></li>
+                                        <li><a href="torrents.php?cate2id=4023">美剧</a></li>
+                                        <li><a href="torrents.php?cate2id=4024">英剧</a></li>
+                                        <li><a href="torrents.php?cate2id=4025">日韩</a></li>
+                                        <li><a href="torrents.php?cate2id=4026">其他</a></li>
+                                    </ul>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">综艺&nbsp;&nbsp;</td>
+                                <td>
+                                    <ul class="pagination">
+                                        <li><a href="torrents.php?cate2id=4031">娱乐</a></li>
+                                        <li><a href="torrents.php?cate2id=4032">综合</a></li>
+                                        <li><a href="torrents.php?cate2id=4033">晚会</a></li>
+                                        <li><a href="torrents.php?cate2id=4034">典礼</a></li>
+                                        <li><a href="torrents.php?cate2id=4035">科教</a></li>
+                                        <li><a href="torrents.php?cate2id=4036">其他</a></li>
+                                    </ul>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">教育&nbsp;&nbsp;</td>
+                                <td>
+                                    <ul class="pagination">
+                                        <li><a href="torrents.php?cate2id=4041">考研</a></li>
+                                        <li><a href="torrents.php?cate2id=4042">外语</a></li>
+                                        <li><a href="torrents.php?cate2id=4043">学科专业</a></li>
+                                        <li><a href="torrents.php?cate2id=4044">讲座</a></li>
+                                        <li><a href="torrents.php?cate2id=4045">公开课</a></li>
+                                        <li><a href="torrents.php?cate2id=4046">素材模板</a></li>
+                                        <li><a href="torrents.php?cate2id=4047">其他</a></li>
+                                    </ul>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">动漫&nbsp;&nbsp;</td>
+                                <td>
+                                    <ul class="pagination">
+                                        <li><a href="torrents.php?cate2id=4051">动画</a></li>
+                                        <li><a href="torrents.php?cate2id=4052">漫画</a></li>
+                                        <li><a href="torrents.php?cate2id=4053">音乐</a></li>
+                                        <li><a href="torrents.php?cate2id=4054">周边</a></li>
+                                        <li><a href="torrents.php?cate2id=4055">特摄</a></li>
+                                        <li><a href="torrents.php?cate2id=4056">其他</a></li>
+                                    </ul>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">软件&nbsp;&nbsp;</td>
+                                <td>
+                                    <ul class="pagination">
+                                        <li><a href="torrents.php?cate2id=4061">Windows</a></li>
+                                        <li><a href="torrents.php?cate2id=4062">Linux</a></li>
+                                        <li><a href="torrents.php?cate2id=4063">MacOS</a></li>
+                                        <li><a href="torrents.php?cate2id=4064">Android</a></li>
+                                        <li><a href="torrents.php?cate2id=4065">iOS</a></li>
+                                        <li><a href="torrents.php?cate2id=4066">其他</a></li>
+                                    </ul>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">体育&nbsp;&nbsp;</td>
+                                <td>
+                                    <ul class="pagination">
+                                        <li><a href="torrents.php?cate2id=4071">篮球</a></li>
+                                        <li><a href="torrents.php?cate2id=4072">足球</a></li>
+                                        <li><a href="torrents.php?cate2id=4073">排球</a></li>
+                                        <li><a href="torrents.php?cate2id=4074">羽毛球</a></li>
+                                        <li><a href="torrents.php?cate2id=4075">乒乓球</a></li>
+                                        <li><a href="torrents.php?cate2id=4076">网球</a></li>
+                                        <li><a href="torrents.php?cate2id=4077">F1</a></li>
+                                        <li><a href="torrents.php?cate2id=4078">其他</a></li>
+                                    </ul>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">音乐&nbsp;&nbsp;</td>
+                                <td>
+                                    <ul class="pagination">
+                                        <li><a href="torrents.php?cate2id=4081">华语</a></li>
+                                        <li><a href="torrents.php?cate2id=4082">欧美</a></li>
+                                        <li><a href="torrents.php?cate2id=4083">日韩</a></li>
+                                        <li><a href="torrents.php?cate2id=4084">乐器古典</a></li>
+                                        <li><a href="torrents.php?cate2id=4085">演唱会</a></li>
+                                        <li><a href="torrents.php?cate2id=4086">其他</a></li>
+                                    </ul>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">纪录片&nbsp;&nbsp;</td>
+                                <td>
+                                    <ul class="pagination">
+                                        <li><a href="torrents.php?cate2id=4101">地理</a></li>
+                                        <li><a href="torrents.php?cate2id=4102">探索</a></li>
+                                        <li><a href="torrents.php?cate2id=4103">历史</a></li>
+                                        <li><a href="torrents.php?cate2id=4104">CCTV</a></li>
+                                        <li><a href="torrents.php?cate2id=4105">其他</a></li>
+                                    </ul>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">游戏&nbsp;&nbsp;</td>
+                                <td>
+                                    <ul class="pagination">
+                                        <li><a href="torrents.php?cate2id=4111">PC</a></li>
+                                        <li><a href="torrents.php?cate2id=4112">主机</a></li>
+                                        <li><a href="torrents.php?cate2id=4113">移动</a></li>
+                                        <li><a href="torrents.php?cate2id=4114">视频</a></li>
+                                        <li><a href="torrents.php?cate2id=4115">英雄联盟</a></li>
+                                        <li><a href="torrents.php?cate2id=4116">其他</a></li>
+                                    </ul>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">其他&nbsp;&nbsp;</td>
+                                <td>
+                                    <ul class="pagination">
+                                        <li><a href="torrents.php?cate2id=4091">其他</a></li>
+                                    </ul>
+                                </td>
+                            </tr>
+                            <tr>
+                            </tr>
+                        </table>
                     </div>
                 </div>
             </div>
