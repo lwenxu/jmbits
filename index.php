@@ -62,7 +62,6 @@ if (get_user_class() >= $newsmanage_class) {
 ";
 }
 echo "</div>";
-$Cache->new_page('recent_news', 86400, true);
 if (!$Cache->get_page()) {
 	$res = sql_query("SELECT * FROM news ORDER BY added DESC LIMIT " . (int)$maxnewsnum_main) or sqlerr(__FILE__, __LINE__);
 	if (mysql_num_rows($res) > 0) {
