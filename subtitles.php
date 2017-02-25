@@ -426,14 +426,14 @@ if (get_user_class() >= UC_PEASANT)
 	echo "<div class='form-group'>
             <label class='control-label col-md-3'>$lang_subtitles[row_torrent_id] <font color=red> *</font></label>
             <div class=\"col-md-9\">
-                <input class='form-control inline' name='torrent_id' type='text' data-toggle='tooltip'  title='$lang_subtitles[text_torrent_id_note]' id='torrent_tooltip'>
+                <input class='form-control inline' name='torrent_id' type='text' data-toggle='tooltip'  title='$lang_subtitles[text_torrent_id_note]' id='torrent_tooltip' value='$detail_torrent_id'>
             </div>
           </div>
 ";
 	echo "<div class='form-group'>
             <label class='control-label col-md-3'>$lang_subtitles[row_title] </label>
             <div class=\"col-md-9\">
-                <input class='form-control ' name='title' type='text' data-toggle='tooltip'  title='$lang_subtitles[text_title_note]' id='torrent_title_tooltip'>
+                <input class='form-control ' name='title' type='text' data-toggle='tooltip'  title='$lang_subtitles[text_title_note]' id='torrent_title_tooltip' value='$torrent_name'>
             </div>
           </div>
 ";

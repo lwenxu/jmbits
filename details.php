@@ -8,7 +8,6 @@ if ($showextinfo['imdb'] == 'yes')
 loggedinorreturn();
 
 $id = 0 + $_GET["id"];
-
 int_check($id);
 if (!isset($id) || !$id)
 die();
@@ -214,8 +213,14 @@ echo "              			 </div>
 			print("<tr><td class=\"embedded\">" . $lang_details['text_no_subtitles'] . "</td></tr>");
 		print("</table>");
 		if ($CURUSER['id'] == $row['owner'] || get_user_class() >= $uploadsub_class) {
-			print("	<br><br>
-						<form method=\"post\" action=\"subtitles.php\">
+			//为了解决提交出去的时候没有form的bug特意增加的无用表单
+			echo "
+			<form class='form' method='' action=''>
+			</form>
+			";
+
+			print("	
+						<form method=post action=subtitles.php>
 							<input type=\"hidden\" name=\"torrent_name\" value=\"" . $row["name"] . "\" />
 							<input type=\"hidden\" name=\"detail_torrent_id\" value=\"" . $row["id"] . "\" />
 							<input type=\"hidden\" name=\"in_detail\" value=\"in_detail\" />

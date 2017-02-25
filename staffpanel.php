@@ -4,7 +4,7 @@ require_once("include/bittorrent.php");
 dbconn();
 loggedinorreturn();
 stdhead("Administration");
-print("<h1 align=center>Administration</h1>");
+print("<h1 style='margin: 0;padding: 0' align=center>Administration</h1>");
 if (get_user_class() < UC_MODERATOR)
 {
 	stdmsg("Error", "Access denied!!!");
@@ -18,7 +18,7 @@ if (get_user_class() >= UC_SYSOP) {
 	echo("<h1 align=center>..:: For SysOp Only  ::..</h1>");
 	print("<br />");
 	print("<br />");
-	print("<table width=80% border=1 cellspacing=0 cellpadding=5 align=center>");
+	print("<table class='table table-bordered' class='table table-bordered'  border=1 cellspacing=0 cellpadding=5 align=center>");
 	echo("<td class=colhead align=left>Option Name</td><td class=colhead align=left>Info</td>");
 	$query = "SELECT * FROM sysoppanel";
 	$sql = sql_query($query);
@@ -36,10 +36,10 @@ if (get_user_class() >= UC_SYSOP) {
 }
 ///////////////////// Admin Only \\\\\\\\\\\\\\\\\\\\\\\\\\\\
 if (get_user_class() >= UC_ADMINISTRATOR) {
-	echo("<h1 align=center>..:: For Administrator Only :..</h1>");
+	echo("<h1 align=center >..:: For Administrator Only :..</h1>");
 	print("<br />");
 	print("<br />");
-	print("<table width=80% border=1 cellspacing=0 cellpadding=5 align=center>");
+	print("<table class='table table-bordered' width=80% border=1 cellspacing=0 cellpadding=5 align=center>");
 	echo("<td class=colhead align=left>Option Name</td><td class=colhead align=left>Info</td>");
 	$query = "SELECT * FROM adminpanel";
 	$sql = sql_query($query);
@@ -51,6 +51,7 @@ if (get_user_class() >= UC_ADMINISTRATOR) {
 
 		echo("<tr><td class=rowfollow align=left><strong><a href=$url>$name</a></strong></td> <td class=rowfollow align=left>$info</td></tr>");
 	}
+	echo("<tr><td class=rowfollow align=left><strong><a href='keywords.php'>keywords</a></strong></td> <td class=rowfollow align=left>ban words list</td></tr>");
 	print("</table>");
 	print("<br />");
 	print("<br />");
@@ -60,7 +61,7 @@ if (get_user_class() >= UC_MODERATOR) {
 	echo("<h1 align=center>..:: For Moderator Only  ::..</h1>");
 	print("<br />");
 	print("<br />");
-	print("<table width=80% border=1 cellspacing=0 cellpadding=5 align=center>");
+	print("<table class='table table-bordered' width=80% border=1 cellspacing=0 cellpadding=5 align=center>");
 	echo("<td class=colhead align=left>Option Name</td><td class=colhead align=left>Info</td>");
 	$query = "SELECT * FROM modpanel";
 	$sql = sql_query($query);

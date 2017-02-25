@@ -43,6 +43,7 @@ $sendpmimg = "<sapn class=\" icon-envelope-alt\" style='color:#5cb85c' alt=\"pm\
 		$countryrow = get_country_row($arr['country']);
 		$avatar=$arr['avatar']!=''? $arr['avatar']:'pic/default_avatar.png';
 		$ppl .= "
+
 <tr  style='margin-left:5%'>
 <td class=embedded-add align=left><img class='img img-circle' height='30px' width='30px ' src=" . $avatar."> ". get_username($arr['id']) . "</td>
 <td class=embedded-add align=left> " . (strtotime($arr['last_access']) > $dt ? $onlineimg : $offlineimg) . "</td>" .
@@ -77,7 +78,7 @@ $sendpmimg = "<sapn class=\" icon-envelope-alt\" style='color:#5cb85c' alt=\"pm\
                                         <div class=\"caption\">
                                         <h3>
                                             <i class=\"glyphicon glyphicon-asterisk font-green-meadow\"></i>
-                                            <span class=\"caption-subject font-green-meadow bold uppercase\">资源版主</span>
+                                            <span class=\"caption-subject font-green-meadow bold uppercase\">总版主</span>
                                         </h3>
                                         </div>
                                         <div class=\"actions\" style='margin-top: 14px'>
@@ -90,7 +91,7 @@ $sendpmimg = "<sapn class=\" icon-envelope-alt\" style='color:#5cb85c' alt=\"pm\
                                     <div class=\"portlet-body\">";
 //--------------------- forum moderators section ---------------------------//
 	unset($ppl);
-	$res = sql_query("SELECT forummods.userid AS userid, users.last_access, users.country FROM forummods LEFT JOIN users ON forummods.userid = users.id GROUP BY userid ORDER BY forummods.forumid, forummods.userid") or sqlerr();
+	$res = sql_query("SELECT forummods.userid AS userid, users.last_access, users.country ,users.avatar FROM forummods LEFT JOIN users ON forummods.userid = users.id GROUP BY userid ORDER BY forummods.forumid, forummods.userid") or sqlerr();
 	while ($arr = mysql_fetch_assoc($res)) {
 		$countryrow = get_country_row($arr['country']);
 		$avatar = $arr['avatar'] ? $arr['avatar'] : 'pic/default_avatar.png';
@@ -102,7 +103,7 @@ $sendpmimg = "<sapn class=\" icon-envelope-alt\" style='color:#5cb85c' alt=\"pm\
 		$forums = rtrim(trim($forums), ",");
 		$ppl .= "
             <tr  style='margin-left:5%'>
-            <td class=embedded-add align=left><img class='img img-circle' height='30px' width='30px ' src=" . $avatar . "> " . get_username($arr['id']) . "</td>
+            <td class=embedded-add align=left><img class='img img-circle' height='30px' width='30px ' src=" . $avatar . "> " . get_username($arr['userid']) . "</td>
             <td class=embedded-add align=left> " . (strtotime($arr['last_access']) > $dt ? $onlineimg : $offlineimg) . "</td>" .
 			"<td class=embedded-add align=left><a href=sendmessage.php?receiver=" . $arr['id'] . " title=\"" . $lang_staff['title_send_pm'] . "\">" . $sendpmimg . "</a></td>" .
 			"<td class=embedded-add align=left>" . $forums . "</td></tr>\n";

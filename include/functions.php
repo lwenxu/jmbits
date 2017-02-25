@@ -520,11 +520,28 @@ function format_comment($text, $strip_html = true, $xssclean = false, $newtab = 
 	if (strpos($s, "[quote") !== false && strpos($s, "[/quote]") !== false) { //format_quote is kind of slow. Better check if [quote] exists beforehand
 		$s = format_quotes($s);
 	}
-	/* 加入@格式化 */
+//	/* 加入@格式化 */
+//
+//	if (strpos($s, "[@") !== false) {
+//		$s = at_format($s);
+//	}
 
-	if (strpos($s, "[@") !== false) {
-		$s = at_format($s);
-	}
+
+    //filter  system
+    $divded="|";
+//	$Cache->new_page("filter_file", 86400, true);
+//	if (!$Cache->get_page()){
+//		$path = "filter/key.txt";
+//    }
+	$path = "filter/key.txt";
+	if(file_exists($path)){
+		$str = file_get_contents($path);
+		$keywords = explode($divded, $str);
+		foreach($keywords as $word){
+			$s=preg_replace("/.*$word.*/", "<span style='color:red'>******</sapn>", $s);
+        }
+    }
+
 
 	$s = preg_replace("/\[em([1-9][0-9]*)\]/ie", "(\\1 < 192 ? '<img src=\"pic/smilies/\\1.gif\" alt=\"[em\\1]\" />' : '[em\\1]')", $s);
 	reset($tempCode);
@@ -2572,10 +2589,9 @@ function menu ($selected = "home") {
                             </li>
                             
                             
-                            <li class=\"dropdown dropdown-user\">
-                                <a href=\"javascript:;\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" data-hover=\"dropdown\" data-close-others=\"true\" aria-expanded=\"false\">
-                                    <img class=\"img-circle\" height='17px' width='17px' src=".$avatar.">
-                                    
+                            <li class=\"\">
+                                <a style='' href=\"javascript:;\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" data-hover=\"dropdown\" data-close-others=\"true\" aria-expanded=\"false\">
+                                    <img style='margin:0;padding:0' class=\"img-circle\" height='20px' width='20px' src=".$avatar.">
                                     <i class=\"fa fa-angle-down\"></i>
                                 </a>
                                 <ul class=\"dropdown-menu dropdown-menu-default\">
@@ -2584,30 +2600,39 @@ function menu ($selected = "home") {
                                             <i class=\"icon-user\"></i> 我的资料 </a>
                                     </li>
                                     <li>
+                                        <a href=\"usercp.php\">
+                                            <i class=\"glyphicon glyphicon-th\"></i> 控制面板 </a>
+                                    </li>
+                                    <li>
                                         <a href=\"friends.php\">
                                             <i class=\"icon-group\"></i> 我的好友 </a>
                                     </li>
                                     <li>
-                                    <a>
+                                    <a href='mybonus.php'>
                                     <i class='glyphicon glyphicon-eur'></i>魔力值
                                         <span class=\"badge badge-info\"> " . number_format($CURUSER['seedbonus'], 0) . " </span>
                                         </a>
                                     </li>
-                                     <li>
-                                        <a href=\"faq.php#id75\">
-                                            <i class=\"glyphicon glyphicon-link\"></i> 可连接
-                                            <span class=\"badge badge-success\"> ".$connectable." </span>
+                                    <li>
+                                    <a href='torrents.php?inclbookmarked=1&amp;allsec=1&amp;incldead=0'>
+                                    <i class='glyphicon glyphicon-star'></i>收藏
                                         </a>
                                     </li>
-                                    <li class=\"divider\"> </li>
+                                    <li class=\"divider\"></li>
                                     <li>
-                                        <a href=\"#\">
+                                        <a>
+                                            <i class=\"glyphicon glyphicon-link\"></i> 可连接
+                                            <span class=\"badge badge-success\"> " . $connectable . " </span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a>
                                             <i class=\"glyphicon glyphicon-open\"></i> 上传量
                                             <span class=\"badge badge-danger\"> ". mksize($CURUSER['uploaded'])." </span>
                                         </a>
                                     </li>
                                     <li>
-                                        <a href=\"#\">
+                                        <a>
                                             <i class=\"glyphicon glyphicon-save\"></i> 下载量
                                             <span class=\"badge badge-danger\"> ". mksize($CURUSER['downloaded'])." </span>
                                         </a>

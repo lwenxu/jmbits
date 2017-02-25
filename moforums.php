@@ -75,11 +75,11 @@ if ($act == "forum")
 // SHOW FORUMS WITH FORUM MANAGMENT TOOLS
 
 ?>
-<h2 class=transparentbg align=center><a class=faqlink href=forummanage.php><?php echo $lang_moforums['text_forum_management']?></a><b>--></b><?php echo $lang_moforums['text_overforum_management']?></h2>
+<h2 style="margin-top: 0" class=transparentbg align=center><a class=faqlink href=forummanage.php><?php echo $lang_moforums['text_forum_management']?></a><b>--></b><?php echo $lang_moforums['text_overforum_management']?></h2>
 <br />
 <?php
-echo '<table width="100%"  border="0" align="center" cellpadding="2" cellspacing="0">';
-echo "<tr><td class=colhead align=left>".$lang_moforums['col_name']."</td><td class=colhead>".$lang_moforums['col_viewed_by']."</td><td class=colhead>".$lang_moforums['col_modify']."</td></tr>";
+echo '<table class="table table-bordered" width="100%"  border="0" align="center" cellpadding="2" cellspacing="0">';
+echo "<tr><td class= align=left>".$lang_moforums['col_name']."</td><td class=>".$lang_moforums['col_viewed_by']."</td><td class=>".$lang_moforums['col_modify']."</td></tr>";
 $result = sql_query ("SELECT  * FROM overforums ORDER BY sort ASC");
 if ($row = mysql_fetch_array($result)) {
 do {
@@ -95,9 +95,9 @@ echo "</table>";
 ?>
 <br /><br />
 <form method=post action="<?php echo $PHP_SELF;?>">
-<table width="100%"  border="0" cellspacing="0" cellpadding="3" align="center">
+<table class="table table-bordered" width="100%"  border="0" cellspacing="0" cellpadding="3" align="center">
 <tr align="center">
-    <td colspan="2" class=colhead><?php echo $lang_moforums['text_new_overforum']?></td>
+    <td colspan="2" class=><?php echo $lang_moforums['text_new_overforum']?></td>
   </tr>
   <tr>
     <td><b><?php echo $lang_moforums['text_overforum_name']?></td>
@@ -137,7 +137,8 @@ $nr = mysql_num_rows($res);
   </tr>
 
   <tr align="center">
-    <td colspan="2"><input type="hidden" name="action" value="addforum"><input type="submit" name="Submit" value="<?php echo $lang_moforums['submit_make_overforum']?>"></td>
+    <td colspan="2"><input type="hidden" name="action" value="addforum">
+        <input class="btn btn-success" type="submit" name="Submit" value="<?php echo $lang_moforums['submit_make_overforum']?>"></td>
   </tr>
 </table>
 
@@ -161,7 +162,7 @@ do {
 <form method=post action="<?php echo $PHP_SELF;?>">
 <table width="100%"  border="0" cellspacing="0" cellpadding="3" align="center">
 <tr align="center">
-    <td colspan="2" class=colhead><?php echo $lang_moforums['text_edit_overforum']?> -- <?php echo htmlspecialchars($row["name"]);?></td>
+    <td colspan="2" class=><?php echo $lang_moforums['text_edit_overforum']?> -- <?php echo htmlspecialchars($row["name"]);?></td>
   </tr>
 
     <td><b><?php echo $lang_moforums['text_overforum_name']?></td>

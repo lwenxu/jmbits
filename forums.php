@@ -1,5 +1,4 @@
 <?php
-//TODO:事务管理设置已读由于button的原因有的浏览器无法点击，注意修改
 require "include/bittorrent.php";
 dbconn();
 require_once(get_langfile_path());
@@ -210,55 +209,50 @@ function insert_compose_frame($id, $type = 'new')
 	$subject = "";
 	$body = "";
 	print("<form id=\"compose\" method=\"post\" name=\"compose\" action=\"?action=post\">\n");
-	switch ($type){
-		case 'new':
-		{
-			$forumname = get_single_value("forums","name","WHERE id=".sqlesc($id));
-			$title = $lang_forums['text_new_topic_in']." <a href=\"".htmlspecialchars("?action=viewforum&forumid=".$id)."\">".htmlspecialchars($forumname)."</a> ".$lang_forums['text_forum'];
+	switch ($type) {
+		case 'new': {
+			$forumname = get_single_value("forums", "name", "WHERE id=" . sqlesc($id));
+			$title = $lang_forums['text_new_topic_in'] . " <a href=\"" . htmlspecialchars("?action=viewforum&forumid=" . $id) . "\">" . htmlspecialchars($forumname) . "</a> " . $lang_forums['text_forum'];
 			$hassubject = true;
 			break;
 		}
-		case 'reply':
-		{
-			$topicname = get_single_value("topics","subject","WHERE id=".sqlesc($id));
-			$title = $lang_forums['text_reply_to_topic']." <a href=\"".htmlspecialchars("?action=viewtopic&topicid=".$id)."\">".htmlspecialchars($topicname)."</a> ";
+		case 'reply': {
+			$topicname = get_single_value("topics", "subject", "WHERE id=" . sqlesc($id));
+			$title = $lang_forums['text_reply_to_topic'] . " <a href=\"" . htmlspecialchars("?action=viewtopic&topicid=" . $id) . "\">" . htmlspecialchars($topicname) . "</a> ";
 			break;
 		}
-		case 'quote':
-		{
-			$topicid=get_single_value("posts","topicid","WHERE id=".sqlesc($id));
-			$topicname = get_single_value("topics","subject","WHERE id=".sqlesc($topicid));
-			$title = $lang_forums['text_reply_to_topic']." <a href=\"".htmlspecialchars("?action=viewtopic&topicid=".$topicid)."\">".htmlspecialchars($topicname)."</a> ";
+		case 'quote': {
+			$topicid = get_single_value("posts", "topicid", "WHERE id=" . sqlesc($id));
+			$topicname = get_single_value("topics", "subject", "WHERE id=" . sqlesc($topicid));
+			$title = $lang_forums['text_reply_to_topic'] . " <a href=\"" . htmlspecialchars("?action=viewtopic&topicid=" . $topicid) . "\">" . htmlspecialchars($topicname) . "</a> ";
 			$res = sql_query("SELECT posts.body, users.username FROM posts LEFT JOIN users ON posts.userid = users.id WHERE posts.id=$id") or sqlerr(__FILE__, __LINE__);
 			if (mysql_num_rows($res) != 1)
 				stderr($lang_forums['std_error'], $lang_forums['std_no_post_id']);
 			$arr = mysql_fetch_assoc($res);
-			$body = "[quote=".htmlspecialchars($arr["username"])."]".htmlspecialchars(unesc($arr["body"]))."[/quote]";
+			$body = "[quote=" . htmlspecialchars($arr["username"]) . "]" . htmlspecialchars(unesc($arr["body"])) . "[/quote]";
 			$id = $topicid;
 			$type = 'reply';
 			break;
 		}
-		case 'edit':
-		{
-			$res = sql_query("SELECT topicid, body FROM posts WHERE id=".sqlesc($id)." LIMIT 1") or sqlerr(__FILE__, __LINE__);
+		case 'edit': {
+			$res = sql_query("SELECT topicid, body FROM posts WHERE id=" . sqlesc($id) . " LIMIT 1") or sqlerr(__FILE__, __LINE__);
 			$row = mysql_fetch_array($res);
-			$topicid=$row['topicid'];
-			$firstpost = get_single_value("posts","MIN(id)", "WHERE topicid=".sqlesc($topicid));
-			if ($firstpost == $id){
-				$subject = get_single_value("topics","subject","WHERE id=".sqlesc($topicid));
+			$topicid = $row['topicid'];
+			$firstpost = get_single_value("posts", "MIN(id)", "WHERE topicid=" . sqlesc($topicid));
+			if ($firstpost == $id) {
+				$subject = get_single_value("topics", "subject", "WHERE id=" . sqlesc($topicid));
 				$hassubject = true;
 			}
 			$body = htmlspecialchars(unesc($row["body"]));
 			$title = $lang_forums['text_edit_post'];
 			break;
 		}
-		default:
-		{
+		default: {
 			die;
 		}
 	}
-	print("<input type=\"hidden\" name=\"id\" value=\"".$id."\" />");
-	print("<input type=\"hidden\" name=\"type\" value=\"".$type."\" />");
+	print("<input type=\"hidden\" name=\"id\" value=\"" . $id . "\" />");
+	print("<input type=\"hidden\" name=\"type\" value=\"" . $type . "\" />");
 	begin_compose($title, $type, $body, $hassubject, $subject);
 	end_compose();
 	print("</form>");
@@ -423,7 +417,6 @@ if ($action == "post")
 		if ($arr["locked"] == 'yes' && get_user_class() < $postmanage_class && !is_forum_moderator($topicid, 'topic'))
 			stderr($lang_forums['std_error'], $lang_forums['std_topic_locked']);
 	}
-
 	if ($type == 'edit')
 	{
 		if ($hassubject){
@@ -463,10 +456,8 @@ if ($action == "post")
 			KPS("+",$makepost_bonus,$userid);
 			sql_query("UPDATE forums SET postcount=postcount+1 WHERE id=".sqlesc($forumid));
 		}
-
 		sql_query("INSERT INTO posts (topicid, userid, added, body, ori_body) VALUES ($topicid, $userid, ".sqlesc($date).", ".sqlesc($body).", ".sqlesc($body).")") or sqlerr(__FILE__, __LINE__);
 		$postid = mysql_insert_id() or die;
-		at_user_message($topicid, $body, $postid) ;
 		($lang_forums['std_post_id_not_available']);
 		$Cache->delete_value('forum_'.$forumid.'_post_'.$today_date.'_count');
 		$Cache->delete_value('today_'.$today_date.'_posts_count');
@@ -741,11 +732,11 @@ if ($action == "viewtopic")
 		}
 		$body .= "</div>";
 		if ($signature)
-		$body .= "<p style='vertical-align:bottom'><br />____________________<br />" . format_comment($signature,false,false,false,true,500,true,false, 1,200) . "</p>";
+		$body .= "<p style='vertical-align:bottom;text-align: left'><br />____________________<br />" . format_comment($signature,false,false,false,true,500,true,false, 1,200) . "</p>";
 
 		$stats = "<br />"."&nbsp;&nbsp;".$lang_forums['text_posts']."$forumposts<br />"."&nbsp;&nbsp;".$lang_forums['text_ul']."$uploaded <br />"."&nbsp;&nbsp;".$lang_forums['text_dl']."$downloaded<br />"."&nbsp;&nbsp;".$lang_forums['text_ratio']."$ratio";
 		print("<tr><td class=\"rowfollow\" width=\"150\" valign=\"top\" align=\"left\" style='padding: 0px'>" .
-		return_avatar_image($avatar).$stats."</td><td class=\"rowfollow\" valign=\"top\"><br />".$body."</td></tr>\n");
+		return_avatar_image($avatar).$stats."</td><td align='left' class=\"rowfollow\" valign=\"top\"><br />".$body."</td></tr>\n");
 		$secs = 900;
 		$dt = sqlesc(date("Y-m-d H:i:s",(TIMENOW - $secs))); // calculate date.
 		print("<tr><td class=\"rowfollow\" align=\"center\" valign=\"middle\">".("'".$arr2['last_access']."'">$dt?"<span class=' icon-user' style='color:#00a2d4;font-size:20px' title=".$lang_forums['title_online']."></span>":"<span class=' icon-user' style='color:red;font-size:20px'  title=\"".$lang_forums['title_offline']."\" />" )."<a href=\"sendmessage.php?receiver=".htmlspecialchars(trim($arr2["id"]))."\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class='icon-envelope' style='color:#00a2d4;font-size:20px' alt=\"PM\" title=\"".$lang_forums['title_send_message_to'].htmlspecialchars($arr2["username"])."\" /></a><a href=\"report.php?forumpost=$postid\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class='icon-warning-sign' style='color:red;font-size:20px' alt=\"Report\" title=\"".$lang_forums['title_report_this_post']."\" /></a></td>");
@@ -1223,6 +1214,7 @@ if ($action == "viewforum")
 			$arr = get_post_row($topicarr['lastpost']);
 			$lppostid = 0 + $arr["id"];
 			$lpuserid = 0 + $arr["userid"];
+//			$lpusername = get_username($arr["userid"]);
 			$lpusername = get_username($lpuserid);
 			$lpadded = gettime($arr["added"],true,false);
 			$onmouseover = "";
@@ -1262,7 +1254,7 @@ if ($action == "viewforum")
 			print("<tr><td class=\"rowfollow\" align=\"left\"><table border=\"0\" cellspacing=\"0\" cellpadding=\"0\"><tr>" .
 			"<td class=\"embedded\" style='padding-right: 10px'>".$img .
 			"</td><td class=\"embedded\" align=\"left\">\n" .
-			$subject."</td></tr></table></td><td class=\"rowfollow\" align=\"center\">".get_username($fpuserid)."<br />".$topictime."</td><td class=\"rowfollow\" align=\"center\" style='font-size:17px'>".$replies." / <font color=\"gray\">".$views."</font></td>\n" .
+			$subject."</td></tr></table></td><td class=\"rowfollow\" align=\"center\">".get_username($userid)."<br />".$topictime."</td><td class=\"rowfollow\" align=\"center\" style='font-size:17px'>".$replies." / <font color=\"gray\">".$views."</font></td>\n" .
 			"<td class=\"rowfollow nowrap\" align=\"center\">".$lpadded."<br />".$lpusername."</td>\n");
 
 			print("</tr>\n");
@@ -1604,7 +1596,10 @@ print("<tr>
 	}
 	$count++;
 }
-print("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button class='btn btn-success pull-right' style='margin: 5px'><a  style='font-size: 18px;color: white' href=\"?catchup=1\"><span class='icon-ok-sign' style='font-size: 20px'></span><b>".$lang_forums['text_catch_up']."</b></a></button> ".(get_user_class() >= $forummanage_class ? "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button class='btn btn-success pull-right' style='margin: 5px'><sapn class='icon-wrench' style='font-size: 20px'></sapn> <a style='font-size: 18px;color: white' href=\"forummanage.php\"><b>".$lang_forums['text_forum_manager']."</b></a></button>":""));
+print("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<a class='btn btn-success pull-right' style=' margin: 5px;font-size: 18px;color: white' href=\"?catchup=1\"><span class='icon-ok-sign' style='font-size: 20px'></span>".$lang_forums['text_catch_up']."</a>
+".(get_user_class() >= $forummanage_class ? "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ <a class='btn btn-success pull-right'  style='margin: 5px;font-size: 18px;color: white' href=\"forummanage.php\"><sapn class='icon-wrench' style='font-size: 20px'></sapn>".$lang_forums['text_forum_manager']."</a>":""));
 // End Table Mod
 print("</table>");
 if ($showforumstats_main == "yes")

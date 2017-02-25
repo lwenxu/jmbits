@@ -16,21 +16,6 @@ function check_comment_type($type)
 	if($type != "torrent" && $type != "request" && $type != "offer")
 	stderr($lang_comment['std_error'],$lang_comment['std_error']);
 }
-//@ someone  i have delete comment system if need you should start it in publish pages
-function at_user_message($topicid, $body, $postid)
-{
- global $Cache;
-             $subject = "有关于你的评论啦！";
-            $url = "forums.php?action=viewtopic&topicid=" . $topicid . "&page=p" . $postid . "#pid" . ($postid);
-            $address = "[url=$url]" . "Click here to view the detail" . "[/url]";
-                         preg_match_all("/\[@([0-9]+?)\]/ei", $body, $useridget);
-                         $useridget[1] = array_unique($useridget[1]);
-                         for ($i = 0; $i < min(10, count($useridget[1])); $i++) {
-                         sql_query("INSERT INTO messages (sender, receiver, subject, msg, added) VALUES(0, " . $useridget[1][$i] . ",'$subject','$address', " . sqlesc(date("Y-m-d H:i:s")) . ")");
-                         $Cache->delete_value('user_' . $useridget[1][$i] . '_unread_message_count');
-                         $Cache->delete_value('user_' . $useridget[1][$i] . '_inbox_count');
-                         }
- }
 check_comment_type($type);
 
 if ($action == "add")
