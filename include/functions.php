@@ -376,7 +376,7 @@ function GetCategoriesPic($id){
 	        echo "<div class=\"category_text\" style=\"background-color:orchid;\">$str</div>";
             break;
         case '403':
-	        echo "<div class=\"category_text\" style=\"background-color:yellow;\">$str</div>";
+	        echo "<div class=\"category_text\" style=\"background-color:darkcyan\">$str</div>";
             break;
         case '404':
 	        echo "<div class=\"category_text\" style=\"background-color:maroon;\">$str</div>";
@@ -385,7 +385,7 @@ function GetCategoriesPic($id){
 	        echo "<div class=\"category_text\" style=\"background-color:green;\">$str</div>";
             break;
         case '406':
-	        echo "<div class=\"category_text\" style=\"background-color:cyan;\">$str</div>";
+	        echo "<div class=\"category_text\" style=\"background-color:darkgoldenrod;\">$str</div>";
             break;
         case '407':
 	        echo "<div class=\"category_text\" style=\"background-color:navajowhite;\">$str</div>";
@@ -3671,7 +3671,7 @@ while ($row = mysql_fetch_assoc($res))
 	<td class='category_image_outer'>";
 	echo GetCategoriesPic($id);
 //	$img=get_torrent_thumb($id)!='' ? get_torrent_thumb($id): defaultCategoriesPic($id);
-	if (!get_torrent_thumb($id)){
+	if (get_torrent_thumb($id)){
 	    $img= get_torrent_thumb($id);
     }else{
 	    $img= defaultCategoriesPic($id);
