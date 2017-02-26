@@ -527,21 +527,18 @@ function format_comment($text, $strip_html = true, $xssclean = false, $newtab = 
 //	}
 
 
-    //filter  system
-    $divded="|";
-//	$Cache->new_page("filter_file", 86400, true);
-//	if (!$Cache->get_page()){
-//		$path = "filter/key.txt";
-//    }
-	$path = "filter/key.txt";
-	if(file_exists($path)){
-		$str = file_get_contents($path);
-		$keywords = explode($divded, $str);
-		foreach($keywords as $word){
-			$s=preg_replace("/.*$word.*/", "<span style='color:red'>******</sapn>", $s);
-        }
-    }
 
+
+    //filter  system
+//    $divded="|";
+//	$path = "filter/key.txt";
+//	if(file_exists($path)) {
+//		$str = file_get_contents($path);
+//		$keywords = explode($divded, $str);
+//		foreach ($keywords as $word) {
+//			$s = preg_replace("/.*$word.*/", "<span style='color:red'>******</sapn>", $s);
+//		}
+//	}
 
 	$s = preg_replace("/\[em([1-9][0-9]*)\]/ie", "(\\1 < 192 ? '<img src=\"pic/smilies/\\1.gif\" alt=\"[em\\1]\" />' : '[em\\1]')", $s);
 	reset($tempCode);

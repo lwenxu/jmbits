@@ -64,7 +64,7 @@ $refresh = ($CURUSER['sbrefresh'] ? $CURUSER['sbrefresh'] : 120)
         }
     </script>
 </head>
-<body class='inframe'">
+<body>
 <?php
 if ($_GET["sent"] == "yes") {
 	if (!$_GET["shbox_text"]) {
@@ -106,15 +106,14 @@ if ($where == "helpbox") {
 	die("<h1>" . $lang_shoutbox['std_access_denied'] . "</h1>" . "<p>" . $lang_shoutbox['std_access_denied_note'] . "</p></body></html>");
 }
 $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
-if (mysql_num_rows($res) == 0)
-	print("\n");
-else {
 	print("<table border='0' cellspacing='0' cellpadding='2' width='100%' align='left'>\n");
 	while ($array[] = mysql_fetch_assoc($res)) {
 	}
+	array_pop($array);
 	$array = array_reverse($array);
 	$rand = 0;
 	foreach ($array as $arr) {
+
 		if (get_user_class() >= $sbmanage_class) {
 			$del = "[<a href=\"shoutbox.php?del=" . $arr[id] . "\">" . $lang_shoutbox['text_del'] . "</a>]";
 		}
@@ -126,7 +125,6 @@ else {
 		if ($CURUSER['timetype'] != 'timealive')
 			$time = strftime("%m.%d %H:%M", $arr["date"]);
 		else $time = get_elapsed_time($arr["date"]) . $lang_shoutbox['text_ago'];
-
 		$res = mysql_query("SELECT avatar FROM users WHERE id=$arr[userid]");
 		$avatars = mysql_fetch_array($res);
 		if ($avatars[0]) {
@@ -134,7 +132,7 @@ else {
 		} else {
 			$avatar = "pic/default_avatar.png";
 		}
-
+//		die();
 		if ($rand % 2 == 0) {
 			print("<tr><td>
 			<img src=$avatar height='50px' width='50px' class='img img-circle pull-right'/>
@@ -160,7 +158,6 @@ else {
 
 	}
 	print("</table>");
-}
 ?>
 </body>
 </html>
