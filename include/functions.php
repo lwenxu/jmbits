@@ -3652,7 +3652,7 @@ while ($row = mysql_fetch_assoc($res))
 	<td class='category_image_outer'>";
 	echo GetCategoriesPic($id);
 		if (isset($row["category"])) {
-	        $img=get_torrent_thumb($id);
+	        $img=get_torrent_thumb($id)? get_torrent_thumb($id): GetCategoriesPic($id);
 	        echo "
 <div>
     <img src=$img  width='70px' class='img img-thumbnail '>
