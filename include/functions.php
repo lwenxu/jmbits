@@ -396,6 +396,25 @@ function GetCategoriesPic($id){
 
     }
 }
+
+function defaultCategoriesPic($id)
+{
+	$restor = sql_query("SELECT category FROM torrents WHERE id=$id");
+	$cateid = mysql_fetch_row($restor);
+	$rescate = sql_query("SELECT id,image FROM categories");
+	while ($cate = mysql_fetch_row($rescate)) {
+		$catearr[] = $cate;
+	}
+//	echo "<pre>";
+//	var_dump($catearr);
+//	echo "</pre>";
+	foreach ($catearr as $row) {
+		if ($row[0] == $cateid[0]) {
+			$str = $row[1];
+		}
+	}
+	return $str;
+}
 function addTempCode($value) {
 	global $tempCode, $tempCodeCount;
 	$tempCode[$tempCodeCount] = $value;
@@ -3651,7 +3670,12 @@ while ($row = mysql_fetch_assoc($res))
 	echo "
 	<td class='category_image_outer'>";
 	echo GetCategoriesPic($id);
-	$img=get_torrent_thumb($id)? get_torrent_thumb($id): GetCategoriesPic($id);
+//	$img=get_torrent_thumb($id)!='' ? get_torrent_thumb($id): defaultCategoriesPic($id);
+	if (!get_torrent_thumb($id)){
+	    $img= get_torrent_thumb($id);
+    }else{
+	    $img= defaultCategoriesPic($id);
+    }
 	        echo "
                 <div>
                     <img src=$img  width='70px' class='img img-thumbnail '>
