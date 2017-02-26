@@ -36,7 +36,7 @@ $showprocessing = (get_searchbox_value($sectionmode, 'showprocessing') || ($allo
 $showteam = (get_searchbox_value($sectionmode, 'showteam') || ($allowmove && get_searchbox_value($othermode, 'showteam'))); //whether show teams or not
 $showaudiocodec = (get_searchbox_value($sectionmode, 'showaudiocodec') || ($allowmove && get_searchbox_value($othermode, 'showaudiocodec'))); //whether show audio codecs or not
 
-stdhead($lang_edit['head_edit_torrent'] . "\"". $row["name"] . "\"");
+stdhead();
 
 if (!isset($CURUSER) || ($CURUSER["id"] != $row["owner"] && get_user_class() < $torrentmanage_class)) {
 	print("<h1 align=\"center\">".$lang_edit['text_cannot_edit_torrent']."</h1>");
@@ -47,11 +47,11 @@ else {
 	print("<input type=\"hidden\" name=\"id\" value=\"$id\" />");
 	if (isset($_GET["returnto"]))
 	print("<input type=\"hidden\" name=\"returnto\" value=\"" . htmlspecialchars($_GET["returnto"]) . "\" />");
-	print("<table  cellspacing=\"0\" cellpadding=\"5\" width=\"940\">\n");
-	print("<tr><td class='colhead' colspan='2' align='center'>".htmlspecialchars($row["name"])."</td></tr>");
-	tr($lang_edit['row_torrent_name']."<font color=\"red\">*</font>", "<input type=\"text\" style=\"width: 650px;\" name=\"name\" value=\"" . htmlspecialchars($row["name"]) . "\" />", 1);
+	print("<table class='table table-bordered'  cellspacing=\"0\" cellpadding=\"5\">\n");
+	print("<tr><td  colspan='2' align='center'>".htmlspecialchars($row["name"])."</td></tr>");
+	tr($lang_edit['row_torrent_name']."<font color=\"red\">*</font>", "<input class='form-control' type=\"text\" style=\"width: 650px;\" name=\"name\" value=\"" . htmlspecialchars($row["name"]) . "\" />", 1);
 	if ($smalldescription_main == 'yes')
-		tr($lang_edit['row_small_description'], "<input type=\"text\" style=\"width: 650px;\" name=\"small_descr\" value=\"" . htmlspecialchars($row["small_descr"]) . "\" />", 1);
+		tr($lang_edit['row_small_description'], "<input class='form-control' type=\"text\" style=\"width: 650px;\" name=\"small_descr\" value=\"" . htmlspecialchars($row["small_descr"]) . "\" />", 1);
 
 	get_external_tr($row["url"]);
 
@@ -62,7 +62,7 @@ else {
 	print("<tr><td class=\"rowhead\">".$lang_edit['row_description']."<font color=\"red\">*</font></td><td class=\"rowfollow\">");
 	textbbcode("edittorrent","descr",($row["descr"]), false);
 	print("</td></tr>");
-	$s = "<select name=\"type\" id=\"oricat\">";
+	$s = "<select class='form-control' style='width: 30%;float: left' name=\"type\" id=\"oricat\">";
 
 	$cats = genrelist($sectionmode);
 	foreach ($cats as $subrow) {
@@ -74,7 +74,7 @@ else {
 
 	$s .= "</select>\n";
 	if ($allowmove){
-		$s2 = "<select name=\"type\" id=newcat disabled>\n";
+		$s2 = "<select class='bootstrap-select select' name=\"type\" id=newcat disabled>\n";
 		$cats2 = genrelist($othermode);
 		foreach ($cats2 as $subrow) {
 			$s2 .= "<option value=\"" . $subrow["id"] . "\"";
@@ -85,7 +85,8 @@ else {
 		$s2 .= "</select>\n";
 		$movecheckbox = "<input type=\"checkbox\" id=movecheck name=\"movecheck\" value=\"1\" onclick=\"disableother2('oricat','newcat')\" />";
 	}
-	tr($lang_edit['row_type']."<font color=\"red\">*</font>", $s.($allowmove ? "&nbsp;&nbsp;".$movecheckbox.$movenote.$s2 : ""), 1);
+	$second="<div id='secondcategoryedit'></div>";
+	tr($lang_edit['row_type']."<font color=\"red\">*</font>", $s.$second.($allowmove ? "&nbsp;&nbsp;".$movecheckbox.$movenote.$s2 : ""), 1);
 	if ($showsource || $showmedium || $showcodec || $showaudiocodec || $showstandard || $showprocessing){
 		if ($showsource){
 			$source_select = torrent_selection($lang_edit['text_source'],"source_sel","sources",$row["source"]);
@@ -152,7 +153,7 @@ else {
 		tr($lang_edit['row_pick'], $pickcontent, 1);
 	}
 
-	print("<tr><td class=\"toolbox\" colspan=\"2\" align=\"center\"><input id=\"qr\" type=\"submit\" value=\"".$lang_edit['submit_edit_it']."\" /> <input type=\"reset\" value=\"".$lang_edit['submit_revert_changes']."\" /></td></tr>\n");
+	print("<tr><td class=\"toolbox\" colspan=\"2\" align=\"center\"><input class='btn btn-success' id=\"qr\" type=\"submit\" value=\"".$lang_edit['submit_edit_it']."\" /> <input class='btn btn-danger' type=\"reset\" value=\"".$lang_edit['submit_revert_changes']."\" /></td></tr>\n");
 	print("</table>\n");
 	print("</form>\n");
 	print("<br /><br />");
@@ -160,14 +161,14 @@ else {
 	print("<input type=\"hidden\" name=\"id\" value=\"$id\" />\n");
 	if (isset($_GET["returnto"]))
 	print("<input type=\"hidden\" name=\"returnto\" value=\"" . htmlspecialchars($_GET["returnto"]) . "\" />\n");
-	print("<table  cellspacing=\"0\" cellpadding=\"5\">\n");
-	print("<tr><td class=\"colhead\" align=\"left\" style='padding-bottom: 3px' colspan=\"2\">".$lang_edit['text_delete_torrent']."</td></tr>");
+	print("<table class='table table-bordered' cellspacing=\"0\" cellpadding=\"5\">");
+	print("<tr><td class=\"\" align=\"left\" style='padding-bottom: 3px' colspan=\"2\">".$lang_edit['text_delete_torrent']."</td></tr>");
 	tr("<input name=\"reasontype\" type=\"radio\" value=\"1\" />&nbsp;".$lang_edit['radio_dead'], $lang_edit['text_dead_note'], 1);
 	tr("<input name=\"reasontype\" type=\"radio\" value=\"2\" />&nbsp;".$lang_edit['radio_dupe'], "<input type=\"text\" style=\"width: 200px\" name=\"reason[]\" />", 1);
 	tr("<input name=\"reasontype\" type=\"radio\" value=\"3\" />&nbsp;".$lang_edit['radio_nuked'], "<input type=\"text\" style=\"width: 200px\" name=\"reason[]\" />", 1);
 	tr("<input name=\"reasontype\" type=\"radio\" value=\"4\" />&nbsp;".$lang_edit['radio_rules'], "<input type=\"text\" style=\"width: 200px\" name=\"reason[]\" />".$lang_edit['text_req'], 1);
 	tr("<input name=\"reasontype\" type=\"radio\" value=\"5\" checked=\"checked\" />&nbsp;".$lang_edit['radio_other'], "<input type=\"text\" style=\"width: 200px\" name=\"reason[]\" />".$lang_edit['text_req'], 1);
-	print("<tr><td class=\"toolbox\" colspan=\"2\" align=\"center\"><input type=\"submit\" style='height: 25px' value=\"".$lang_edit['submit_delete_it']."\" /></td></tr>\n");
+	print("<tr><td class=\"toolbox\" colspan=\"2\" align=\"center\"><input class='btn btn-danger' type=\"submit\"  value=\"".$lang_edit['submit_delete_it']."\" /></td></tr>\n");
 	print("</table>");
 	print("</form>\n");
 }

@@ -58,6 +58,7 @@ elseif ($nfoaction == "remove"){
 }
 
 $catid = (0 + $type);
+$cat2id=$_POST['secondid'];
 if (!is_valid_id($catid))
 bark($lang_takeedit['std_missing_form_data']);
 if (!$name || !$descr)
@@ -75,6 +76,7 @@ $updateset[] = "url = " . sqlesc($url);
 $updateset[] = "small_descr = " . sqlesc($_POST["small_descr"]);
 //$updateset[] = "ori_descr = " . sqlesc($descr);
 $updateset[] = "category = " . sqlesc($catid);
+$updateset[] = "secondcate = ". sqlesc($cat2id);
 $updateset[] = "source = " . sqlesc(0 + $_POST["source_sel"]);
 $updateset[] = "medium = " . sqlesc(0 + $_POST["medium_sel"]);
 $updateset[] = "codec = " . sqlesc(0 + $_POST["codec_sel"]);
