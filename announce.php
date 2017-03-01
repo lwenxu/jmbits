@@ -80,7 +80,7 @@ elseif ($az['showclienterror'] == 'yes'){
 	$torrent = mysql_fetch_array($res);
 //	$Cache->cache_value('torrent_hash_'.$info_hash.'_content', $torrent, 350);
 //}
-if (!$torrent) err("torrent not registered with this tracker");
+if (!$torrent) err("torrent not registered with this tracker ||  hash is:$info_hash  ");
 elseif ($torrent['banned'] == 'yes' && $az['class'] < $seebanned_class) err("torrent banned");
 // select peers info from peers table for this torrent
 $torrentid = $torrent["id"];
