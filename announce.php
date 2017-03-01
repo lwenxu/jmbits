@@ -75,11 +75,11 @@ elseif ($az['showclienterror'] == 'yes'){
 }
 
 // check torrent based on info_hash
-if (!$torrent = $Cache->get_value('torrent_hash_'.$info_hash.'_content')){
+//if (!$torrent = $Cache->get_value('torrent_hash_'.$info_hash.'_content')){
 	$res = sql_query("SELECT id, owner, sp_state, seeders, leechers, UNIX_TIMESTAMP(added) AS ts, banned FROM torrents WHERE " . hash_where("info_hash", $info_hash));
 	$torrent = mysql_fetch_array($res);
-	$Cache->cache_value('torrent_hash_'.$info_hash.'_content', $torrent, 350);
-}
+//	$Cache->cache_value('torrent_hash_'.$info_hash.'_content', $torrent, 350);
+//}
 if (!$torrent) err("torrent not registered with this tracker");
 elseif ($torrent['banned'] == 'yes' && $az['class'] < $seebanned_class) err("torrent banned");
 // select peers info from peers table for this torrent
