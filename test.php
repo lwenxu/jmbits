@@ -12,6 +12,23 @@
 
 
 //echo date('Ym');
+//
+//$arr=explode("=","https://hdchina.club/torrents.php?cat=401");
 
-$arr=explode("=","https://hdchina.club/torrents.php?cat=401");
-var_dump($arr);
+//var_dump($arr);
+
+
+function getClientIP()
+{
+	global $ip;
+	if (getenv("HTTP_CLIENT_IP"))
+		$ip = getenv("HTTP_CLIENT_IP");
+	else if (getenv("HTTP_X_FORWARDED_FOR"))
+		$ip = getenv("HTTP_X_FORWARDED_FOR");
+	else if (getenv("REMOTE_ADDR"))
+		$ip = getenv("REMOTE_ADDR");
+	else $ip = "Unknow";
+	return $ip;
+}
+
+echo getClientIP();
