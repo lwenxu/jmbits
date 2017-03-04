@@ -3676,9 +3676,15 @@ while ($row = mysql_fetch_assoc($res))
     }else{
 	    $img= defaultCategoriesPic($id);
     }
+//    if ($img=='http://jm.nwu.edu.cn/'){
+//	    $img= defaultCategoriesPic($id);
+//    }
+    if ($img==''){
+	    $img= defaultCategoriesPic($id);
+    }
 	        echo "
                 <div>
-                    <img src=$img  width='70px' class='img img-thumbnail '>
+                    <img src=".$img." width='70px' class='img img-thumbnail '>
                 </div>
                 ";
     echo "
