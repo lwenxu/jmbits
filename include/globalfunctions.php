@@ -61,9 +61,6 @@ function getip() {
 			$ip = getenv('REMOTE_ADDR');
 		}
 	}
-	if ($ip='127.0.0.1'){
-		$ip='219.245.18.94';
-	}
 	return $ip;
 }
 
