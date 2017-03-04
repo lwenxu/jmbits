@@ -26,6 +26,9 @@ if (strlen($passkey) != 32) err("Invalid passkey (" . strlen($passkey) . " - $pa
 
 //4. GET IP AND CHECK PORT
 $ip = getip();	// avoid to get the spoof ip from some agent
+if ($ip=='127.0.0.1'){
+	$ip='219.245.18.94';
+}
 if (!$port || $port > 0xffff)
 	err("invalid port");
 if (!ip2long($ip)) //Disable compact announce with IPv6
