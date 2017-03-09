@@ -1,7 +1,7 @@
 <?php
 require_once("include/bittorrent.php");
 dbconn();
-
+//stdhead();
 $langid = 0 + $_GET['sitelanguage'];
 if ($langid)
 {
@@ -140,7 +140,7 @@ while ($ct_a = mysql_fetch_array($ct_r))
 				<div class=toolbox colspan="2" align="center"><font
 						color=red><?php echo $lang_signup['text_all_fields_required'] ?></font></div>
 			<div class="form-actions">
-				<button type="button" id="register-back-btn" class="btn green btn-outline"><a href="login.php">登录</a></button>
+				<a href="login.php" class="btn green btn-outline">登录</a>
 				<input type="submit" id="register-submit-btn" class="btn btn-success uppercase pull-right" value="注册">
 				</input>
 			</div>

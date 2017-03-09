@@ -2862,8 +2862,11 @@ function stdhead($title = "", $msgalert = true, $script = "", $place = "")
 <meta name="author" content="徐鹏飞">
 <meta name="powered by" content="西北大学网络中心光团队">
 <meta name="keywords" content="pt private tracker nwu jm 嘉木">
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!--<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />-->
+<!--<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">-->
 <?php
 if ($metakeywords_tweak){
 ?>
@@ -2901,10 +2904,10 @@ $cssupdatedate=($cssupdatedate ? "?".htmlspecialchars($cssupdatedate) : "");
 <link rel="stylesheet" type="text/css" href="./styles/BambooGreen/components.min.css">
 <link rel="stylesheet" type="text/css" href="./styles/BambooGreen/file-input.css">
 
-    <!--[if lt IE 9]>
+    <!--[if lt IE 12]>
     <div id="ratioTip" class="alert">
         <button type="button" class="close" onclick="document.body.removeChild(this.parentNode)">×</button>
-        <strong>提示：</strong>系统检测到您正在使用古董级浏览器，这将严重影响浏览体验。请使用Chrome/FireFox/Safari/Internet Explorer 11或将国产浏览器调为极速模式。
+        <strong>提示：</strong>系统检测到您正在使用版本较老的浏览器，这将严重影响浏览体验。请使用Chrome/FireFox/Safari或将浏览器调为极速模式。
     </div>
     <![endif]-->
     <?php
@@ -4969,12 +4972,25 @@ echo "
 	<!DOCTYPE html>
 	<html>
 		<head>
+		<meta charset=\"utf-8\">
+        <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">
+        <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">
+        <meta name=\"author\" content=\"徐鹏飞\">
+        <meta name=\"powered by\" content=\"西北大学网络中s心光团队\">
+        <meta name=\"keywords\" content=\"pt private tracker nwu jm 嘉木\">
+
 		";
 
 echo "
 <link type='text/css' rel='stylesheet' href='./styles/BambooGreen/components.css'>
 <link type='text/css' rel='stylesheet' href='./styles/BambooGreen/login.css'>
 <link type='text/css' rel='stylesheet' href='./styles/bootstrap/css/bootstrap.min.css'>
+    <!--[if lt IE 11]>
+    <div id=\"ratioTip\" class=\"alert\">
+        <button type=\"button\" class=\"close\" onclick=\"document.body.removeChild(this.parentNode)\">×</button>
+        <strong>提示：</strong>系统检测到您正在使用版本较老的浏览器，这将严重影响浏览体验。请使用Chrome/FireFox/Safari或将浏览器调为极速模式。
+    </div>
+    <![endif]-->
 ";
 echo "</head>
 		<body class='login'>
@@ -5401,7 +5417,7 @@ function languagetable($res, $frame_caption)
 
 function gethelptips(){
 	echo "
-	    <div class=\"alert alert-block alert-info \">
+	    <div class=\"alert alert-block alert-info \" style='height: 100px;width: 400px;margin: auto' >
 	        <div style='text-align: center'>
             如果您在注册或者登陆中遇到任何错误及问题，您可以添加嘉木官方群：146893295<br/>
             会有热心的客服以及同学帮您解决问题 ，感谢您的支持！
