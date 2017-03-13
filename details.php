@@ -144,6 +144,27 @@ echo "              			 </div>
                     </div>
          </div>
 ";
+        if ($row["type"] == "multi")
+        {
+            $files_info = "<b>".$lang_details['text_num_files']."</b>". $row["numfiles"] . $lang_details['text_files'] . "<br />";
+            $files_info .= "<span id=\"showfl\"><a href=\"javascript: viewfilelist(".$id.")\" >".$lang_details['text_see_full_list']."</a></span><span id=\"hidefl\" style=\"display: none;\"><a href=\"javascript: hidefilelist()\">".$lang_details['text_hide_list']."</a></span>";
+        }
+        function hex_esc($matches) {
+            return sprintf("%02x", ord($matches[0]));
+        }
+		echo "
+        <div class='form-group' >
+                    <label class='control-label col-md-3'>文件列表 </label>
+                    <div class=col-md-9>
+                        <div class='input-group'>";
+//		echo "$files_info";
+        tr($lang_details['row_torrent_info'], "<table><tr>" . ($files_info != "" ? "<td class=\"no_border_wide\">" . $files_info . "</td>" : "") . "<td class=\"no_border_wide\"><b>".$lang_details['row_info_hash'].":</b>&nbsp;".preg_replace_callback('/./s', "hex_esc", hash_pad($row["info_hash"]))."</td>". (get_user_class() >= $torrentstructure_class ? "<td class=\"no_border_wide\"></td>" : "") . "</tr></table><span id='filelist'></span>",1);
+
+        echo "              			 </div>
+                    </div>
+         </div>
+";
+
 		echo "
         <div class='form-group' >
                     <label class='control-label col-md-3'>操作 </label>

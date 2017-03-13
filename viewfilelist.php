@@ -13,12 +13,12 @@ header("Content-Type: text/xml; charset=utf-8");
 $id = 0 + $_GET['id'];
 if(isset($CURUSER))
 {
-	$s = "<table class=\"main\"  cellspacing=0 cellpadding=\"5\">\n";
+	$s = "<table class=\"table table-bordered\"  cellspacing=0 cellpadding=\"5\">\n";
 
 	$subres = sql_query("SELECT * FROM files WHERE torrent = ".sqlesc($id)." ORDER BY id");
-	$s.="<tr><td class=colhead>".$lang_viewfilelist['col_path']."</td><td class=colhead align=center><img class=\"size\" src=\"pic/trans.gif\" alt=\"size\" /></td></tr>\n";
+	$s.="<tr><td>".$lang_viewfilelist['col_path']."</td><td >文件大小</td></tr>\n";
 	while ($subrow = mysql_fetch_array($subres)) {
-		$s .= "<tr><td class=rowfollow>" . $subrow["filename"] . "</td><td class=rowfollow align=\"right\">" . mksize($subrow["size"]) . "</td></tr>\n";
+		$s .= "<tr><td class=rowfollow>" . $subrow["filename"] . "</td><td >" . mksize($subrow["size"]) . "</td></tr>\n";
 	}
 	$s .= "</table>\n";
 	echo $s;

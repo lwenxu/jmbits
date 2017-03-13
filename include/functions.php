@@ -2686,6 +2686,11 @@ function menu ($selected = "home") {
                                             <i class=\"icon-wrench\"></i> 站点后台
                                         </a>
                                     </li>
+                                    <li>
+                                        <a href=\"users.php\">
+                                            <i class=\"glyphicon glyphicon-list\"></i> 用户列表
+                                        </a>
+                                    </li>
                                      <li>
                                         <a href=\"reports.php\">
                                             <i class=\"icon-exclamation-sign\"></i> 举报信箱
