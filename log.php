@@ -17,43 +17,80 @@ function logmenu($selected = "dailylog"){
 		global $lang_log;
 		global $showfunbox_main;
 		begin_main_frame();
-		print ("<div id=\"lognav\"><ul id=\"logmenu\" class=\"menu\">");
-		print ("<li" . ($selected == "dailylog" ? " class=selected" : "") . "><a href=\"?action=dailylog\">".$lang_log['text_daily_log']."</a></li>");
-		print ("<li" . ($selected == "chronicle" ? " class=selected" : "") . "><a href=\"?action=chronicle\">".$lang_log['text_chronicle']."</a></li>");
+		print ("<div id=\"lognav\"><ul id=\"logmenu\" class='nav nav-tabs nav-justified'>");
+		print ("<li".($selected == "dailylog" ? " class=active" : "") . "><a href=\"?action=dailylog\">".$lang_log['text_daily_log']."</a></li>");
+		print ("<li" . ($selected == "chronicle" ? " class=active" : "") . "><a href=\"?action=chronicle\">".$lang_log['text_chronicle']."</a></li>");
 		if ($showfunbox_main == 'yes')
-			print ("<li" . ($selected == "funbox" ? " class=selected" : "") . "><a href=\"?action=funbox\">".$lang_log['text_funbox']."</a></li>");
-		print ("<li" . ($selected == "news" ? " class=selected" : "") . "><a href=\"?action=news\">".$lang_log['text_news']."</a></li>");
-		print ("<li" . ($selected == "poll" ? " class=selected" : "") . "><a href=\"?action=poll\">".$lang_log['text_poll']."</a></li>");
+//			print ("<li" . ($selected == "funbox" ? " class=selected" : "") . "><a href=\"?action=funbox\">".$lang_log['text_funbox']."</a></li>");
+		print ("<li" . ($selected == "news" ? " class=active" : "") . "><a href=\"?action=news\">".$lang_log['text_news']."</a></li>");
+		print ("<li" . ($selected == "poll" ? " class=active" : "") . "><a href=\"?action=poll\">".$lang_log['text_poll']."</a></li>");
 		print ("</ul></div>");
 		end_main_frame();
 }
 
 function searchtable($title, $action, $opts = array()){
 		global $lang_log;
-		print("<table border=1 cellspacing=0 width=940 cellpadding=5>\n");
-		print("<tr><td class=colhead align=left>".$title."</td></tr>\n");
-		print("<tr><td class=toolbox align=left><form method=\"get\" action='" . $_SERVER['PHP_SELF'] . "'>\n");
-		print("<input type=\"text\" name=\"query\" style=\"width:500px\" value=\"".$_GET['query']."\">\n");
+//		print("<h2 class=\"panel-title\" style='font-size: 33px;text-align: center'>". $lang_faq['text_welcome_to'] . $SITENAME."</h2>");
+
+		//print("<input type=\"text\"class=form-control name=\"query\" style=\"width:500px\"value=\"".$_GET['query']."\">\n");
 		if ($opts) {
-			print($lang_log['text_in']."<select name=search>");
+//			echo "
+//		<div class=\"panel panel-success\" >
+//		     <div class=\"panel-heading\">
+//		           <h2 class=\"panel-title\" style='font-size: 33px;text-align: center'>搜索常规日志". $SITENAME."</h2>
+//		     </div>
+//		     <div class=\"panel-body\" style='margin-left:220px padding-top=10px '>
+//		     	<table align='center' border=0 cellspacing=0 width=940 cellpadding=5>
+//		     </div>
+//	    </div>
+//		";
+			print("\n");
+			//print("<tr><td class='caption-subject font-jungle-green sbold uppercase'style=\"font-size:20px\" align=left>".$title."</td></tr>\n");
+			print("<div class='portlet-body form'><form class='form-horizontal form-bordered'>
+					<tr><td class=toolbox align=center ><form method=\"get\"  action='" . $_SERVER['PHP_SELF'] . "'>\n");
+			print(" <div class='form-group'>
+                <label class='control-label col-md-3'>搜索常规日志</label>
+                <div class=col-md-9>
+                    <div class='input-group'>
+                        <span class='input-group-addon'><span class='glyphicon glyphicon-search'></span></span>
+                        <input type=\"text\"class=form-control style='width:500px' name=\"query\" value=\"".$_GET['query']."\">\n
+                    </div>
+                </div>
+            </div>");
+			print("<div class='form-group'>
+                <label class='control-label col-md-3'>范围</label>
+                <div class=col-md-9>
+                    <div class='input-group'>");
+			print("<select class='form-control' style=\"width:250px\" name=search>");
 			foreach($opts as $value => $text)
 				print("<option value='".$value."'". ($value == $_GET['search'] ? " selected" : "").">".$text."</option>");
 			print("</select>");
+			print("  </div>
+                </div>
+            </div>");
+			print("
+			           <div class='form-group'>
+                <label class='control-label col-md-3'>检索 </label>
+                <div class=col-md-9>
+                    <div class='input-group'>
+                    <input type=submit class='btn btn-success' value=" . $lang_log['submit_search'] . "></form>\n
+                    </div>
+                </div>
+            </div>");
+			print("<input type=\"hidden\" name=\"action\" value='".$action."'>&nbsp;&nbsp;");
+			print("</td></tr></table><br /></form></div>\n");
 			}
-		print("<input type=\"hidden\" name=\"action\" value='".$action."'>&nbsp;&nbsp;");
-		print("<input type=submit value=" . $lang_log['submit_search'] . "></form>\n");
-		print("</td></tr></table><br />\n");
 }
 
 function additem($title, $action){
 		global $lang_log;
-		print("<table border=1 cellspacing=0 width=940 cellpadding=5>\n");
-		print("<tr><td class=colhead align=left>".$title."</td></tr>\n");
-		print("<tr><td class=toolbox align=left><form method=\"post\" action='" . $_SERVER['PHP_SELF'] . "'>\n");
-		print("<textarea name=\"txt\" style=\"width:500px\" rows=\"3\" >".$row["txt"]."</textarea>\n");
+		print("<table align='center' border=1 cellspacing=0 width=940 cellpadding=5>\n");
+		print("<tr><td class=rowfollow nowrap  align=center ><h4>".$title."</h4></td></tr>\n");
+		print("<tr><td class=toolbox align=center><form method=\"post\" action='" . $_SERVER['PHP_SELF'] . "'>\n");
+		print("<textarea name=\"txt\" style=\"width:870px\" rows=\"3\" >".$row["txt"]."</textarea>\n");
 		print("<input type=\"hidden\" name=\"action\" value=".$action.">");
 		print("<input type=\"hidden\" name=\"do\" value=\"add\">");
-		print("<input type=submit value=" . $lang_log['submit_add'] . "></form>\n");
+		print("<input type=submit  class='btn btn-success' value=" . $lang_log['submit_add'] . "></form>\n");
 		print("</td></tr></table><br />\n");
 }
 
@@ -83,7 +120,6 @@ else {
 	switch ($action){
 	case "dailylog":
 		stdhead($lang_log['head_site_log']);
-
 		$query = mysql_real_escape_string(trim($_GET["query"]));
 		$search = $_GET["search"];
 
@@ -127,8 +163,8 @@ else {
 
 		//echo $pagertop;
 
-			print("<table width=940 border=1 cellspacing=0 cellpadding=5>\n");
-			print("<tr><td class=colhead align=center><img class=\"time\" src=\"pic/trans.gif\" alt=\"time\" title=\"".$lang_log['title_time_added']."\" /></td><td class=colhead align=left>".$lang_log['col_event']."</td></tr>\n");
+			print("<table align=center width=940 border=1 cellspacing=0 cellpadding=5>\n");
+			//print("<tr><td class=\"caption-subject sbold\" style='font-size:20px' align=middle>".$lang_log['col_event']."</td></tr>\n");
 			while ($arr = mysql_fetch_assoc($res))
 			{
 				$color = "";
@@ -198,8 +234,8 @@ else {
 
 		//echo $pagertop;
 
-			print("<table width=940 border=1 cellspacing=0 cellpadding=5>\n");
-			print("<tr><td class=colhead align=center>".$lang_log['col_date']."</td><td class=colhead align=left>".$lang_log['col_event']."</td>".(get_user_class() >= $chrmanage_class ? "<td class=colhead align=center>".$lang_log['col_modify']."</td>" : "")."</tr>\n");
+			print("<table align='center' width=940 border=1 cellspacing=0 cellpadding=5>\n");
+			print("<tr><td class=rowfollow nowrap align=center><b>".$lang_log['col_date']."</b></td><td class=rowfollow nowrap align=left><b>".$lang_log['col_event']."</b></td>".(get_user_class() >= $chrmanage_class ? "<td class=rowfollow nowrap align=center><b>".$lang_log['col_modify']."</b></td>" : "")."</tr>\n");
 			while ($arr = mysql_fetch_assoc($res))
 			{
 				$date = gettime($arr['added'],true,false);
@@ -277,8 +313,7 @@ else {
 		}
 		logmenu("news");
 		$opt = array (title => $lang_log['text_title'], body => $lang_log['text_body'], both => $lang_log['text_both']);
-		searchtable($lang_log['text_search_news'], 'news', $opt);
-
+		//searchtable($lang_log['text_search_news'], 'news', $opt);
 		$res = sql_query("SELECT COUNT(*) FROM news".$wherea);
 		$row = mysql_fetch_array($res);
 		$count = $row[0];
@@ -291,19 +326,17 @@ else {
 		print($lang_log['text_news_empty']);
 		else
 		{
-
 		//echo $pagertop;
 			while ($arr = mysql_fetch_assoc($res)){
 				$date = gettime($arr['added'],true,false);
-			print("<table width=940 border=1 cellspacing=0 cellpadding=5>\n");
-			print("<tr><td class=rowhead width='10%'>".$lang_log['col_title']."</td><td class=rowfollow align=left>".$arr["title"]."</td></tr><tr><td class=rowhead width='10%'>".$lang_log['col_date']."</td><td class=rowfollow align=left>".$date."</td></tr><tr><td class=rowhead width='10%'>".$lang_log['col_body']."</td><td class=rowfollow align=left>".format_comment($arr["body"],false,false,true)."</td></tr>\n");
+			print("<table align=center width=940 border=1 cellspacing=0 cellpadding=5>\n");
+			print("<tr><td class=rowfollow nowrap align='center' width='10%'><b>".$lang_log['col_title']."</b></td><td class=rowfollow align=left>".$arr["title"]."</td></tr><tr><td class=rowfollow nowrap width='10%' align='center'><b>".$lang_log['col_date']."</b></td><td class=rowfollow align=left>".$date."</td></tr><tr><td class=rowfollow nowrap align='center' width='10%'><b>".$lang_log['col_body']."</b></td><td class=rowfollow align=left>".format_comment($arr["body"],false,false,true)."</td></tr>\n");
 			print("</table><br />");
 			}
 			echo $pagerbottom;
 		}
 
 		print($lang_log['time_zone_note']);
-
 		stdfoot();
 		die;
 		break;
