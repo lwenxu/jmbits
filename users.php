@@ -46,11 +46,10 @@ if ($country > 0)
 }
 stdhead($lang_users['head_users']);
 
-print($lang_users['text_users']);
 
-print("<form method=get action=?>\n");
-print($lang_users['text_search'] ." <input type=text style=\"width:100px\" name=search value=$search> \n");
-print("<select name=class>\n");
+print("<form  class='form' method=get action=?>\n");
+print($lang_users['text_search'] ." <input type=text class=form-control name=search value=$search><br>");
+print("<select name=class class='bootstrap-select'>\n");
 print("<option value='-'>".$lang_users['select_any_class']."</option>\n");
 for ($i = 0;;++$i)
 {
@@ -64,11 +63,13 @@ $countries = "<option value=0>".$lang_users['select_any_country']."</option>\n";
 $ct_r = sql_query("SELECT id,name FROM countries ORDER BY name") or die;
 while ($ct_a = mysql_fetch_array($ct_r))
 	$countries .= "<option value=".htmlspecialchars($ct_a[id]).">".htmlspecialchars($ct_a[name])."</option>\n";
-print("<select name=country>".$countries."</select>");
-print("<input type=submit value=\"".$lang_users['submit_okay']."\">\n");
+print("<select name=country class='bootstrap-select'>".$countries."</select>");
+print("&nbsp;&nbsp;&nbsp;&nbsp;<input class='btn btn-success' type=submit value=\"".$lang_users['submit_okay']."\">\n");
 print("</form>\n");
 
-print("<p>\n");
+print("
+<ul class='pagination' style='margin: 5px 15%'> 
+");
 
 for ($i = 97; $i < 123; ++$i)
 {
@@ -76,19 +77,19 @@ for ($i = 97; $i < 123; ++$i)
 	$L = chr($i - 32);
 	//stderr("",$class);
 	if ($l == $letter)
-		print("<font class=gray><b>$L</b></font>\n");
+		print("<font class=gray><b>$L</b></font>");
 	else
 	{
 		if($class == '-')
-			print("<a href=?letter=$l".($country > 0 ? "&country=".$country : "")."><b>$L</b></a>\n");
+			print("<li><a href=?letter=$l".($country > 0 ? "&country=".$country : "")."><b>$L</b></a></li>\n");
 		else
 		{
-			print("<a href=?letter=$l&class=$class".($country > 0 ? "&country=".$country : "")."><b>$L</b></a>\n");
+			print("<li><a href=?letter=$l&class=$class".($country > 0 ? "&country=".$country : "")."><b>$L</b></a></li>\n");
 		}
 	}
 }
 
-print("</p>\n");
+print("</ul>");
 
 $perpage = 50;
 
@@ -128,7 +129,7 @@ $res = sql_query($sql) or sqlerr();
 
 $num = mysql_num_rows($res);
 
-print("<table border=1 cellspacing=0 cellpadding=5>\n");
+print("<table class='table table-bordered' cellspacing=0 cellpadding=5>\n");
 print("<tr><td class=colhead align=left>".$lang_users['col_user_name']."</td><td class=colhead>".$lang_users['col_registered']."</td><td class=colhead>".$lang_users['col_last_access']."</td><td class=colhead align=left>".$lang_users['col_class']."</td><td class=colhead>".$lang_users['col_country']."</td></tr>\n");
 for ($i = 0; $i < $num; ++$i)
 {
