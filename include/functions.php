@@ -3463,7 +3463,7 @@ function genrelist($catmode = 1) {
 	global $Cache;
 	if (!$ret = $Cache->get_value('category_list_mode_'.$catmode)){
 		$ret = array();
-		$res = sql_query("SELECT id, mode, name, image FROM categories WHERE mode = ".sqlesc($catmode)." ORDER BY sort_index, id") or sqlerr();
+		$res = sql_query("SELECT id, mode, name, image FROM categories ORDER BY sort_index, id") or sqlerr();
 		var_dump($ret);
 		while ($row = mysql_fetch_array($res))
 			$ret[] = $row;
