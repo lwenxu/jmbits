@@ -8,29 +8,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 	if ($showpolls_main == "yes")
 	{
 		$choice = $_POST["choice"];
-		if ($CURUSER && $choice != "" && $choice < 256 && $choice == floor($choice))
-		{
-			$res = sql_query("SELECT * FROM polls ORDER BY added DESC LIMIT 1") or sqlerr(__FILE__, __LINE__);
-			$arr = mysql_fetch_assoc($res) or die($lang_index['std_no_poll']);
-			$pollid = $arr["id"];
+		if (isset($choice)){
+            if ($CURUSER && $choice != "" && $choice < 256 && $choice == floor($choice))
+            {
+                $res = sql_query("SELECT * FROM polls ORDER BY added DESC LIMIT 1") or sqlerr(__FILE__, __LINE__);
+                $arr = mysql_fetch_assoc($res) or die($lang_index['std_no_poll']);
+                $pollid = $arr["id"];
 
-			$hasvoted = get_row_count("pollanswers","WHERE pollid=".sqlesc($pollid)." && userid=".sqlesc($CURUSER["id"]));
-			if ($hasvoted)
-				stderr($lang_index['std_error'],$lang_index['std_duplicate_votes_denied']);
-			sql_query("INSERT INTO pollanswers VALUES(0, ".sqlesc($pollid).", ".sqlesc($CURUSER["id"]).", ".sqlesc($choice).")") or sqlerr(__FILE__, __LINE__);
-			$Cache->delete_value('current_poll_content');
-			$Cache->delete_value('current_poll_result', true);
-			if (mysql_affected_rows() != 1)
-			stderr($lang_index['std_error'], $lang_index['std_vote_not_counted']);
-			//add karma
-			KPS("+",$pollvote_bonus,$userid);
+                $hasvoted = get_row_count("pollanswers","WHERE pollid=".sqlesc($pollid)." && userid=".sqlesc($CURUSER["id"]));
+                if ($hasvoted)
+                    stderr($lang_index['std_error'],$lang_index['std_duplicate_votes_denied']);
+                sql_query("INSERT INTO pollanswers VALUES(0, ".sqlesc($pollid).", ".sqlesc($CURUSER["id"]).", ".sqlesc($choice).")") or sqlerr(__FILE__, __LINE__);
+                $Cache->delete_value('current_poll_content');
+                $Cache->delete_value('current_poll_result', true);
+                if (mysql_affected_rows() != 1)
+                stderr($lang_index['std_error'], $lang_index['std_vote_not_counted']);
+                //add karma
+                KPS("+",$pollvote_bonus,$userid);
 
-			header("Location: " . get_protocol_prefix() . "$BASEURL/");
-			die;
-		}
-		else{
-			stderr($lang_index['std_error'], $lang_index['std_option_unselected']);
-		}
+                header("Location: " . get_protocol_prefix() . "$BASEURL/");
+                die;
+            }
+            else{
+                stderr($lang_index['std_error'], $lang_index['std_option_unselected']);
+            }
+        }
 	}
 }
 
