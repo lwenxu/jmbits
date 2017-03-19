@@ -973,7 +973,8 @@ if ($allsec != 1 || $enablespecial != 'yes'){ //do not print searchbox if showin
 	                           $i = 0;
 	                           foreach ($listarray as $list) {
 
-		                           print(($showimg ? return_search_category_image($list[id], "?") : "<a class='catePic' id='cat$list[id]' title=\"" . $list[name] . "\" href=\"?" . $cbname . "=" . $list[id] . "\">" . $list[name] . "</a>"));
+//		                           print(($showimg ? return_search_category_image($list[id], "?") : "<a class='catePic' id='cat$list[id]' title=\"" . $list[name] . "\" href=\"?" . $cbname . "=" . $list[id] . "\">" . $list[name] . "</a>"));
+		                           print(return_search_category_image($list[id], "?")."<a class='catePic' id='cat$list[id]' title=\"" . $list[name] . "\" href=\"?" . $cbname . "=" . $list[id] . "\"></a>");
 		                           $i++;
 
 //		                           echo "
