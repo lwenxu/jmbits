@@ -245,6 +245,11 @@ if ($CURUSER && $showpolls_main == "yes") {
                                             <span class=\"caption-subject bold uppercase font-purple-plum\"> 投票 </span>
                                         </h3>
                                         </div>";
+    if (!$arr = $Cache->get_value('current_poll_content')) {
+        $res = sql_query("SELECT * FROM polls ORDER BY id DESC LIMIT 1") or sqlerr(__FILE__, __LINE__);
+        $arr = mysql_fetch_array($res);
+        $Cache->cache_value('current_poll_content', $arr, 7226);
+    }
 if (get_user_class() >= $pollmanage_class) {
 	echo "
                                         <div class=\"actions\">
@@ -263,11 +268,6 @@ if (get_user_class() >= $pollmanage_class) {
 }
 	echo "</div>";
 	// Get current poll
-	if (!$arr = $Cache->get_value('current_poll_content')) {
-		$res = sql_query("SELECT * FROM polls ORDER BY id DESC LIMIT 1") or sqlerr(__FILE__, __LINE__);
-		$arr = mysql_fetch_array($res);
-		$Cache->cache_value('current_poll_content', $arr, 7226);
-	}
 	if (!$arr)
 		$pollexists = false;
 	else $pollexists = true;
@@ -281,13 +281,15 @@ if (get_user_class() >= $pollmanage_class) {
 			$arr["option10"], $arr["option11"], $arr["option12"], $arr["option13"], $arr["option14"],
 			$arr["option15"], $arr["option16"], $arr["option17"], $arr["option18"], $arr["option19"]);
 
-		print("<table width=\"100%\" ><tr style='border: 0px'><td style='border: 0px'>\n");
+		print("<table width=\"100%\" >
+                <tr style='border: 0px'>
+                     <td style='border: 0px'>\n");
 		print("<table width=\"100%\" class=\"main\" border=\"0\" cellspacing=\"0\" cellpadding=\"5\">");
 		print("<h4 style='text-align: center'>" . $question . "</h4>\n");
 
 		// Check if user has already voted
-		$res = sql_query("SELECT selection FROM pollanswers WHERE pollid=" . sqlesc($pollid) . " AND userid=" . sqlesc($CURUSER["id"])) or sqlerr();
-		$voted = mysql_fetch_assoc($res);
+		$respoll = sql_query("SELECT selection FROM pollanswers WHERE pollid=" . sqlesc($pollid) . " AND userid=" . sqlesc($CURUSER["id"])) or sqlerr();
+		$voted = mysql_fetch_assoc($respoll);
 		if ($voted) //user has already voted
 		{
 			$uservote = $voted["selection"];
@@ -356,7 +358,8 @@ if (get_user_class() >= $pollmanage_class) {
 				$i++;
 			}
 			echo $Cache->next_row();
-		} else //user has not voted yet
+		}
+		else //user has not voted yet
 		{
 			print("<form method=\"post\" action=\"index.php\">\n");
 			$i = 0;
@@ -378,6 +381,7 @@ if (get_user_class() >= $pollmanage_class) {
 			";
 			echo "</div>";
 			print("<p align=\"center\"><input  type=\"submit\" class=\"btn btn-success\" value=\"" . $lang_index['submit_vote'] . "\" /></p></label>");
+            echo "</form>";
 		}
 		print("</table>");
 
@@ -386,6 +390,11 @@ if (get_user_class() >= $pollmanage_class) {
 
 		print("</table>");
 	}
+
+
+
+
+
 }
 echo "</div>";
 // ------------- end: polls ------------------//
