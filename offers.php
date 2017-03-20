@@ -239,7 +239,7 @@ if ($_GET["off_details"]){
                         </div>
                     </div>
                     <div class='portlet-body form'>";
-	print("<form class='form-horizontal form-bordered'>");
+	print("<div class='form-horizontal form-bordered'>");
 	echo "<div class='form-body'>";
 	echo "
         <div class='form-group' >
