@@ -1486,3 +1486,18 @@ img {
     cursor: pointer;
     display: block;
 }
+
+h1,h2,h3,h4{
+    margin: 0!important;
+}
+
+#notice{
+    /*height: 40px;*/
+    /*width: 40px;*/
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    background: #3598dc!important;
+    z-index: 10000;
+}
+

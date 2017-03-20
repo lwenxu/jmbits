@@ -8,8 +8,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 	if ($showpolls_main == "yes")
 	{
 		$choice = $_POST["choice"];
-		if (isset($choice)){
-            if ($CURUSER && $choice != "" && $choice < 256 && $choice == floor($choice))
+		if (isset($choice)){            if ($CURUSER && $choice != "" && $choice < 256 && $choice == floor($choice))
             {
                 $res = sql_query("SELECT * FROM polls ORDER BY added DESC LIMIT 1") or sqlerr(__FILE__, __LINE__);
                 $arr = mysql_fetch_assoc($res) or die($lang_index['std_no_poll']);
@@ -438,6 +437,8 @@ echo "</div>";  //-------------col-md-6 end------------------------//
 
 
 
+
+
 //---------------------col-6-md  start----------------------------------//
 echo "<div class='col-md-6'>";
 	echo "          <div class=\"portlet light bordered \">
@@ -677,6 +678,56 @@ if ($showstats_main == "yes") {
 </div>
 <!--row end -->
 <?php
+echo "
+<!-- Modal -->
+<div class=\"modal fade\" id=\"uploadModel\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\">
+  <div class=\"modal-dialog\" role=\"document\">
+    <div class=\"modal-content\">
+      <div class=\"modal-header\">
+        <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button>
+        <h4 class=\"modal-title\" id=\"myModalLabel\">上传教程</h4>
+      </div>
+      <div class=\"modal-body\">
+        <video src='./assets/video/upload.mp4' preload='auto' controls height='400px' width='500px'></video>
+      </div>
+      <div class=\"modal-footer\">
+        <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">关闭</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal -->
+<div class=\"modal fade\" id=\"downloadModal\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\">
+  <div class=\"modal-dialog\" role=\"document\">
+    <div class=\"modal-content\">
+      <div class=\"modal-header\">
+        <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button>
+        <h4 class=\"modal-title\" id=\"myModalLabel\">上传教程</h4>
+      </div>
+      <div class=\"modal-body\">
+        <video src='./assets/video/download.mp4' preload='auto' controls height='400px' width='500px'></video>
+      </div>
+      <div class=\"modal-footer\">
+        <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">关闭</button>
+      </div>
+    </div>
+  </div>
+</div>
+    <div id='notice'>
+                                   <div class=\"alert alert-block fade in\">
+                                       <button type=\"button\" class=\"close\" ></button>
+                                       <h4 class=\"alert-heading\">通知!</h4>
+                                       <p> 不清楚如何下载？如何发种？请用几分钟的视频了解一下吧！ </p>
+                                       <br>
+                                       <p>
+                                           <a data-toggle=\"modal\" data-target=\"#downloadModal\"><img src='./assets/img/download.png'/ style='height:70px'></a>
+                                           <a data-toggle=\"modal\" data-target=\"#uploadModel\" ><img src='./assets/img/upload.png'/ style='height:70px'></a>
+                                           <br><br>
+                                           <a class=\"btn green\" data-dismiss=\"alert\"> 暂时隐藏 </a>
+                                           <a class=\"btn green\" href='./assets/utorrent_2.2.1.exe'> 下载客户端 </a>
+                                       </p>
+                                   </div>
+    </div>";
 end_main_frame();
 stdfoot();
 ?>
