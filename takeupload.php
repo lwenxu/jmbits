@@ -218,26 +218,26 @@ $allowspecial = user_can_upload("music");
 $catmod = get_single_value("categories","mode","WHERE id=".sqlesc($catid));
 $offerid = $_POST['offer'];
 $is_offer=false;
-if ($browsecatmode != $specialcatmode && $catmod == $specialcatmode){//upload to special section
-	if (!$allowspecial)
-		bark($lang_takeupload['std_unauthorized_upload_freely']);
-}
-elseif($catmod == $browsecatmode){//upload to torrents section
- 	if ($offerid){//it is a offer
-		$allowed_offer_count = get_row_count("offers","WHERE allowed='allowed' AND userid=".sqlesc($CURUSER["id"]));
-		if ($allowed_offer_count && $enableoffer == 'yes'){
-				$allowed_offer = get_row_count("offers","WHERE id=".sqlesc($offerid)." AND allowed='allowed' AND userid=".sqlesc($CURUSER["id"]));
-				if ($allowed_offer != 1)//user uploaded torrent that is not an allowed offer
-					bark($lang_takeupload['std_uploaded_not_offered']);
-				else $is_offer = true;
-		}
-		else bark($lang_takeupload['std_uploaded_not_offered']);
-	}
-	elseif (!$allowtorrents)
-		bark($lang_takeupload['std_unauthorized_upload_freely']);
-}
-else //upload to unknown section
-	die("Upload to unknown section.");
+//if ($browsecatmode != $specialcatmode && $catmod == $specialcatmode){//upload to special section
+//	if (!$allowspecial)
+//		bark($lang_takeupload['std_unauthorized_upload_freely']);
+//}
+//elseif($catmod == $browsecatmode){//upload to torrents section
+// 	if ($offerid){//it is a offer
+//		$allowed_offer_count = get_row_count("offers","WHERE allowed='allowed' AND userid=".sqlesc($CURUSER["id"]));
+//		if ($allowed_offer_count && $enableoffer == 'yes'){
+//				$allowed_offer = get_row_count("offers","WHERE id=".sqlesc($offerid)." AND allowed='allowed' AND userid=".sqlesc($CURUSER["id"]));
+//				if ($allowed_offer != 1)//user uploaded torrent that is not an allowed offer
+//					bark($lang_takeupload['std_uploaded_not_offered']);
+//				else $is_offer = true;
+//		}
+//		else bark($lang_takeupload['std_uploaded_not_offered']);
+//	}
+//	elseif (!$allowtorrents)
+//		bark($lang_takeupload['std_unauthorized_upload_freely']);
+//}
+//else //upload to unknown section
+//	die("Upload to unknown section.");
 // ------------- end: check upload authority ------------------//
 
 // Replace punctuation characters with spaces
