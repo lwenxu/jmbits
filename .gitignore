@@ -1,11 +1,12 @@
 .idea
-config
+config/*
 torrents/*.torrent
-bitbucket
-attachments
+bitbucket/*
+attachments/*
 !bitbucket/index.php
 !assets/index.php
 !_db/index.php
 !_doc/index.php
 !classes/index.php
 !config/index.php
+!config/allconfig-bak.php
