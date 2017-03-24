@@ -353,16 +353,29 @@ elseif(isset($self))
 }
 else
 {
-	$sockres = @pfsockopen($ip, $port, $errno, $errstr, 5);
-	if (!$sockres)
-	{
-		$connectable = "no";
+//	$sockres = @pfsockopen($ip, $port, $errno, $errstr, 5);
+//	if (!$sockres)
+//	{
+//		$connectable = "no";
+//	}
+//	else
+//	{
+//		$connectable = "yes";
+//		@fclose($sockres);
+//	}
+    if (strlen( $ip ) > 15){
+        if($protocol==6);{ //判断是否为ipv6地址
+            $sockres = @pfsockopen("tcp://[".$ip."]",$port,$errno,$errstr,5);
+		}
+	} else{
+        $sockres = @pfsockopen($ip,$port,$errno,$errstr,5);
 	}
-	else
-	{
-		$connectable = "yes";
-		@fclose($sockres);
-	}
+    if (!$sockres) {
+        $connectable = "no";
+    } else {
+        $connectable = "yes";
+        @fclose ( $sockres );
+    }
 	sql_query("INSERT INTO peers (torrent, userid, peer_id, ip, port, connectable, uploaded, downloaded, to_go, started, last_action, seeder, agent, downloadoffset, uploadoffset, passkey) VALUES ($torrentid, $userid, ".sqlesc($peer_id).", ".sqlesc($ip).", $port, '$connectable', $uploaded, $downloaded, $left, $dt, $dt, '$seeder', ".sqlesc($agent).", $downloaded, $uploaded, ".sqlesc($passkey).")") or err("PL Err 2");
 
 	if (mysql_affected_rows())
