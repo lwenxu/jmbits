@@ -411,7 +411,7 @@ echo "
     <tr>
         <td style=\"border: 0px\">
 ";
-echo "<blockquote style='font-size: 12px'>" . $lang_index['text_disclaimer_content'] . "</blockquote></td>
+echo "<blockquote style='font-size: 15px'>" . $lang_index['text_disclaimer_content'].$lang_index['text_service_for'] . "</blockquote></td>
     </tr>
 </table>";
 echo "</div>";
@@ -433,6 +433,22 @@ echo $lang_index['text_browser_note'] ."</font></div>
 ";
 echo "</div>";
 echo "</div>";  //-------------col-md-6 end------------------------//
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
