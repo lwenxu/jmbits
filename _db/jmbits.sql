@@ -1,47 +1,80 @@
 -- phpMyAdmin SQL Dump
--- version 3.3.2deb1
+-- version 4.5.1
 -- http://www.phpmyadmin.net
 --
--- Host: localhost
--- Generation Time: May 18, 2010 at 01:10 AM
--- Server version: 5.1.41
--- PHP Version: 5.3.2-1ubuntu4
+-- Host: 127.0.0.1
+-- Generation Time: 2017-03-24 14:22:32
+-- 服务器版本： 10.1.13-MariaDB
+-- PHP Version: 5.6.21
 
-SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
+/*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `nexus20100517`
+-- Database: `nexusphp`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `adminpanel`
+-- 表的结构 `adclicks`
 --
 
-CREATE TABLE IF NOT EXISTS `adminpanel` (
-  `id` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,
+CREATE TABLE `adclicks` (
+  `id` int(11) UNSIGNED NOT NULL,
+  `adid` int(11) UNSIGNED DEFAULT NULL,
+  `userid` int(11) UNSIGNED DEFAULT NULL,
+  `added` datetime DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `address`
+--
+
+CREATE TABLE `address` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `beginip` int(20) UNSIGNED NOT NULL COMMENT '起始ip',
+  `endip` int(20) UNSIGNED NOT NULL COMMENT '终止ip',
+  `memo` varchar(100) NOT NULL COMMENT '说明'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+--
+-- 转存表中的数据 `address`
+--
+
+INSERT INTO `address` (`id`, `beginip`, `endip`, `memo`) VALUES
+(1, 174391553, 174391806, '一号学生公寓一楼'),
+(2, 174391809, 174392062, '一号学生公寓二楼');
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `adminpanel`
+--
+
+CREATE TABLE `adminpanel` (
+  `id` tinyint(3) UNSIGNED NOT NULL,
   `name` varchar(128) NOT NULL DEFAULT '',
   `url` varchar(255) NOT NULL DEFAULT '',
-  `info` varchar(255) NOT NULL DEFAULT '',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=12 ;
+  `info` varchar(255) NOT NULL DEFAULT ''
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `adminpanel`
+-- 转存表中的数据 `adminpanel`
 --
 
 INSERT INTO `adminpanel` (`id`, `name`, `url`, `info`) VALUES
 (1, 'Add user', 'adduser.php', 'Create new user account'),
 (3, 'Reset Users Password', 'reset.php', 'Rest lost Passwords'),
 (4, 'Mass PM', 'staffmess.php', 'Send PM to all users'),
-(5, 'List Unconnectable Users', 'notconnectable.php', 'View All Unconnectable Users'),
 (6, 'Poll overview', 'polloverview.php', 'View poll votes'),
 (7, 'Warned users', 'warned.php', 'See all warned users on tracker'),
 (8, 'FreeLeech', 'freeleech.php', 'Set ALL Torrents At Special State.'),
@@ -52,11 +85,11 @@ INSERT INTO `adminpanel` (`id`, `name`, `url`, `info`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `advertisements`
+-- 表的结构 `advertisements`
 --
 
-CREATE TABLE IF NOT EXISTS `advertisements` (
-  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+CREATE TABLE `advertisements` (
+  `id` mediumint(8) UNSIGNED NOT NULL,
   `enabled` tinyint(1) NOT NULL DEFAULT '0',
   `type` enum('bbcodes','xhtml','text','image','flash') NOT NULL,
   `position` enum('header','footer','belownav','belowsearchbox','torrentdetail','comment','interoverforums','forumpost','popup') NOT NULL,
@@ -65,64 +98,58 @@ CREATE TABLE IF NOT EXISTS `advertisements` (
   `parameters` text NOT NULL,
   `code` text NOT NULL,
   `starttime` datetime NOT NULL,
-  `endtime` datetime NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
---
--- Dumping data for table `advertisements`
---
-
+  `endtime` datetime NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `agent_allowed_exception`
+-- 表的结构 `agent_allowed_exception`
 --
 
-CREATE TABLE IF NOT EXISTS `agent_allowed_exception` (
-  `family_id` tinyint(3) unsigned NOT NULL,
+CREATE TABLE `agent_allowed_exception` (
+  `family_id` tinyint(3) UNSIGNED NOT NULL,
   `name` varchar(100) NOT NULL DEFAULT '',
   `peer_id` varchar(20) NOT NULL,
   `agent` varchar(100) NOT NULL,
-  `comment` varchar(200) NOT NULL DEFAULT '',
-  KEY `family_id` (`family_id`)
+  `comment` varchar(200) NOT NULL DEFAULT ''
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `agent_allowed_exception`
+-- 转存表中的数据 `agent_allowed_exception`
 --
 
 INSERT INTO `agent_allowed_exception` (`family_id`, `name`, `peer_id`, `agent`, `comment`) VALUES
-(16, 'uTorrent 1.80B (Build 6838)', '-UT180B-', 'uTorrent/180B(6838)', 'buggy build that always seeding bad request');
+(16, 'uTorrent 1.80B (Build 6838)', '-UT180B-', 'uTorrent/180B(6838)', 'buggy build that always seeding bad request'),
+(0, 'uTorrent 3.100', '-UT3100-', '', '存在重要安全问题'),
+(2, 'uTorrent 3.100', '-UT3100-', '', '存在重要安全问题');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `agent_allowed_family`
+-- 表的结构 `agent_allowed_family`
 --
 
-CREATE TABLE IF NOT EXISTS `agent_allowed_family` (
-  `id` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,
+CREATE TABLE `agent_allowed_family` (
+  `id` tinyint(3) UNSIGNED NOT NULL,
   `family` varchar(50) NOT NULL DEFAULT '',
   `start_name` varchar(100) NOT NULL DEFAULT '',
   `peer_id_pattern` varchar(200) NOT NULL,
-  `peer_id_match_num` tinyint(3) unsigned NOT NULL,
+  `peer_id_match_num` tinyint(3) UNSIGNED NOT NULL,
   `peer_id_matchtype` enum('dec','hex') NOT NULL DEFAULT 'dec',
   `peer_id_start` varchar(20) NOT NULL,
   `agent_pattern` varchar(200) NOT NULL,
-  `agent_match_num` tinyint(3) unsigned NOT NULL,
+  `agent_match_num` tinyint(3) UNSIGNED NOT NULL,
   `agent_matchtype` enum('dec','hex') NOT NULL DEFAULT 'dec',
   `agent_start` varchar(100) NOT NULL,
   `exception` enum('yes','no') NOT NULL DEFAULT 'no',
   `allowhttps` enum('yes','no') NOT NULL DEFAULT 'no',
   `comment` varchar(200) NOT NULL DEFAULT '',
-  `hits` mediumint(8) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+  `hits` mediumint(8) UNSIGNED NOT NULL DEFAULT '0'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `agent_allowed_family`
+-- 转存表中的数据 `agent_allowed_family`
 --
 
 INSERT INTO `agent_allowed_family` (`id`, `family`, `start_name`, `peer_id_pattern`, `peer_id_match_num`, `peer_id_matchtype`, `peer_id_start`, `agent_pattern`, `agent_match_num`, `agent_matchtype`, `agent_start`, `exception`, `allowhttps`, `comment`, `hits`) VALUES
@@ -131,7 +158,7 @@ INSERT INTO `agent_allowed_family` (`id`, `family`, `start_name`, `peer_id_patte
 (3, 'Bittorrent 6.x', 'Bittorrent 6.0.1', '/^M6-([0-9])-([0-9])--/', 2, 'dec', 'M6-0-1--', '/^BitTorrent\\/6([0-9])([0-9])([0-9])/', 3, 'dec', 'BitTorrent/6010', 'no', 'yes', '', 0),
 (4, 'Deluge 0.x', 'Deluge 0.5.8.9', '/^-DE0([0-9])([0-9])([0-9])-/', 3, 'dec', '-DE0589-', '/^Deluge 0\\.([0-9])\\.([0-9])\\.([0-9])/', 3, 'dec', 'Deluge 0.5.8.9', 'no', 'yes', '', 0),
 (5, 'Transmission1.x', 'Transmission 1.06 (build 5136)', '/^-TR1([0-9])([0-9])([0-9])-/', 3, 'dec', '-TR1060-', '/^Transmission\\/1\\.([0-9])([0-9])/', 3, 'dec', 'Transmission/1.06', 'no', 'yes', '', 0),
-(6, 'RTorrent 0.x(with libtorrent 0.x)', 'rTorrent 0.8.0 (with libtorrent 0.12.0)', '/^-lt([0-9A-E])([0-9A-E])([0-9A-E])([0-9A-E])-/', 4, 'hex', '-lt0C00-', '/^rtorrent\\/0\\.([0-9])\\.([0-9])\\/0\\.([1-9][0-9]*)\\.(0|[1-9][0-9]*)/', 4, 'dec', 'rtorrent/0.8.0/0.12.0', 'no', 'no', '', 3),
+(6, 'RTorrent 0.x(with libtorrent 0.x)', 'rTorrent 0.8.0 (with libtorrent 0.12.0)', '/^-lt([0-9A-E])([0-9A-E])([0-9A-E])([0-9A-E])-/', 4, 'hex', '-lt0C00-', '/^rtorrent\\/0\\.([0-9])\\.([0-9])\\/0\\.([1-9][0-9]*)\\.(0|[1-9][0-9]*)/', 4, 'dec', 'rtorrent/0.8.0/0.12.0', 'no', 'no', '', 0),
 (7, 'Rufus 0.x', 'Rufus 0.6.9', '', 0, 'dec', '', '/^Rufus\\/0\\.([0-9])\\.([0-9])/', 2, 'dec', 'Rufus/0.6.9', 'no', 'no', '', 0),
 (8, 'Azureus 3.x', 'Azureus 3.0.5.0', '/^-AZ3([0-9])([0-9])([0-9])-/', 3, 'dec', '-AZ3050-', '/^Azureus 3\\.([0-9])\\.([0-9])\\.([0-9])/', 3, 'dec', 'Azureus 3.0.5.0', 'no', 'yes', '', 0),
 (9, 'uTorrent 1.7.x', 'uTorrent 1.7.5', '/^-UT17([0-9])([0-9])-/', 2, 'dec', '-UT1750-', '/^uTorrent\\/17([0-9])([0-9])/', 2, 'dec', 'uTorrent/1750', 'no', 'yes', '', 0),
@@ -142,22 +169,25 @@ INSERT INTO `agent_allowed_family` (`id`, `family`, `start_name`, `peer_id_patte
 (14, 'SymTorrent', '', '', 0, 'dec', '', '/^SymTorrent/', 0, 'dec', 'SymTorrent', 'no', 'no', '', 0),
 (15, 'Deluge 1.x', 'Deluge 1.1.6', '/^-DE1([0-9])([0-9])([0-9])-/', 3, 'dec', '-DE1160-', '/^Deluge 1\\.([0-9])\\.([0-9])/', 2, 'dec', 'Deluge 1.1.6', 'no', 'yes', '', 0),
 (16, 'uTorrent 1.8xB', 'uTorrent 1.80 Beta (build 9137)', '/^-UT18([0-9])B-/', 1, 'dec', '-UT180B-', '/^uTorrent\\/18([0-9])B\\(([1-9][0-9]*)\\)/', 2, 'dec', 'uTorrent/180B(9137)', 'no', 'yes', '', 0),
-(17, 'uTorrent 2.x.x', 'uTorrent 2.0(build 17624)', '/^-UT2([0-9])([0-9])([0-9])-/', 3, 'dec', '-UT2000-', '/^uTorrent\\/2([0-9])([0-9])([0-9])/', 3, 'dec', 'uTorrent/2000', 'no', 'yes', '', 0);
+(17, 'uTorrent 2.x.x', 'uTorrent 2.0(build 17624)', '/^-UT2([0-9])([0-9])([0-9])-/', 3, 'dec', '-UT2000-', '/^uTorrent\\/2([0-9])([0-9])([0-9])/', 3, 'dec', 'uTorrent/2000', 'no', 'yes', '', 3),
+(18, 'Transmission2.x', 'Transmission 2.0', '/^-TR2([0-9])([0-9])([0-9])-/', 3, 'dec', '-TR2000-', '/^Transmission\\/2\\.([0-9])([0-9])/', 3, 'dec', 'Transmission/2.00', 'no', 'yes', '', 0),
+(19, 'uTorrent 3.x', 'uTorrent/3000', '/^-UT3([0-9])([0-9])([0-9])-/', 3, 'dec', '-UT3000-', '/^uTorrent\\/3([0-9])([0-9])([0-9])/', 3, 'dec', 'uTorrent/3000', 'no', 'yes', '', 2),
+(20, 'uTorrent 3.x.x', 'uTorrent 3.0.0', '-UT3([0-9])([0-9])([0-9])-', 3, 'dec', '-UT3000', '/^uTorrent\\\\/3([0-9])([0-9])([0-9])/', 3, 'dec', 'uTorrent/3000', 'no', 'yes', '', 0),
+(21, 'uTorrent 3.x.xB', 'uTorrent 3.0.0B', '-UT3([0-9])([0-9])([B])-', 3, 'dec', '-UT300B', '/^uTorrent\\\\/3([0-9])([0-9])([B])/', 3, 'dec', 'uTorrent/300B', 'no', 'yes', '', 0);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `allowedemails`
+-- 表的结构 `allowedemails`
 --
 
-CREATE TABLE IF NOT EXISTS `allowedemails` (
-  `id` int(10) NOT NULL AUTO_INCREMENT,
-  `value` mediumtext NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+CREATE TABLE `allowedemails` (
+  `id` int(10) NOT NULL,
+  `value` mediumtext NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `allowedemails`
+-- 转存表中的数据 `allowedemails`
 --
 
 INSERT INTO `allowedemails` (`id`, `value`) VALUES
@@ -166,48 +196,97 @@ INSERT INTO `allowedemails` (`id`, `value`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `attachments`
+-- 表的结构 `attachments`
 --
 
-CREATE TABLE IF NOT EXISTS `attachments` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `userid` mediumint(8) unsigned NOT NULL DEFAULT '0',
-  `width` smallint(6) unsigned NOT NULL DEFAULT '0',
+CREATE TABLE `attachments` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `userid` mediumint(8) UNSIGNED NOT NULL DEFAULT '0',
+  `width` smallint(6) UNSIGNED NOT NULL DEFAULT '0',
   `added` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `filename` varchar(255) NOT NULL DEFAULT '',
   `dlkey` char(32) NOT NULL,
   `filetype` varchar(50) NOT NULL DEFAULT '',
-  `filesize` bigint(20) unsigned NOT NULL DEFAULT '0',
+  `filesize` bigint(20) UNSIGNED NOT NULL DEFAULT '0',
   `location` varchar(255) NOT NULL,
   `downloads` mediumint(8) NOT NULL DEFAULT '0',
-  `isimage` tinyint(1) unsigned NOT NULL DEFAULT '0',
-  `thumb` tinyint(1) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`),
-  KEY `pid` (`userid`,`id`),
-  KEY `dateline` (`added`,`isimage`,`downloads`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  `isimage` tinyint(1) UNSIGNED NOT NULL DEFAULT '0',
+  `thumb` tinyint(1) UNSIGNED NOT NULL DEFAULT '0'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `attachments`
+-- 转存表中的数据 `attachments`
 --
 
+INSERT INTO `attachments` (`id`, `userid`, `width`, `added`, `filename`, `dlkey`, `filetype`, `filesize`, `location`, `downloads`, `isimage`, `thumb`) VALUES
+(1, 1, 1260, '2016-11-26 17:31:55', '58373aae-8de4-4b32-95dc-8b2f8ebb91e6x840.jpg', '5450972a6ab6b457fd2a10d0ea282f03', 'image/jpeg', 140781, '201611/20161126173155dc7d24cb6babe0d0166c677240fa6ec3.jpg', 0, 1, 1),
+(2, 1, 1500, '2016-11-26 17:33:56', '41764278_p0.jpg', 'ff69770db59faba1cc7ac30c135403f0', 'image/jpeg', 322392, '201611/2016112617335687bca26116a53c5da81b5a437c5da44d.jpg', 0, 1, 1),
+(3, 1, 1260, '2016-11-26 17:46:14', '58373aae-8de4-4b32-95dc-8b2f8ebb91e6x840.jpg', 'd009303afe3174b1467d7a1eba5b6cd9', 'image/jpeg', 140781, '201611/20161126174614dc7d24cb6babe0d0166c677240fa6ec3.jpg', 0, 1, 1),
+(4, 1, 1260, '2016-11-26 17:52:10', '58373aae-8de4-4b32-95dc-8b2f8ebb91e6x840.jpg', '0a399ade2f39996d2191b7ec62323c19', 'image/jpeg', 140781, '201611/20161126175210dc7d24cb6babe0d0166c677240fa6ec3.jpg', 0, 1, 1),
+(5, 1, 1181, '2016-12-03 03:47:23', 'QQ截图20161121180627.png', '080950d117af36401b96644224c61c28', 'image/png', 87493, '201612/201612030347239208a5b6ce507b6122ab6be5edf343b3.png', 0, 1, 1),
+(6, 1, 1181, '2016-12-03 04:04:05', 'QQ截图20161121180627.png', 'b79504701a6981ef5a20703e24720f53', 'image/png', 87493, '201612/201612030404049208a5b6ce507b6122ab6be5edf343b3.png', 0, 1, 1),
+(7, 1, 1181, '2016-12-03 04:05:14', 'QQ截图20161121180627.png', '375007bbe03d6b452a75ac19edf90036', 'image/png', 87493, '201612/201612030405149208a5b6ce507b6122ab6be5edf343b3.png', 0, 1, 1),
+(8, 1, 1181, '2016-12-03 04:16:57', 'QQ截图20161121180627.png', '169e515e32c320593f989dd5c1f0ceb4', 'image/png', 87493, '201612/201612030416579208a5b6ce507b6122ab6be5edf343b3.png', 0, 1, 1),
+(9, 1, 1504, '2016-12-03 07:26:28', 'The Space Wallpaper - Imgur.jpg', '29a9ea1e2ae65fddbd83121517fbcbf4', 'image/jpeg', 98046, '201612/20161203072628932ca7296007ace1fbb7ab189562f1ef.jpg', 0, 1, 1),
+(10, 1, 1504, '2016-12-03 07:27:35', 'The Space Wallpaper - Imgur.jpg', '03f2837db8d64b3e9f07d981d61a7112', 'image/jpeg', 98046, '201612/20161203072735932ca7296007ace1fbb7ab189562f1ef.jpg', 0, 1, 1),
+(11, 1, 1504, '2016-12-03 07:28:35', 'The Space Wallpaper - Imgur.jpg', '2483ee1d7c0b7a7eca3be8e77933824f', 'image/jpeg', 98046, '201612/20161203072834932ca7296007ace1fbb7ab189562f1ef.jpg', 0, 1, 1),
+(12, 22, 1504, '2016-12-03 17:15:15', 'The Space Wallpaper - Imgur.jpg', '77ce0e358997cbdf5a6a89296c76b7be', 'image/jpeg', 98046, '201612/20161203171515932ca7296007ace1fbb7ab189562f1ef.jpg', 0, 1, 1),
+(13, 27, 1920, '2016-12-10 08:05:56', '3.jpg', '23c98a469b4cddcd219cc23c143e81c1', 'image/jpeg', 159939, '201612/2016121008055667d536e724ddca155c9be5c164576b5e.jpg', 0, 1, 1),
+(14, 1, 1062, '2016-12-28 09:17:49', 'cb8065380cd791231e35789fa5345982b3b78000.jpg', '52dc61b991e30c719769d9ffafeb4cb5', 'image/jpeg', 186304, '201612/201612280917488aadb7d730f5720d29a859b57e766251.jpg', 0, 1, 1),
+(15, 1, 1062, '2016-12-28 09:21:13', 'cb8065380cd791231e35789fa5345982b3b78000.jpg', 'de4f3dc1520fec8554c2332ab4b98a7c', 'image/jpeg', 186304, '201612/201612280921128aadb7d730f5720d29a859b57e766251.jpg', 0, 1, 1),
+(16, 1, 1062, '2016-12-28 09:21:34', 'cb8065380cd791231e35789fa5345982b3b78000.jpg', '57f1a01521863248c9162789fe6567f1', 'image/jpeg', 186304, '201612/201612280921338aadb7d730f5720d29a859b57e766251.jpg', 0, 1, 1),
+(17, 1, 1062, '2016-12-28 09:21:51', 'cb8065380cd791231e35789fa5345982b3b78000.jpg', '71445c0130d5b752f40e176a3a88942e', 'image/jpeg', 186304, '201612/201612280921518aadb7d730f5720d29a859b57e766251.jpg', 0, 1, 1),
+(18, 1, 1062, '2016-12-28 09:24:38', 'cb8065380cd791231e35789fa5345982b3b78000.jpg', '63741b131a7273abed7e2020793c71f4', 'image/jpeg', 186304, '201612/201612280924388aadb7d730f5720d29a859b57e766251.jpg', 0, 1, 1),
+(19, 1, 1062, '2016-12-28 09:24:43', 'cb8065380cd791231e35789fa5345982b3b78000.jpg', '745bbccdbba3f7c0a9eac36c8c00827c', 'image/jpeg', 186304, '201612/201612280924428aadb7d730f5720d29a859b57e766251.jpg', 0, 1, 1),
+(20, 1, 1062, '2016-12-28 09:24:51', 'cb8065380cd791231e35789fa5345982b3b78000.jpg', '62dc5f0ac12f3478a3dacee50eba3740', 'image/jpeg', 186304, '201612/201612280924518aadb7d730f5720d29a859b57e766251.jpg', 0, 1, 1),
+(21, 1, 1026, '2016-12-30 15:02:48', '图的性质.png', 'c352dfc4f19504aa3e9e4b753846873c', 'image/png', 508106, '201612/201612301502486018e23adb5883b1029024022fee998d.png', 0, 1, 1),
+(22, 1, 1025, '2016-12-30 15:03:17', '性质4.png', 'c7693259e4f6421e54a2979bfd6eb1d7', 'image/png', 677284, '201612/20161230150317c3ae59e453d853d34b24972e355603b9.png', 0, 1, 1),
+(23, 1, 1025, '2016-12-30 15:03:21', '性质4.png', '4ef3e539613474388078b12a819c6993', 'image/png', 677284, '201612/20161230150321c3ae59e453d853d34b24972e355603b9.png', 0, 1, 1),
+(24, 1, 1025, '2016-12-30 15:03:32', '性质4.png', '63666ef35273acaf496db2ef92d2a32e', 'image/png', 677284, '201612/20161230150332c3ae59e453d853d34b24972e355603b9.png', 0, 1, 1),
+(25, 1, 256, '2017-02-07 16:19:16', 'Downloads.png', '50d759a45f9d4fbd20b97376249cdd16', 'image/png', 48513, '201702/20170207161916d4d0645a1556f0a1ba4e8d907aef5c46.png', 0, 1, 0),
+(26, 1, 256, '2017-02-07 16:19:39', 'Downloads.png', '1ad943fb5764888fd0a91fe8b319a46b', 'image/png', 48513, '201702/20170207161939d4d0645a1556f0a1ba4e8d907aef5c46.png', 0, 1, 0),
+(27, 1, 256, '2017-02-07 16:20:32', 'Finder.png', '4fed54163051ab8273df20455187b750', 'image/png', 31906, '201702/201702071620325deaa0efd2d9aa76f613fc0b4afa90e6.png', 0, 1, 0),
+(28, 1, 256, '2017-02-08 03:19:19', 'Finder.png', '5cb03ceaa42cccfc7e9fb8b4fe8bf6a3', 'image/png', 31906, '201702/201702080319195deaa0efd2d9aa76f613fc0b4afa90e6.png', 0, 1, 0),
+(29, 1, 256, '2017-02-08 03:19:23', 'iTunes.png', '05a11358fe62475668d25783d0cd00a1', 'image/png', 51750, '201702/201702080319234b745950faa4720754a2ea245ee44089.png', 0, 1, 0),
+(30, 1, 256, '2017-02-08 03:19:52', 'Finder.png', 'b55d4b4db04cacf340dc0e66f40a1016', 'image/png', 31906, '201702/201702080319525deaa0efd2d9aa76f613fc0b4afa90e6.png', 0, 1, 0),
+(31, 1, 256, '2017-02-08 03:24:55', 'Documents.png', 'b8316a86fea210f9b85b5a6bdc3c5ad9', 'image/png', 47431, '201702/201702080324553863c79e4f0f9bd21cc8a2f23639818e.png', 0, 1, 0),
+(32, 1, 256, '2017-02-08 04:00:25', 'App Store.png', 'a2c7981362ce763c42182df29dbe786c', 'image/png', 44443, '201702/20170208040025ca0a92f5d22a8d51724217809ab8f036.png', 0, 1, 0),
+(33, 1, 256, '2017-02-08 04:00:28', 'Downloads.png', '9feb39761215724cb14f46f27e701a40', 'image/png', 48513, '201702/20170208040028d4d0645a1556f0a1ba4e8d907aef5c46.png', 0, 1, 0),
+(34, 1, 256, '2017-02-08 04:00:43', 'Documents.png', '04ae836d423c6f2fc1721ff3d3f06b8e', 'image/png', 47431, '201702/201702080400433863c79e4f0f9bd21cc8a2f23639818e.png', 0, 1, 0),
+(35, 1, 256, '2017-02-08 04:00:47', 'Downloads.png', 'e9dce479008b4d3841b45c8c6edc5815', 'image/png', 48513, '201702/20170208040047d4d0645a1556f0a1ba4e8d907aef5c46.png', 0, 1, 0),
+(36, 1, 256, '2017-02-08 04:00:58', 'Launchpad.png', '457382caf379114a6d0f35b4f2d91fe5', 'image/png', 47282, '201702/201702080400587a7e3599b87db6c96fae8f0204727966.png', 0, 1, 0),
+(37, 1, 256, '2017-02-08 04:01:04', 'Documents.png', '1cbf5332f645787a1fdfac2ceaed046c', 'image/png', 47431, '201702/201702080401043863c79e4f0f9bd21cc8a2f23639818e.png', 0, 1, 0),
+(38, 1, 256, '2017-02-08 04:01:27', 'Downloads.png', '7115e87b74315155f115fc55f03de05c', 'image/png', 48513, '201702/20170208040127d4d0645a1556f0a1ba4e8d907aef5c46.png', 0, 1, 0),
+(39, 1, 256, '2017-02-08 04:01:30', 'Downloads.png', '6cbfc88854ba3cb6a4068437f8e93da3', 'image/png', 48513, '201702/20170208040130d4d0645a1556f0a1ba4e8d907aef5c46.png', 0, 1, 0),
+(40, 1, 256, '2017-02-08 04:02:02', 'Documents.png', '5bad1299b3aad875c60a5c7d4e2c606b', 'image/png', 47431, '201702/201702080402023863c79e4f0f9bd21cc8a2f23639818e.png', 0, 1, 0),
+(41, 1, 256, '2017-02-08 04:35:21', 'Downloads.png', '6cbe4091f72cfbffd23e6f06523cb9cc', 'image/png', 48513, '201702/20170208043521d4d0645a1556f0a1ba4e8d907aef5c46.png', 0, 1, 0),
+(42, 1, 256, '2017-02-08 04:36:04', 'Finder.png', '39b40190082f6cce60524f4a8516a0da', 'image/png', 31906, '201702/201702080436045deaa0efd2d9aa76f613fc0b4afa90e6.png', 0, 1, 0),
+(43, 1, 256, '2017-02-08 10:53:41', 'Finder.png', 'b2e846860c11e936eb914e42765a4206', 'image/png', 31906, '201702/201702081053415deaa0efd2d9aa76f613fc0b4afa90e6.png', 0, 1, 0),
+(44, 1, 256, '2017-02-08 10:53:51', 'Mail.png', '6c7989dec4889fa2792915ff67a4fc49', 'image/png', 85186, '201702/20170208105351a712ccc5ded37126311535ced6865d02.png', 0, 1, 0),
+(45, 1, 256, '2017-02-09 04:16:31', 'Mail.png', 'c41594c30f2369860b7470c3cde92866', 'image/png', 85186, '201702/20170209041631a712ccc5ded37126311535ced6865d02.png', 0, 1, 0),
+(46, 1, 256, '2017-02-10 05:15:24', 'App Store.png', '9aeb6f5d4dd32c623813e5e23ff3da94', 'image/png', 44443, '201702/20170210051524ca0a92f5d22a8d51724217809ab8f036.png', 0, 1, 0),
+(47, 1, 256, '2017-02-10 05:15:28', 'App Store.png', '83034b3b4889d3b63ddef5ed4311272a', 'image/png', 44443, '201702/20170210051528ca0a92f5d22a8d51724217809ab8f036.png', 0, 1, 0),
+(48, 1, 256, '2017-02-10 05:18:39', 'Finder.png', '93e02422d5bd43c11b1ca45b0b415600', 'image/png', 31906, '201702/201702100518395deaa0efd2d9aa76f613fc0b4afa90e6.png', 0, 1, 0),
+(49, 1, 256, '2017-02-10 06:41:25', 'Finder.png', 'e2ea750c1aebc5cdfdfa697de3d296d8', 'image/png', 31906, '201702/201702100641255deaa0efd2d9aa76f613fc0b4afa90e6.png', 0, 1, 0),
+(50, 1, 256, '2017-02-10 07:17:49', 'Documents.png', '677921047f0255c68074e75ca9fba0d6', 'image/png', 47431, '201702/201702100717493863c79e4f0f9bd21cc8a2f23639818e.png', 0, 1, 0),
+(51, 29, 1599, '2017-02-10 14:43:23', '8c1001e93901213f68aad0fb56e736d12f2e9578.jpg', '7ef3f3ca61ff94ee870c167bd6ae5261', 'image/jpeg', 331244, '201702/2017021014432349b711f75be27a7f0e0b912b401ca645.jpg', 0, 1, 1),
+(52, 29, 1366, '2017-02-24 04:24:13', 'HallwylfjelletSunset_PT-BR9423796363_1366x768.jpg', 'd4305a4a6d5d75a00b6d903e922f84be', 'image/jpeg', 77413, '201702/201702240424131a1227d41745746bb766f62dd4b207fd.jpg', 0, 1, 1);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `audiocodecs`
+-- 表的结构 `audiocodecs`
 --
 
-CREATE TABLE IF NOT EXISTS `audiocodecs` (
-  `id` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,
+CREATE TABLE `audiocodecs` (
+  `id` tinyint(3) UNSIGNED NOT NULL,
   `name` varchar(30) NOT NULL,
   `image` varchar(255) NOT NULL,
-  `sort_index` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC AUTO_INCREMENT=10 ;
+  `sort_index` tinyint(3) UNSIGNED NOT NULL DEFAULT '0'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 --
--- Dumping data for table `audiocodecs`
+-- 转存表中的数据 `audiocodecs`
 --
 
 INSERT INTO `audiocodecs` (`id`, `name`, `image`, `sort_index`) VALUES
@@ -222,43 +301,41 @@ INSERT INTO `audiocodecs` (`id`, `name`, `image`, `sort_index`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `avps`
+-- 表的结构 `avps`
 --
 
-CREATE TABLE IF NOT EXISTS `avps` (
+CREATE TABLE `avps` (
   `arg` varchar(20) NOT NULL DEFAULT '',
   `value_s` text NOT NULL,
   `value_i` int(11) NOT NULL DEFAULT '0',
-  `value_u` int(10) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (`arg`)
+  `value_u` int(10) UNSIGNED NOT NULL DEFAULT '0'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `avps`
+-- 转存表中的数据 `avps`
 --
 
 INSERT INTO `avps` (`arg`, `value_s`, `value_i`, `value_u`) VALUES
-('lastcleantime', '', 0, 1274104801),
+('lastcleantime', '', 0, 1488454336),
 ('last24', '', 947, 1211708476),
-('lastcleantime2', '', 0, 1274103601),
-('lastcleantime3', '', 0, 1274101801),
-('lastcleantime4', '', 0, 1274079901),
-('lastcleantime5', '', 0, 1273652875);
+('lastcleantime2', '', 0, 1488454336),
+('lastcleantime3', '', 0, 1488454336),
+('lastcleantime4', '', 0, 1488454336),
+('lastcleantime5', '', 0, 1488454336);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `bannedemails`
+-- 表的结构 `bannedemails`
 --
 
-CREATE TABLE IF NOT EXISTS `bannedemails` (
-  `id` int(10) NOT NULL AUTO_INCREMENT,
-  `value` mediumtext NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+CREATE TABLE `bannedemails` (
+  `id` int(10) NOT NULL,
+  `value` mediumtext NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `bannedemails`
+-- 转存表中的数据 `bannedemails`
 --
 
 INSERT INTO `bannedemails` (`id`, `value`) VALUES
@@ -267,146 +344,142 @@ INSERT INTO `bannedemails` (`id`, `value`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `bans`
+-- 表的结构 `bans`
 --
 
-CREATE TABLE IF NOT EXISTS `bans` (
-  `id` smallint(5) unsigned NOT NULL AUTO_INCREMENT,
+CREATE TABLE `bans` (
+  `id` smallint(5) UNSIGNED NOT NULL,
   `added` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `addedby` mediumint(8) unsigned NOT NULL DEFAULT '0',
+  `addedby` mediumint(8) UNSIGNED NOT NULL DEFAULT '0',
   `comment` varchar(255) NOT NULL DEFAULT '',
   `first` bigint(20) NOT NULL,
-  `last` bigint(20) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `first_last` (`first`,`last`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
---
--- Dumping data for table `bans`
---
-
+  `last` bigint(20) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `bitbucket`
+-- 表的结构 `bitbucket`
 --
 
-CREATE TABLE IF NOT EXISTS `bitbucket` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `owner` mediumint(8) unsigned NOT NULL DEFAULT '0',
+CREATE TABLE `bitbucket` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `owner` mediumint(8) UNSIGNED NOT NULL DEFAULT '0',
   `name` varchar(255) NOT NULL,
   `added` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `public` enum('0','1') NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  `public` enum('0','1') NOT NULL DEFAULT '0'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `bitbucket`
+-- 转存表中的数据 `bitbucket`
 --
 
+INSERT INTO `bitbucket` (`id`, `owner`, `name`, `added`, `public`) VALUES
+(1, 1, '58373aae-8de4-4b32-95dc-8b2f8ebb91e6x840.jpg', '2016-12-03 15:28:49', '0');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `blocks`
+-- 表的结构 `blocks`
 --
 
-CREATE TABLE IF NOT EXISTS `blocks` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `userid` mediumint(8) unsigned NOT NULL DEFAULT '0',
-  `blockid` mediumint(8) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `userfriend` (`userid`,`blockid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
---
--- Dumping data for table `blocks`
---
-
+CREATE TABLE `blocks` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `userid` mediumint(8) UNSIGNED NOT NULL DEFAULT '0',
+  `blockid` mediumint(8) UNSIGNED NOT NULL DEFAULT '0'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `bookmarks`
+-- 表的结构 `bookmarks`
 --
 
-CREATE TABLE IF NOT EXISTS `bookmarks` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `torrentid` mediumint(8) unsigned NOT NULL DEFAULT '0',
-  `userid` mediumint(8) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`),
-  KEY `userid_torrentid` (`userid`,`torrentid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+CREATE TABLE `bookmarks` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `torrentid` mediumint(8) UNSIGNED NOT NULL DEFAULT '0',
+  `userid` mediumint(8) UNSIGNED NOT NULL DEFAULT '0'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `bookmarks`
+-- 转存表中的数据 `bookmarks`
 --
 
+INSERT INTO `bookmarks` (`id`, `torrentid`, `userid`) VALUES
+(2, 20, 1);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `categories`
+-- 表的结构 `categories`
 --
 
-CREATE TABLE IF NOT EXISTS `categories` (
-  `id` smallint(5) unsigned NOT NULL AUTO_INCREMENT,
-  `mode` tinyint(3) unsigned NOT NULL DEFAULT '1',
+CREATE TABLE `categories` (
+  `id` smallint(5) UNSIGNED NOT NULL,
+  `mode` tinyint(3) UNSIGNED NOT NULL DEFAULT '1',
   `class_name` varchar(255) NOT NULL DEFAULT '',
-  `name` varchar(255) NOT NULL,
+  `name` varchar(30) NOT NULL,
   `image` varchar(255) NOT NULL,
-  `sort_index` smallint(5) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`),
-  KEY `mode_sort` (`mode`,`sort_index`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=410 ;
+  `sort_index` smallint(5) UNSIGNED NOT NULL DEFAULT '0',
+  `rules` text NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `categories`
+-- 转存表中的数据 `categories`
 --
 
-INSERT INTO `categories` (`id`, `mode`, `class_name`, `name`, `image`, `sort_index`) VALUES
-(401, 4, '电影', '电影', 'catsprites.png', 0),
-(402, 4, '电视剧', '电视剧', 'catsprites.png', 3),
-(403, 4, '游戏', '游戏', 'catsprites.png', 4),
-(404, 4, '教育', '教育', 'catsprites.png', 1),
-(405, 4, '动漫', '动漫', 'catsprites.png', 2),
-(406, 4, '软件', '软件', 'catsprites.png', 5),
-(407, 4, '体育综艺', '体育综艺', 'catsprites.png', 6),
-(408, 4, '音乐', '音乐', 'catsprites.png', 8),
-(409, 4, '其他', '其他', 'catsprites.png', 7);
-
--- INSERT INTO `categories` (`id`, `mode`, `class_name`, `name`, `image`, `sort_index`) VALUES
--- (401, 4, 'c_movies', 'Movies', 'catsprites.png', 0),
--- (402, 4, 'c_tvseries', 'TV Series', 'catsprites.png', 3),
--- (403, 4, 'c_tvshows', 'TV Shows', 'catsprites.png', 4),
--- (404, 4, 'c_doc', 'Documentaries', 'catsprites.png', 1),
--- (405, 4, 'c_anime', 'Animations', 'catsprites.png', 2),
--- (406, 4, 'c_mv', 'Music Videos', 'catsprites.png', 5),
--- (407, 4, 'c_sports', 'Sports', 'catsprites.png', 6),
--- (408, 4, 'c_hqaudio', 'HQ Audio', 'catsprites.png', 8),
--- (409, 4, 'c_misc', 'Misc', 'catsprites.png', 7);
+INSERT INTO `categories` (`id`, `mode`, `class_name`, `name`, `image`, `sort_index`, `rules`) VALUES
+(402, 4, '电视剧', 'tvshow', './pic/category/new/TVseries.jpg', 3, '402电视剧'),
+(403, 4, '综艺', '综艺', './pic/category/new/zongyi.jpg', 4, '403综艺'),
+(404, 4, '教育', '教育', './pic/category/new/education.jpg', 1, '404教育'),
+(405, 4, '动漫', '动漫', './pic/category/new/comic.jpg', 2, '4005动漫'),
+(406, 4, '软件', '软件', './pic/category/new/software.jpg', 5, '406软件'),
+(407, 4, '体育', '体育', './pic/category/new/sports.jpg', 6, '407体育'),
+(408, 4, '音乐', '音乐', './pic/category/new/music.jpg', 8, '4008音乐'),
+(401, 4, '电影', 'moive', './pic/category/new/movie.jpg', 0, '401电影'),
+(411, 4, '其他', '其他', './pic/category/new/others.jpg', 7, '409其他'),
+(409, 4, '纪录片', '纪录片', './pic/category/new/jilupian.jpg', 10, '411纪录片'),
+(410, 4, '游戏', '其他', './pic/category/new/others.jpg', 9, '410游戏');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `caticons`
+-- 表的结构 `categoriessecond`
 --
 
-CREATE TABLE IF NOT EXISTS `caticons` (
-  `id` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,
+CREATE TABLE `categoriessecond` (
+  `id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- 转存表中的数据 `categoriessecond`
+--
+
+INSERT INTO `categoriessecond` (`id`, `name`) VALUES
+(4011, 'qqqq'),
+(4012, 'mmm'),
+(4026, '12');
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `caticons`
+--
+
+CREATE TABLE `caticons` (
+  `id` tinyint(3) UNSIGNED NOT NULL,
   `name` varchar(64) NOT NULL DEFAULT '',
   `folder` varchar(255) NOT NULL,
   `cssfile` varchar(255) NOT NULL DEFAULT '',
   `multilang` enum('yes','no') NOT NULL DEFAULT 'no',
   `secondicon` enum('yes','no') NOT NULL DEFAULT 'no',
   `designer` varchar(50) NOT NULL DEFAULT '',
-  `comment` varchar(255) NOT NULL DEFAULT '',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+  `comment` varchar(255) NOT NULL DEFAULT ''
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `caticons`
+-- 转存表中的数据 `caticons`
 --
 
 INSERT INTO `caticons` (`id`, `name`, `folder`, `cssfile`, `multilang`, `secondicon`, `designer`, `comment`) VALUES
@@ -415,66 +488,52 @@ INSERT INTO `caticons` (`id`, `name`, `folder`, `cssfile`, `multilang`, `secondi
 -- --------------------------------------------------------
 
 --
--- Table structure for table `cheaters`
+-- 表的结构 `cheaters`
 --
 
-CREATE TABLE IF NOT EXISTS `cheaters` (
-  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+CREATE TABLE `cheaters` (
+  `id` mediumint(8) UNSIGNED NOT NULL,
   `added` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `userid` mediumint(8) unsigned NOT NULL DEFAULT '0',
-  `torrentid` mediumint(8) unsigned NOT NULL DEFAULT '0',
-  `uploaded` bigint(20) unsigned NOT NULL DEFAULT '0',
-  `downloaded` bigint(20) unsigned NOT NULL DEFAULT '0',
-  `anctime` mediumint(8) unsigned NOT NULL DEFAULT '0',
-  `seeders` mediumint(5) unsigned NOT NULL DEFAULT '0',
-  `leechers` mediumint(8) unsigned NOT NULL DEFAULT '0',
-  `hit` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  `dealtby` mediumint(8) unsigned NOT NULL DEFAULT '0',
+  `userid` mediumint(8) UNSIGNED NOT NULL DEFAULT '0',
+  `torrentid` mediumint(8) UNSIGNED NOT NULL DEFAULT '0',
+  `uploaded` bigint(20) UNSIGNED NOT NULL DEFAULT '0',
+  `downloaded` bigint(20) UNSIGNED NOT NULL DEFAULT '0',
+  `anctime` mediumint(8) UNSIGNED NOT NULL DEFAULT '0',
+  `seeders` mediumint(5) UNSIGNED NOT NULL DEFAULT '0',
+  `leechers` mediumint(8) UNSIGNED NOT NULL DEFAULT '0',
+  `hit` tinyint(3) UNSIGNED NOT NULL DEFAULT '0',
+  `dealtby` mediumint(8) UNSIGNED NOT NULL DEFAULT '0',
   `dealtwith` tinyint(1) NOT NULL DEFAULT '0',
-  `comment` varchar(255) NOT NULL DEFAULT '',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
---
--- Dumping data for table `cheaters`
---
-
+  `comment` varchar(255) NOT NULL DEFAULT ''
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `chronicle`
+-- 表的结构 `chronicle`
 --
 
-CREATE TABLE IF NOT EXISTS `chronicle` (
-  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
-  `userid` mediumint(8) unsigned NOT NULL DEFAULT '0',
+CREATE TABLE `chronicle` (
+  `id` mediumint(8) UNSIGNED NOT NULL,
+  `userid` mediumint(8) UNSIGNED NOT NULL DEFAULT '0',
   `added` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `txt` text,
-  PRIMARY KEY (`id`),
-  KEY `added` (`added`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
---
--- Dumping data for table `chronicle`
---
-
+  `txt` text
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `codecs`
+-- 表的结构 `codecs`
 --
 
-CREATE TABLE IF NOT EXISTS `codecs` (
-  `id` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,
+CREATE TABLE `codecs` (
+  `id` tinyint(3) UNSIGNED NOT NULL,
   `name` varchar(30) NOT NULL,
-  `sort_index` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=10 ;
+  `sort_index` tinyint(3) UNSIGNED NOT NULL DEFAULT '0'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `codecs`
+-- 转存表中的数据 `codecs`
 --
 
 INSERT INTO `codecs` (`id`, `name`, `sort_index`) VALUES
@@ -484,173 +543,75 @@ INSERT INTO `codecs` (`id`, `name`, `sort_index`) VALUES
 (4, 'MPEG-2', 0),
 (5, 'Other', 0);
 
--- ---------------------------------------------------------- ----------------------------
--- Table structure for `resreq`
--- ----------------------------
-DROP TABLE IF EXISTS `resreq`;
-CREATE TABLE `resreq` (
-  `id` int(11) NOT NULL auto_increment,
-  `reqid` int(11) NOT NULL default '0',
-  `torrentid` int(11) NOT NULL default '0',
-  `chosen` enum('yes','no') NOT NULL default 'no',
-  PRIMARY KEY  (`id`),
-  KEY `reqid` (`reqid`,`chosen`)
-) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of resreq
--- ----------------------------
-
-
-
--- ----------------------------
--- Table structure for `givebonus`
--- ----------------------------
-DROP TABLE IF EXISTS `givebonus`;
-CREATE TABLE `givebonus` (
-  `id` int(10) unsigned NOT NULL auto_increment,
-  `bonusfromuserid` mediumint(8) unsigned NOT NULL,
-  `bonustotorrentid` mediumint(8) unsigned NOT NULL,
-  `bonus` decimal(10,1) unsigned NOT NULL,
-  `type` int(1) unsigned NOT NULL,
-  PRIMARY KEY  (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
-
--- ----------------------------
--- Records of givebonus
--- ----------------------------
-
--- ----------------------------
--- Table structure for `messages`
--- ----------------------------
-DROP TABLE IF EXISTS `messages`;
-CREATE TABLE `messages` (
-  `id` int(10) unsigned NOT NULL auto_increment,
-  `sender` mediumint(8) unsigned NOT NULL default '0',
-  `receiver` mediumint(8) unsigned NOT NULL default '0',
-  `added` datetime NOT NULL default '0000-00-00 00:00:00',
-  `subject` varchar(128) NOT NULL default '',
-  `msg` text,
-  `unread` enum('yes','no') NOT NULL default 'yes',
-  `location` smallint(6) NOT NULL default '1',
-  `saved` enum('no','yes') NOT NULL default 'no',
-  `goto` tinyint(1) unsigned zerofill NOT NULL default '0',
-  PRIMARY KEY  (`id`),
-  KEY `receiver` (`receiver`),
-  KEY `sender` (`sender`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of messages
--- ----------------------------
-
-
--- ----------------------------
--- Table structure for `requests`
--- ----------------------------
-DROP TABLE IF EXISTS `requests`;
-CREATE TABLE `requests` (
-  `id` int(10) unsigned NOT NULL auto_increment,
-  `request` char(255) NOT NULL default '',
-  `userid` int(10) unsigned NOT NULL default 0,
-  `comments` char NOT NULL default 0,
-  PRIMARY KEY  (`id`),
-);
-
--- ----------------------------
--- Records of requests
--- ----------------------------
-
--- ----------------------------
--- Table structure for `req`
--- ----------------------------
-DROP TABLE IF EXISTS `req`;
-CREATE TABLE `req` (
-  `id` int(11) NOT NULL auto_increment,
-  `catid` int(11) NOT NULL default '401',
-  `name` varchar(255) default NULL,
-  `added` datetime NOT NULL default '0000-00-00 00:00:00',
-  `introduce` text,
-  `ori_introduce` text,
-  `amount` int(11) NOT NULL default '0',
-  `userid` int(11) NOT NULL default '0',
-  `ori_amount` int(11) NOT NULL default '0',
-  `comments` int(11) NOT NULL default '0',
-  `finish` enum('yes','no','cancel') NOT NULL default 'no',
-  `finished_time` datetime NOT NULL default '0000-00-00 00:00:00',
-  `resetdate` datetime default NULL,
-  PRIMARY KEY  (`id`),
-  KEY `finish` (`finish`,`name`,`added`,`amount`,`introduce`(10))
-) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of req
--- ----------------------------
-
-
--- ----------------------------
--- Table structure for `givebonus`
--- ----------------------------
-DROP TABLE IF EXISTS `givebonus`;
-CREATE TABLE `givebonus` (
-  `id` int(10) unsigned NOT NULL auto_increment,
-  `bonusfromuserid` mediumint(8) unsigned NOT NULL,
-  `bonustotorrentid` mediumint(8) unsigned NOT NULL,
-  `bonus` decimal(10,1) unsigned NOT NULL,
-  `type` int(1) unsigned NOT NULL,
-  PRIMARY KEY  (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
-
--- ----------------------------
--- Records of givebonus
--- ----------------------------
-
--- ----------------------------
--- Table structure for `comments`
--- ----------------------------
-DROP TABLE IF EXISTS `comments`;
-CREATE TABLE `comments` (
-  `id` int(10) unsigned NOT NULL auto_increment,
-  `user` mediumint(8) unsigned NOT NULL default '0',
-  `torrent` mediumint(8) unsigned NOT NULL default '0',
-  `added` datetime NOT NULL default '0000-00-00 00:00:00',
-  `text` text,
-  `ori_text` text,
-  `editedby` mediumint(8) unsigned NOT NULL default '0',
-  `editdate` datetime NOT NULL default '0000-00-00 00:00:00',
-  `offer` mediumint(8) unsigned NOT NULL default '0',
-  `request` mediumint(9) NOT NULL default '0',
-  PRIMARY KEY  (`id`),
-  KEY `user` (`user`),
-  KEY `torrent_id` (`torrent`,`id`),
-  KEY `offer_id` (`offer`,`id`),
-  FULLTEXT KEY `text` (`text`)
-) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of comments
--- ----------------------------
+-- --------------------------------------------------------
 
 --
--- Dumping data for table `comments`
+-- 表的结构 `comment`
 --
 
+CREATE TABLE `comment` (
+  `id` int(11) NOT NULL,
+  `text` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- 转存表中的数据 `comment`
+--
+
+INSERT INTO `comment` (`id`, `text`) VALUES
+(1, 'sdfasasdjkasmdsabaskc'),
+(2, '?????????????');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `countries`
+-- 表的结构 `comments`
 --
 
-CREATE TABLE IF NOT EXISTS `countries` (
-  `id` smallint(5) unsigned NOT NULL AUTO_INCREMENT,
+CREATE TABLE `comments` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `user` mediumint(8) UNSIGNED NOT NULL DEFAULT '0',
+  `torrent` mediumint(8) UNSIGNED NOT NULL DEFAULT '0',
+  `added` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `text` text,
+  `ori_text` text,
+  `editedby` mediumint(8) UNSIGNED NOT NULL DEFAULT '0',
+  `editdate` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `offer` mediumint(8) UNSIGNED NOT NULL DEFAULT '0',
+  `request` mediumint(9) NOT NULL DEFAULT '0'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+--
+-- 转存表中的数据 `comments`
+--
+
+INSERT INTO `comments` (`id`, `user`, `torrent`, `added`, `text`, `ori_text`, `editedby`, `editdate`, `offer`, `request`) VALUES
+(1, 1, 21, '2016-12-02 04:40:53', 'casdcascasdcasdc', 'casdcascasdcasdc', 0, '0000-00-00 00:00:00', 0, 0),
+(3, 1, 35, '2016-12-09 10:53:09', '擦拭大', '擦拭大', 0, '0000-00-00 00:00:00', 0, 0),
+(4, 29, 49, '2017-02-11 07:48:38', 'csdcsacsa', 'csdcsacsa', 0, '0000-00-00 00:00:00', 0, 0),
+(5, 29, 49, '2017-02-11 07:48:49', 'saxX', 'saxX', 0, '0000-00-00 00:00:00', 0, 0),
+(6, 29, 49, '2017-02-11 07:53:46', 'CASD', 'CASD', 0, '0000-00-00 00:00:00', 0, 0),
+(7, 29, 49, '2017-02-11 07:54:01', '[quote=2015117164lwenxu]CASD[/quote]CASDCASCDA', '[quote=2015117164lwenxu]CASD[/quote]CASDCASCDA', 0, '0000-00-00 00:00:00', 0, 0),
+(8, 29, 49, '2017-02-11 08:32:16', '长撒多次', '长撒多次', 0, '0000-00-00 00:00:00', 0, 0),
+(9, 29, 49, '2017-02-11 08:32:24', '此次擦擦擦擦擦擦', '此次擦擦擦擦擦擦', 0, '0000-00-00 00:00:00', 0, 0),
+(10, 29, 49, '2017-02-11 08:32:43', '访问法全文服务费vv', '访问法全文服务费vv', 0, '0000-00-00 00:00:00', 0, 0),
+(11, 29, 49, '2017-02-11 08:34:23', 'sdfasasdjkasmdsabaskc', 'sdfasasdjkasmdsabaskc', 0, '0000-00-00 00:00:00', 0, 0),
+(12, 29, 49, '2017-02-11 08:34:29', '?????????????', '?????????????', 0, '0000-00-00 00:00:00', 0, 0);
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `countries`
+--
+
+CREATE TABLE `countries` (
+  `id` smallint(5) UNSIGNED NOT NULL,
   `name` varchar(50) NOT NULL,
-  `flagpic` varchar(255) NOT NULL DEFAULT '',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=108 ;
+  `flagpic` varchar(255) NOT NULL DEFAULT ''
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `countries`
+-- 转存表中的数据 `countries`
 --
 
 INSERT INTO `countries` (`id`, `name`, `flagpic`) VALUES
@@ -758,17 +719,16 @@ INSERT INTO `countries` (`id`, `name`, `flagpic`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `downloadspeed`
+-- 表的结构 `downloadspeed`
 --
 
-CREATE TABLE IF NOT EXISTS `downloadspeed` (
-  `id` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(50) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=19 ;
+CREATE TABLE `downloadspeed` (
+  `id` tinyint(3) UNSIGNED NOT NULL,
+  `name` varchar(50) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `downloadspeed`
+-- 转存表中的数据 `downloadspeed`
 --
 
 INSERT INTO `downloadspeed` (`id`, `name`) VALUES
@@ -794,24 +754,23 @@ INSERT INTO `downloadspeed` (`id`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `faq`
+-- 表的结构 `faq`
 --
 
-CREATE TABLE IF NOT EXISTS `faq` (
-  `id` smallint(5) unsigned NOT NULL AUTO_INCREMENT,
-  `link_id` smallint(5) unsigned NOT NULL,
-  `lang_id` smallint(5) unsigned NOT NULL DEFAULT '6',
+CREATE TABLE `faq` (
+  `id` smallint(5) UNSIGNED NOT NULL,
+  `link_id` smallint(5) UNSIGNED NOT NULL,
+  `lang_id` smallint(5) UNSIGNED NOT NULL DEFAULT '6',
   `type` enum('categ','item') NOT NULL DEFAULT 'item',
   `question` text NOT NULL,
   `answer` text NOT NULL,
-  `flag` tinyint(3) unsigned NOT NULL DEFAULT '1',
-  `categ` smallint(5) unsigned NOT NULL DEFAULT '0',
-  `order` smallint(5) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=476 ;
+  `flag` tinyint(3) UNSIGNED NOT NULL DEFAULT '1',
+  `categ` smallint(5) UNSIGNED NOT NULL DEFAULT '0',
+  `order` smallint(5) UNSIGNED NOT NULL DEFAULT '0'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `faq`
+-- 转存表中的数据 `faq`
 --
 
 INSERT INTO `faq` (`id`, `link_id`, `lang_id`, `type`, `question`, `answer`, `flag`, `categ`, `order`) VALUES
@@ -835,7 +794,7 @@ INSERT INTO `faq` (`id`, `link_id`, `lang_id`, `type`, `question`, `answer`, `fl
 (18, 18, 25, 'item', '为什么我的IP地址显示在我的个人信息页面上？', '只有你自己和网站Moderator及以上的管理员可以看到你的IP地址和Email。普通用户是看不到这些信息的。', 1, 2, 6),
 (21, 21, 25, 'item', '为什么我的“可连接”是“否”？（以及为什么我需要关注这个问题？）', 'Tracker服务器认为你在防火墙后，或者在NAT桥接后，并且无法接收其他Peer的连接请求。\r\n<br />\r\n<br />\r\n这意味着其它的大批Peer无法连接到你，只能由你连接到他们。更糟糕的情况是，如果两个Peer都处于这样的状态，他们将完全无法连接到对方。这对于整体速度有着非常不利的影响。\r\n<br />\r\n<br />\r\n对于这个问题，有以下解决方式：对于防火墙，打开用于接收连接的端口（即你在BT客户端中定义的端口）；对于NAT，你需要配置NAT服务器使用Basic NAT方式而不是NAPT（不同的路由有着不同的运行方式。翻阅你的路由文档或客服论坛。你也可以在<a class="faqlink" href="http://portforward.com/">PortForward</a>找到关于此问题的大量信息）。\r\n\r\n\r\n\r\n\r\n\r\n', 1, 2, 9),
 (22, 22, 25, 'item', '不同的用户等级代表了什么含义？', '<table cellspacing="3" cellpadding="0">\r\n<tr>\r\n<td class="embedded" width="200" valign="top">&nbsp; <b class="Peasant_Name">Peasant</b></td>\r\n<td class="embedded" width="5">&nbsp;</td>\r\n<td class="embedded"> 被降级的用户，他们有30天时间来提升分享率，否则他们会被踢。不能发表趣味盒内容；不能申请友情链接；不能上传字幕。\r\n</td>\r\n</tr>\r\n<tr>\r\n<td class="embedded" valign="top">&nbsp; <b class="User_Name">User</b></td>\r\n<td class="embedded">&nbsp;</td>\r\n<td class="embedded">新用户的默认级别。只能在每周六中午12点至每周日晚上11点59分发布种子。</td>\r\n</tr>\r\n<tr>\r\n<td class="embedded" valign="top">&nbsp; <b class="PowerUser_Name">Power User</b></td>\r\n<td class="embedded">&nbsp;</td>\r\n<td class="embedded">得到一个邀请名额；可以直接发布种子；可以查看NFO文档；可以查看用户列表；可以请求续种； 可以发送邀请； 可以查看排行榜；可以查看其它用户的种子历史(如果用户隐私等级未设置为"强")； 可以删除自己上传的字幕。</td>\r\n</tr>\r\n<tr>\r\n<td class="embedded" valign="top">&nbsp; <b class="EliteUser_Name">Elite User</b></td>\r\n<td class="embedded">&nbsp;</td>\r\n<td class="embedded"><b class="EliteUser_Name">Elite User</b>及以上用户封存账号后不会被删除。</td>\r\n</tr>\r\n<tr>\r\n<td class="embedded" valign="top">&nbsp; <b class="CrazyUser_Name">Crazy User</b></td>\r\n<td class="embedded">&nbsp;</td>\r\n<td class="embedded">得到两个邀请名额；可以在做种/下载/发布的时候选择匿名模式。</td>\r\n</tr>\r\n<tr>\r\n<td class="embedded" valign="top">&nbsp; <b class="InsaneUser_Name">Insane User</b></td>\r\n<td class="embedded">&nbsp;</td>\r\n<td class="embedded">可以查看普通日志。</td>\r\n</tr>\r\n<tr>\r\n<td class="embedded" valign="top">&nbsp; <b class="VeteranUser_Name">Veteran User</b></td>\r\n<td class="embedded">&nbsp;</td>\r\n<td class="embedded">得到三个邀请名额；可以查看其它用户的评论、帖子历史。<b class="VeteranUser_Name">Veteran User</b>及以上用户会永远保留账号。</td>\r\n</tr>\r\n<tr>\r\n<td class="embedded" valign="top">&nbsp; <b class="ExtremeUser_Name">Extreme User</b></td>\r\n<td class="embedded">&nbsp;</td>\r\n<td class="embedded">可以更新过期的外部信息；可以查看Extreme User论坛。</td>\r\n</tr>\r\n<tr>\r\n<td class="embedded" valign="top">&nbsp; <b class="UltimateUser_Name">Ultimate User</b></td>\r\n<td class="embedded">&nbsp;</td>\r\n<td class="embedded">得到五个邀请名额。</td>\r\n</tr>\r\n<tr>\r\n<td class="embedded" valign="top">&nbsp; <b class="NexusMaster_Name">Nexus Master</b></td>\r\n<td class="embedded">&nbsp;</td>\r\n<td class="embedded">得到十个邀请名额。</td>\r\n</tr>\r\n<tr>\r\n<td class="embedded"  valign="top">&nbsp; <img class="star" src="pic/trans.gif" alt="Star" /></td>\r\n<td class="embedded">&nbsp;</td>\r\n<td class="embedded">为网站捐款的主。</td>\r\n</tr>\r\n<tr>\r\n<td class="embedded" valign="top">&nbsp; <b class="VIP_Name">贵宾(VIP)</b></td>\r\n<td class="embedded">&nbsp;</td>\r\n<td class="embedded" valign="top">和<b class="NexusMaster_Name">Nexus Master</b>拥有相同权限并被认为是精英成员。免除自动降级。</td>\r\n</tr>\r\n<tr>\r\n<td class="embedded" valign="top">&nbsp; <b class="User_Name">其它</b></td>\r\n<td class="embedded">&nbsp;</td>\r\n<td class="embedded">自定义等级。</td>\r\n</tr>\r\n<tr>\r\n<td class="embedded" valign="top">&nbsp; <b class="Retiree_Name">养老族(Retiree)</b></td>\r\n<td class="embedded">&nbsp;</td>\r\n<td class="embedded">退休后的管理组成员。</td>\r\n</tr>\r\n<tr>\r\n<td class="embedded" valign="top">&nbsp; <b class="Uploader_Name">发布员(Uploader)</b></td>\r\n<td class="embedded">&nbsp;</td>\r\n<td class="embedded">专注的发布者。免除自动降级；可以查看匿名用户的真实身份。</td>\r\n</tr>\r\n<tr>\r\n<td class="embedded" valign="top">&nbsp; <b class="Moderator_Name">总版主(Moderator)</b></td>\r\n<td class="embedded">&nbsp;</td>\r\n<td class="embedded" valign="top">可以查看管理组信箱、举报信箱；管理趣味盒内容、投票内容；可以编辑或删除任何发布的种子；可以管理候选；可以管理论坛帖子、用户评论；可以查看机密日志；可以删除任何字幕；可以管理日志中的代码、史册；可以查看用户的邀请记录；可以管理用户帐号的一般信息。<b>不能</b>管理友情链接、最近消息、论坛版块；<b>不能</b>将种子设为置顶或促销；<b>不能</b>查看用户IP或Email等机密信息；不能删除账号。</td>\r\n</tr>\r\n<tr>\r\n<td class="embedded" valign="top">&nbsp; <b class="Administrator_Name">管理员(Administrator)</b></td>\r\n<td class="embedded">&nbsp;</td>\r\n<td class="embedded">除了不能改变站点设定、管理捐赠外，可以做任何事。</td>\r\n</tr>\r\n<tr>\r\n<td class="embedded" valign="top">&nbsp; <b class="SysOp_Name">维护开发员(Sysop)</b></td>\r\n<td class="embedded">&nbsp;</td>\r\n<td class="embedded">网站开发/维护人员，可以改变站点设定，不能管理捐赠。</td>\r\n</tr>\r\n<tr>\r\n<td class="embedded" valign="top">&nbsp; <b class="StaffLeader_Name">主管(Staff Leader)</b></td>\r\n<td class="embedded">&nbsp;</td>\r\n<td class="embedded">网站主管，可以做任何事。</td>\r\n</tr>\r\n</table>', 1, 2, 10),
-(23, 23, 25, 'item', '提升和降级又是怎样被执行的呢？', '<table cellspacing="3" cellpadding="0">\r\n<tr>\r\n<td class="embedded" width="200" valign="top">&nbsp; <b class="Peasant_Name">Peasant</b></td>\r\n<td class="embedded" width="5">&nbsp;</td>\r\n<td class="embedded" valign="top">当以下情况时将被自动降至本级：<br />\r\n1.如果你已经下载了超过50GB，你应该有大于0.4的分享率。<br />\r\n2.如果你已经下载了超过100GB，你应该有大于0.5的分享率。<br />\r\n3.如果你已经下载了超过200GB，你应该有大于0.6的分享率。<br />\r\n4.如果你已经下载了超过400GB，你应该有大于0.7的分享率。<br />\r\n5.如果你已经下载了超过800GB，你应该有大于0.8的分享率。</td>\r\n</tr>\r\n\r\n<tr>\r\n<td class="embedded" valign="top">&nbsp; <b class="PowerUser_Name">Power User</b></td>\r\n<td class="embedded">&nbsp;</td>\r\n<td class="embedded" valign="top">必须注册至少4周，并且下载至少50G，分享率大于1.05。<br />\r\n当条件符合时将被自动提升。注意，无论何时，如果你的分享率低于0.95，你将自动降级。</td>\r\n</tr>\r\n<tr>\r\n<td class="embedded" valign="top">&nbsp; <b class="EliteUser_Name">Elite User</b></td>\r\n<td class="embedded">&nbsp;</td>\r\n<td class="embedded" valign="top">必须注册至少8周，并且下载至少120G，分享率大于1.55。\r\n<br />\r\n当条件符合时将被自动提升。注意，无论何时，如果你的分享率低于1.45，你将自动降级。</td>\r\n</tr>\r\n<tr>\r\n<td class="embedded" valign="top">&nbsp; <b class="CrazyUser_Name">Crazy User</b></td>\r\n<td class="embedded">&nbsp;</td>\r\n<td class="embedded" valign="top">必须注册至少15周，并且下载至少300G，分享率大于2.05。\r\n<br />\r\n当条件符合时将被自动提升。注意，无论何时，如果你的分享率低于1.95，你将自动降级。</td>\r\n</tr>\r\n<tr>\r\n<td class="embedded" valign="top">&nbsp; <b class="InsaneUser_Name">Insane User</b></td>\r\n<td class="embedded">&nbsp;</td>\r\n<td class="embedded" valign="top">必须注册至少25周，并且下载至少500G，分享率大于2.55。<br />\r\n当条件符合时将被自动提升。注意，无论何时，如果你的分享率低于2.45，你将自动降级。</td>\r\n</tr>\r\n<tr>\r\n<td class="embedded" valign="top">&nbsp; <b class="VeteranUser_Name">Veteran User</b></td>\r\n<td class="embedded">&nbsp;</td>\r\n<td class="embedded" valign="top">必须注册至少40周，并且下载至少750G，分享率大于3.05。<br />\r\n当条件符合时将被自动提升。注意，无论何时，如果你的分享率低于2.95，你将自动降级。</td>\r\n</tr>\r\n<tr>\r\n<td class="embedded" valign="top">&nbsp; <b class="ExtremeUser_Name">Extreme User</b></td>\r\n<td class="embedded">&nbsp;</td>\r\n<td class="embedded" valign="top">必须注册至少60周，并且下载至少1TB，分享率大于3.55。<br />\r\n当条件符合时将被自动提升。注意，无论何时，如果你的分享率低于3.45，你将自动降级。</td>\r\n</tr>\r\n<tr>\r\n<td class="embedded" valign="top">&nbsp; <b class="UltimateUser_Name">Ultimate User</b></td>\r\n<td class="embedded">&nbsp;</td>\r\n<td class="embedded" valign="top">必须注册至少80周，并且下载至少1.5TB，分享率大于4.05。<br />\r\n当条件符合时将被自动提升。注意，无论何时，如果你的分享率低于3.95，你将自动降级。</td>\r\n</tr>\r\n<tr>\r\n<td class="embedded" valign="top">&nbsp; <b class="NexusMaster_Name">Nexus Master</b></td>\r\n<td class="embedded">&nbsp;</td>\r\n<td class="embedded" valign="top">必须注册至少100周，并且下载至少3TB，分享率大于4.55。<br />\r\n当条件符合时将被自动提升。注意，无论何时，如果你的分享率低于4.45，你将自动降级。</td>\r\n</tr>\r\n<tr>\r\n<td class="embedded" valign="top">&nbsp; <img class="star" src="pic/trans.gif" alt="Star" /></td>\r\n<td class="embedded">&nbsp;</td>\r\n<td class="embedded">只需捐款，详见<a class="faqlink" href="donate.php">这里</a>。</td>\r\n</tr>\r\n<tr>\r\n<td class="embedded" valign="top">&nbsp; <b class="VIP_Name">贵宾(VIP)</b></td>\r\n<td class="embedded">&nbsp;</td>\r\n<td class="embedded" valign="top">由管理员仔细斟酌后分配给他们认为对于站点某方面有特殊贡献的用户。<br />\r\n（任何索取贵宾等级的要求将被自动无视）</td>\r\n</tr>\r\n<tr>\r\n<td class="embedded" valign="top">&nbsp; <b class="User_Name">其它</b></td>\r\n<td class="embedded">&nbsp;</td>\r\n<td class="embedded">用户使用魔力值兑换，或由管理员仔细斟酌后授权。</td>\r\n</tr>\r\n<tr>\r\n<td class="embedded" valign="top">&nbsp; <b class="Retiree_Name">养老族(Retiree)</b></td>\r\n<td class="embedded">&nbsp;</td>\r\n<td class="embedded">由管理员授予。</td>\r\n</tr>\r\n<tr>\r\n<td class="embedded" valign="top">&nbsp; <b class="Uploader_Name">发布员(Uploader)</b></td>\r\n<td class="embedded">&nbsp;</td>\r\n<td class="embedded">由管理员分配(参见''发布''部分以了解详情)。</td>\r\n</tr>\r\n<tr>\r\n<td class="embedded" valign="top">&nbsp; <b class="Moderator_Name">总版主(Moderator)</b></td>\r\n<td class="embedded">&nbsp;</td>\r\n<td class="embedded">无需多问，我们会找到你的！</td>\r\n</tr>\r\n</table>', 1, 2, 11),
+(23, 23, 25, 'item', '提升和降级又是怎样被执行的呢？', '<table cellspacing="3" cellpadding="0">\r\n<tr>\r\n<td class="embedded" width="200" valign="top">&nbsp; <b class="Peasant_Name">Peasant</b></td>\r\n<td class="embedded" width="5">&nbsp;</td>\r\n<td class="embedded" valign="top">当以下情况时将被自动降至本级：<br />\r\n1.如果你已经下载了超过<span style=''color:red''>50GB</span>，你应该有大于0.4的分享率。<br />\r\n2.如果你已经下载了超过<span style=''color:red''>100GB</span>，你应该有大于0.5的分享率。<br />\r\n3.如果你已经下载了超过<span style=''color:red''>200GB</span>，你应该有大于0.6的分享率。<br />\r\n4.如果你已经下载了超过<span style=''color:red''>400GB</span>，你应该有大于0.7的分享率。<br />\r\n5.如果你已经下载了超过<span style=''color:red''>800GB</span>，你应该有大于0.8的分享率。</td>\r\n</tr>\r\n\r\n<tr>\r\n<td class="embedded" valign="top">&nbsp; <b class="PowerUser_Name">Power User</b></td>\r\n<td class="embedded">&nbsp;</td>\r\n<td class="embedded" valign="top">必须注册至少4周，并且下载至少<span style=''color:red''>50G，分享率大于1.05。<br />\r\n当条件符合时将被自动提升。注意，无论何时，如果你的分享率低于0.95，你将自动降级。</td>\r\n</tr>\r\n<tr>\r\n<td class="embedded" valign="top">&nbsp; <b class="EliteUser_Name">Elite User</b></td>\r\n<td class="embedded">&nbsp;</td>\r\n<td class="embedded" valign="top">必须注册至少8周，并且下载至少<span style=''color:red''>120G</span>，分享率大于1.55。\r\n<br />\r\n当条件符合时将被自动提升。注意，无论何时，如果你的分享率低于1.45，你将自动降级。</td>\r\n</tr>\r\n<tr>\r\n<td class="embedded" valign="top">&nbsp; <b class="CrazyUser_Name">Crazy User</b></td>\r\n<td class="embedded">&nbsp;</td>\r\n<td class="embedded" valign="top">必须注册至少15周，并且下载至少<span style=''color:red''>300G</span>，分享率大于2.05。\r\n<br />\r\n当条件符合时将被自动提升。注意，无论何时，如果你的分享率低于1.95，你将自动降级。</td>\r\n</tr>\r\n<tr>\r\n<td class="embedded" valign="top">&nbsp; <b class="InsaneUser_Name">Insane User</b></td>\r\n<td class="embedded">&nbsp;</td>\r\n<td class="embedded" valign="top">必须注册至少25周，并且下载至少<span style=''color:red''>500G</span>，分享率大于2.55。<br />\r\n当条件符合时将被自动提升。注意，无论何时，如果你的分享率低于2.45，你将自动降级。</td>\r\n</tr>\r\n<tr>\r\n<td class="embedded" valign="top">&nbsp; <b class="VeteranUser_Name">Veteran User</b></td>\r\n<td class="embedded">&nbsp;</td>\r\n<td class="embedded" valign="top">必须注册至少40周，并且下载至少<span style=''color:red''>750G</span>，分享率大于3.05。<br />\r\n当条件符合时将被自动提升。注意，无论何时，如果你的分享率低于2.95，你将自动降级。</td>\r\n</tr>\r\n<tr>\r\n<td class="embedded" valign="top">&nbsp; <b class="ExtremeUser_Name">Extreme User</b></td>\r\n<td class="embedded">&nbsp;</td>\r\n<td class="embedded" valign="top">必须注册至少60周，并且下载至少<span style=''color:red''>1TB</span>，分享率大于3.55。<br />\r\n当条件符合时将被自动提升。注意，无论何时，如果你的分享率低于3.45，你将自动降级。</td>\r\n</tr>\r\n<tr>\r\n<td class="embedded" valign="top">&nbsp; <b class="UltimateUser_Name">Ultimate User</b></td>\r\n<td class="embedded">&nbsp;</td>\r\n<td class="embedded" valign="top">必须注册至少80周，并且下载至少<span style=''color:red''>1.5TB</span>，分享率大于4.05。<br />\r\n当条件符合时将被自动提升。注意，无论何时，如果你的分享率低于3.95，你将自动降级。</td>\r\n</tr>\r\n<tr>\r\n<td class="embedded" valign="top">&nbsp; <b class="NexusMaster_Name">Nexus Master</b></td>\r\n<td class="embedded">&nbsp;</td>\r\n<td class="embedded" valign="top">必须注册至少100周，并且下载至少<span style=''color:red''>3TB</span>，分享率大于4.55。<br />\r\n当条件符合时将被自动提升。注意，无论何时，如果你的分享率低于4.45，你将自动降级。</td>\r\n</tr>\r\n<tr>\r\n<td class="embedded" valign="top">&nbsp; <img class="star" src="pic/trans.gif" alt="Star" /></td>\r\n<td class="embedded">&nbsp;</td>\r\n<td class="embedded">只需捐款，详见<a class="faqlink" href="donate.php">这里</a>。</td>\r\n</tr>\r\n<tr>\r\n<td class="embedded" valign="top">&nbsp; <b class="VIP_Name">贵宾(VIP)</b></td>\r\n<td class="embedded">&nbsp;</td>\r\n<td class="embedded" valign="top">由管理员仔细斟酌后分配给他们认为对于站点某方面有特殊贡献的用户。<br />\r\n（任何索取贵宾等级的要求将被自动无视）</td>\r\n</tr>\r\n<tr>\r\n<td class="embedded" valign="top">&nbsp; <b class="User_Name">其它</b></td>\r\n<td class="embedded">&nbsp;</td>\r\n<td class="embedded">用户使用魔力值兑换，或由管理员仔细斟酌后授权。</td>\r\n</tr>\r\n<tr>\r\n<td class="embedded" valign="top">&nbsp; <b class="Retiree_Name">养老族(Retiree)</b></td>\r\n<td class="embedded">&nbsp;</td>\r\n<td class="embedded">由管理员授予。</td>\r\n</tr>\r\n<tr>\r\n<td class="embedded" valign="top">&nbsp; <b class="Uploader_Name">发布员(Uploader)</b></td>\r\n<td class="embedded">&nbsp;</td>\r\n<td class="embedded">由管理员分配(参见''发布''部分以了解详情)。</td>\r\n</tr>\r\n<tr>\r\n<td class="embedded" valign="top">&nbsp; <b class="Moderator_Name">总版主(Moderator)</b></td>\r\n<td class="embedded">&nbsp;</td>\r\n<td class="embedded">无需多问，我们会找到你的！</td>\r\n</tr>\r\n</table>', 1, 2, 11),
 (25, 25, 25, 'item', '为什么我的朋友不能加入？', '用户数目有所限制（你可以查看“首页-&gt;站点数据-&gt;上限”）。当达到那个数目时，我们会停止接受新成员。<br />\r\n由于非活跃用户(长期不使用账号的用户)引起账号资源浪费，因此我们将清理该部分用户，为其他想加入用户腾出空间。<br />\r\n关于非活跃用户清理规则，参考<a class="faqlink" href="rules.php">规则</a>。', 1, 2, 13),
 (26, 26, 25, 'item', '怎样自定义头像？', '首先，找一个你喜欢的图片，当然了它不能违反我们的<a class="faqlink" href="rules.php">规则</a>。然后你要找一个存放它的地方，比方说我们自己的<a class="faqlink" href="bitbucket-upload.php">上传器</a>。出于服务器负载的考虑，我们更希望你将图片上传到别的网站，然后将其URL粘贴到你的<a class="faqlink" href="usercp.php?action=personal">控制面板</a>的头像URL部分。 <br />\r\n<br />\r\n请不要为了仅仅测试头像而发帖。如果一切顺利，你将在你的详情页面看到它。', 1, 2, 14),
 (27, 27, 25, 'item', '最常见的数据未能得到更新的原因', '<ul>\r\n<li>服务器过载/未响应。只要尝试着保持会话直到服务器恢复响应(不推荐连续手动刷新，这样会加重服务器负载)。</li>\r\n<li>你正在使用不稳定的客户端。如果你想要使用测试版或者CVS版本，你需要自己承担由此带来的风险。</li>\r\n</ul>', 1, 3, 1),
@@ -874,18 +833,13 @@ INSERT INTO `faq` (`id`, `link_id`, `lang_id`, `type`, `question`, `answer`, `fl
 (68, 68, 25, 'item', '“Unknown passkey”这错误是咋回事？', '首先，如果你不是我们的注册用户，将会发生这个错误。其次，有可能你没有在登录状态下从我们的网页里下载种子文件。如果是这两种情况，只要注册一个帐号或者登录后下载种子文件就可以了。<br />\r\n另外，当你注册了一个新用户并且开始第一次下载的时候，或者你刚刚重置了你的密钥时，也可能出现这个错误。原因是系统并非实时检查密钥的改变。如果是因为这个原因，那么就让种子任务等一会儿，最后一定能收到Tracker服务器发回的成功信息。', 1, 5, 14),
 (69, 69, 25, 'item', '什么时候我需要重置我的密钥?', '<ul><li> 如果你的密钥被泄漏，且别的用户正在使用这个密钥（即使用你的帐户）下载文件。在这种情况下，你能在你的详情页面看到你并未下载或上传的种子。</li>\r\n<li>当你的客户端崩溃，或者你的连接并没有正常被终止。在这样的情况下，就算你已经关闭了你的客户端，你仍然在你的详情页面看到正在上传/下载的记录。通常情况下这些“冗余种子”将在30分钟之内被自动清除，但是如果你马上继续你的下载而服务器又提示“You already are downloading the same torrent”的错误，那么你需要重置你的密钥，然后重新下载种子文件，之后继续下载过程。 </li></ul>', 1, 5, 15),
 (70, 70, 25, 'item', 'DHT是什么？为什么一定要关闭这个功能？', 'DHT必须从你的客户端被禁止。DHT可能导致你的数据被错误地记录，可以视为一种作弊行为。任何使用DHT的用户将因作弊而被系统禁止。<br />\r\n幸运的是，目前Tracker服务器会自动分析用户上传的种子文件，强制去除DHT的支持。这也是为什么种子发布者必须重新下载种子才能正常做种的原因之一。', 1, 5, 16),
-(71, 71, 25, 'categ', 'How can I help translate the site language into my native language?', '', 1, 0, 8),
-(72, 72, 25, 'item', 'What skills do I need to do the translation?', 'Translate the site into another language is quite easy. You needn''t be skilled in PHP or dynamic website design. In fact, all you need is proficient understanding of English (the default site language) and the language you plan to translate into. Maybe some basic knowledge in HTML would help.<br /><br />\r\nMoreover, we give a detailed tutorial on how to do the translation <a href="#73" class="faqlink"><b>HERE</b></a>. And our coders would be more than pleased to answer the questions you may encounter.<br /><br />\r\nTranslate the whole site into another language would take estimated 10 hours. And extra time is needed to maintain the translation when site code is updated.<br /><br />\r\nSo, if you think you could help, feel free to <a class="faqlink" href="contactstaff.php"><b>CONTACT US</b></a>. Needless to say, you would be rewarded.', 1, 71, 1);
-INSERT INTO `faq` (`id`, `link_id`, `lang_id`, `type`, `question`, `answer`, `flag`, `categ`, `order`) VALUES
+(72, 72, 25, 'item', 'What skills do I need to do the translation?', 'Translate the site into another language is quite easy. You needn''t be skilled in PHP or dynamic website design. In fact, all you need is proficient understanding of English (the default site language) and the language you plan to translate into. Maybe some basic knowledge in HTML would help.<br /><br />\r\nMoreover, we give a detailed tutorial on how to do the translation <a href="#73" class="faqlink"><b>HERE</b></a>. And our coders would be more than pleased to answer the questions you may encounter.<br /><br />\r\nTranslate the whole site into another language would take estimated 10 hours. And extra time is needed to maintain the translation when site code is updated.<br /><br />\r\nSo, if you think you could help, feel free to <a class="faqlink" href="contactstaff.php"><b>CONTACT US</b></a>. Needless to say, you would be rewarded.', 1, 71, 1),
 (73, 73, 25, 'item', 'The translation tutorial', '<ul>\r\n<li>How does multi-language work?<br />\r\nCurrently we use language files to store all the static words that a user can see on web pages. <br />\r\nEvery php code file has a corresponding language file for a certain language. And we named the language file ''lang_'' plus the filename of the php code file. i.e. the language file of the php code file ''details.php'' would be ''lang_details.php''. <br />\r\nWe has some mechanism in php codes to read the exact language files of user''s preferred language, and you shouldn''t worry about that.<br /></li>\r\n<li>What''s in language files?<br />\r\nIn a language file is an array of strings. These strings contain all the static words that a user can see on web pages. When we need to say some words on a php code file, we call for a string in the array. And the output of the php code file, that is what users see on the web pages, would show the value of the string.<br />\r\nSounds dizzying? Well, you need not care about all these. All you gotta do is translate the values of the strings in the language files into another language. <b>Let''s see an example</b>:<br /><br />\r\nThe following is the content of the English language file ''lang_users.php'', which works for the php code file ''users.php''. <br /><br />\r\n<img src="pic/langfileeng.png" alt="langfileeng" /><br />\r\nIf you wanna translate it into Simplified Chinese, all you need is edit the file into this:<br />\r\n<img src="pic/langfilechs.png" alt="langfilechs" /><br />\r\nSee, in every line, the left part, that is before <i>=&gt;</i>, is the name of a string, which you shouldn''t touch. All you need to is translate the right part, after <i>=&gt;</i>, which is the value of the string, into another language.<br />\r\nSometimes you need to look at the corresponding web pages to get the context meaning of some words.<br /></li>\r\n<li>Sounds easy? See what do you need to do.<br />\r\nIf you feel like to help us, <a class="faqlink" href="aboutnexus.php#contact"><b>CONTACT US</b></a> and we will send you a pack of the English language files (or any other available language if you prefer). Received it, you can start translating the value of strings (which is in English), into another language. It should take you several hours to do the whole work. After this, send back the translated language files to us.<br />\r\nIf no bugs or hacking codes are found in testing, we would put the new language into work.<br />\r\nSometimes the language files need to be updated, typically adding new strings, when site codes are updated. If you feel like it, you can help maintain the language files.<br /></li>\r\n<li><font color="red"><b>IMPORTANT</b></font><br />\r\nThe text of language files must be encoded in UTF-8. When saving files, be sure to set the character encoding to UTF-8. Otherwise mojibake may happen.</li></ul>', 1, 71, 2),
 (74, 74, 25, 'item', '为什么我的磁盘还有充足的空间，客户端却提示磁盘剩余空间不足？', '很可能是因为你的磁盘分区的文件系统为FAT32，该文件系统不支持大于4GB的单个文件。如果你使用的是Windows系统，你可以在磁盘的属性中查看其文件系统信息。你可以将磁盘文件系统转换成更高级的NTFS来解决该问题。<br />\r\n你可以在命令行窗口使用convert命令将FAT32无损转成NTFS文件系统格式。<br /><br />\r\n<b>命令说明</b>\r\nCONVERT volume /FS:NTFS [/V] [/CvtArea:filename] [/NoSecurity] [/X]<br />\r\nvolume     指定驱动器号(后面跟一个冒号)、装载点或卷名。<br />\r\n/FS:NTFS   指定要被转换成 NTFS 的卷。<br />\r\n/V       指定 Convert 应该用详述模式运行。<br />\r\n/CvtArea:filename       将根目录中的一个接续文件指定为NTFS 系统文件的占位符。<br />\r\n/NoSecurity       指定每个人都可以访问转换的文件和目录的安全设置。<br />\r\n/X       如果必要，先强行卸载卷。该卷的所有打开的句柄则无效。 <br /><br />\r\n<b>简单说</b><br />：\r\n打开 命令提示符窗口。<br />\r\n在命令提示符窗口，请键入：<br />\r\nconvert drive_letter:/fs:ntfs<br />\r\n例如：转换D盘为NTFS，可输入convert D:/fs:ntfs', 1, 5, 17),
 (374, 74, 28, 'item', '為什么我的磁碟還有充足的空間，用戶端卻輔助說明磁碟剩餘空間不足？', '很可能是因為你的磁碟割區的檔案系統為FAT32，該檔案系統不支援大于4GB的單個檔案。如果你使用的是Windows系統，你可以在磁碟的屬性中檢視其檔案系統資訊。你可以將磁碟檔案系統轉換成更進階的NTFS來解決該問題。<br />\r\n你可以在指令行視窗使用convert指令將FAT32無損轉成NTFS檔案系統格式。<br /><br />\r\n<b>指令說明</b>\r\nCONVERT volume /FS:NTFS [/V] [/CvtArea:filename] [/NoSecurity] [/X]<br />\r\nvolume     指定磁碟機號(后面跟一個冒號)、裝載點或卷名。<br />\r\n/FS:NTFS   指定要被轉換成 NTFS 的卷。<br />\r\n/V       指定 Convert 應該用詳述型態執行。<br />\r\n/CvtArea:filename       將根目錄中的一個接續檔案指定為NTFS 系統檔案的占位符。<br />\r\n/NoSecurity       指定每個人都可以存取轉換的檔案和目錄的安全設定。<br />\r\n/X       如果必要，先強行卸載卷。該卷的所有開啟的控點則無效。 <br /><br />\r\n<b>簡單說</b><br />：\r\n開啟 指令輔助說明符視窗。<br />\r\n在指令輔助說明符視窗，請鍵入：<br />\r\nconvert drive_letter:/fs:ntfs<br />\r\n例如：轉換D槃為NTFS，可匯入convert D:/fs:ntfs', 1, 5, 17),
 (368, 68, 28, 'item', '“Unknown passkey”這錯誤是咋回事？', '首先，如果你不是我們的註冊用戶，將會發生這個錯誤。其次，有可能你沒有在登入狀態下從我們的網頁裡下載種子檔案。如果是這兩種情況，只要註冊一個帳號或者登入后下載種子檔案就可以了。<br />\r\n另外，當你註冊了一個新用戶并且開始第一次下載的時候，或者你剛剛重置了你的加密鍵時，也可能出現這個錯誤。原因是系統并非實時檢查加密鍵的改變。如果是因為這個原因，那么就讓種子工作等一會兒，最后一定能收到Tracker伺服器發回的成功資訊。', 1, 5, 14),
 (369, 69, 28, 'item', '什么時候我需要重置我的加密鍵?', '<ul><li> 如果你的加密鍵被泄漏，且別的用戶正在使用這個加密鍵（即使用你的帳戶）下載檔案。在這種情況下，你能在你的詳情頁面看到你并未下載或上傳的種子。</li>\r\n<li>當你的用戶端崩潰，或者你的連線并沒有正常被終止。在這樣的情況下，就算你已經關閉了你的用戶端，你仍然在你的詳情頁面看到正在上傳/下載的記錄。通常情況下這些“多餘種子”將在30分鐘之內被自動清除，但是如果你馬上繼續你的下載而伺服器又輔助說明“You already are downloading the same torrent”的錯誤，那么你需要重置你的加密鍵，然后重新下載種子檔案，之后繼續下載過程。 </li></ul>', 1, 5, 15),
 (370, 70, 28, 'item', 'DHT是什么？為什么一定要關閉這個功能？', 'DHT必須從你的用戶端被禁止。DHT可能導致你的資料被錯誤地記錄，可以視為一種作弊行為。任何使用DHT的用戶將因作弊而被系統禁止。<br />\r\n幸運的是，目前Tracker伺服器會自動解析用戶上傳的種子檔案，強制去除DHT的支援。這也是為什么種子發布者必須重新下載種子才能正常做種的原因之一。', 1, 5, 16),
-(371, 71, 28, 'categ', 'How can I help translate the site language into my native language?', '', 1, 0, 8),
-(372, 72, 28, 'item', 'What skills do I need to do the translation?', 'Translate the site into another language is quite easy. You needn''t be skilled in PHP or dynamic website design. In fact, all you need is proficient understanding of English (the default site language) and the language you plan to translate into. Maybe some basic knowledge in HTML would help.<br /><br />\r\nMoreover, we give a detailed tutorial on how to do the translation <a href="#73" class="faqlink"><b>HERE</b></a>. And our coders would be more than pleased to answer the questions you may encounter.<br /><br />\r\nTranslate the whole site into another language would take estimated 10 hours. And extra time is needed to maintain the translation when site code is updated.<br /><br />\r\nSo, if you think you could help, feel free to <a class="faqlink" href="contactstaff.php"><b>CONTACT US</b></a>. Needless to say, you would be rewarded.', 1, 71, 1),
-(373, 73, 28, 'item', 'The translation tutorial', '<ul>\r\n<li>How does multi-language work?<br />\r\nCurrently we use language files to store all the static words that a user can see on web pages. <br />\r\nEvery php code file has a corresponding language file for a certain language. And we named the language file ''lang_'' plus the filename of the php code file. i.e. the language file of the php code file ''details.php'' would be ''lang_details.php''. <br />\r\nWe has some mechanism in php codes to read the exact language files of user''s preferred language, and you shouldn''t worry about that.<br /></li>\r\n<li>What''s in language files?<br />\r\nIn a language file is an array of strings. These strings contain all the static words that a user can see on web pages. When we need to say some words on a php code file, we call for a string in the array. And the output of the php code file, that is what users see on the web pages, would show the value of the string.<br />\r\nSounds dizzying? Well, you need not care about all these. All you gotta do is translate the values of the strings in the language files into another language. <b>Let''s see an example</b>:<br /><br />\r\nThe following is the content of the English language file ''lang_users.php'', which works for the php code file ''users.php''. <br /><br />\r\n<img src="pic/langfileeng.png" alt="langfileeng" /><br />\r\nIf you wanna translate it into Simplified Chinese, all you need is edit the file into this:<br />\r\n<img src="pic/langfilechs.png" alt="langfilechs" /><br />\r\nSee, in every line, the left part, that is before <i>=&gt;</i>, is the name of a string, which you shouldn''t touch. All you need to is translate the right part, after <i>=&gt;</i>, which is the value of the string, into another language.<br />\r\nSometimes you need to look at the corresponding web pages to get the context meaning of some words.<br /></li>\r\n<li>Sounds easy? See what do you need to do.<br />\r\nIf you feel like to help us, <a class="faqlink" href="aboutnexus.php#contact"><b>CONTACT US</b></a> and we will send you a pack of the English language files (or any other available language if you prefer). Received it, you can start translating the value of strings (which is in English), into another language. It should take you several hours to do the whole work. After this, send back the translated language files to us.<br />\r\nIf no bugs or hacking codes are found in testing, we would put the new language into work.<br />\r\nSometimes the language files need to be updated, typically adding new strings, when site codes are updated. If you feel like it, you can help maintain the language files.<br /></li>\r\n<li><font color="red"><b>IMPORTANT</b></font><br />\r\nThe text of language files must be encoded in UTF-8. When saving files, be sure to set the character encoding to UTF-8. Otherwise mojibake may happen.</li></ul>', 1, 71, 2),
 (362, 62, 28, 'item', '也許是因為我的IP位址被列入黑名單了？', '這個網站有屏蔽被禁用戶或攻擊者的IP位址的功能。該功能在Apache/PHP層面上起作用，且只能屏蔽從這些位址<i>登入</i>網站。這不會阻止你<i>連線</i>到網站，更無法從底層的協定層面進行屏蔽。即便你的位址已經被列入了黑名單，你應該仍能夠通過ping/traceroute指令連同伺服器。如果你無法連通伺服器，那么問題的原因在別處。<br />\r\n<br />\r\n如果你的IP位址因某種原因錯誤地被我們屏蔽了，請聯繫我們。', 1, 8, 1),
 (363, 63, 28, 'item', '你的ISP屏蔽了本站的位址', '首先，這一般不像你的ISP的所作所為。DNS域名解析以及/或者網路問題是常見的真凶。\r\n<br />\r\n對此我們無能為力。你應該聯繫你的ISP（或者換一個）。記住你仍然可以通過代理存取本站，參看此常見問題關于代理的部分。在這種情況下，代理是否匿名或者使用哪個監聽通訊埠都不重要了。<br />\r\n<br />\r\n注意，你的“可連線狀態”將因此一直被列為“否”，因為此時Tracker伺服器無法檢查你的BT用戶端接收連線的狀態。', 1, 8, 2),
 (365, 65, 28, 'item', '不妨試試這個', '用任何手段在<a class="faqlink" href="forums.php">論壇</a>發帖。通常情況下你能得到友善而有用的輔助說明。這裡給你一些基本的指導：<ul>\r\n<li>確保你的問題的確不在這篇FAQ中。這樣的發帖導致的結果就是傳回這篇FAQ。</li>\r\n<li>在發帖之前，看看置頂。很多時候，還沒有被我們的FAQ所收錄的最新的資訊都可以在那裡被找到。</li>\r\n<li>輔助說明我們也就是輔助說明你自己。不要僅僅說“嘿我這裡出問題了！！”提供一些詳情，這樣我們就不用猜測或者浪費時間來詢問了。你使用的是什么用戶端？什么作業系統？怎樣的網路設定？如果發生了錯誤，是什么樣的具體錯誤資訊？有問題的種子檔案是哪個？你所提供的資訊越多，對你的輔助說明也就越容易，你的帖子也就更加容易得到回覆。</li>\r\n<li>不需要說的是：保持禮貌。趾高氣揚得指令別人輔助說明你很少會有用。</li></ul>', 1, 9, 1),
@@ -915,7 +869,8 @@ INSERT INTO `faq` (`id`, `link_id`, `lang_id`, `type`, `question`, `answer`, `fl
 (325, 25, 28, 'item', '為什么我的朋友無法加入？', '用戶數目有所限制（你可以檢視“首頁-&gt;網站資料-&gt;上限”）。當達到那個數目時，我們會停止接受新成員。<br />\r\n由于非活躍用戶(長期不使用賬號的用戶)引起賬號資源浪費，因此我們將清理該部分用戶，為其他想加入用戶騰出空間。<br />\r\n關于非活躍用戶清理規則，參照<a class="faqlink" href="rules.php">規則</a>。', 1, 2, 13),
 (326, 26, 28, 'item', '怎樣自訂頭像？', '首先，找一個你喜歡的圖片，當然了它無法違反我們的<a class="faqlink" href="rules.php">規則</a>。然后你要找一個存放它的地方，比方說我們自己的<a class="faqlink" href="bitbucket-upload.php">上傳器</a>。出于伺服器負載的考慮，我們更希望你將圖片上傳到別的網站，然后將其URL黏貼到你的<a class="faqlink" href="usercp.php?action=personal">控制面板</a>的頭像URL部分。 <br />\r\n<br />\r\n請不要為了僅僅測試頭像而發帖。如果一切順利，你將在你的詳情頁面看到它。', 1, 2, 14),
 (327, 27, 28, 'item', '最常見的資料未能得到更新的原因', '<ul>\r\n<li>伺服器超載/未回應。只要嘗試着保持階段作業直到伺服器回復回應(不建議連續手動清除，這樣會加重伺服器負載)。</li>\r\n<li>你正在使用不穩定的用戶端。如果你想要使用測試版或者CVS版本，你需要自己承擔由此帶來的風險。</li>\r\n</ul>', 1, 3, 1),
-(328, 28, 28, 'item', '最佳的嘗試', '<ul>\r\n<li>如果你目前正下載/上傳的種子并不在你的用戶詳情頁面中，你可以等一會或者強制進行手動更新。</li>\r\n<li>確保你正確地關閉了用戶端軟體，否則Tracker伺服器無法收到"event=completed"的訊號。</li>\r\n<li>如果Tracker伺服器掛了，不要停止上傳。只要在你結束用戶端之前伺服器回復工作，所有的資料都會得到正確地更新。</li>\r\n</ul>', 1, 3, 2),
+(328, 28, 28, 'item', '最佳的嘗試', '<ul>\r\n<li>如果你目前正下載/上傳的種子并不在你的用戶詳情頁面中，你可以等一會或者強制進行手動更新。</li>\r\n<li>確保你正確地關閉了用戶端軟體，否則Tracker伺服器無法收到"event=completed"的訊號。</li>\r\n<li>如果Tracker伺服器掛了，不要停止上傳。只要在你結束用戶端之前伺服器回復工作，所有的資料都會得到正確地更新。</li>\r\n</ul>', 1, 3, 2);
+INSERT INTO `faq` (`id`, `link_id`, `lang_id`, `type`, `question`, `answer`, `flag`, `categ`, `order`) VALUES
 (329, 29, 28, 'item', '我可以任意選取Bittorrent用戶端軟體么？', '根據<a class="faqlink" href="aboutnexus.php">NexusPHP</a>對常見BitTorrent用戶端的測試，目前本站Tracker<b>只允許</b>使用以下的BitTorrent用戶端軟體。<br />\r\n<a class="faqlink" href="aboutnexus.php">NexusPHP</a>的測試報告可<a class="faqlink" href="http://www.nexusphp.com/wiki/%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%B5%8B%E8%AF%95%E6%8A%A5%E5%91%8A">在此檢視</a>。\r\n<br />\r\n<b>Windows:</b>\r\n<ul>\r\n<li><a class="faqlink" href="http://azureus.sourceforge.net">Azureus</a>: 2.5.0.4, 3.0.5.0, 3.0.5.2及后續版本</li>\r\n<li><a class="faqlink" href="http://www.utorrent.com">uTorrent</a>: 1.6.1, 1.7.5, 1.7.6, 1.7.7, 1.8Beta(Build 10364), 2.0(Build 17624)及后續版本</li>\r\n<li><a class="faqlink" href="http://www.bittorrent.com">BitTorrent</a>: 6.0.1, 6.0.2, 6.0.3及后續版本</li>\r\n<li><a class="faqlink" href="http://deluge-torrent.org">Deluge</a>: 0.5.9.1, 1.1.6及后續版本</li>\r\n<li><a class="faqlink" href="http://rufus.sourceforge.net">Rufus</a>: 0.6.9, 0.7.0及后續版本</li>\r\n</ul>\r\n<b>Linux:</b>\r\n<ul>\r\n<li><a class="faqlink" href="http://azureus.sourceforge.net">Azureus</a>: 2.5.0.4, 3.0.5.0, 3.0.5.2及后續版本</li>\r\n<li><a class="faqlink" href="http://deluge-torrent.org">Deluge</a>: 0.5.9.1, 1.1.6及后續版本</li>\r\n<li><a class="faqlink" href="http://rufus.sourceforge.net">Rufus</a>: 0.6.9, 0.7.0及后續版本</li>\r\n<li><a class="faqlink" href="http://www.transmissionbt.com">Transmission</a>: 1.21及后續版本</li>\r\n<li><a class="faqlink" href="http://libtorrent.rakshasa.no">rTorrent</a>: 0.8.0（配合libtorrent 0.12.0或后續版本）及后續版本</li>\r\n<li><a class="faqlink" href="http://www.rahul.net/dholmes/ctorrent/">Enhanced CTorrent</a>: 3.3.2及后續版本</li>\r\n</ul>\r\n<b>MacOS X:</b>\r\n<ul>\r\n<li><a class="faqlink" href="http://azureus.sourceforge.net">Azureus</a>: 2.5.0.4, 3.0.5.0, 3.0.5.2及后續版本</li>\r\n<li><a class="faqlink" href="http://www.transmissionbt.com">Transmission</a>: 1.21及后續版本</li>\r\n<li><a class="faqlink" href="http://sourceforge.net/projects/bitrocket/">BitRocket</a>: 0.3.3(32)及后續版本</li>\r\n</ul>\r\n<b>Symbian (僅供測試):</b>\r\n<ul>\r\n<li><a class="faqlink" href="http://amorg.aut.bme.hu/projects/symtorrent">SymTorrent</a>: 1.41及后續版本</li>\r\n</ul>\r\n<br />\r\n\r\n<b>以上用戶端在https支援方面</b>\r\n<ul>\r\n<li>uTorrent 1.61: 無法准確解析https的tracker, 同時在使用會將自己識別為uTorrent 1.5</li>\r\n<li>Rufus: 沒有https支援, 并且已經几年沒有繼續開發</li>\r\n<li>rtorrent: 需要手工設定SSL證書, 詳細資訊請自行查閱其官方網站說明</li>\r\n</ul>\r\n\r\n<br />\r\n\r\n同時請儘量避免使用處于測試期的用戶端軟體, 如uTorrent 1.8.0B。\r\n\r\n為了從本站得到最好的下載體驗,我們高度建議<a class="faqlink" href="http://www.utorrent.com/download.php">uTorrent</a> 以及<a class="faqlink" href="http://azureus.sourceforge.net/download.php">Azureus</a>這兩個軟體的最新穩定版。', 1, 5, 3),
 (330, 30, 28, 'item', '為什么我正在下載/做種的一個種子會在我的詳情頁面中被列出多次？', '如果因為某些原因(比方說死機，用戶端失去回應)你的用戶端非正常結束并且你又重新開啟它，它會被配置到一個全新的Peer ID, 這樣它察看為一個全新的種子。而舊的種子將永遠不會收到“event=completed”或“event=stopped”的訊號，因此將一直被列出直到Tracker清理逾時的Peer。 無視了它就可以了，它最后會消失的。', 1, 3, 4),
 (331, 31, 28, 'item', '為什么我已經完成/取消的種子仍然在我的詳情頁面裡？', '有一些用戶端，比如說TorrentStorm和Nova Torrent，在取消或者完成一個工作的時候無法向Tracker伺服器正確傳送訊號。在那樣的情況下，Tracker伺服器將一直保持等待訊號的狀態（因此會一直列出種子的狀態為做種/下載的狀態）直到Tracker清理逾時的Peer。無視了它就可以了，它最后會消失的。', 1, 3, 5),
@@ -933,8 +888,7 @@ INSERT INTO `faq` (`id`, `link_id`, `lang_id`, `type`, `question`, `answer`, `fl
 (346, 46, 28, 'item', '為什么我的用戶端的Tracker伺服器狀態出現"Your ratio is too low! You need to wait xx h to start"的錯誤？', '在<b>新</b>種子被上傳到Tracker伺服器之后，有一些用戶必須等一些時間才能開始下載。<br>\r\n這個延遲只會影響那些分享率較低且下載量大于10G的用戶。<br />\r\n<br />\r\n<table cellspacing="3" cellpadding="0">\r\n<tr>\r\n	<td class="embedded" width="100">分享率低于</td>\r\n	<td class="embedded" width="40">0.4</td>\r\n	<td class="embedded" width="10">&nbsp;</td>\r\n	<td class="embedded" width="100">延遲</td>\r\n	<td class="embedded" width="100">24小時</td>\r\n</tr>\r\n<tr>\r\n	<td class="embedded" width="100">分享率低于</td>\r\n	<td class="embedded" width="40">0.5</td>\r\n	<td class="embedded" width="10">&nbsp;</td>\r\n	<td class="embedded" width="100">延遲</td>\r\n	<td class="embedded" width="100">12小時</td>\r\n</tr>\r\n<tr>\r\n	<td class="embedded" width="100">分享率低于</td>\r\n	<td class="embedded" width="40">0.6</td>\r\n	<td class="embedded" width="10">&nbsp;</td>\r\n	<td class="embedded" width="100">延遲</td>\r\n	<td class="embedded" width="100">6小時</td>\r\n</tr>\r\n<tr>\r\n	<td class="embedded" width="100">分享率低于</td>\r\n	<td class="embedded" width="40">0.8</td>\r\n	<td class="embedded" width="10">&nbsp;</td>\r\n	<td class="embedded" width="100">延遲</td>\r\n	<td class="embedded" width="100">3小時</td>\r\n</tr>\r\n</table>', 0, 5, 8),
 (347, 47, 28, 'item', '為什么發生了這個錯誤？ "Port xxxx is blacklisted"?', '你的用戶端向Tracker伺服器報告它正在使用某個預設的BT協定通訊埠(6881-6889)或是任何其他常見P2P通訊埠來作為連線通訊埠。<br />\r\n<br />\r\n本站不允許這些通常被P2P協定預設使用的通訊埠。原因是目前ISP常常對這些通訊埠進行限速。<br />\r\n<br />\r\n被屏蔽的通訊埠如下：<br />\r\n<br />\r\n<table cellspacing="3" cellpadding="0">\r\n  <tr>\r\n	<td class="embedded" width="100">Direct Connect</td>\r\n	<td class="embedded" width="100">411 - 413</td>\r\n  </tr>\r\n  <tr>\r\n	<td class="embedded" width="100">BitTorrent</td>\r\n	<td class="embedded" width="100">6881 - 6889</td>\r\n  </tr>\r\n  <tr>\r\n	<td class="embedded" width="100">Kazza</td>\r\n	<td class="embedded" width="100">1214</td>\r\n  </tr>\r\n  <tr>\r\n	<td class="embedded" width="100">Gnutella</td>\r\n	<td class="embedded" width="100">6346 - 6347</td>\r\n  </tr>\r\n  <tr>\r\n	<td class="embedded" width="100">Emule</td>\r\n	<td class="embedded" width="100">4662</td>\r\n  </tr>\r\n  <tr>\r\n	<td class="embedded" width="100">WinMX</td>\r\n	<td class="embedded" width="100">6699</td>\r\n  </tr>\r\n</table>\r\n<br />\r\n要使用我們的Tracker伺服器，你必須配置你的用戶端使用未在上面列出的通訊埠範圍(從49152到65535都是不錯的選取，參看<a class="faqlink" href="http://www.iana.org/assignments/port-numbers">IANA</a>)。注意某些用戶端，如Azureus 2.0.7.0或更高版本，對所有的種子都使用同一通訊埠。而其他大多數用戶端為每一個種子開放一個通訊埠，你在選取通訊埠範圍應考慮到這個問題（一般來說通訊埠範圍小于10。設定一個過大的範圍并不一定有好處，而且可能有安全隱患)。 <br />\r\n<br />\r\n這些通訊埠是用于同伴間通訊的，而非用于用戶端連線到Tracker伺服器。因此這個改動并不會影響你使用其他Tracker伺服器（事實上，它甚至可能<i>加快</i>所有Tracker伺服器上種子的速度）。你的用戶端也仍然能夠連線到那些使用預設通訊埠的同伴。如果你的用戶端不支援自己自訂通訊埠，那么換一個吧。<br />\r\n<br />\r\n不要向我們詢問，或者在論壇裡面提問究竟應該選取什么通訊埠。我們的用戶選取的通訊埠越隨機，ISP就越難以捉摸清楚我們使用的通訊埠，從而無法對我們的通訊埠進行限速。如果我們只是簡單地規定一個範圍，那么ISP又會很快對那個範圍內的通訊埠進行限速的。<br />\r\n<br />\r\n最后還要說的是，記得在你的路線和/或防火牆上開啟你選取的通訊埠，如果你有這些東西的話。', 1, 5, 9),
 (348, 48, 28, 'item', '那么這個呢？ “IO錯誤 - [錯誤號13] 許可被拒絕”？', '如果你只是想要解決這個問題的話，重新啟動你的電腦應該就可以了。否則的話，繼續讀下去。<br />\r\n<br />\r\nIO錯誤指的是匯入-匯出錯誤，這是一個檔案系統錯誤，而非來自我們的Tracker伺服器。當你的用戶端由于某些原因無法開啟種子中未下載完成的檔案時，這個錯誤就會發生。 通常原因是用戶端的兩個實例同時在執行：當上一次關閉用戶端時因為某種原因它沒有被真正關閉，從而始終在背景執行。因此檔案被鎖定，使得新的實例無法開啟這個檔案。<br />\r\n<br />\r\n另外一個不常出現的原因是因為老舊的FAT檔案系統。某些系統崩潰可能導致未下載完成的檔案損壞，接着就出現了這個錯誤。執行一次scandisk應該可以解決這個問題。注意，只有當你使用Windows 9X作業系統（只支援FAT檔案系統）或者在Windows NT/2000/XP中使用FAT檔案系統的時候才比對可能出現這個問題。NTFS檔案系統要健壯許多，不太可能出現這樣的問題。', 1, 5, 10),
-(350, 50, 28, 'item', '不要馬上下載新發布的種子', '下載速度主要取決于上傳者/下載者比(SLR)。如果是種子是新發布的且非常受歡迎而SLR又很低的種子，下載速度低是常見的問題。<br />\r\n<br />\r\n請牢記你不喜歡低速下載。所以多<b>上傳</b>讓別人不用忍耐同樣的困擾。\r\n<br />\r\n<br />由其是當你的頻寬較窄時，不要馬上下載新發布的種子。最好的下載速度通常在一個種子生命周期的一半時出現，此時SLR達到最大值（不過，這時下載的缺點是你的上傳量不會很多。究竟如何平衡優點與缺點，取決于你自己)。', 1, 6, 1);
-INSERT INTO `faq` (`id`, `link_id`, `lang_id`, `type`, `question`, `answer`, `flag`, `categ`, `order`) VALUES
+(350, 50, 28, 'item', '不要馬上下載新發布的種子', '下載速度主要取決于上傳者/下載者比(SLR)。如果是種子是新發布的且非常受歡迎而SLR又很低的種子，下載速度低是常見的問題。<br />\r\n<br />\r\n請牢記你不喜歡低速下載。所以多<b>上傳</b>讓別人不用忍耐同樣的困擾。\r\n<br />\r\n<br />由其是當你的頻寬較窄時，不要馬上下載新發布的種子。最好的下載速度通常在一個種子生命周期的一半時出現，此時SLR達到最大值（不過，這時下載的缺點是你的上傳量不會很多。究竟如何平衡優點與缺點，取決于你自己)。', 1, 6, 1),
 (351, 51, 28, 'item', '限制上傳速度', '上傳速度將從以下兩種方式顯著影響下載速度：\r\n<ul>\r\n    <li>Bittorrent的同伴傾向于回饋那些給它們提上傳的同伴。這就意味着如果A和B正在同時下載一個檔案，而A又在高速向B傳輸資料，那么B將會嘗試着回報A。因此高速上傳將導致高速下載。</li>\r\n\r\n    <li>由于TCP協定的工作方式，當A正從B下載某些東西的時候，A必須不停地向B傳送成功收到B所傳送來的資料的訊號（被稱為確認──ACK ── 某種“已收到”的資訊)。如果A沒有傳送ACK訊號，那么B將暫停向A傳送資料并且進入等候狀態。如果A正在全速上傳，很有可能沒有用來傳送ACK訊號的頻寬，因此ACK訊號被耽擱。在這種情況下，過高速度的上傳導致了低速的下載。</li>\r\n</ul>\r\n實際的效果是以上兩個原因的結合。上傳速度應該在保證ACK能正常傳送的前提下被設得儘量高。 <b>一個很好的實踐理論是保持上傳速度在理論上限的80%。</b>你也可以細細研究什么是最適合你的速度（同時也請記住高速上傳對于你的分享率很有輔助說明）。<br />\r\n<br />\r\n如果你正在執行一個以上的種子工作，你應該考慮的是全域上傳速度。某些用戶端能限制了全域上傳速度，其他的則能對每一個種子分別進行設定。了解你的用戶端。如果你正在使用你的電腦做別的某些應用（比方說上網或者從FTP拖東西），也需考慮一下它們對于全域上傳的影響。', 1, 6, 2),
 (352, 52, 28, 'item', '限制同時連線數', '某些作業系統（例如Windows 9X）對于大量連線數支援不完善，甚至有可能因此而崩潰。也有一些家用路線（尤其當執行着NAT以及/或者開啟防火牆狀態檢查服務時）會因大量連線數而變得很慢或者崩潰。對于連線數沒有固定的最佳值，你可以試試看60或者100。記住這些連線數是累加的，所以如果你的用戶端執行了兩個階段作業，這兩個數字要加在一起。', 1, 6, 3),
 (353, 53, 28, 'item', '限制同時上傳數', '上傳數難道和連線數有什么不一樣嗎？是的，兩者是不同的。連線數限制了你的用戶端所能對話以及/或者下載的同伴數。上傳數則限制了你的用戶端實際能上傳的同伴數。理想的數值一般要比連線數低許多，并且與你的物理頻寬高度相關。', 1, 6, 4),
@@ -987,7 +941,8 @@ INSERT INTO `faq` (`id`, `link_id`, `lang_id`, `type`, `question`, `answer`, `fl
 (448, 48, 6, 'item', 'What''s this "IOError - [Errno13] Permission denied" error?', 'If you just want to fix it reboot your computer, it should solve the problem. Otherwise read on.<br />\r\nIOError means Input-Output Error, and that is a file system error, not a tracker one. It shows up when your client is for some reason unable to open the partially downloaded torrent files. The most common cause is two instances of the client to be running simultaneously: the last time the client was closed it somehow didn''t really close but kept running in the background, and is therefore still locking the files, making it impossible for the new instance to open them.<br />\r\nA more uncommon occurrence is a corrupted FAT. A crash may result in corruption that makes the partially downloaded files unreadable, and the error ensues. Running scandisk should solve the problem. (Note that this may happen only if you''re running Windows 9x - which only support FAT - or NT/2000/XP with FAT formatted hard drives. NTFS is much more robust and should never permit this problem.)\r\n', 1, 5, 10),
 (450, 50, 6, 'item', 'Do not immediately jump on new torrents', 'The download speed mostly depends on the seeder-to-leecher ratio (SLR). Poor download speed is mainly a problem with new and very popular torrents where the SLR is low.<br />\r\n(Note: make sure you remember that you did not enjoy the low speed. Seed so that others will not endure the same.)<br />\r\n<br />In particular, do not do it if you have a slow connection. The best speeds will be found around the half-life of a torrent, when the SLR will be at its highest. (The downside is that you will not be able to seed so much. It''s up to you to balance the pros and cons of this.)', 1, 6, 1),
 (451, 51, 6, 'item', 'Limit your upload speed', 'The upload speed affects the download speed in essentially two ways:\r\n<ul>\r\n    <li>Bittorrent peers tend to favour those other peers that upload to them. This means that if A and B are leeching the same torrent and A is sending data to B at high speed then B will try to reciprocate. So due to this effect high upload speeds lead to high download speeds.</li>\r\n\r\n    <li>Due to the way TCP works, when A is downloading something from B it has to keep telling B that it received the data sent to him. (These are called acknowledgements - ACKs -, a sort of "got it!" messages). If A fails to do this then B will stop sending data and wait. If A is uploading at full speed there may be no bandwidth left for the ACKs and they will be delayed. So due to this effect excessively high upload speeds lead to low download speeds.</li>\r\n</ul>\r\n\r\nThe full effect is a combination of the two. The upload should be kept as high as possible while allowing the ACKs to get through without delay. <b>A good thumb rule is keeping the upload at about 80% of the theoretical upload speed. </b>You will have to fine tune yours to find out what works best for you. (Remember that keeping the upload high has the additional benefit of helping with your ratio.) <br />\r\n<br />\r\nIf you are running more than one instance of a client it is the overall upload speed that you must take into account. Some clients limit global upload speed, others do it on a per torrent basis. Know your client. The same applies if you are using your connection for anything else (e.g. browsing or ftp), always think of the overall upload speed.', 1, 6, 2),
-(452, 52, 6, 'item', 'Limit the number of simultaneous connections', 'Some operating systems (like Windows 9x) do not deal well with a large number of connections, and may even crash. Also some home routers (particularly when running NAT and/or firewall with stateful inspection services) tend to become slow or crash when having to deal with too many connections. There are no fixed values for this, you may try 60 or 100 and experiment with the value. Note that these numbers are additive, if you have two instances of a client running the numbers add up.', 1, 6, 3),
+(452, 52, 6, 'item', 'Limit the number of simultaneous connections', 'Some operating systems (like Windows 9x) do not deal well with a large number of connections, and may even crash. Also some home routers (particularly when running NAT and/or firewall with stateful inspection services) tend to become slow or crash when having to deal with too many connections. There are no fixed values for this, you may try 60 or 100 and experiment with the value. Note that these numbers are additive, if you have two instances of a client running the numbers add up.', 1, 6, 3);
+INSERT INTO `faq` (`id`, `link_id`, `lang_id`, `type`, `question`, `answer`, `flag`, `categ`, `order`) VALUES
 (453, 53, 6, 'item', 'Limit the number of simultaneous uploads', 'Isn''t this the same as above? No. Connections limit the number of peers your client is talking to and/or downloading from. Uploads limit the number of peers your client is actually uploading to. The ideal number is typically much lower than the number of connections, and highly dependent on your (physical) connection.', 1, 6, 4),
 (454, 54, 6, 'item', 'Just give it some time', 'As explained above peers favour other peers that upload to them. When you start leeching a new torrent you have nothing to offer to other peers and they will tend to ignore you. This makes the starts slow, in particular if, by chance, the peers you are connected to include few or no seeders. The download speed should increase as soon as you have some pieces to share.', 1, 6, 5),
 (455, 55, 6, 'item', 'Why is my browsing so slow while leeching?', 'Your download speed is always finite. If you are a peer in a fast torrent it will almost certainly saturate your download bandwidth, and your browsing will suffer. Many clients allows you to limit the download speed and try it.<br />\r\n<br />\r\nBrowsing was used just as an example, the same would apply to gaming, IMing, etc...', 1, 6, 6),
@@ -995,15 +950,13 @@ INSERT INTO `faq` (`id`, `link_id`, `lang_id`, `type`, `question`, `answer`, `fl
 (457, 57, 6, 'item', 'How do I find out if I''m behind a (transparent/anonymous) proxy?', 'Try <a href="http://proxyjudge.org" class="faqlink">ProxyJudge</a>. It lists the HTTP headers that the server where it is running received from you. The relevant ones are HTTP_CLIENT_IP, HTTP_X_FORWARDED_FOR and REMOTE_ADDR.', 1, 7, 2),
 (475, 75, 6, 'item', 'Why am I listed as not connectable even though I''m not NAT/Firewalled?', 'The tracker is quite smart at finding your real IP, but it does need the proxy to send the HTTP header HTTP_X_FORWARDED_FOR. If your ISP''s proxy does not then what happens is that the tracker will interpret the proxy''s IP address as the client''s IP address. So when you login and the tracker tries to connect to your client to see if you are NAT/firewalled it will actually try to connect to the proxy on the port your client reports to be using for incoming connections. Naturally the proxy will not be listening on that port, the connection will fail and the tracker will think you are NAT/firewalled.', 1, 7, 3),
 (462, 62, 6, 'item', 'Maybe my address is blacklisted?', 'The site keeps a list of blocked IP addresses for banned users or attackers. This works at Apache/PHP level, and only blocks <i>logins</i> from those addresses. It should not stop you from reaching the site. In particular it does not block lower level protocols, you should be able to ping/traceroute the server even if your address is blacklisted. If you cannot then the reason for the problem lies elsewhere.<br />\r\n<br />\r\nIf somehow your address is blocked by mistake, contact us about it.', 1, 8, 1),
-(463, 63, 6, 'item', 'Your ISP blocks the site''s address', '(In first place, it''s unlikely your ISP is doing so. DNS name resolution and/or network problems are the usual culprits.) \r\n<br />\r\nThere''s nothing we can do. You should contact your ISP (or get a new one). Note that you can still visit the site via a proxy, follow the instructions in the relevant section. In this case it doesn''t matter if the proxy is anonymous or not, or which port it listens to.<br />\r\n<br />\r\nNotice that you will always be listed as an "unconnectable" client because the tracker will be unable to check that you''re capable of accepting incoming connections.', 1, 8, 2);
-INSERT INTO `faq` (`id`, `link_id`, `lang_id`, `type`, `question`, `answer`, `flag`, `categ`, `order`) VALUES
+(463, 63, 6, 'item', 'Your ISP blocks the site''s address', '(In first place, it''s unlikely your ISP is doing so. DNS name resolution and/or network problems are the usual culprits.) \r\n<br />\r\nThere''s nothing we can do. You should contact your ISP (or get a new one). Note that you can still visit the site via a proxy, follow the instructions in the relevant section. In this case it doesn''t matter if the proxy is anonymous or not, or which port it listens to.<br />\r\n<br />\r\nNotice that you will always be listed as an "unconnectable" client because the tracker will be unable to check that you''re capable of accepting incoming connections.', 1, 8, 2),
 (465, 65, 6, 'item', 'You may try this', 'Post in the <a class="faqlink" href="forums.php">Forums</a>, by all means. You''ll find they are usually a friendly and helpful place, provided you follow a few basic guidelines: <ul>\r\n<li>Make sure your problem is not really in this FAQ. There''s no point in posting just to be sent back here. </li>\r\n<li>Before posting read the sticky topics (the ones at the top). Many times new information that still hasn''t been incorporated in the FAQ can be found there.</li>\r\n<li>Help us in helping you. Do not just say "it doesn''t work!". Provide details so that we don''t have to guess or waste time asking. What client do you use? What''s your OS? What''s your network setup? What''s the exact error message you get, if any? What are the torrents you are having problems with? The more you tell the easiest it will be for us, and the more probable your post will get a reply.</li>\r\n<li>And needless to say: be polite. Demanding help rarely works, asking for it usually does the trick.</li></ul>', 1, 9, 1),
 (466, 66, 6, 'item', 'Why do I get a "Your slot limit is reached! You may at most download xx torrents at the same time" error?', 'This is part of the "Slot System". The slot system is being used to limit the concurrent downloads for users that have low ratio and downloaded amount above 10 GB<br /><br />\r\nRules: <br />\r\n<table cellspacing="3" cellpadding="0">\r\n<tr>\r\n	<td class="embedded" width="100">Ratio below</td>\r\n	<td class="embedded" width="40">0.5</td>\r\n	<td class="embedded" width="10">&nbsp;</td>\r\n	<td class="embedded" width="100">available slots</td>\r\n	<td class="embedded" width="40">1</td>\r\n</tr>\r\n<tr>\r\n	<td class="embedded" width="100">Ratio below</td>\r\n	<td class="embedded" width="40">0.65</td>\r\n	<td class="embedded" width="10">&nbsp;</td>\r\n	<td class="embedded" width="100">available slots</td>\r\n	<td class="embedded" width="100">2</td>\r\n</tr>\r\n<tr>\r\n	<td class="embedded" width="100">Ratio below</td>\r\n	<td class="embedded" width="40">0.8</td>\r\n	<td class="embedded" width="10">&nbsp;</td>\r\n	<td class="embedded" width="100">available slots</td>\r\n	<td class="embedded" width="100">3</td>\r\n</tr>\r\n<tr>\r\n	<td class="embedded" width="100">Ratio below</td>\r\n	<td class="embedded" width="40">0.95</td>\r\n	<td class="embedded" width="10">&nbsp;</td>\r\n	<td class="embedded" width="100">available slots</td>\r\n	<td class="embedded" width="100">4</td>\r\n</tr>\r\n<tr>\r\n	<td class="embedded" width="100">Ratio above</td>\r\n	<td class="embedded" width="40">0.95</td>\r\n	<td class="embedded" width="10">&nbsp;</td>\r\n	<td class="embedded" width="100">available slots</td>\r\n	<td class="embedded" width="100">unlimited</td>\r\n</tr>\r\n</table>\r\n<br />\r\nIn all cases the seeding slots are unlimited. However if you have already filled all your available download slots and try to start seeding you will receive the same error. In this case you must free at least one download slot in order to start all your seeds and then start the download. If all your download slots are filled the system will deny any connection before validating if you want to download or seed. So first start your seeds and after that your downloads. <br />\r\n<br /><br />\r\nAny time, you can check your available slots in the member bar on top of the page.', 0, 5, 12),
 (467, 67, 6, 'item', 'What is the passkey System? How does it work?', 'The passkey system is implemented to verify if you are registered with the tracker. Every user has a personal passkey, a random key generated by the system. When a user tries to download a torrent, his personal passkey is imprinted in the tracker URL of the torrent, allowing to the tracker to identify any source connected on it. In this way, you can seed a torrent for example, at home and at your office simultaneously without any problem with the 2 different IPs.\r\n', 1, 5, 13),
 (468, 68, 6, 'item', 'Why do I get an "Unknown passkey" error? ', 'You will get this error, firstly if you are not registered on our tracker, or if you haven''t downloaded the torrent to use from our webpage, when you were logged in. In this case, just register or log in and re-download the torrent.<br />\r\nThere is a chance to get this error also, at the first time you download anything as a new user, or at the first download after you reset your passkey. The reason is simply that the tracker reviews the changes in the passkeys every few minutes and not instantly. For that reason just leave the torrent running for a few minutes, and you will get eventually an OK message from the tracker.', 1, 5, 14),
 (469, 69, 6, 'item', 'When do I need to reset my passkey?', '<ul><li>If your passkey has been leaked and other user(s) uses it to download torrents using your account. In this case, you will see torrents stated in your account that you are not leeching or seeding . </li>\r\n<li>When your clients hangs up or your connection is terminated without pressing the stop button of your client. In this case, in your account you will see that you are still leeching/seeding the torrents even that your client has been closed. Normally these "ghost peers" will be cleaned automatically within 30 minutes, but if you want to resume your downloads and the tracker denied that due to the fact that you "already are downloading the same torrent" then you should reset your passkey and re-download the torrent, then resume it.  </li></ul>', 1, 5, 15),
 (470, 70, 6, 'item', 'What is DHT? Why must I turn it off and how?', 'DHT must be disabled in your client. DHT can cause your stats to be recorded incorrectly and could be seen as cheating. Anyone using this will be banned for cheating the system.\r\n<br />\r\nFortunately, this tracker would parse uploaded .torrent files and automatically disable DHT. That''s why you must re-downloaded the torrent before starting seeding.', 1, 5, 16),
-(471, 71, 6, 'categ', 'How can I help translate the site language into my native language?', '', 1, 1, 8),
 (472, 72, 6, 'item', 'What skills do I need to do the translation?', 'Translate the site into another language is quite easy. You needn''t be skilled in PHP or dynamic website design. In fact, all you need is proficient understanding of English (the default site language) and the language you plan to translate into. Maybe some basic knowledge in HTML would help.<br /><br />\r\nMoreover, we give a detailed tutorial on how to do the translation <a href="#73" class="faqlink"><b>HERE</b></a>. And our coders would be more than pleased to answer the questions you may encounter.<br /><br />\r\nTranslate the whole site into another language would take estimated 10 hours. And extra time is needed to maintain the translation when site code is updated.<br /><br />\r\nSo, if you think you could help, feel free to <a class="faqlink" href="contactstaff.php"><b>CONTACT US</b></a>. Needless to say, you would be rewarded.', 1, 71, 1),
 (473, 73, 6, 'item', 'The translation tutorial', '<ul>\r\n<li>How does multi-language work?<br />\r\nCurrently we use language files to store all the static words that a user can see on web pages. <br />\r\nEvery php code file has a corresponding language file for a certain language. And we named the language file ''lang_'' plus the filename of the php code file. i.e. the language file of the php code file ''details.php'' would be ''lang_details.php''. <br />\r\nWe has some mechanism in php codes to read the exact language files of user''s preferred language, and you shouldn''t worry about that.<br /></li>\r\n<li>What''s in language files?<br />\r\nIn a language file is an array of strings. These strings contain all the static words that a user can see on web pages. When we need to say some words on a php code file, we call for a string in the array. And the output of the php code file, that is what users see on the web pages, would show the value of the string.<br />\r\nSounds dizzying? Well, you need not care about all these. All you gotta do is translate the values of the strings in the language files into another language. <b>Let''s see an example</b>:<br /><br />\r\nThe following is the content of the English language file ''lang_users.php'', which works for the php code file ''users.php''. <br /><br />\r\n<img src="pic/langfileeng.png" alt="langfileeng" /><br />\r\nIf you wanna translate it into Simplified Chinese, all you need is edit the file into this:<br />\r\n<img src="pic/langfilechs.png" alt="langfilechs" /><br />\r\nSee, in every line, the left part, that is before <i>=&gt;</i>, is the name of a string, which you shouldn''t touch. All you need to is translate the right part, after <i>=&gt;</i>, which is the value of the string, into another language.<br />\r\nSometimes you need to look at the corresponding web pages to get the context meaning of some words.<br /></li>\r\n<li>Sounds easy? See what do you need to do.<br />\r\nIf you feel like to help us, <a class="faqlink" href="aboutnexus.php#contact"><b>CONTACT US</b></a> and we will send you a pack of the English language files (or any other available language if you prefer). Received it, you can start translating the value of strings (which is in English), into another language. It should take you several hours to do the whole work. After this, send back the translated language files to us.<br />\r\nIf no bugs or hacking codes are found in testing, we would put the new language into work.<br />\r\nSometimes the language files need to be updated, typically adding new strings, when site codes are updated. If you feel like it, you can help maintain the language files.<br /></li>\r\n<li><font color="red"><b>IMPORTANT</b></font><br />\r\nThe text of language files must be encoded in UTF-8. When saving files, be sure to set the character encoding to UTF-8. Otherwise mojibake may happen.</li></ul>', 1, 71, 2),
 (474, 74, 6, 'item', 'Why does my client notify me of low disk space even if there is plenty left?', 'Most possible reason is that the file system of your disk partitions is FAT32, which has a maximum file size limit of 4 GB. If your operation system is Windows, consider converting file system to NTFS. Check <a class="faqlink" href="http://technet.microsoft.com/en-us/library/bb456984.aspx">here</a> for details.\r\n', 1, 5, 17);
@@ -1011,202 +964,1712 @@ INSERT INTO `faq` (`id`, `link_id`, `lang_id`, `type`, `question`, `answer`, `fl
 -- --------------------------------------------------------
 
 --
--- Table structure for table `files`
+-- 表的结构 `files`
 --
 
-CREATE TABLE IF NOT EXISTS `files` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `torrent` mediumint(8) unsigned NOT NULL DEFAULT '0',
+CREATE TABLE `files` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `torrent` mediumint(8) UNSIGNED NOT NULL DEFAULT '0',
   `filename` varchar(255) NOT NULL DEFAULT '',
-  `size` bigint(20) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`),
-  KEY `torrent` (`torrent`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
---
--- Dumping data for table `files`
---
-
-
--- --------------------------------------------------------
-
---
--- Table structure for table `forummods`
---
-
-CREATE TABLE IF NOT EXISTS `forummods` (
-  `id` smallint(5) unsigned NOT NULL AUTO_INCREMENT,
-  `forumid` smallint(5) unsigned NOT NULL,
-  `userid` mediumint(8) unsigned NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `forumid` (`forumid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
---
--- Dumping data for table `forummods`
---
-
-
--- --------------------------------------------------------
-
---
--- Table structure for table `forums`
---
-
-CREATE TABLE IF NOT EXISTS `forums` (
-  `id` smallint(5) unsigned NOT NULL AUTO_INCREMENT,
-  `sort` smallint(5) unsigned NOT NULL DEFAULT '0',
-  `name` varchar(60) NOT NULL,
-  `description` varchar(255) NOT NULL DEFAULT '',
-  `minclassread` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  `minclasswrite` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  `postcount` int(10) unsigned NOT NULL DEFAULT '0',
-  `topiccount` int(10) unsigned NOT NULL DEFAULT '0',
-  `minclasscreate` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  `forid` smallint(5) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
---
--- Dumping data for table `forums`
---
-
-
--- --------------------------------------------------------
-
---
--- Table structure for table `friends`
---
-
-CREATE TABLE IF NOT EXISTS `friends` (
-  `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
-  `userid` mediumint(8) unsigned NOT NULL,
-  `friendid` mediumint(8) unsigned NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `userfriend` (`userid`,`friendid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
---
--- Dumping data for table `friends`
---
-
-
--- --------------------------------------------------------
-
---
--- Table structure for table `fun`
---
-
-CREATE TABLE IF NOT EXISTS `fun` (
-  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
-  `userid` mediumint(8) unsigned NOT NULL DEFAULT '0',
-  `added` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `body` text,
-  `title` varchar(255) NOT NULL DEFAULT '',
-  `status` enum('normal','dull','notfunny','funny','veryfunny','banned') NOT NULL DEFAULT 'normal',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
---
--- Dumping data for table `fun`
---
-
-
--- --------------------------------------------------------
-
---
--- Table structure for table `funds`
---
-
-CREATE TABLE IF NOT EXISTS `funds` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `usd` decimal(8,2) NOT NULL DEFAULT '0.00',
-  `cny` decimal(8,2) NOT NULL DEFAULT '0.00',
-  `user` mediumint(8) unsigned NOT NULL,
-  `added` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `memo` varchar(255) NOT NULL DEFAULT '',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
---
--- Dumping data for table `funds`
---
-
-
--- --------------------------------------------------------
-
---
--- Table structure for table `funvotes`
---
-
-CREATE TABLE IF NOT EXISTS `funvotes` (
-  `funid` mediumint(8) unsigned NOT NULL,
-  `userid` mediumint(8) unsigned NOT NULL,
-  `added` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `vote` enum('fun','dull') NOT NULL DEFAULT 'fun',
-  PRIMARY KEY (`funid`,`userid`)
+  `size` bigint(20) UNSIGNED NOT NULL DEFAULT '0'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `funvotes`
+-- 转存表中的数据 `files`
 --
 
+INSERT INTO `files` (`id`, `torrent`, `filename`, `size`) VALUES
+(1, 1, 'windows_10_multiple_editions_x64_dvd_6848463.iso', 4303300608),
+(2, 2, 'SugarCRM.docx', 11496),
+(3, 3, 'clonezilla-live-20160210-wily-amd64.iso', 235929600),
+(4, 4, 'install.sys', 115),
+(5, 5, 'portcheck.php', 911),
+(6, 6, 'xamppserver.inc', 149),
+(7, 7, 'printenv.pl', 302),
+(8, 8, 'cgi.cgi', 87),
+(9, 9, 'onefile.html', 176),
+(10, 10, 'onefile.html', 176),
+(11, 11, 'onefile.html', 176),
+(12, 12, 'cgi.cgi', 87),
+(13, 13, 'clonezilla-live-20160210-wily-amd64.iso', 235929600),
+(14, 14, 'xamppserver.inc', 149),
+(15, 15, 'xamppserver.inc', 149),
+(16, 16, 'portcheck.php', 911),
+(17, 17, 'xamppserver.inc', 149),
+(18, 18, 'printenv.pl', 302),
+(19, 19, '.version', 41),
+(20, 20, 'clonezilla-live-20160210-wily-amd64.iso', 235929600),
+(21, 21, 'CentOS-6.3-i386-bin-DVD1.iso', 3713204224),
+(22, 22, '星际穿越.IMAX版.BD1280超清国英双语特效中英双字.mp4', 3484975288),
+(23, 23, '.version', 41),
+(24, 24, 'cgi.cgi', 87),
+(25, 25, 'portcheck.php', 911),
+(28, 28, 'xamppserver.inc', 149),
+(29, 29, 'xamppserver.inc', 149),
+(30, 30, 'portcheck.php', 911),
+(31, 31, 'Fedora-Workstation-Live-x86_64-24-1.2.iso', 1541406720),
+(32, 32, 'clonezilla-live-20160210-wily-amd64.iso', 235929600),
+(33, 33, 'CentOS-6.3-i386-bin-DVD1.iso', 3713204224),
+(34, 34, '星际穿越.IMAX版.BD1280超清国英双语特效中英双字.mp4', 3484975288),
+(35, 35, '[无极电影-www.wujidy.com].六弄咖啡馆.HD.720p.国语中字.rmvb', 1127297155),
+(36, 36, '[阳光电影www.ygdy8.com].爱宠大机密.BD.720p.英国粤三语.中英双字幕.mkv', 1261733452),
+(37, 37, 'The.Shawshank.Redemption.1994.BluRay.iPad.720p.x264.AAC-BYRPAD.mp4.mp4', 2279222367),
+(38, 38, '[阳光电影www.ygdy8.com].谍影重重5.HD.720p.中英双字幕.rmvb', 1452823933),
+(39, 39, 'SoulMate.2016.WEB-DL.1080p.H264.AAC-npuer.mp4', 4247708043),
+(40, 40, '[阳光电影www.ygdy8.com].机械师2：复活.BD.720p.中英双字幕.rmvb', 1157636151),
+(41, 41, 'Photoshop_CS6.exe', 1208345936),
+(42, 42, '[阳光电影www.ygdy8.com].谍影重重5.HD.720p.中英双字幕.rmvb', 1452823933),
+(43, 43, '[阳光电影www.ygdy8.com].使徒行者.BD.720p.国粤双语中字.mkv', 1671723122),
+(44, 44, '1/秒速五厘米.mp4', 673346080),
+(45, 44, '1/0e9d03b1-c232-4e02-8b1a-e773a5087995.json', 501),
+(46, 45, '[阳光电影www.ygdy8.com].机械师2：复活.BD.720p.中英双字幕.rmvb', 1157636151),
+(47, 46, '[阳光电影www.ygdy8.com].久保与二弦琴.BD.720p.中英双字幕.rmvb', 1189913278),
+(48, 47, 'VS2012_ULT_chs.iso', 1643802624),
+(49, 48, '[阳光电影www.ygdy8.com].谍影重重5.HD.720p.中英双字幕.rmvb', 1452823933),
+(50, 49, '[阳光电影www.ygdy8.com].机械师2：复活.BD.720p.中英双字幕.rmvb', 1157636151),
+(51, 50, '0001.51CTO学院-Python编程语言历史及特性.mp4', 19970287),
+(52, 50, '0002.51CTO学院-Python编程语言初接触.mp4', 21199286),
+(53, 50, '0003.51CTO学院-Python程序文件结构.mp4', 21043633),
+(54, 50, '0004.51CTO学院-准备Python编程环境.mp4', 39033578),
+(55, 50, '0005.51CTO学院-Python编程语言基础技术框架(1).mp4', 25799176),
+(56, 50, '0006.51CTO学院-Python编程语言基础技术框架(2).mp4', 25672799),
+(57, 50, '0007.51CTO学院-Python编程语言基础技术框架(3)之print输出.mp4', 23298137),
+(58, 50, '0008.51CTO学院-Python编程语言基础技术框架(4)之函数介绍.mp4', 23930803),
+(59, 50, '0009.51CTO学院-Python编程风格(1).mp4', 20790323),
+(60, 50, '0010.51CTO学院-Python编程风格(2).mp4', 20065571),
+(61, 50, '0011.51CTO学院-Python对象特性、比较及核心数据类型.mp4', 22653169),
+(62, 50, '0012.51CTO学院-Python核心数据类型及类型显式转换.mp4', 18397003),
+(63, 50, '0013.51CTO学院-Python数据类型显式转换及数值类型.mp4', 19472244),
+(64, 50, '0014.51CTO学院-序列类型详解之字符串（1）.mp4', 20669144),
+(65, 50, '0015.51CTO学院-序列类型详解之字符串（2）.mp4', 17560009),
+(66, 50, '0016.51CTO学院-序列类型之列表（1）.mp4', 19772050),
+(67, 50, '0017.51CTO学院-序列类型之列表（2）.mp4', 19799185),
+(68, 50, '0018.51CTO学院-序列类型之元组.mp4', 20364152),
+(69, 50, '0019.51CTO学院-Python核心数据类型之字典.mp4', 20030936),
+(70, 50, '0020.51CTO学院-Python核心数据类型之字典（2）.mp4', 11453024),
+(71, 50, '0021.51CTO学院-可调用对象，以及列表和字典的原处修改特性.mp4', 19077055),
+(72, 50, '0022.51CTO学院-Python的集合类型详解.mp4', 20887270),
+(73, 50, '0023.51CTO学院-容器数据类型特性总结.mp4', 20453364),
+(74, 50, '0024.51CTO学院-表达式与运算符.mp4', 18879609),
+(75, 50, '0025.51CTO学院-运算符优先级和Python语句概述.mp4', 16722584),
+(76, 50, '0026.51CTO学院-条件测试及if语句.mp4', 22251172),
+(77, 50, '0027.51CTO学院-while循环.mp4', 21810177),
+(78, 50, '0028.51CTO学院-for循环.mp4', 22904840),
+(79, 50, '0029.51CTO学院-for循环（2）.mp4', 24180113),
+(80, 50, '0030.51CTO学院-迭代器和列表解析.mp4', 28424551),
+(81, 50, '0031.51CTO学院-列表解析和生成器.mp4', 24255941),
+(82, 50, '0032.51CTO学院-Python文件对象.mp4', 21575230),
+(83, 50, '0033.51CTO学院-文件对象的属性与方法.mp4', 24795953),
+(84, 50, '0034.51CTO学院-OS模块.mp4', 23247646),
+(85, 50, '0035.51CTO学院-OS模块的常用接口.mp4', 23360975),
+(86, 50, '0036.51CTO学院-os.path模块.mp4', 20355016),
+(87, 50, '0037.51CTO学院-Python函数基础.mp4', 20209371),
+(88, 50, '0038.51CTO学院-函数作用域（变量名解析）.mp4', 20412556),
+(89, 50, '0039.51CTO学院-函数参数及其匹配模型.mp4', 21299883),
+(90, 50, '0040.51CTO学院-匿名函数lambda.mp4', 20514112),
+(91, 50, '0041.51CTO学院-Python函数式编程.mp4', 22250679),
+(92, 50, '0042.51CTO学院-Python函数闭包及装饰器.mp4', 15822263),
+(93, 50, '0043.51CTO学院-yield与生成器.mp4', 16571011),
+(94, 50, '0044.51CTO学院-递归函数.mp4', 16670952),
+(95, 50, '0045.51CTO学院-面向对象的基础概念.mp4', 22853062),
+(96, 50, '0046.51CTO学院-面向对象的基础概念（2）.mp4', 22527222),
+(97, 50, '0047.51CTO学院-在Python中使用类.mp4', 22954924),
+(98, 50, '0048.51CTO学院-Python类方法中的可用变量.mp4', 22375598),
+(99, 50, '0049.51CTO学院-类继承和属性搜索模型.mp4', 25226640),
+(100, 50, '0050.51CTO学院-运算符重载.mp4', 20088499),
+(101, 50, '0051.51CTO学院-Python模块基础[高清版].mp4', 61712048),
+(102, 50, '0052.51CTO学院-Python模块的工作机制[高清版].mp4', 63362304),
+(103, 50, '0053.51CTO学院-Python包[高清版].mp4', 56888016),
+(104, 50, '0054.51CTO学院-使用disutils打包[高清版].mp4', 47986928),
+(105, 50, '0055.51CTO学院-使用disutils打包(2)[高清版].mp4', 43657232),
+(106, 50, '0056.51CTO学院-异常的基本概念[高清版].mp4', 53750464),
+(107, 50, '0057.51CTO学院-检测和处理异常[高清版].mp4', 54588160),
+(108, 50, '0058.51CTO学院-try语句[高清版].mp4', 64118848),
+(109, 50, '0059.51CTO学院-标准异常类及断言[高清版].mp4', 61187584),
+(110, 50, '0060.51CTO学院-Python执行环境及doctest模块[高清版].mp4', 57579296),
+(111, 51, 'CentOS-6.3-i386-bin-DVD1.iso', 3713204224);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `invites`
+-- 表的结构 `forummods`
 --
 
-CREATE TABLE IF NOT EXISTS `invites` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `inviter` mediumint(8) unsigned NOT NULL DEFAULT '0',
+CREATE TABLE `forummods` (
+  `id` smallint(5) UNSIGNED NOT NULL,
+  `forumid` smallint(5) UNSIGNED NOT NULL,
+  `userid` mediumint(8) UNSIGNED NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+--
+-- 转存表中的数据 `forummods`
+--
+
+INSERT INTO `forummods` (`id`, `forumid`, `userid`) VALUES
+(5, 1, 1);
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `forums`
+--
+
+CREATE TABLE `forums` (
+  `id` smallint(5) UNSIGNED NOT NULL,
+  `sort` smallint(5) UNSIGNED NOT NULL DEFAULT '0',
+  `name` varchar(60) NOT NULL,
+  `description` varchar(255) NOT NULL DEFAULT '',
+  `minclassread` tinyint(3) UNSIGNED NOT NULL DEFAULT '0',
+  `minclasswrite` tinyint(3) UNSIGNED NOT NULL DEFAULT '0',
+  `postcount` int(10) UNSIGNED NOT NULL DEFAULT '0',
+  `topiccount` int(10) UNSIGNED NOT NULL DEFAULT '0',
+  `minclasscreate` tinyint(3) UNSIGNED NOT NULL DEFAULT '0',
+  `forid` smallint(5) UNSIGNED NOT NULL DEFAULT '0'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+--
+-- 转存表中的数据 `forums`
+--
+
+INSERT INTO `forums` (`id`, `sort`, `name`, `description`, `minclassread`, `minclasswrite`, `postcount`, `topiccount`, `minclasscreate`, `forid`) VALUES
+(1, 0, 'asdc成都市', 'asdc', 1, 13, 28, 18, 13, 2),
+(2, 0, 'asdc', 'sdc', 1, 13, 10, 3, 13, 2),
+(3, 0, 'casd', 'tuhihhou', 0, 0, 3, 3, 0, 1),
+(4, 0, 'dqwe', 'dewq', 0, 0, 0, 0, 0, 1),
+(5, 0, 'wed', 'dwe', 0, 0, 0, 0, 0, 1),
+(6, 0, 'cdsa', 'csd', 0, 0, 2, 2, 0, 2),
+(7, 0, '传递', '才', 0, 0, 0, 0, 0, 2);
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `friends`
+--
+
+CREATE TABLE `friends` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `userid` mediumint(8) UNSIGNED NOT NULL,
+  `friendid` mediumint(8) UNSIGNED NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `fun`
+--
+
+CREATE TABLE `fun` (
+  `id` mediumint(8) UNSIGNED NOT NULL,
+  `userid` mediumint(8) UNSIGNED NOT NULL DEFAULT '0',
+  `added` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `body` text,
+  `title` varchar(255) NOT NULL DEFAULT '',
+  `status` enum('normal','dull','notfunny','funny','veryfunny','banned') NOT NULL DEFAULT 'normal'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+--
+-- 转存表中的数据 `fun`
+--
+
+INSERT INTO `fun` (`id`, `userid`, `added`, `body`, `title`, `status`) VALUES
+(1, 1, '2016-11-01 10:43:08', '擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室擦身上的传达室', '擦拭', 'normal');
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `funds`
+--
+
+CREATE TABLE `funds` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `usd` decimal(8,2) NOT NULL DEFAULT '0.00',
+  `cny` decimal(8,2) NOT NULL DEFAULT '0.00',
+  `user` mediumint(8) UNSIGNED NOT NULL,
+  `added` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `memo` varchar(255) NOT NULL DEFAULT ''
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `funvotes`
+--
+
+CREATE TABLE `funvotes` (
+  `funid` mediumint(8) UNSIGNED NOT NULL,
+  `userid` mediumint(8) UNSIGNED NOT NULL,
+  `added` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `vote` enum('fun','dull') NOT NULL DEFAULT 'fun'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `givebonus`
+--
+
+CREATE TABLE `givebonus` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `bonusfromuserid` mediumint(8) UNSIGNED NOT NULL,
+  `bonustotorrentid` mediumint(8) UNSIGNED NOT NULL,
+  `bonus` decimal(10,1) UNSIGNED NOT NULL,
+  `type` int(1) UNSIGNED NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `invites`
+--
+
+CREATE TABLE `invites` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `inviter` mediumint(8) UNSIGNED NOT NULL DEFAULT '0',
   `invitee` varchar(80) NOT NULL DEFAULT '',
   `hash` char(32) NOT NULL,
-  `time_invited` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  PRIMARY KEY (`id`),
-  KEY `hash` (`hash`(3))
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
---
--- Dumping data for table `invites`
---
-
+  `time_invited` datetime NOT NULL DEFAULT '0000-00-00 00:00:00'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `iplog`
+-- 表的结构 `iplog`
 --
 
-CREATE TABLE IF NOT EXISTS `iplog` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+CREATE TABLE `iplog` (
+  `id` bigint(20) UNSIGNED NOT NULL,
   `ip` varchar(64) NOT NULL,
-  `userid` mediumint(8) unsigned NOT NULL,
-  `access` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  PRIMARY KEY (`id`),
-  KEY `userid` (`userid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  `userid` mediumint(8) UNSIGNED NOT NULL,
+  `access` datetime NOT NULL DEFAULT '0000-00-00 00:00:00'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `iplog`
+-- 转存表中的数据 `iplog`
 --
 
+INSERT INTO `iplog` (`id`, `ip`, `userid`, `access`) VALUES
+(1, '127.0.0.1', 1, '2016-11-01 10:38:55'),
+(2, '219.245.31.198', 2, '2016-11-04 13:35:25'),
+(3, '219.245.31.198', 1, '2016-11-04 13:35:52'),
+(4, '127.0.0.1', 1, '2016-11-04 13:47:17'),
+(5, '127.0.0.1', 2, '2016-11-04 13:46:42'),
+(6, '::1', 2, '2016-11-18 13:42:11'),
+(7, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(8, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(9, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(10, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(11, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(12, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(13, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(14, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(15, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(16, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(17, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(18, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(19, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(20, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(21, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(22, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(23, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(24, '127.0.0.1', 1, '2016-11-19 11:14:44'),
+(25, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(26, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(27, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(28, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(29, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(30, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(31, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(32, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(33, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(34, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(35, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(36, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(37, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(38, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(39, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(40, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(41, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(42, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(43, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(44, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(45, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(46, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(47, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(48, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(49, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(50, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(51, '::1', 1, '2016-11-20 05:27:23'),
+(52, '::1', 1, '2016-11-20 05:27:23'),
+(53, '::1', 1, '2016-11-20 05:27:23'),
+(54, '::1', 1, '2016-11-20 05:27:23'),
+(55, '::1', 1, '2016-11-20 05:27:23'),
+(56, '::1', 1, '2016-11-20 05:27:23'),
+(57, '::1', 1, '2016-11-20 05:27:23'),
+(58, '::1', 1, '2016-11-20 05:27:23'),
+(59, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(60, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(61, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(62, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(63, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(64, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(65, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(66, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(67, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(68, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(69, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(70, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(71, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(72, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(73, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(74, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(75, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(76, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(77, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(78, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(79, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(80, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(81, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(82, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(83, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(84, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(85, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(86, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(87, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(88, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(89, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(90, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(91, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(92, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(93, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(94, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(95, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(96, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(97, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(98, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(99, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(100, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(101, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(102, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(103, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(104, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(105, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(106, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(107, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(108, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(109, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(110, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(111, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(112, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(113, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(114, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(115, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(116, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(117, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(118, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(119, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(120, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(121, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(122, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(123, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(124, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(125, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(126, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(127, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(128, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(129, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(130, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(131, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(132, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(133, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(134, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(135, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(136, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(137, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(138, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(139, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(140, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(141, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(142, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(143, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(144, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(145, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(146, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(147, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(148, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(149, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(150, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(151, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(152, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(153, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(154, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(155, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(156, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(157, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(158, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(159, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(160, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(161, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(162, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(163, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(164, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(165, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(166, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(167, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(168, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(169, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(170, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(171, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(172, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(173, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(174, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(175, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(176, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(177, '127.0.0.1', 1, '2016-11-21 06:00:25'),
+(178, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(179, '::1', 1, '2016-11-21 17:14:13'),
+(180, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(181, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(182, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(183, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(184, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(185, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(186, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(187, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(188, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(189, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(190, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(191, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(192, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(193, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(194, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(195, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(196, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(197, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(198, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(199, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(200, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(201, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(202, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(203, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(204, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(205, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(206, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(207, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(208, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(209, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(210, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(211, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(212, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(213, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(214, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(215, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(216, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(217, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(218, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(219, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(220, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(221, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(222, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(223, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(224, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(225, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(226, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(227, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(228, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(229, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(230, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(231, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(232, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(233, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(234, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(235, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(236, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(237, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(238, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(239, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(240, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(241, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(242, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(243, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(244, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(245, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(246, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(247, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(248, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(249, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(250, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(251, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(252, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(253, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(254, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(255, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(256, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(257, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(258, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(259, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(260, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(261, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(262, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(263, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(264, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(265, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(266, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(267, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(268, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(269, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(270, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(271, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(272, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(273, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(274, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(275, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(276, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(277, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(278, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(279, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(280, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(281, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(282, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(283, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(284, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(285, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(286, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(287, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(288, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(289, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(290, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(291, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(292, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(293, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(294, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(295, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(296, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(297, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(298, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(299, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(300, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(301, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(302, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(303, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(304, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(305, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(306, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(307, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(308, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(309, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(310, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(311, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(312, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(313, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(314, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(315, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(316, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(317, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(318, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(319, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(320, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(321, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(322, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(323, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(324, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(325, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(326, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(327, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(328, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(329, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(330, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(331, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(332, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(333, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(334, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(335, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(336, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(337, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(338, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(339, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(340, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(341, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(342, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(343, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(344, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(345, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(346, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(347, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(348, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(349, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(350, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(351, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(352, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(353, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(354, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(355, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(356, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(357, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(358, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(359, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(360, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(361, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(362, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(363, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(364, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(365, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(366, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(367, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(368, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(369, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(370, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(371, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(372, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(373, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(374, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(375, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(376, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(377, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(378, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(379, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(380, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(381, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(382, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(383, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(384, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(385, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(386, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(387, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(388, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(389, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(390, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(391, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(392, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(393, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(394, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(395, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(396, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(397, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(398, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(399, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(400, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(401, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(402, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(403, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(404, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(405, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(406, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(407, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(408, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(409, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(410, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(411, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(412, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(413, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(414, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(415, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(416, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(417, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(418, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(419, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(420, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(421, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(422, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(423, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(424, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(425, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(426, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(427, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(428, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(429, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(430, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(431, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(432, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(433, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(434, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(435, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(436, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(437, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(438, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(439, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(440, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(441, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(442, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(443, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(444, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(445, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(446, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(447, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(448, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(449, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(450, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(451, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(452, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(453, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(454, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(455, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(456, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(457, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(458, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(459, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(460, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(461, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(462, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(463, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(464, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(465, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(466, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(467, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(468, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(469, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(470, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(471, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(472, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(473, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(474, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(475, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(476, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(477, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(478, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(479, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(480, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(481, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(482, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(483, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(484, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(485, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(486, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(487, '127.0.0.1', 2, '2016-11-19 06:18:20'),
+(488, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(489, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(490, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(491, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(492, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(493, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(494, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(495, '127.0.0.1', 1, '2016-11-23 09:47:01'),
+(496, '::1', 1, '2016-11-23 11:33:14'),
+(497, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(498, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(499, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(500, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(501, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(502, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(503, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(504, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(505, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(506, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(507, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(508, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(509, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(510, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(511, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(512, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(513, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(514, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(515, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(516, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(517, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(518, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(519, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(520, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(521, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(522, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(523, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(524, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(525, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(526, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(527, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(528, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(529, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(530, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(531, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(532, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(533, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(534, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(535, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(536, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(537, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(538, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(539, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(540, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(541, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(542, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(543, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(544, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(545, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(546, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(547, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(548, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(549, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(550, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(551, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(552, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(553, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(554, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(555, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(556, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(557, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(558, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(559, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(560, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(561, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(562, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(563, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(564, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(565, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(566, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(567, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(568, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(569, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(570, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(571, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(572, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(573, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(574, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(575, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(576, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(577, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(578, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(579, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(580, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(581, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(582, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(583, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(584, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(585, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(586, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(587, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(588, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(589, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(590, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(591, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(592, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(593, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(594, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(595, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(596, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(597, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(598, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(599, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(600, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(601, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(602, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(603, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(604, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(605, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(606, '127.0.0.1', 1, '2016-11-23 14:10:41'),
+(607, '::1', 1, '2016-11-24 07:15:47'),
+(608, '::1', 1, '2016-11-24 07:15:47'),
+(609, '::1', 1, '2016-11-24 07:15:47'),
+(610, '::1', 1, '2016-11-24 07:15:47'),
+(611, '::1', 1, '2016-11-24 07:15:47'),
+(612, '::1', 1, '2016-11-24 07:15:47'),
+(613, '::1', 1, '2016-11-24 07:15:47'),
+(614, '::1', 1, '2016-11-24 07:15:47'),
+(615, '::1', 1, '2016-11-24 07:15:47'),
+(616, '::1', 1, '2016-11-24 07:15:47'),
+(617, '::1', 1, '2016-11-24 07:15:47'),
+(618, '::1', 1, '2016-11-24 07:15:47'),
+(619, '::1', 1, '2016-11-24 07:15:47'),
+(620, '::1', 1, '2016-11-24 07:15:47'),
+(621, '::1', 1, '2016-11-24 07:15:47'),
+(622, '::1', 1, '2016-11-24 07:15:47'),
+(623, '::1', 1, '2016-11-24 07:15:47'),
+(624, '::1', 1, '2016-11-24 07:15:47'),
+(625, '::1', 1, '2016-11-24 07:15:47'),
+(626, '::1', 1, '2016-11-24 07:15:47'),
+(627, '::1', 1, '2016-11-24 07:15:47'),
+(628, '::1', 1, '2016-11-24 07:15:47'),
+(629, '::1', 1, '2016-11-24 07:15:47'),
+(630, '::1', 1, '2016-11-24 07:15:47'),
+(631, '::1', 1, '2016-11-24 07:15:47'),
+(632, '::1', 1, '2016-11-24 07:15:47'),
+(633, '::1', 1, '2016-11-24 07:15:47'),
+(634, '::1', 1, '2016-11-24 07:15:47'),
+(635, '::1', 1, '2016-11-24 07:15:47'),
+(636, '::1', 1, '2016-11-24 07:15:47'),
+(637, '::1', 1, '2016-11-24 07:15:47'),
+(638, '::1', 1, '2016-11-24 07:15:47'),
+(639, '::1', 1, '2016-11-24 07:15:47'),
+(640, '127.0.0.1', 1, '2016-11-26 03:31:55'),
+(641, '127.0.0.1', 1, '2016-11-26 03:31:55'),
+(642, '127.0.0.1', 1, '2016-11-26 03:31:55'),
+(643, '127.0.0.1', 1, '2016-11-26 03:31:55'),
+(644, '127.0.0.1', 1, '2016-11-26 03:31:55'),
+(645, '127.0.0.1', 1, '2016-11-26 03:31:55'),
+(646, '127.0.0.1', 1, '2016-11-26 03:31:55'),
+(647, '127.0.0.1', 1, '2016-11-26 03:31:55'),
+(648, '127.0.0.1', 1, '2016-11-26 03:31:55'),
+(649, '127.0.0.1', 1, '2016-11-26 03:31:55'),
+(650, '127.0.0.1', 1, '2016-11-26 03:31:55'),
+(651, '127.0.0.1', 1, '2016-11-26 03:31:55'),
+(652, '127.0.0.1', 1, '2016-11-26 03:31:55'),
+(653, '127.0.0.1', 1, '2016-11-26 03:31:55'),
+(654, '127.0.0.1', 1, '2016-11-26 03:31:55'),
+(655, '127.0.0.1', 1, '2016-11-26 03:31:55'),
+(656, '127.0.0.1', 1, '2016-11-26 03:31:55'),
+(657, '127.0.0.1', 1, '2016-11-26 03:31:55'),
+(658, '127.0.0.1', 1, '2016-11-26 03:31:55'),
+(659, '127.0.0.1', 1, '2016-11-26 03:31:55'),
+(660, '127.0.0.1', 1, '2016-11-26 03:31:55'),
+(661, '127.0.0.1', 1, '2016-11-26 03:31:55'),
+(662, '127.0.0.1', 1, '2016-11-26 03:31:55'),
+(663, '127.0.0.1', 1, '2016-11-26 03:31:55'),
+(664, '127.0.0.1', 1, '2016-11-26 03:31:55'),
+(665, '127.0.0.1', 1, '2016-11-26 03:31:55'),
+(666, '127.0.0.1', 1, '2016-11-26 03:31:55'),
+(667, '127.0.0.1', 1, '2016-11-26 03:31:55'),
+(668, '127.0.0.1', 1, '2016-11-26 03:31:55'),
+(669, '127.0.0.1', 1, '2016-11-26 03:31:55'),
+(670, '127.0.0.1', 1, '2016-11-26 03:31:55'),
+(671, '127.0.0.1', 1, '2016-11-26 03:31:55'),
+(672, '127.0.0.1', 1, '2016-11-26 03:31:55'),
+(673, '127.0.0.1', 1, '2016-11-26 03:31:55'),
+(674, '127.0.0.1', 1, '2016-11-26 03:31:55'),
+(675, '127.0.0.1', 1, '2016-11-26 03:31:55'),
+(676, '127.0.0.1', 1, '2016-11-26 03:31:55'),
+(677, '127.0.0.1', 1, '2016-11-26 03:31:55'),
+(678, '127.0.0.1', 1, '2016-11-26 03:31:55'),
+(679, '127.0.0.1', 1, '2016-11-26 03:31:55'),
+(680, '127.0.0.1', 1, '2016-11-26 03:31:55'),
+(681, '127.0.0.1', 1, '2016-11-26 03:31:55'),
+(682, '127.0.0.1', 1, '2016-11-26 03:31:55'),
+(683, '127.0.0.1', 1, '2016-11-26 03:31:55'),
+(684, '127.0.0.1', 1, '2016-11-26 03:31:55'),
+(685, '127.0.0.1', 1, '2016-11-26 03:31:55'),
+(686, '127.0.0.1', 1, '2016-11-26 03:31:55'),
+(687, '127.0.0.1', 1, '2016-11-26 03:31:55'),
+(688, '127.0.0.1', 1, '2016-11-26 03:31:55'),
+(689, '127.0.0.1', 1, '2016-11-26 03:31:55'),
+(690, '127.0.0.1', 1, '2016-11-26 03:31:55'),
+(691, '127.0.0.1', 1, '2016-11-26 03:31:55'),
+(692, '127.0.0.1', 1, '2016-11-26 03:31:55'),
+(693, '127.0.0.1', 1, '2016-11-26 03:31:55'),
+(694, '127.0.0.1', 1, '2016-11-26 03:31:55'),
+(695, '127.0.0.1', 1, '2016-11-26 03:31:55'),
+(696, '127.0.0.1', 1, '2016-11-26 03:31:55'),
+(697, '127.0.0.1', 1, '2016-11-26 03:31:55'),
+(698, '127.0.0.1', 1, '2016-11-26 03:31:55'),
+(699, '127.0.0.1', 1, '2016-11-26 03:31:55'),
+(700, '127.0.0.1', 1, '2016-11-26 03:31:55'),
+(701, '127.0.0.1', 1, '2016-11-26 03:31:55'),
+(702, '127.0.0.1', 1, '2016-11-26 03:31:55'),
+(703, '127.0.0.1', 1, '2016-11-26 03:31:55'),
+(704, '127.0.0.1', 1, '2016-11-26 03:31:55'),
+(705, '127.0.0.1', 1, '2016-11-26 17:37:05'),
+(706, '127.0.0.1', 1, '2016-11-26 17:37:05'),
+(707, '127.0.0.1', 1, '2016-11-26 17:37:05'),
+(708, '127.0.0.1', 1, '2016-11-26 17:37:05'),
+(709, '127.0.0.1', 1, '2016-11-26 17:37:05'),
+(710, '127.0.0.1', 1, '2016-11-26 17:37:05'),
+(711, '127.0.0.1', 1, '2016-11-26 17:37:05'),
+(712, '127.0.0.1', 1, '2016-11-26 17:37:05'),
+(713, '127.0.0.1', 1, '2016-11-26 17:37:05'),
+(714, '127.0.0.1', 1, '2016-11-26 17:40:20'),
+(715, '127.0.0.1', 1, '2016-11-26 17:40:20'),
+(716, '127.0.0.1', 1, '2016-11-26 17:40:20'),
+(717, '::1', 1, '2016-11-26 17:47:01'),
+(718, '127.0.0.1', 1, '2016-11-27 02:50:58'),
+(719, '127.0.0.1', 1, '2016-11-27 02:50:58'),
+(720, '127.0.0.1', 1, '2016-11-27 02:50:58'),
+(721, '127.0.0.1', 1, '2016-11-27 02:50:58'),
+(722, '127.0.0.1', 1, '2016-11-27 02:50:58'),
+(723, '127.0.0.1', 1, '2016-11-27 02:50:58'),
+(724, '127.0.0.1', 1, '2016-11-27 02:50:58'),
+(725, '127.0.0.1', 1, '2016-11-27 02:50:58'),
+(726, '127.0.0.1', 1, '2016-11-27 02:50:58'),
+(727, '127.0.0.1', 1, '2016-11-27 02:50:58'),
+(728, '127.0.0.1', 1, '2016-11-27 02:50:58'),
+(729, '127.0.0.1', 1, '2016-11-27 02:50:58'),
+(730, '127.0.0.1', 1, '2016-11-27 02:50:58'),
+(731, '127.0.0.1', 1, '2016-11-27 02:50:58'),
+(732, '127.0.0.1', 1, '2016-11-27 02:50:58'),
+(733, '127.0.0.1', 1, '2016-11-27 02:50:58'),
+(734, '127.0.0.1', 1, '2016-11-27 02:50:58'),
+(735, '127.0.0.1', 1, '2016-11-27 02:50:58'),
+(736, '127.0.0.1', 1, '2016-11-27 02:50:58'),
+(737, '127.0.0.1', 1, '2016-11-27 02:50:58'),
+(738, '127.0.0.1', 1, '2016-11-27 02:50:58'),
+(739, '127.0.0.1', 1, '2016-11-27 02:50:58'),
+(740, '127.0.0.1', 1, '2016-11-27 02:50:58'),
+(741, '127.0.0.1', 1, '2016-11-27 02:50:58'),
+(742, '::1', 1, '2016-11-27 03:09:20'),
+(743, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(744, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(745, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(746, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(747, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(748, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(749, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(750, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(751, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(752, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(753, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(754, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(755, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(756, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(757, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(758, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(759, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(760, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(761, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(762, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(763, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(764, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(765, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(766, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(767, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(768, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(769, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(770, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(771, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(772, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(773, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(774, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(775, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(776, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(777, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(778, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(779, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(780, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(781, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(782, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(783, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(784, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(785, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(786, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(787, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(788, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(789, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(790, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(791, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(792, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(793, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(794, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(795, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(796, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(797, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(798, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(799, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(800, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(801, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(802, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(803, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(804, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(805, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(806, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(807, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(808, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(809, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(810, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(811, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(812, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(813, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(814, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(815, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(816, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(817, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(818, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(819, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(820, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(821, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(822, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(823, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(824, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(825, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(826, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(827, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(828, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(829, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(830, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(831, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(832, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(833, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(834, '127.0.0.1', 1, '2016-11-27 04:32:53'),
+(835, '127.0.0.1', 1, '2016-12-02 13:34:01'),
+(836, '127.0.0.1', 1, '2016-12-02 13:34:01'),
+(837, '127.0.0.1', 1, '2016-12-02 13:34:01'),
+(838, '127.0.0.1', 1, '2016-12-02 13:34:01'),
+(839, '127.0.0.1', 1, '2016-12-02 13:34:01'),
+(840, '127.0.0.1', 1, '2016-12-02 13:34:01'),
+(841, '127.0.0.1', 1, '2016-12-02 13:34:01'),
+(842, '127.0.0.1', 1, '2016-12-02 13:34:01'),
+(843, '127.0.0.1', 1, '2016-12-02 13:34:01'),
+(844, '127.0.0.1', 1, '2016-12-02 13:34:01'),
+(845, '127.0.0.1', 1, '2016-12-02 13:34:01'),
+(846, '127.0.0.1', 1, '2016-12-02 13:34:01'),
+(847, '127.0.0.1', 1, '2016-12-02 13:34:01'),
+(848, '127.0.0.1', 1, '2016-12-02 13:34:01'),
+(849, '127.0.0.1', 1, '2016-12-02 13:34:01'),
+(850, '127.0.0.1', 1, '2016-12-02 13:34:01'),
+(851, '127.0.0.1', 1, '2016-12-02 13:34:01'),
+(852, '127.0.0.1', 1, '2016-12-02 13:34:01'),
+(853, '127.0.0.1', 1, '2016-12-02 13:34:01'),
+(854, '127.0.0.1', 1, '2016-12-02 13:34:01'),
+(855, '127.0.0.1', 1, '2016-12-02 13:34:01'),
+(856, '127.0.0.1', 1, '2016-12-02 13:34:01'),
+(857, '127.0.0.1', 1, '2016-12-02 13:34:01'),
+(858, '127.0.0.1', 1, '2016-12-02 13:34:01'),
+(859, '127.0.0.1', 1, '2016-12-02 13:34:01'),
+(860, '127.0.0.1', 1, '2016-12-02 13:34:01'),
+(861, '127.0.0.1', 1, '2016-12-02 13:34:01'),
+(862, '127.0.0.1', 1, '2016-12-02 13:34:01'),
+(863, '::1', 1, '2016-12-09 10:09:47'),
+(864, '::1', 26, '2016-12-10 03:25:27'),
+(865, '111.114.113.178', 1, '2016-12-10 03:48:02'),
+(866, '111.114.113.178', 1, '2016-12-10 03:48:02'),
+(867, '111.114.113.178', 1, '2016-12-10 03:48:02'),
+(868, '111.114.113.178', 1, '2016-12-10 03:48:02'),
+(869, '111.114.113.178', 1, '2016-12-10 03:48:02'),
+(870, '111.114.113.178', 1, '2016-12-10 03:48:02'),
+(871, '111.114.113.178', 1, '2016-12-10 03:48:02'),
+(872, '111.114.113.178', 1, '2016-12-10 03:48:02'),
+(873, '111.114.113.178', 1, '2016-12-10 03:48:02'),
+(874, '111.114.113.178', 1, '2016-12-10 03:48:02'),
+(875, '111.114.113.178', 1, '2016-12-10 03:48:02'),
+(876, '111.114.113.25', 26, '2016-12-10 03:35:00'),
+(877, '111.114.113.25', 26, '2016-12-10 03:35:00'),
+(878, '111.114.113.25', 26, '2016-12-10 03:35:00'),
+(879, '111.114.113.25', 26, '2016-12-10 03:35:00'),
+(880, '::1', 1, '2016-12-10 08:10:55'),
+(881, '::1', 26, '2016-12-10 08:11:24'),
+(882, '::1', 26, '2016-12-10 08:11:24'),
+(883, '::1', 26, '2016-12-10 08:11:24'),
+(884, '::1', 26, '2016-12-10 08:11:24'),
+(885, '::1', 1, '2016-12-10 08:10:55'),
+(886, '111.114.113.178', 26, '2016-12-10 08:11:24'),
+(887, '111.114.113.178', 26, '2016-12-10 08:11:24'),
+(888, '111.114.113.178', 26, '2016-12-10 08:11:24'),
+(889, '111.114.113.178', 26, '2016-12-10 08:11:24'),
+(890, '111.114.113.178', 26, '2016-12-10 08:11:24'),
+(891, '::1', 26, '2016-12-10 08:11:24'),
+(892, '::1', 26, '2016-12-10 08:11:24'),
+(893, '::1', 1, '2016-12-10 08:10:55'),
+(894, '::1', 1, '2016-12-10 08:10:55'),
+(895, '::1', 1, '2016-12-10 08:10:55'),
+(896, '::1', 26, '2016-12-10 08:11:24'),
+(897, '::1', 26, '2016-12-10 08:11:24'),
+(898, '::1', 1, '2016-12-10 08:10:55'),
+(899, '::1', 1, '2016-12-10 08:10:55'),
+(900, '::1', 1, '2016-12-10 08:10:55'),
+(901, '::1', 1, '2016-12-10 08:10:55'),
+(902, '::1', 1, '2016-12-10 08:10:55'),
+(903, '::1', 1, '2016-12-10 08:10:55'),
+(904, '::1', 1, '2016-12-10 08:10:55'),
+(905, '::1', 1, '2016-12-10 08:10:55'),
+(906, '::1', 1, '2016-12-10 08:10:55'),
+(907, '::1', 1, '2016-12-10 08:10:55'),
+(908, '::1', 1, '2016-12-10 08:10:55'),
+(909, '::1', 1, '2016-12-10 08:10:55'),
+(910, '::1', 1, '2016-12-10 08:10:55'),
+(911, '::1', 1, '2016-12-10 08:10:55'),
+(912, '::1', 1, '2016-12-10 08:10:55'),
+(913, '::1', 1, '2016-12-10 08:10:55'),
+(914, '::1', 1, '2016-12-10 08:10:55'),
+(915, '::1', 1, '2016-12-10 08:10:55'),
+(916, '::1', 1, '2016-12-10 08:10:55'),
+(917, '::1', 1, '2016-12-10 08:10:55'),
+(918, '::1', 1, '2016-12-10 08:10:55'),
+(919, '::1', 1, '2016-12-10 08:10:55'),
+(920, '::1', 1, '2016-12-10 08:10:55'),
+(921, '::1', 1, '2016-12-10 08:10:55'),
+(922, '::1', 1, '2016-12-10 08:10:55'),
+(923, '::1', 1, '2016-12-10 08:10:55'),
+(924, '::1', 1, '2016-12-10 08:10:55'),
+(925, '::1', 1, '2016-12-10 08:10:55'),
+(926, '::1', 1, '2016-12-10 08:10:55'),
+(927, '::1', 1, '2016-12-10 08:10:55'),
+(928, '::1', 1, '2016-12-10 08:10:55'),
+(929, '::1', 1, '2016-12-10 08:10:55'),
+(930, '::1', 1, '2016-12-10 08:10:55'),
+(931, '::1', 1, '2016-12-10 08:10:55'),
+(932, '::1', 1, '2016-12-10 08:10:55'),
+(933, '::1', 1, '2016-12-10 08:10:55'),
+(934, '::1', 1, '2016-12-10 08:10:55'),
+(935, '::1', 1, '2016-12-10 08:10:55'),
+(936, '::1', 1, '2016-12-10 08:10:55'),
+(937, '::1', 1, '2016-12-10 08:10:55'),
+(938, '::1', 1, '2016-12-10 08:10:55'),
+(939, '::1', 1, '2016-12-10 08:10:55'),
+(940, '::1', 1, '2016-12-10 08:10:55'),
+(941, '::1', 1, '2016-12-10 08:10:55'),
+(942, '::1', 1, '2016-12-10 08:10:55'),
+(943, '::1', 1, '2016-12-10 08:10:55'),
+(944, '::1', 1, '2016-12-10 08:10:55'),
+(945, '::1', 1, '2016-12-10 08:10:55'),
+(946, '::1', 1, '2016-12-10 08:10:55'),
+(947, '::1', 1, '2016-12-10 08:10:55'),
+(948, '::1', 1, '2016-12-10 08:10:55'),
+(949, '::1', 1, '2016-12-10 08:10:55'),
+(950, '::1', 1, '2016-12-10 08:10:55'),
+(951, '::1', 1, '2016-12-10 08:10:55'),
+(952, '::1', 1, '2016-12-10 08:10:55'),
+(953, '::1', 1, '2016-12-10 08:10:55'),
+(954, '::1', 1, '2016-12-10 08:10:55'),
+(955, '::1', 1, '2016-12-10 08:10:55'),
+(956, '::1', 1, '2016-12-10 08:10:55'),
+(957, '::1', 1, '2016-12-10 08:10:55'),
+(958, '::1', 1, '2016-12-10 08:10:55'),
+(959, '::1', 1, '2016-12-10 08:10:55'),
+(960, '::1', 1, '2016-12-10 08:10:55'),
+(961, '::1', 1, '2016-12-10 08:10:55'),
+(962, '::1', 1, '2016-12-10 08:10:55'),
+(963, '::1', 1, '2016-12-10 08:10:55'),
+(964, '::1', 1, '2016-12-10 08:10:55'),
+(965, '::1', 1, '2016-12-10 08:10:55'),
+(966, '::1', 1, '2016-12-10 08:10:55'),
+(967, '::1', 1, '2016-12-10 08:10:55'),
+(968, '::1', 1, '2016-12-10 08:10:55'),
+(969, '::1', 1, '2016-12-10 08:10:55'),
+(970, '::1', 1, '2016-12-10 08:10:55'),
+(971, '::1', 1, '2016-12-10 08:10:55'),
+(972, '::1', 1, '2016-12-10 08:10:55'),
+(973, '::1', 1, '2016-12-10 08:10:55'),
+(974, '::1', 1, '2016-12-10 08:10:55'),
+(975, '::1', 1, '2016-12-10 08:10:55'),
+(976, '::1', 1, '2016-12-10 08:10:55'),
+(977, '::1', 1, '2016-12-10 08:10:55'),
+(978, '::1', 1, '2016-12-10 08:10:55'),
+(979, '::1', 1, '2016-12-10 08:10:55'),
+(980, '::1', 1, '2016-12-10 08:10:55'),
+(981, '::1', 1, '2016-12-10 08:10:55'),
+(982, '::1', 1, '2016-12-10 08:10:55'),
+(983, '::1', 1, '2016-12-10 08:10:55'),
+(984, '::1', 1, '2016-12-10 08:10:55'),
+(985, '::1', 1, '2016-12-10 08:10:55'),
+(986, '::1', 1, '2016-12-10 08:10:55'),
+(987, '::1', 1, '2016-12-10 08:10:55'),
+(988, '::1', 1, '2016-12-10 08:10:55'),
+(989, '::1', 1, '2016-12-10 08:10:55'),
+(990, '::1', 1, '2016-12-10 08:10:55'),
+(991, '::1', 1, '2016-12-10 08:10:55'),
+(992, '::1', 1, '2016-12-10 08:10:55'),
+(993, '::1', 1, '2016-12-10 08:10:55'),
+(994, '::1', 1, '2016-12-10 08:10:55'),
+(995, '::1', 1, '2016-12-10 08:10:55'),
+(996, '::1', 1, '2016-12-10 08:10:55'),
+(997, '::1', 1, '2016-12-10 08:10:55'),
+(998, '::1', 1, '2016-12-10 08:10:55'),
+(999, '::1', 1, '2016-12-10 08:10:55'),
+(1000, '::1', 1, '2016-12-10 08:10:55'),
+(1001, '::1', 1, '2016-12-10 08:10:55'),
+(1002, '::1', 1, '2016-12-10 08:10:55'),
+(1003, '::1', 1, '2016-12-10 08:10:55'),
+(1004, '::1', 1, '2016-12-10 08:10:55'),
+(1005, '::1', 1, '2016-12-10 08:10:55'),
+(1006, '::1', 1, '2016-12-10 08:10:55'),
+(1007, '::1', 1, '2016-12-10 08:10:55'),
+(1008, '::1', 1, '2016-12-10 08:10:55'),
+(1009, '::1', 1, '2016-12-10 08:10:55'),
+(1010, '::1', 1, '2016-12-10 08:10:55'),
+(1011, '::1', 1, '2016-12-10 08:10:55'),
+(1012, '::1', 1, '2016-12-10 08:10:55'),
+(1013, '::1', 1, '2016-12-10 08:10:55'),
+(1014, '::1', 1, '2016-12-10 08:10:55'),
+(1015, '::1', 1, '2016-12-10 08:10:55'),
+(1016, '::1', 1, '2016-12-10 08:10:55'),
+(1017, '::1', 1, '2016-12-10 08:10:55'),
+(1018, '::1', 1, '2016-12-10 08:10:55'),
+(1019, '::1', 1, '2016-12-10 08:10:55'),
+(1020, '::1', 1, '2016-12-10 08:10:55'),
+(1021, '::1', 1, '2016-12-10 08:10:55'),
+(1022, '::1', 1, '2016-12-10 08:10:55'),
+(1023, '::1', 1, '2016-12-10 08:10:55'),
+(1024, '::1', 1, '2016-12-10 08:10:55'),
+(1025, '::1', 26, '2016-12-10 08:11:24'),
+(1026, '::1', 26, '2016-12-10 08:11:24'),
+(1027, '::1', 1, '2016-12-10 08:10:55'),
+(1028, '::1', 1, '2016-12-10 08:10:55'),
+(1029, '::1', 1, '2016-12-10 08:10:55'),
+(1030, '::1', 1, '2016-12-10 08:10:55'),
+(1031, '::1', 1, '2016-12-10 08:10:55'),
+(1032, '::1', 1, '2016-12-10 08:10:55'),
+(1033, '::1', 1, '2016-12-10 08:10:55'),
+(1034, '::1', 1, '2016-12-10 08:10:55'),
+(1035, '::1', 1, '2016-12-10 08:10:55'),
+(1036, '::1', 1, '2016-12-10 08:10:55'),
+(1037, '::1', 1, '2016-12-10 08:10:55'),
+(1038, '::1', 1, '2016-12-10 08:10:55'),
+(1039, '::1', 1, '2016-12-10 08:10:55'),
+(1040, '::1', 1, '2016-12-10 08:10:55'),
+(1041, '::1', 1, '2016-12-10 08:10:55'),
+(1042, '::1', 1, '2016-12-10 08:10:55'),
+(1043, '::1', 1, '2016-12-10 08:10:55'),
+(1044, '::1', 1, '2016-12-10 08:10:55'),
+(1045, '::1', 1, '2016-12-10 08:10:55'),
+(1046, '::1', 1, '2016-12-10 08:10:55'),
+(1047, '::1', 1, '2016-12-10 08:10:55'),
+(1048, '::1', 1, '2016-12-10 08:10:55'),
+(1049, '::1', 1, '2016-12-10 08:10:55'),
+(1050, '::1', 1, '2016-12-10 08:10:55'),
+(1051, '::1', 1, '2016-12-10 08:10:55'),
+(1052, '::1', 1, '2016-12-10 08:10:55'),
+(1053, '::1', 1, '2016-12-10 08:10:55'),
+(1054, '::1', 1, '2016-12-10 08:10:55'),
+(1055, '::1', 1, '2016-12-10 08:10:55'),
+(1056, '::1', 1, '2016-12-10 08:10:55'),
+(1057, '::1', 1, '2016-12-10 08:10:55'),
+(1058, '::1', 1, '2016-12-10 08:10:55'),
+(1059, '::1', 1, '2016-12-10 08:10:55'),
+(1060, '::1', 1, '2016-12-10 08:10:55'),
+(1061, '::1', 1, '2016-12-10 08:10:55'),
+(1062, '::1', 1, '2016-12-10 08:10:55'),
+(1063, '::1', 1, '2016-12-10 08:10:55'),
+(1064, '::1', 1, '2016-12-10 08:10:55'),
+(1065, '::1', 1, '2016-12-10 08:10:55'),
+(1066, '::1', 1, '2016-12-10 08:10:55'),
+(1067, '::1', 1, '2016-12-10 08:10:55'),
+(1068, '::1', 1, '2016-12-10 08:10:55'),
+(1069, '::1', 1, '2016-12-10 08:10:55'),
+(1070, '::1', 1, '2016-12-10 08:10:55'),
+(1071, '::1', 1, '2016-12-10 08:10:55'),
+(1072, '::1', 1, '2016-12-10 08:10:55'),
+(1073, '::1', 1, '2016-12-10 08:10:55'),
+(1074, '::1', 1, '2016-12-10 08:10:55'),
+(1075, '::1', 1, '2016-12-10 08:10:55'),
+(1076, '::1', 1, '2016-12-10 08:10:55'),
+(1077, '::1', 1, '2016-12-10 08:10:55'),
+(1078, '::1', 1, '2016-12-10 08:10:55'),
+(1079, '::1', 1, '2016-12-10 08:10:55'),
+(1080, '::1', 1, '2016-12-10 08:10:55'),
+(1081, '::1', 1, '2016-12-10 08:10:55'),
+(1082, '::1', 1, '2016-12-10 08:10:55'),
+(1083, '::1', 1, '2016-12-10 08:10:55'),
+(1084, '::1', 1, '2016-12-10 08:10:55'),
+(1085, '::1', 1, '2016-12-10 08:10:55'),
+(1086, '::1', 1, '2016-12-10 08:10:55'),
+(1087, '::1', 1, '2016-12-10 08:10:55'),
+(1088, '::1', 1, '2016-12-10 08:10:55'),
+(1089, '::1', 1, '2016-12-10 08:10:55'),
+(1090, '::1', 1, '2016-12-10 08:10:55'),
+(1091, '::1', 1, '2016-12-10 08:10:55'),
+(1092, '::1', 1, '2016-12-10 08:10:55'),
+(1093, '::1', 1, '2016-12-10 08:10:55'),
+(1094, '::1', 1, '2016-12-10 08:10:55'),
+(1095, '::1', 1, '2016-12-10 08:10:55'),
+(1096, '::1', 1, '2016-12-10 08:10:55'),
+(1097, '::1', 1, '2016-12-10 08:10:55'),
+(1098, '::1', 1, '2016-12-10 08:10:55'),
+(1099, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1100, '::1', 1, '2016-12-10 08:10:55'),
+(1101, '::1', 1, '2016-12-10 08:10:55'),
+(1102, '::1', 1, '2016-12-10 08:10:55'),
+(1103, '::1', 1, '2016-12-10 08:10:55'),
+(1104, '::1', 1, '2016-12-10 08:10:55'),
+(1105, '::1', 1, '2016-12-10 08:10:55'),
+(1106, '::1', 1, '2016-12-10 08:10:55'),
+(1107, '::1', 1, '2016-12-10 08:10:55'),
+(1108, '::1', 1, '2016-12-10 08:10:55'),
+(1109, '::1', 1, '2016-12-10 08:10:55'),
+(1110, '::1', 1, '2016-12-10 08:10:55'),
+(1111, '::1', 1, '2016-12-10 08:10:55'),
+(1112, '::1', 1, '2016-12-10 08:10:55'),
+(1113, '::1', 1, '2016-12-10 08:10:55'),
+(1114, '::1', 1, '2016-12-10 08:10:55'),
+(1115, '::1', 1, '2016-12-10 08:10:55'),
+(1116, '::1', 1, '2016-12-10 08:10:55'),
+(1117, '::1', 1, '2016-12-10 08:10:55'),
+(1118, '::1', 1, '2016-12-10 08:10:55'),
+(1119, '::1', 1, '2016-12-10 08:10:55'),
+(1120, '::1', 1, '2016-12-10 08:10:55'),
+(1121, '::1', 1, '2016-12-10 08:10:55'),
+(1122, '::1', 1, '2016-12-10 08:10:55'),
+(1123, '::1', 1, '2016-12-10 08:10:55'),
+(1124, '::1', 1, '2016-12-10 08:10:55'),
+(1125, '::1', 1, '2016-12-10 08:10:55'),
+(1126, '::1', 1, '2016-12-10 08:10:55'),
+(1127, '::1', 1, '2016-12-10 08:10:55'),
+(1128, '::1', 1, '2016-12-10 08:10:55'),
+(1129, '::1', 1, '2016-12-10 08:10:55'),
+(1130, '::1', 1, '2016-12-10 08:10:55'),
+(1131, '::1', 1, '2016-12-10 08:10:55'),
+(1132, '::1', 1, '2016-12-10 08:10:55'),
+(1133, '::1', 1, '2016-12-10 08:10:55'),
+(1134, '::1', 1, '2016-12-10 08:10:55'),
+(1135, '::1', 1, '2016-12-10 08:10:55'),
+(1136, '::1', 1, '2016-12-10 08:10:55'),
+(1137, '::1', 1, '2016-12-10 08:10:55'),
+(1138, '::1', 1, '2016-12-10 08:10:55'),
+(1139, '::1', 1, '2016-12-10 08:10:55'),
+(1140, '::1', 1, '2016-12-10 08:10:55'),
+(1141, '::1', 1, '2016-12-10 08:10:55'),
+(1142, '::1', 1, '2016-12-10 08:10:55'),
+(1143, '::1', 1, '2016-12-10 08:10:55'),
+(1144, '::1', 1, '2016-12-10 08:10:55'),
+(1145, '::1', 1, '2016-12-10 08:10:55'),
+(1146, '::1', 1, '2016-12-10 08:10:55'),
+(1147, '::1', 1, '2016-12-10 08:10:55'),
+(1148, '::1', 1, '2016-12-10 08:10:55'),
+(1149, '::1', 1, '2016-12-10 08:10:55'),
+(1150, '::1', 1, '2016-12-10 08:10:55'),
+(1151, '::1', 1, '2016-12-10 08:10:55'),
+(1152, '::1', 1, '2016-12-10 08:10:55'),
+(1153, '::1', 1, '2016-12-10 08:10:55'),
+(1154, '::1', 1, '2016-12-10 08:10:55'),
+(1155, '::1', 1, '2016-12-10 08:10:55'),
+(1156, '::1', 1, '2016-12-10 08:10:55'),
+(1157, '::1', 1, '2016-12-10 08:10:55'),
+(1158, '::1', 1, '2016-12-10 08:10:55'),
+(1159, '::1', 1, '2016-12-10 08:10:55'),
+(1160, '::1', 1, '2016-12-10 08:10:55'),
+(1161, '::1', 1, '2016-12-10 08:10:55'),
+(1162, '::1', 1, '2016-12-10 08:10:55'),
+(1163, '::1', 1, '2016-12-10 08:10:55'),
+(1164, '::1', 1, '2016-12-10 08:10:55'),
+(1165, '::1', 1, '2016-12-10 08:10:55'),
+(1166, '::1', 1, '2016-12-10 08:10:55'),
+(1167, '::1', 1, '2016-12-10 08:10:55'),
+(1168, '::1', 1, '2016-12-10 08:10:55'),
+(1169, '::1', 1, '2016-12-10 08:10:55'),
+(1170, '::1', 1, '2016-12-10 08:10:55'),
+(1171, '::1', 1, '2016-12-10 08:10:55'),
+(1172, '::1', 1, '2016-12-10 08:10:55'),
+(1173, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1174, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1175, '127.0.0.1', 1, '2016-12-10 08:10:55');
+INSERT INTO `iplog` (`id`, `ip`, `userid`, `access`) VALUES
+(1176, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1177, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1178, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1179, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1180, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1181, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1182, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1183, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1184, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1185, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1186, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1187, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1188, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1189, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1190, '127.0.0.1', 26, '2016-12-10 08:11:24'),
+(1191, '127.0.0.1', 26, '2016-12-10 08:11:24'),
+(1192, '127.0.0.1', 26, '2016-12-10 08:11:24'),
+(1193, '127.0.0.1', 26, '2016-12-10 08:11:24'),
+(1194, '127.0.0.1', 26, '2016-12-10 08:11:24'),
+(1195, '127.0.0.1', 26, '2016-12-10 08:11:24'),
+(1196, '127.0.0.1', 26, '2016-12-10 08:11:24'),
+(1197, '127.0.0.1', 26, '2016-12-10 08:11:24'),
+(1198, '127.0.0.1', 26, '2016-12-10 08:11:24'),
+(1199, '127.0.0.1', 26, '2016-12-10 08:11:24'),
+(1200, '127.0.0.1', 26, '2016-12-10 08:11:24'),
+(1201, '127.0.0.1', 26, '2016-12-10 08:11:24'),
+(1202, '127.0.0.1', 26, '2016-12-10 08:11:24'),
+(1203, '127.0.0.1', 26, '2016-12-10 08:11:24'),
+(1204, '127.0.0.1', 26, '2016-12-10 08:11:24'),
+(1205, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1206, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1207, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1208, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1209, '127.0.0.1', 26, '2016-12-10 08:11:24'),
+(1210, '127.0.0.1', 26, '2016-12-10 08:11:24'),
+(1211, '127.0.0.1', 26, '2016-12-10 08:11:24'),
+(1212, '127.0.0.1', 26, '2016-12-10 08:11:24'),
+(1213, '127.0.0.1', 26, '2016-12-10 08:11:24'),
+(1214, '127.0.0.1', 26, '2016-12-10 08:11:24'),
+(1215, '127.0.0.1', 26, '2016-12-10 08:11:24'),
+(1216, '127.0.0.1', 26, '2016-12-10 08:11:24'),
+(1217, '127.0.0.1', 26, '2016-12-10 08:11:24'),
+(1218, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1219, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1220, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1221, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1222, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1223, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1224, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1225, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1226, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1227, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1228, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1229, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1230, '::1', 26, '2016-12-10 08:11:24'),
+(1231, '::1', 26, '2016-12-10 08:11:24'),
+(1232, '127.0.0.1', 26, '2016-12-10 08:11:24'),
+(1233, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1234, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1235, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1236, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1237, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1238, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1239, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1240, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1241, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1242, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1243, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1244, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1245, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1246, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1247, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1248, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1249, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1250, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1251, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1252, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1253, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1254, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1255, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1256, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1257, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1258, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1259, '::1', 26, '2016-12-10 08:11:24'),
+(1260, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1261, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1262, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1263, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1264, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1265, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1266, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1267, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1268, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1269, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1270, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1271, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1272, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1273, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1274, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1275, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1276, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1277, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1278, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1279, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1280, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1281, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1282, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1283, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1284, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1285, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1286, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1287, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1288, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1289, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1290, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1291, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1292, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1293, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1294, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1295, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1296, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1297, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1298, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1299, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1300, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1301, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1302, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1303, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1304, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1305, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1306, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1307, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1308, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1309, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1310, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1311, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1312, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1313, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1314, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1315, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1316, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1317, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1318, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1319, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1320, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1321, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1322, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1323, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1324, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1325, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1326, '127.0.0.1', 1, '2016-12-10 08:10:55'),
+(1327, '127.0.0.1', 26, '2016-12-10 08:11:24'),
+(1328, '127.0.0.1', 26, '2016-12-10 08:11:24'),
+(1329, '127.0.0.1', 26, '2016-12-10 08:11:24'),
+(1330, '127.0.0.1', 26, '2016-12-10 08:11:24'),
+(1331, '127.0.0.1', 26, '2016-12-10 08:11:24'),
+(1332, '127.0.0.1', 26, '2016-12-10 08:11:24'),
+(1333, '127.0.0.1', 26, '2016-12-10 08:11:24'),
+(1334, '127.0.0.1', 26, '2016-12-10 08:11:24'),
+(1335, '127.0.0.1', 26, '2016-12-10 08:11:24'),
+(1336, '127.0.0.1', 26, '2016-12-10 08:11:24'),
+(1337, '127.0.0.1', 26, '2016-12-10 08:11:24'),
+(1338, '127.0.0.1', 26, '2016-12-10 08:11:24'),
+(1339, '127.0.0.1', 26, '2016-12-10 08:11:24'),
+(1340, '127.0.0.1', 26, '2016-12-10 08:11:24'),
+(1341, '127.0.0.1', 26, '2016-12-10 08:11:24'),
+(1342, '127.0.0.1', 26, '2016-12-10 08:11:24'),
+(1343, '127.0.0.1', 26, '2016-12-10 08:11:24'),
+(1344, '127.0.0.1', 26, '2016-12-10 08:11:24'),
+(1345, '::1', 1, '2016-12-28 09:27:34'),
+(1346, '127.0.0.1', 1, '2016-12-28 16:38:30'),
+(1347, '127.0.0.1', 1, '2016-12-28 16:38:30'),
+(1348, '127.0.0.1', 1, '2016-12-28 16:38:30'),
+(1349, '127.0.0.1', 1, '2016-12-28 16:38:30'),
+(1350, '127.0.0.1', 1, '2016-12-28 16:38:30'),
+(1351, '127.0.0.1', 1, '2016-12-28 16:38:30'),
+(1352, '127.0.0.1', 1, '2016-12-28 16:38:30'),
+(1353, '127.0.0.1', 1, '2016-12-28 16:38:30'),
+(1354, '127.0.0.1', 1, '2016-12-28 16:38:30'),
+(1355, '127.0.0.1', 1, '2016-12-28 16:38:30'),
+(1356, '127.0.0.1', 1, '2016-12-28 16:38:30'),
+(1357, '127.0.0.1', 1, '2016-12-28 16:38:30'),
+(1358, '127.0.0.1', 1, '2016-12-28 16:38:30'),
+(1359, '127.0.0.1', 1, '2016-12-28 16:38:30'),
+(1360, '127.0.0.1', 1, '2016-12-28 16:38:30'),
+(1361, '127.0.0.1', 1, '2016-12-28 16:38:30'),
+(1362, '127.0.0.1', 1, '2016-12-28 16:38:30'),
+(1363, '127.0.0.1', 1, '2016-12-28 16:38:30'),
+(1364, '127.0.0.1', 1, '2016-12-28 16:38:30'),
+(1365, '127.0.0.1', 1, '2016-12-28 16:38:30'),
+(1366, '127.0.0.1', 1, '2016-12-28 16:38:30'),
+(1367, '127.0.0.1', 1, '2016-12-28 16:38:30'),
+(1368, '127.0.0.1', 1, '2016-12-28 16:38:30'),
+(1369, '127.0.0.1', 1, '2016-12-28 16:38:30'),
+(1370, '127.0.0.1', 1, '2016-12-28 16:38:30'),
+(1371, '127.0.0.1', 1, '2016-12-28 16:38:30'),
+(1372, '127.0.0.1', 1, '2016-12-28 16:38:30'),
+(1373, '127.0.0.1', 1, '2016-12-28 16:38:30'),
+(1374, '127.0.0.1', 1, '2016-12-28 16:38:30'),
+(1375, '127.0.0.1', 1, '2016-12-28 17:05:37'),
+(1376, '127.0.0.1', 1, '2016-12-28 17:05:37'),
+(1377, '127.0.0.1', 1, '2016-12-28 17:05:37'),
+(1378, '127.0.0.1', 1, '2016-12-28 17:05:37'),
+(1379, '127.0.0.1', 1, '2016-12-28 17:05:37'),
+(1380, '127.0.0.1', 1, '2016-12-28 17:05:37'),
+(1381, '127.0.0.1', 1, '2016-12-28 17:05:37'),
+(1382, '127.0.0.1', 1, '2016-12-28 17:05:37'),
+(1383, '127.0.0.1', 1, '2016-12-28 17:05:37'),
+(1384, '127.0.0.1', 1, '2016-12-28 17:05:37'),
+(1385, '127.0.0.1', 1, '2016-12-28 17:05:37'),
+(1386, '127.0.0.1', 1, '2016-12-28 17:05:37'),
+(1387, '127.0.0.1', 1, '2016-12-28 17:05:37'),
+(1388, '127.0.0.1', 1, '2016-12-28 17:05:37'),
+(1389, '127.0.0.1', 1, '2016-12-28 17:05:37'),
+(1390, '127.0.0.1', 1, '2016-12-28 17:05:37'),
+(1391, '127.0.0.1', 1, '2016-12-28 17:05:37'),
+(1392, '127.0.0.1', 1, '2016-12-28 17:05:37'),
+(1393, '127.0.0.1', 1, '2016-12-28 17:05:37'),
+(1394, '127.0.0.1', 1, '2016-12-28 17:05:37'),
+(1395, '127.0.0.1', 1, '2016-12-28 17:05:37'),
+(1396, '127.0.0.1', 1, '2016-12-28 17:05:37'),
+(1397, '127.0.0.1', 1, '2016-12-28 17:05:37'),
+(1398, '127.0.0.1', 1, '2016-12-28 17:05:37'),
+(1399, '127.0.0.1', 1, '2016-12-28 17:05:37'),
+(1400, '127.0.0.1', 1, '2016-12-28 17:05:37'),
+(1401, '127.0.0.1', 1, '2016-12-28 17:05:37'),
+(1402, '127.0.0.1', 1, '2016-12-28 17:05:37'),
+(1403, '127.0.0.1', 1, '2016-12-28 17:05:37'),
+(1404, '127.0.0.1', 1, '2016-12-28 17:05:37'),
+(1405, '127.0.0.1', 1, '2016-12-28 17:05:37'),
+(1406, '127.0.0.1', 1, '2016-12-28 17:05:37'),
+(1407, '127.0.0.1', 1, '2016-12-28 17:05:37');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `isp`
+-- 表的结构 `isp`
 --
 
-CREATE TABLE IF NOT EXISTS `isp` (
-  `id` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(50) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=21 ;
+CREATE TABLE `isp` (
+  `id` tinyint(3) UNSIGNED NOT NULL,
+  `name` varchar(50) DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `isp`
+-- 转存表中的数据 `isp`
 --
 
 INSERT INTO `isp` (`id`, `name`) VALUES
@@ -1221,23 +2684,22 @@ INSERT INTO `isp` (`id`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `language`
+-- 表的结构 `language`
 --
 
-CREATE TABLE IF NOT EXISTS `language` (
-  `id` smallint(5) unsigned NOT NULL AUTO_INCREMENT,
+CREATE TABLE `language` (
+  `id` smallint(5) UNSIGNED NOT NULL,
   `lang_name` varchar(50) NOT NULL,
   `flagpic` varchar(255) NOT NULL DEFAULT '',
-  `sub_lang` tinyint(3) unsigned NOT NULL DEFAULT '1',
-  `rule_lang` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  `site_lang` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `sub_lang` tinyint(3) UNSIGNED NOT NULL DEFAULT '1',
+  `rule_lang` tinyint(3) UNSIGNED NOT NULL DEFAULT '0',
+  `site_lang` tinyint(3) UNSIGNED NOT NULL DEFAULT '0',
   `site_lang_folder` varchar(255) NOT NULL DEFAULT '',
-  `trans_state` enum('up-to-date','outdate','incomplete','need-new','unavailable') NOT NULL DEFAULT 'unavailable',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=32 ;
+  `trans_state` enum('up-to-date','outdate','incomplete','need-new','unavailable') NOT NULL DEFAULT 'unavailable'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `language`
+-- 转存表中的数据 `language`
 --
 
 INSERT INTO `language` (`id`, `lang_name`, `flagpic`, `sub_lang`, `rule_lang`, `site_lang`, `site_lang_folder`, `trans_state`) VALUES
@@ -1276,85 +2738,74 @@ INSERT INTO `language` (`id`, `lang_name`, `flagpic`, `sub_lang`, `rule_lang`, `
 -- --------------------------------------------------------
 
 --
--- Table structure for table `links`
+-- 表的结构 `links`
 --
 
-CREATE TABLE IF NOT EXISTS `links` (
-  `id` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,
+CREATE TABLE `links` (
+  `id` tinyint(3) UNSIGNED NOT NULL,
   `name` varchar(30) NOT NULL,
   `url` varchar(255) NOT NULL,
-  `title` varchar(50) NOT NULL DEFAULT '',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  `title` varchar(50) NOT NULL DEFAULT ''
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `links`
+-- 转存表中的数据 `links`
 --
 
+INSERT INTO `links` (`id`, `name`, `url`, `title`) VALUES
+(1, '百度', 'http://www.baidu.com', '百度百度'),
+(2, '谷歌', 'http://www.google.com', '谷歌谷歌');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `locations`
+-- 表的结构 `locations`
 --
 
-CREATE TABLE IF NOT EXISTS `locations` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+CREATE TABLE `locations` (
+  `id` int(10) UNSIGNED NOT NULL,
   `name` varchar(50) DEFAULT NULL,
   `location_main` varchar(200) NOT NULL,
   `location_sub` varchar(200) NOT NULL,
   `flagpic` varchar(50) DEFAULT NULL,
   `start_ip` varchar(20) NOT NULL,
   `end_ip` varchar(20) NOT NULL,
-  `theory_upspeed` int(10) unsigned NOT NULL DEFAULT '10',
-  `practical_upspeed` int(10) unsigned NOT NULL DEFAULT '10',
-  `theory_downspeed` int(10) unsigned NOT NULL DEFAULT '10',
-  `practical_downspeed` int(10) unsigned NOT NULL DEFAULT '10',
-  `hit` int(10) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
---
--- Dumping data for table `locations`
---
-
+  `theory_upspeed` int(10) UNSIGNED NOT NULL DEFAULT '10',
+  `practical_upspeed` int(10) UNSIGNED NOT NULL DEFAULT '10',
+  `theory_downspeed` int(10) UNSIGNED NOT NULL DEFAULT '10',
+  `practical_downspeed` int(10) UNSIGNED NOT NULL DEFAULT '10',
+  `hit` int(10) UNSIGNED NOT NULL DEFAULT '0'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `loginattempts`
+-- 表的结构 `loginattempts`
 --
 
-CREATE TABLE IF NOT EXISTS `loginattempts` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+CREATE TABLE `loginattempts` (
+  `id` int(10) UNSIGNED NOT NULL,
   `ip` varchar(64) NOT NULL DEFAULT '',
   `added` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `banned` enum('yes','no') NOT NULL DEFAULT 'no',
-  `attempts` smallint(5) unsigned NOT NULL DEFAULT '0',
-  `type` enum('login','recover') NOT NULL DEFAULT 'login',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
---
--- Dumping data for table `loginattempts`
---
-
+  `attempts` smallint(5) UNSIGNED NOT NULL DEFAULT '0',
+  `type` enum('login','recover') NOT NULL DEFAULT 'login'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `media`
+-- 表的结构 `media`
 --
 
-CREATE TABLE IF NOT EXISTS `media` (
-  `id` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,
+CREATE TABLE `media` (
+  `id` tinyint(3) UNSIGNED NOT NULL,
   `name` varchar(30) NOT NULL,
-  `sort_index` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=10 ;
+  `sort_index` tinyint(3) UNSIGNED NOT NULL DEFAULT '0'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `media`
+-- 转存表中的数据 `media`
 --
 
 INSERT INTO `media` (`id`, `name`, `sort_index`) VALUES
@@ -1371,45 +2822,105 @@ INSERT INTO `media` (`id`, `name`, `sort_index`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `messages`
+-- 表的结构 `messages`
 --
 
-CREATE TABLE IF NOT EXISTS `messages` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `sender` mediumint(8) unsigned NOT NULL DEFAULT '0',
-  `receiver` mediumint(8) unsigned NOT NULL DEFAULT '0',
+CREATE TABLE `messages` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `sender` mediumint(8) UNSIGNED NOT NULL DEFAULT '0',
+  `receiver` mediumint(8) UNSIGNED NOT NULL DEFAULT '0',
   `added` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `subject` varchar(128) NOT NULL DEFAULT '',
   `msg` text,
   `unread` enum('yes','no') NOT NULL DEFAULT 'yes',
   `location` smallint(6) NOT NULL DEFAULT '1',
   `saved` enum('no','yes') NOT NULL DEFAULT 'no',
-  PRIMARY KEY (`id`),
-  KEY `receiver` (`receiver`),
-  KEY `sender` (`sender`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  `goto` tinyint(1) UNSIGNED ZEROFILL NOT NULL DEFAULT '0'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `messages`
+-- 转存表中的数据 `messages`
 --
 
+INSERT INTO `messages` (`id`, `sender`, `receiver`, `added`, `subject`, `msg`, `unread`, `location`, `saved`, `goto`) VALUES
+(1, 0, 1, '2016-11-19 17:39:29', '你发布的求种acsd有应求', 'root应求了你的求种[url=viewrequest.php?action=view&id=13]acsd[/url]', 'no', 1, 'no', 0),
+(2, 0, 1, '2016-11-19 17:39:36', 'root通过了你的应求', '你因此获得了悬赏的3000麦粒。详情请见[url=viewrequest.php?action=view&id=13]这里[/url]', 'no', 1, 'no', 1),
+(3, 0, 1, '2016-11-19 17:41:01', '你发布的求种cas有应求', 'root应求了你的求种[url=viewrequest.php?action=view&id=14]cas[/url]', 'no', 1, 'no', 0),
+(4, 0, 1, '2016-11-19 17:41:06', 'root通过了你的应求', '你因此获得了悬赏的3000麦粒。详情请见[url=viewrequest.php?action=view&id=14]这里[/url]', 'no', 1, 'no', 1),
+(5, 0, 2, '2016-11-20 04:34:09', '有关于你的论坛消息啦！', '[url=forums.php?action=viewtopic&topicid=1&page=p18#pid18]点击查看详情[/url]', 'no', 1, 'no', 0),
+(6, 0, 6, '2016-11-23 11:21:02', '欢迎来到嘉木!', '祝贺你，''test''，\n\n你已成为嘉木的一员，\n我们真诚地欢迎你的加入！\n\n请务必先阅读[url=rules.php][b]规则[/b][/url]，提问前请自行参考[url=faq.php][b]常见问题[/b][/url],有空也请到[url=forums.php][b]论坛[/b][/url]看看。 \n\n祝你愉快。\n嘉木管理组', 'yes', 1, 'no', 0),
+(7, 0, 7, '2016-11-23 13:22:50', '欢迎来到嘉木!', '祝贺你，''admin''，\n\n你已成为嘉木的一员，\n我们真诚地欢迎你的加入！\n\n请务必先阅读[url=rules.php][b]规则[/b][/url]，提问前请自行参考[url=faq.php][b]常见问题[/b][/url],有空也请到[url=forums.php][b]论坛[/b][/url]看看。 \n\n祝你愉快。\n嘉木管理组', 'yes', 1, 'no', 0),
+(8, 0, 8, '2016-11-23 13:29:52', '欢迎来到嘉木!', '祝贺你，''admin''，\n\n你已成为嘉木的一员，\n我们真诚地欢迎你的加入！\n\n请务必先阅读[url=rules.php][b]规则[/b][/url]，提问前请自行参考[url=faq.php][b]常见问题[/b][/url],有空也请到[url=forums.php][b]论坛[/b][/url]看看。 \n\n祝你愉快。\n嘉木管理组', 'yes', 1, 'no', 0),
+(9, 0, 9, '2016-11-23 13:30:24', '欢迎来到嘉木!', '祝贺你，''admin''，\n\n你已成为嘉木的一员，\n我们真诚地欢迎你的加入！\n\n请务必先阅读[url=rules.php][b]规则[/b][/url]，提问前请自行参考[url=faq.php][b]常见问题[/b][/url],有空也请到[url=forums.php][b]论坛[/b][/url]看看。 \n\n祝你愉快。\n嘉木管理组', 'yes', 1, 'no', 0),
+(10, 0, 10, '2016-11-23 14:06:04', '欢迎来到嘉木!', '祝贺你，''aa''，\n\n你已成为嘉木的一员，\n我们真诚地欢迎你的加入！\n\n请务必先阅读[url=rules.php][b]规则[/b][/url]，提问前请自行参考[url=faq.php][b]常见问题[/b][/url],有空也请到[url=forums.php][b]论坛[/b][/url]看看。 \n\n祝你愉快。\n嘉木管理组', 'yes', 1, 'no', 0),
+(11, 0, 11, '2016-11-23 14:13:49', '欢迎来到嘉木!', '祝贺你，''aa''，\n\n你已成为嘉木的一员，\n我们真诚地欢迎你的加入！\n\n请务必先阅读[url=rules.php][b]规则[/b][/url]，提问前请自行参考[url=faq.php][b]常见问题[/b][/url],有空也请到[url=forums.php][b]论坛[/b][/url]看看。 \n\n祝你愉快。\n嘉木管理组', 'yes', 1, 'no', 0),
+(12, 0, 12, '2016-11-23 14:19:06', '欢迎来到嘉木!', '祝贺你，''aa''，\n\n你已成为嘉木的一员，\n我们真诚地欢迎你的加入！\n\n请务必先阅读[url=rules.php][b]规则[/b][/url]，提问前请自行参考[url=faq.php][b]常见问题[/b][/url],有空也请到[url=forums.php][b]论坛[/b][/url]看看。 \n\n祝你愉快。\n嘉木管理组', 'yes', 1, 'no', 0),
+(13, 0, 13, '2016-11-23 14:19:55', '欢迎来到嘉木!', '祝贺你，''ss''，\n\n你已成为嘉木的一员，\n我们真诚地欢迎你的加入！\n\n请务必先阅读[url=rules.php][b]规则[/b][/url]，提问前请自行参考[url=faq.php][b]常见问题[/b][/url],有空也请到[url=forums.php][b]论坛[/b][/url]看看。 \n\n祝你愉快。\n嘉木管理组', 'yes', 1, 'no', 0),
+(14, 0, 14, '2016-11-23 14:22:43', '欢迎来到嘉木!', '祝贺你，''ss''，\n\n你已成为嘉木的一员，\n我们真诚地欢迎你的加入！\n\n请务必先阅读[url=rules.php][b]规则[/b][/url]，提问前请自行参考[url=faq.php][b]常见问题[/b][/url],有空也请到[url=forums.php][b]论坛[/b][/url]看看。 \n\n祝你愉快。\n嘉木管理组', 'yes', 1, 'no', 0),
+(15, 0, 15, '2016-11-23 14:23:28', '欢迎来到嘉木!', '祝贺你，''ss''，\n\n你已成为嘉木的一员，\n我们真诚地欢迎你的加入！\n\n请务必先阅读[url=rules.php][b]规则[/b][/url]，提问前请自行参考[url=faq.php][b]常见问题[/b][/url],有空也请到[url=forums.php][b]论坛[/b][/url]看看。 \n\n祝你愉快。\n嘉木管理组', 'yes', 1, 'no', 0),
+(16, 0, 16, '2016-11-23 14:24:04', '欢迎来到嘉木!', '祝贺你，''sadc''，\n\n你已成为嘉木的一员，\n我们真诚地欢迎你的加入！\n\n请务必先阅读[url=rules.php][b]规则[/b][/url]，提问前请自行参考[url=faq.php][b]常见问题[/b][/url],有空也请到[url=forums.php][b]论坛[/b][/url]看看。 \n\n祝你愉快。\n嘉木管理组', 'yes', 1, 'no', 0),
+(17, 0, 17, '2016-11-23 14:36:38', '欢迎来到嘉木!', '祝贺你，''sadc''，\n\n你已成为嘉木的一员，\n我们真诚地欢迎你的加入！\n\n请务必先阅读[url=rules.php][b]规则[/b][/url]，提问前请自行参考[url=faq.php][b]常见问题[/b][/url],有空也请到[url=forums.php][b]论坛[/b][/url]看看。 \n\n祝你愉快。\n嘉木管理组', 'yes', 1, 'no', 0),
+(18, 0, 18, '2016-11-23 14:40:53', '欢迎来到嘉木!', '祝贺你，''sadc''，\n\n你已成为嘉木的一员，\n我们真诚地欢迎你的加入！\n\n请务必先阅读[url=rules.php][b]规则[/b][/url]，提问前请自行参考[url=faq.php][b]常见问题[/b][/url],有空也请到[url=forums.php][b]论坛[/b][/url]看看。 \n\n祝你愉快。\n嘉木管理组', 'yes', 1, 'no', 0),
+(19, 0, 19, '2016-11-23 15:19:12', '欢迎来到嘉木!', '祝贺你，''cms''，\n\n你已成为嘉木的一员，\n我们真诚地欢迎你的加入！\n\n请务必先阅读[url=rules.php][b]规则[/b][/url]，提问前请自行参考[url=faq.php][b]常见问题[/b][/url],有空也请到[url=forums.php][b]论坛[/b][/url]看看。 \n\n祝你愉快。\n嘉木管理组', 'yes', 1, 'no', 0),
+(20, 0, 2, '2016-11-24 07:17:13', '有关于你的论坛消息啦！', '[url=forums.php?action=viewtopic&topicid=1&page=p21#pid21]点击查看详情[/url]', 'yes', 1, 'no', 0),
+(21, 0, 20, '2016-11-25 15:32:30', '欢迎来到嘉木!', '祝贺你，''cms''，\n\n你已成为嘉木的一员，\n我们真诚地欢迎你的加入！\n\n请务必先阅读[url=rules.php][b]规则[/b][/url]，提问前请自行参考[url=faq.php][b]常见问题[/b][/url],有空也请到[url=forums.php][b]论坛[/b][/url]看看。 \n\n祝你愉快。\n嘉木管理组', 'yes', 1, 'no', 0),
+(22, 0, 21, '2016-11-25 15:39:03', '欢迎来到嘉木!', '祝贺你，''cms''，\n\n你已成为嘉木的一员，\n我们真诚地欢迎你的加入！\n\n请务必先阅读[url=rules.php][b]规则[/b][/url]，提问前请自行参考[url=faq.php][b]常见问题[/b][/url],有空也请到[url=forums.php][b]论坛[/b][/url]看看。 \n\n祝你愉快。\n嘉木管理组', 'yes', 1, 'no', 0),
+(23, 0, 22, '2016-12-02 02:29:11', '欢迎来到嘉木!', '祝贺你，''lwen''，\n\n你已成为嘉木的一员，\n我们真诚地欢迎你的加入！\n\n请务必先阅读[url=rules.php][b]规则[/b][/url]，提问前请自行参考[url=faq.php][b]常见问题[/b][/url],有空也请到[url=forums.php][b]论坛[/b][/url]看看。 \n\n祝你愉快。\n嘉木管理组', 'no', 1, 'no', 0),
+(24, 0, 23, '2016-12-03 03:28:44', '欢迎来到嘉木!', '祝贺你，''kms''，\n\n你已成为嘉木的一员，\n我们真诚地欢迎你的加入！\n\n请务必先阅读[url=rules.php][b]规则[/b][/url]，提问前请自行参考[url=faq.php][b]常见问题[/b][/url],有空也请到[url=forums.php][b]事务[/b][/url]看看。 \n\n祝你愉快。\n嘉木管理组', 'yes', 1, 'no', 0),
+(25, 0, 22, '2016-12-03 23:23:16', '有关于你的评论啦！', 'ssss', 'no', 1, 'no', 0),
+(26, 0, 22, '2016-12-03 23:23:27', '有关于你的评论啦！', 'ssss', 'no', 1, 'no', 0),
+(27, 0, 22, '2016-12-03 23:23:39', '有关于你的评论啦！', 'ssss', 'no', 1, 'no', 0),
+(28, 0, 22, '2016-12-03 23:23:40', '有关于你的评论啦！', 'ssss', 'no', 1, 'no', 0),
+(29, 0, 22, '2016-12-03 23:23:40', '有关于你的评论啦！', 'ssss', 'no', 1, 'no', 0),
+(30, 0, 22, '2016-12-03 23:23:41', '有关于你的评论啦！', 'ssss', 'no', 1, 'no', 0),
+(31, 0, 22, '2016-12-03 16:28:20', '有关于你的评论啦！', '[@22] nihao', 'no', 1, 'no', 0),
+(32, 0, 22, '2016-12-03 16:28:20', '有关于你的评论啦！', '[@22]@lwen cdcsda', 'no', 1, 'no', 0),
+(33, 0, 22, '2016-12-03 16:28:26', '有关于你的评论啦！', '[@22] nihao', 'no', 1, 'no', 0),
+(34, 0, 22, '2016-12-03 16:28:26', '有关于你的评论啦！', '[@22]@lwen cdcsda', 'no', 1, 'no', 0),
+(35, 0, 22, '2016-12-03 16:28:27', '有关于你的评论啦！', '[@22] nihao', 'no', 1, 'no', 0),
+(36, 0, 22, '2016-12-03 16:28:27', '有关于你的评论啦！', '[@22]@lwen cdcsda', 'no', 1, 'no', 0),
+(37, 0, 22, '2016-12-03 16:28:30', '有关于你的评论啦！', '[@22] nihao', 'no', 1, 'no', 0),
+(38, 0, 22, '2016-12-03 16:28:30', '有关于你的评论啦！', '[@22]@lwen cdcsda', 'no', 1, 'no', 0),
+(39, 0, 22, '2016-12-03 16:29:57', '有关于你的评论啦！', '[@22] csadc', 'no', 1, 'no', 0),
+(40, 0, 22, '2016-12-03 16:30:10', '有关于你的评论啦！', '[@22] ansdcnaskjdnckas', 'no', 1, 'no', 0),
+(41, 0, 22, '2016-12-03 16:30:53', '有关于你的评论啦！', '[@22]@lwen 你好', 'no', 1, 'no', 0),
+(42, 0, 22, '2016-12-03 16:40:18', '有关于你的评论啦！', '[@22]@lwen 你是圣诞款超难吃擦上刊登擦脸上课', 'no', 1, 'no', 0),
+(43, 0, 22, '2016-12-03 16:44:02', '有关于你的消息啦！', ' : [@22]@lwen 你是圣诞款超难吃擦上刊登擦脸上课daasddasdfas', 'no', 1, 'no', 0),
+(44, 0, 22, '2016-12-03 16:44:37', '有关于你的消息啦！', ' : [@22]@lwen 你是圣诞款超难吃擦上刊登擦脸上课daasddasdfas', 'no', 1, 'no', 0),
+(45, 0, 22, '2016-12-03 16:47:13', '有关于你的消息啦！', '[@22]@lwen 你是圣诞款超难吃擦上刊登擦脸上课daasddasdfas', 'no', 1, 'no', 0),
+(46, 0, 22, '2016-12-03 16:47:30', '有关于你的消息啦！', '[@22]@lwen 你是圣诞款超难吃擦上刊登擦脸上课daasddasdfas', 'no', 1, 'no', 0),
+(47, 0, 22, '2016-12-03 16:47:38', '有关于你的消息啦！', '[@22]@lwen 你是圣诞款超难吃擦上刊登擦脸上课daasddasdfas', 'no', 1, 'no', 0),
+(48, 0, 22, '2016-12-03 16:48:19', '有关于你的消息啦！', '[@22]@lwen 你是圣诞款超难吃擦上刊登擦脸上课daasddasdfas', 'no', 1, 'no', 0),
+(49, 0, 22, '2016-12-03 16:52:02', '有关于你的消息啦！', '[@22]@lwen 你是圣诞款超难吃擦上刊登擦脸上课daasddasdfas', 'no', 1, 'no', 0),
+(50, 0, 22, '2016-12-03 16:54:42', '有关于你的消息啦！(From: )', '[@22]@lwen 你是圣诞款超难吃擦上刊登擦脸上课daasddasdfas', 'no', 1, 'no', 0),
+(51, 0, 22, '2016-12-03 16:56:15', '有关于你的消息啦！(From: jghgj)', '[@22]@lwen 你是圣诞款超难吃擦上刊登擦脸上课daasddasdfas', 'no', 1, 'no', 0),
+(52, 0, 22, '2016-12-03 16:57:34', '有关于你的消息啦！(From: jghgj)', '[@22]@lwen 你是圣诞款超难吃擦上刊登擦脸上课daasddasdfas', 'no', 1, 'no', 0),
+(53, 0, 22, '2016-12-03 16:58:41', '有关于你的消息啦！(From: jghgj)', '[@22]@lwen 你是圣诞款超难吃擦上刊登擦脸上课daasddasdfas', 'no', 1, 'no', 0),
+(54, 0, 22, '2016-12-03 16:59:05', '有关于你的消息啦！(From: <span class="nowrap">lwen</span>)', '[@22]@lwen 你是圣诞款超难吃擦上刊登擦脸上课daasddasdfas', 'no', 1, 'no', 0),
+(55, 0, 22, '2016-12-03 16:59:51', '有关于你的消息啦！(From: <span class="nowrap"><u>lwen</u></span>)', '[@22]@lwen 你是圣诞款超难吃擦上刊登擦脸上课daasddasdfas', 'no', 1, 'no', 0),
+(56, 0, 22, '2016-12-03 17:03:09', '有关于你的消息啦！(From: lwen)', '[@22]@lwen 你是圣诞款超难吃擦上刊登擦脸上课daasddasdfas', 'no', 1, 'no', 0),
+(57, 0, 1, '2016-12-04 17:21:44', '你的候选被允许', 'root允许你上传 [b][url=http://127.0.0.1/nwupt/offers.php?id=3&off_details=1] 现在[/url][/b]. 你会在上传区找到新的选项。请在24小时内上传通过候选的内容。否则该候选将被删除。', 'no', 1, 'no', 0),
+(58, 0, 24, '2016-12-07 05:43:06', '欢迎来到嘉木!', '祝贺你，''dsas''，\n\n你已成为嘉木的一员，\n我们真诚地欢迎你的加入！\n\n请务必先阅读[url=rules.php][b]规则[/b][/url]，提问前请自行参考[url=faq.php][b]常见问题[/b][/url],有空也请到[url=forums.php][b]事务[/b][/url]看看。 \n\n祝你愉快。\n嘉木管理组', 'yes', 1, 'no', 0),
+(59, 0, 25, '2016-12-07 06:32:40', '欢迎来到嘉木!', '祝贺你，''admin''，\n\n你已成为嘉木的一员，\n我们真诚地欢迎你的加入！\n\n请务必先阅读[url=rules.php][b]规则[/b][/url]，提问前请自行参考[url=faq.php][b]常见问题[/b][/url],有空也请到[url=forums.php][b]事务[/b][/url]看看。 \n\n祝你愉快。\n嘉木管理组', 'yes', 1, 'no', 0),
+(60, 0, 26, '2016-12-10 03:25:27', '欢迎来到NexusPHP!', '祝贺你，''lwen''，\n\n你已成为NexusPHP的一员，\n我们真诚地欢迎你的加入！\n\n请务必先阅读[url=rules.php][b]规则[/b][/url]，提问前请自行参考[url=faq.php][b]常见问题[/b][/url],有空也请到[url=forums.php][b]论坛[/b][/url]看看。 \n\n祝你愉快。\nNexusPHP管理组', 'yes', 1, 'no', 0),
+(61, 0, 27, '2016-12-10 07:46:42', '欢迎来到嘉木!', '祝贺你，''aaaa''，\n\n你已成为嘉木的一员，\n我们真诚地欢迎你的加入！\n\n请务必先阅读[url=rules.php][b]规则[/b][/url]，提问前请自行参考[url=faq.php][b]常见问题[/b][/url],有空也请到[url=forums.php][b]事务[/b][/url]看看。 \n\n祝你愉快。\n嘉木管理组', 'yes', 1, 'no', 0),
+(62, 0, 1, '2017-02-10 02:36:27', '你的候选被允许', 'root允许你上传 [b][url=http://127.0.0.1/nwupt/offers.php?id=5&off_details=1]阿斯达[/url][/b]. 你会在上传区找到新的选项。请在24小时内上传通过候选的内容。否则该候选将被删除。', 'no', 1, 'no', 0);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `modpanel`
+-- 表的结构 `modpanel`
 --
 
-CREATE TABLE IF NOT EXISTS `modpanel` (
-  `id` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,
+CREATE TABLE `modpanel` (
+  `id` tinyint(3) UNSIGNED NOT NULL,
   `name` varchar(128) NOT NULL DEFAULT '',
   `url` varchar(255) NOT NULL DEFAULT '',
-  `info` varchar(255) NOT NULL DEFAULT '',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1020 ;
+  `info` varchar(255) NOT NULL DEFAULT ''
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `modpanel`
+-- 转存表中的数据 `modpanel`
 --
 
 INSERT INTO `modpanel` (`id`, `name`, `url`, `info`) VALUES
@@ -1426,177 +2937,152 @@ INSERT INTO `modpanel` (`id`, `name`, `url`, `info`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `news`
+-- 表的结构 `news`
 --
 
-CREATE TABLE IF NOT EXISTS `news` (
-  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
-  `userid` mediumint(8) unsigned NOT NULL DEFAULT '0',
+CREATE TABLE `news` (
+  `id` mediumint(8) UNSIGNED NOT NULL,
+  `userid` mediumint(8) UNSIGNED NOT NULL DEFAULT '0',
   `added` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `body` text,
   `title` varchar(255) NOT NULL DEFAULT '',
-  `notify` enum('yes','no') NOT NULL DEFAULT 'no',
-  PRIMARY KEY (`id`),
-  KEY `added` (`added`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  `notify` enum('yes','no') NOT NULL DEFAULT 'no'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `news`
+-- 转存表中的数据 `news`
 --
 
+INSERT INTO `news` (`id`, `userid`, `added`, `body`, `title`, `notify`) VALUES
+(1, 1, '2016-11-01 10:41:58', 'asdcasssssssssssssssss爱上的刺激啊什么呢擦拭看见你的asdcasssssssssssssssss爱上的刺激啊什么呢擦拭看见你的asdcasssssssssssssssss爱上的刺激啊什么呢擦拭看见你的asdcasssssssssssssssss爱上的刺激啊什么呢擦拭看见你的asdcasssssssssssssssss爱上的刺激啊什么呢擦拭看见你的asdcasssssssssssssssss爱上的刺激啊什么呢擦拭看见你的asdcasssssssssssssssss爱上的刺激啊什么呢擦拭看见你的asdcasssssssssssssssss爱上的刺激啊什么呢擦拭看见你的asdcasssssssssssssssss爱上的刺激啊什么呢擦拭看见你的', 'hello', 'no'),
+(2, 1, '2016-11-21 10:23:07', 'asdcknckl;asldkcmmkl&#039;assmcklmslmmlmlmlmlmllkasdcknckl;asldkcmmkl&#039;assmcklmslmmlmlmlmlmllkasdcknckl;asldkcmmkl&#039;assmcklmslmmlmlmlmlmllkasdcknckl;asldkcmmkl&#039;assmcklmslmmlmlmlmlmllkasdcknckl;asldkcmmkl&#039;assmcklmslmmlmlmlmlmllkasdcknckl;asldkcmmkl&#039;assmcklmslmmlmlmlmlmllkasdcknckl;asldkcmmkl&#039;assmcklmslmmlmlmlmlmllkasdcknckl;asldkcmmkl&#039;assmcklmslmmlmlmlmlmllkasdcknckl;asldkcmmkl&#039;assmcklmslmmlmlmlmlmllkasdcknckl;asldkcmmkl&#039;assmcklmslmmlmlmlmlmllkasdcknckl;asldkcmmkl&#039;assmcklmslmmlmlmlmlmllkasdcknckl;asldkcmmkl&#039;assmcklmslmmlmlmlmlmllkasdcknckl;asldkcmmkl&#039;assmcklmslmmlmlmlmlmllk', 'cms', 'no'),
+(3, 1, '2016-12-07 07:23:53', 'ascdasdcasdcasdcascasc', 'cascdasdc', 'no');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `offers`
+-- 表的结构 `offers`
 --
 
-CREATE TABLE IF NOT EXISTS `offers` (
-  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
-  `userid` mediumint(8) unsigned NOT NULL DEFAULT '0',
+CREATE TABLE `offers` (
+  `id` mediumint(8) UNSIGNED NOT NULL,
+  `userid` mediumint(8) UNSIGNED NOT NULL DEFAULT '0',
   `name` varchar(225) NOT NULL,
   `descr` text,
   `added` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `allowedtime` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `yeah` smallint(5) unsigned NOT NULL DEFAULT '0',
-  `against` smallint(5) unsigned NOT NULL DEFAULT '0',
-  `category` smallint(5) unsigned NOT NULL DEFAULT '0',
-  `comments` mediumint(8) unsigned NOT NULL DEFAULT '0',
-  `allowed` enum('allowed','pending','denied') NOT NULL DEFAULT 'pending',
-  PRIMARY KEY (`id`),
-  KEY `userid` (`userid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
---
--- Dumping data for table `offers`
---
-
+  `yeah` smallint(5) UNSIGNED NOT NULL DEFAULT '0',
+  `against` smallint(5) UNSIGNED NOT NULL DEFAULT '0',
+  `category` smallint(5) UNSIGNED NOT NULL DEFAULT '0',
+  `comments` mediumint(8) UNSIGNED NOT NULL DEFAULT '0',
+  `allowed` enum('allowed','pending','denied') NOT NULL DEFAULT 'pending'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `offervotes`
+-- 表的结构 `offervotes`
 --
 
-CREATE TABLE IF NOT EXISTS `offervotes` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `offerid` mediumint(8) unsigned NOT NULL DEFAULT '0',
-  `userid` mediumint(8) unsigned NOT NULL DEFAULT '0',
-  `vote` enum('yeah','against') NOT NULL DEFAULT 'yeah',
-  PRIMARY KEY (`id`),
-  KEY `userid` (`userid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
---
--- Dumping data for table `offervotes`
---
-
+CREATE TABLE `offervotes` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `offerid` mediumint(8) UNSIGNED NOT NULL DEFAULT '0',
+  `userid` mediumint(8) UNSIGNED NOT NULL DEFAULT '0',
+  `vote` enum('yeah','against') NOT NULL DEFAULT 'yeah'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `overforums`
+-- 表的结构 `overforums`
 --
 
-CREATE TABLE IF NOT EXISTS `overforums` (
-  `id` smallint(5) unsigned NOT NULL AUTO_INCREMENT,
+CREATE TABLE `overforums` (
+  `id` smallint(5) UNSIGNED NOT NULL,
   `name` varchar(60) NOT NULL,
   `description` varchar(255) NOT NULL DEFAULT '',
-  `minclassview` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  `sort` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  `minclassview` tinyint(3) UNSIGNED NOT NULL DEFAULT '0',
+  `sort` tinyint(3) UNSIGNED NOT NULL DEFAULT '0'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `overforums`
+-- 转存表中的数据 `overforums`
 --
 
+INSERT INTO `overforums` (`id`, `name`, `description`, `minclassview`, `sort`) VALUES
+(1, 'sdc', 'sadc', 12, 1),
+(2, 'asdc', '', 0, 0);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `peers`
+-- 表的结构 `peers`
 --
 
-CREATE TABLE IF NOT EXISTS `peers` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `torrent` mediumint(8) unsigned NOT NULL DEFAULT '0',
+CREATE TABLE `peers` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `torrent` mediumint(8) UNSIGNED NOT NULL DEFAULT '0',
   `peer_id` binary(20) NOT NULL,
   `ip` varchar(64) NOT NULL DEFAULT '',
-  `port` smallint(5) unsigned NOT NULL DEFAULT '0',
-  `uploaded` bigint(20) unsigned NOT NULL DEFAULT '0',
-  `downloaded` bigint(20) unsigned NOT NULL DEFAULT '0',
-  `to_go` bigint(20) unsigned NOT NULL DEFAULT '0',
+  `port` smallint(5) UNSIGNED NOT NULL DEFAULT '0',
+  `uploaded` bigint(20) UNSIGNED NOT NULL DEFAULT '0',
+  `downloaded` bigint(20) UNSIGNED NOT NULL DEFAULT '0',
+  `to_go` bigint(20) UNSIGNED NOT NULL DEFAULT '0',
   `seeder` enum('yes','no') NOT NULL DEFAULT 'no',
   `started` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `last_action` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `prev_action` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `connectable` enum('yes','no') NOT NULL DEFAULT 'yes',
-  `userid` mediumint(8) unsigned NOT NULL DEFAULT '0',
+  `userid` mediumint(8) UNSIGNED NOT NULL DEFAULT '0',
   `agent` varchar(60) NOT NULL DEFAULT '',
-  `finishedat` int(10) unsigned NOT NULL DEFAULT '0',
-  `downloadoffset` bigint(20) unsigned NOT NULL DEFAULT '0',
-  `uploadoffset` bigint(20) unsigned NOT NULL DEFAULT '0',
-  `passkey` char(32) NOT NULL DEFAULT '',
-  PRIMARY KEY (`id`),
-  KEY `userid` (`userid`),
-  KEY `torrent` (`torrent`)
-) ENGINE=MEMORY DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED AUTO_INCREMENT=1 ;
-
---
--- Dumping data for table `peers`
---
-
+  `finishedat` int(10) UNSIGNED NOT NULL DEFAULT '0',
+  `downloadoffset` bigint(20) UNSIGNED NOT NULL DEFAULT '0',
+  `uploadoffset` bigint(20) UNSIGNED NOT NULL DEFAULT '0',
+  `passkey` char(32) NOT NULL DEFAULT ''
+) ENGINE=MEMORY DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `pmboxes`
+-- 表的结构 `pmboxes`
 --
 
-CREATE TABLE IF NOT EXISTS `pmboxes` (
-  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
-  `userid` mediumint(8) unsigned NOT NULL,
-  `boxnumber` tinyint(3) unsigned NOT NULL DEFAULT '2',
-  `name` varchar(15) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
---
--- Dumping data for table `pmboxes`
---
-
+CREATE TABLE `pmboxes` (
+  `id` mediumint(8) UNSIGNED NOT NULL,
+  `userid` mediumint(8) UNSIGNED NOT NULL,
+  `boxnumber` tinyint(3) UNSIGNED NOT NULL DEFAULT '2',
+  `name` varchar(15) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `pollanswers`
+-- 表的结构 `pollanswers`
 --
 
-CREATE TABLE IF NOT EXISTS `pollanswers` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `pollid` mediumint(8) unsigned NOT NULL,
-  `userid` mediumint(8) unsigned NOT NULL,
-  `selection` tinyint(3) unsigned NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `pollid` (`pollid`),
-  KEY `selection` (`selection`),
-  KEY `userid` (`userid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+CREATE TABLE `pollanswers` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `pollid` mediumint(8) UNSIGNED NOT NULL,
+  `userid` mediumint(8) UNSIGNED NOT NULL,
+  `selection` tinyint(3) UNSIGNED NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `pollanswers`
+-- 转存表中的数据 `pollanswers`
 --
 
+INSERT INTO `pollanswers` (`id`, `pollid`, `userid`, `selection`) VALUES
+(1, 1, 1, 1),
+(2, 1, 29, 0);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `polls`
+-- 表的结构 `polls`
 --
 
-CREATE TABLE IF NOT EXISTS `polls` (
-  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+CREATE TABLE `polls` (
+  `id` mediumint(8) UNSIGNED NOT NULL,
   `added` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `question` varchar(255) NOT NULL DEFAULT '',
   `option0` varchar(40) NOT NULL DEFAULT '',
@@ -1618,57 +3104,96 @@ CREATE TABLE IF NOT EXISTS `polls` (
   `option16` varchar(40) NOT NULL DEFAULT '',
   `option17` varchar(40) NOT NULL DEFAULT '',
   `option18` varchar(40) NOT NULL DEFAULT '',
-  `option19` varchar(40) NOT NULL DEFAULT '',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  `option19` varchar(40) NOT NULL DEFAULT ''
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `polls`
+-- 转存表中的数据 `polls`
 --
 
+INSERT INTO `polls` (`id`, `added`, `question`, `option0`, `option1`, `option2`, `option3`, `option4`, `option5`, `option6`, `option7`, `option8`, `option9`, `option10`, `option11`, `option12`, `option13`, `option14`, `option15`, `option16`, `option17`, `option18`, `option19`) VALUES
+(1, '2016-11-01 10:42:23', '按时到场', '是啥', '是啥', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `posts`
+-- 表的结构 `posts`
 --
 
-CREATE TABLE IF NOT EXISTS `posts` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `topicid` mediumint(8) unsigned NOT NULL DEFAULT '0',
-  `userid` mediumint(8) unsigned NOT NULL DEFAULT '0',
+CREATE TABLE `posts` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `topicid` mediumint(8) UNSIGNED NOT NULL DEFAULT '0',
+  `userid` mediumint(8) UNSIGNED NOT NULL DEFAULT '0',
   `added` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `body` text,
   `ori_body` text,
-  `editedby` mediumint(8) unsigned NOT NULL DEFAULT '0',
-  `editdate` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  PRIMARY KEY (`id`),
-  KEY `userid` (`userid`),
-  KEY `topicid_id` (`topicid`,`id`),
-  KEY `added` (`added`),
-  FULLTEXT KEY `body` (`body`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  `editedby` mediumint(8) UNSIGNED NOT NULL DEFAULT '0',
+  `editdate` datetime NOT NULL DEFAULT '0000-00-00 00:00:00'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `posts`
+-- 转存表中的数据 `posts`
 --
 
+INSERT INTO `posts` (`id`, `topicid`, `userid`, `added`, `body`, `ori_body`, `editedby`, `editdate`) VALUES
+(1, 1, 1, '2016-11-03 16:47:49', '爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从', '爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从', 0, '0000-00-00 00:00:00'),
+(2, 1, 1, '2016-11-03 16:48:04', '[quote=root]爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从[/quote]擦拭调查哀伤的层次的', '[quote=root]爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从[/quote]擦拭调查哀伤的层次的', 0, '0000-00-00 00:00:00'),
+(3, 1, 1, '2016-11-03 16:48:31', '阿斯顿擦拭的擦爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从', '阿斯顿擦拭的擦爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从爱是当你从那时你的从', 0, '0000-00-00 00:00:00'),
+(50, 28, 29, '2017-02-25 02:58:25', '[@', '[@', 0, '0000-00-00 00:00:00'),
+(51, 28, 29, '2017-02-25 03:25:01', '色情', '色情', 0, '0000-00-00 00:00:00'),
+(52, 28, 29, '2017-02-25 03:48:38', 'owcsdkn\r\n色情', 'owcsdkn\r\n色情', 0, '0000-00-00 00:00:00'),
+(53, 28, 29, '2017-02-25 03:49:09', '21374@%……%&@色情\r\n色情\r\n      色情', '21374@%……%&@色情\r\n色情\r\n      色情', 0, '0000-00-00 00:00:00'),
+(54, 28, 29, '2017-02-25 03:52:43', 'jiangzeming', 'jiangzeming', 0, '0000-00-00 00:00:00'),
+(55, 28, 29, '2017-02-25 03:54:20', '长者', '长者', 0, '0000-00-00 00:00:00'),
+(56, 28, 29, '2017-02-25 03:54:28', '+1s', '+1s', 0, '0000-00-00 00:00:00'),
+(19, 1, 1, '2016-11-22 14:59:13', '收到擦上次', '收到擦上次', 0, '0000-00-00 00:00:00'),
+(20, 1, 1, '2016-11-22 15:17:35', '吃撒多措撒错三', '吃撒多措撒错三', 0, '0000-00-00 00:00:00'),
+(21, 1, 1, '2016-11-24 07:17:13', '[@2]', '[@2]', 0, '0000-00-00 00:00:00'),
+(22, 1, 22, '2016-12-02 02:37:19', 'rerfergw', 'rerfergw', 0, '0000-00-00 00:00:00'),
+(23, 5, 1, '2016-12-12 03:14:21', 'casd[color=DarkSlateBlue]cdsacas[/color]\r\ncasd[color=Red]dcsacsad[/color]', 'casd[color=DarkSlateBlue]cdsacas[/color]\r\ncasd[color=Red]dcsacsad[/color]', 0, '0000-00-00 00:00:00'),
+(24, 6, 1, '2017-02-03 13:40:29', '出撒旦', '出撒旦', 0, '0000-00-00 00:00:00'),
+(25, 7, 1, '2017-02-03 13:40:36', '出撒旦', '出撒旦', 0, '0000-00-00 00:00:00'),
+(26, 8, 1, '2017-02-03 13:47:56', 'casdcsacsac', 'casdcsacsac', 0, '0000-00-00 00:00:00'),
+(27, 9, 29, '2017-02-24 14:29:16', 'casdcasc', 'casdcasc', 0, '0000-00-00 00:00:00'),
+(28, 10, 29, '2017-02-24 14:29:20', 'casdcasc', 'casdcasc', 0, '0000-00-00 00:00:00'),
+(29, 11, 29, '2017-02-24 14:29:55', '大三的擦拭的擦删除', '大三的擦拭的擦删除', 0, '0000-00-00 00:00:00'),
+(30, 12, 29, '2017-02-24 14:30:19', '擦拭得到擦伤', '擦拭得到擦伤', 0, '0000-00-00 00:00:00'),
+(31, 13, 29, '2017-02-24 15:10:34', 'ccccccc', 'ccccccc', 0, '0000-00-00 00:00:00'),
+(32, 14, 29, '2017-02-24 15:12:59', 'casdc', 'casdc', 0, '0000-00-00 00:00:00'),
+(33, 15, 29, '2017-02-24 15:15:56', 'asdcas', 'asdcas', 0, '0000-00-00 00:00:00'),
+(34, 16, 29, '2017-02-24 15:16:09', 'asdcas', 'asdcas', 0, '0000-00-00 00:00:00'),
+(35, 17, 29, '2017-02-24 15:16:22', '擦上档次v发dvd发v大v刹v刹v', '擦上档次v发dvd发v大v刹v刹v', 0, '0000-00-00 00:00:00'),
+(36, 18, 29, '2017-02-24 15:17:25', '淡粉吊带', '淡粉吊带', 0, '0000-00-00 00:00:00'),
+(37, 20, 29, '2017-02-24 15:18:44', '淡粉吊带', '淡粉吊带', 0, '0000-00-00 00:00:00'),
+(38, 21, 29, '2017-02-24 15:18:57', '淡粉吊带', '淡粉吊带', 0, '0000-00-00 00:00:00'),
+(39, 22, 29, '2017-02-24 15:19:27', '淡粉吊带', '淡粉吊带', 0, '0000-00-00 00:00:00'),
+(40, 23, 29, '2017-02-24 15:20:19', '淡粉吊带', '淡粉吊带', 0, '0000-00-00 00:00:00'),
+(41, 24, 29, '2017-02-24 15:20:27', '淡粉吊带', '淡粉吊带', 0, '0000-00-00 00:00:00'),
+(42, 25, 29, '2017-02-24 15:20:52', '淡粉吊带', '淡粉吊带', 0, '0000-00-00 00:00:00'),
+(43, 26, 29, '2017-02-24 15:21:00', '淡粉吊带', '淡粉吊带', 0, '0000-00-00 00:00:00'),
+(44, 27, 29, '2017-02-24 15:21:42', '淡粉吊带', '淡粉吊带', 0, '0000-00-00 00:00:00'),
+(45, 27, 29, '2017-02-24 15:22:00', '[em25]', '[em25]', 0, '0000-00-00 00:00:00'),
+(46, 27, 29, '2017-02-24 15:22:32', '成都市', '成都市', 0, '0000-00-00 00:00:00'),
+(47, 26, 29, '2017-02-24 15:22:54', '成都市', '成都市', 0, '0000-00-00 00:00:00'),
+(48, 28, 29, '2017-02-24 15:23:16', '尺寸', '尺寸', 0, '0000-00-00 00:00:00'),
+(49, 28, 29, '2017-02-25 02:58:11', 'vs地方', 'vs地方', 0, '0000-00-00 00:00:00'),
+(17, 4, 1, '2016-11-20 04:32:46', 'dfs', 'dfs', 0, '0000-00-00 00:00:00'),
+(18, 1, 1, '2016-11-20 04:34:09', '[@2] hbuhu', '[@2] hbuhu', 0, '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `processings`
+-- 表的结构 `processings`
 --
 
-CREATE TABLE IF NOT EXISTS `processings` (
-  `id` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,
+CREATE TABLE `processings` (
+  `id` tinyint(3) UNSIGNED NOT NULL,
   `name` varchar(30) NOT NULL,
-  `sort_index` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+  `sort_index` tinyint(3) UNSIGNED NOT NULL DEFAULT '0'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `processings`
+-- 转存表中的数据 `processings`
 --
 
 INSERT INTO `processings` (`id`, `name`, `sort_index`) VALUES
@@ -1678,101 +3203,170 @@ INSERT INTO `processings` (`id`, `name`, `sort_index`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `prolinkclicks`
+-- 表的结构 `prolinkclicks`
 --
 
-CREATE TABLE IF NOT EXISTS `prolinkclicks` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `userid` mediumint(8) unsigned NOT NULL DEFAULT '0',
+CREATE TABLE `prolinkclicks` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `userid` mediumint(8) UNSIGNED NOT NULL DEFAULT '0',
   `ip` varchar(64) NOT NULL DEFAULT '',
-  `added` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
---
--- Dumping data for table `prolinkclicks`
---
-
+  `added` datetime NOT NULL DEFAULT '0000-00-00 00:00:00'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `readposts`
+-- 表的结构 `readposts`
 --
 
-CREATE TABLE IF NOT EXISTS `readposts` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `userid` mediumint(8) unsigned NOT NULL DEFAULT '0',
-  `topicid` mediumint(8) unsigned NOT NULL DEFAULT '0',
-  `lastpostread` int(10) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`),
-  KEY `topicid` (`topicid`),
-  KEY `userid` (`userid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+CREATE TABLE `readposts` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `userid` mediumint(8) UNSIGNED NOT NULL DEFAULT '0',
+  `topicid` mediumint(8) UNSIGNED NOT NULL DEFAULT '0',
+  `lastpostread` int(10) UNSIGNED NOT NULL DEFAULT '0'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `readposts`
+-- 转存表中的数据 `readposts`
 --
 
+INSERT INTO `readposts` (`id`, `userid`, `topicid`, `lastpostread`) VALUES
+(7, 22, 1, 22),
+(13, 29, 28, 56),
+(12, 29, 26, 47),
+(6, 2, 1, 18),
+(11, 29, 27, 46);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `regimages`
+-- 表的结构 `regimages`
 --
 
-CREATE TABLE IF NOT EXISTS `regimages` (
-  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+CREATE TABLE `regimages` (
+  `id` mediumint(8) UNSIGNED NOT NULL,
   `imagehash` varchar(32) NOT NULL DEFAULT '',
   `imagestring` varchar(8) NOT NULL DEFAULT '',
-  `dateline` int(10) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
---
--- Dumping data for table `regimages`
---
-
+  `dateline` int(10) UNSIGNED NOT NULL DEFAULT '0'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `reports`
+-- 表的结构 `reports`
 --
 
-CREATE TABLE IF NOT EXISTS `reports` (
-  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
-  `addedby` mediumint(8) unsigned NOT NULL DEFAULT '0',
+CREATE TABLE `reports` (
+  `id` mediumint(8) UNSIGNED NOT NULL,
+  `addedby` mediumint(8) UNSIGNED NOT NULL DEFAULT '0',
   `added` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `reportid` int(10) unsigned NOT NULL DEFAULT '0',
+  `reportid` int(10) UNSIGNED NOT NULL DEFAULT '0',
   `type` enum('torrent','user','offer','request','post','comment','subtitle') NOT NULL DEFAULT 'torrent',
   `reason` varchar(255) NOT NULL DEFAULT '',
-  `dealtby` mediumint(8) unsigned NOT NULL DEFAULT '0',
-  `dealtwith` tinyint(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  `dealtby` mediumint(8) UNSIGNED NOT NULL DEFAULT '0',
+  `dealtwith` tinyint(1) NOT NULL DEFAULT '0'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `reports`
+-- 转存表中的数据 `reports`
 --
 
+INSERT INTO `reports` (`id`, `addedby`, `added`, `reportid`, `type`, `reason`, `dealtby`, `dealtwith`) VALUES
+(1, 1, '2016-12-03 04:48:39', 25, 'torrent', '爱才是大错三', 0, 0);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `rules`
+-- 表的结构 `req`
 --
 
-CREATE TABLE IF NOT EXISTS `rules` (
-  `id` smallint(5) unsigned NOT NULL AUTO_INCREMENT,
-  `lang_id` smallint(5) unsigned NOT NULL DEFAULT '6',
+CREATE TABLE `req` (
+  `id` int(11) NOT NULL,
+  `catid` int(11) NOT NULL DEFAULT '401',
+  `name` varchar(255) DEFAULT NULL,
+  `added` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `introduce` text,
+  `ori_introduce` text,
+  `amount` int(11) NOT NULL DEFAULT '0',
+  `userid` int(11) NOT NULL DEFAULT '0',
+  `ori_amount` int(11) NOT NULL DEFAULT '0',
+  `comments` int(11) NOT NULL DEFAULT '0',
+  `finish` enum('yes','no','cancel') NOT NULL DEFAULT 'no',
+  `finished_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `resetdate` datetime DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+--
+-- 转存表中的数据 `req`
+--
+
+INSERT INTO `req` (`id`, `catid`, `name`, `added`, `introduce`, `ori_introduce`, `amount`, `userid`, `ori_amount`, `comments`, `finish`, `finished_time`, `resetdate`) VALUES
+(1, 401, 'acsd', '2016-11-19 17:16:44', '-- ----------------------------\r\n-- Table structure for `req`\r\n-- ----------------------------\r\nDROP TABLE IF EXISTS `req`;\r\nCREATE TABLE `req` (\r\n  `id` int(11) NOT NULL auto_increment,\r\n  `catid` int(11) NOT NULL default ''401'',\r\n  `name` varchar(255) default NULL,\r\n  `added` datetime NOT NULL default ''0000-00-00 00:00:00'',\r\n  `introduce` text,\r\n  `ori_introduce` text,\r\n  `amount` int(11) NOT NULL default ''0'',\r\n  `userid` int(11) NOT NULL default ''0'',\r\n  `ori_amount` int(11) NOT NULL default ''0'',\r\n  `comments` int(11) NOT NULL default ''0'',\r\n  `finish` enum(''yes'',''no'',''cancel'') NOT NULL default ''no'',\r\n  `finished_time` datetime NOT NULL default ''0000-00-00 00:00:00'',\r\n  `resetdate` datetime default NULL,\r\n  PRIMARY KEY  (`id`),\r\n  KEY `finish` (`finish`,`name`,`added`,`amount`,`introduce`(10))\r\n) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;\r\n\r\n-- ----------------------------\r\n-- Records of req\r\n-- ----------------------------', '-- ----------------------------\r\n-- Table structure for `req`\r\n-- ----------------------------\r\nDROP TABLE IF EXISTS `req`;\r\nCREATE TABLE `req` (\r\n  `id` int(11) NOT NULL auto_increment,\r\n  `catid` int(11) NOT NULL default ''401'',\r\n  `name` varchar(255) default NULL,\r\n  `added` datetime NOT NULL default ''0000-00-00 00:00:00'',\r\n  `introduce` text,\r\n  `ori_introduce` text,\r\n  `amount` int(11) NOT NULL default ''0'',\r\n  `userid` int(11) NOT NULL default ''0'',\r\n  `ori_amount` int(11) NOT NULL default ''0'',\r\n  `comments` int(11) NOT NULL default ''0'',\r\n  `finish` enum(''yes'',''no'',''cancel'') NOT NULL default ''no'',\r\n  `finished_time` datetime NOT NULL default ''0000-00-00 00:00:00'',\r\n  `resetdate` datetime default NULL,\r\n  PRIMARY KEY  (`id`),\r\n  KEY `finish` (`finish`,`name`,`added`,`amount`,`introduce`(10))\r\n) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;\r\n\r\n-- ----------------------------\r\n-- Records of req\r\n-- ----------------------------', 2000, 1, 2000, 0, 'cancel', '0000-00-00 00:00:00', '2016-11-19 17:16:44'),
+(2, 401, 'cdsa', '2016-11-19 17:18:29', '-- ----------------------------\r\n-- Table structure for `resreq`\r\n-- ----------------------------\r\nDROP TABLE IF EXISTS `resreq`;\r\nCREATE TABLE `resreq` (\r\n  `id` int(11) NOT NULL auto_increment,\r\n  `reqid` int(11) NOT NULL default ''0'',\r\n  `torrentid` int(11) NOT NULL default ''0'',\r\n  `chosen` enum(''yes'',''no'') NOT NULL default ''no'',\r\n  PRIMARY KEY  (`id`),\r\n  KEY `reqid` (`reqid`,`chosen`)\r\n) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;\r\n\r\n-- ----------------------------\r\n-- Records of resreq\r\n-- ----------------------------\r\n', '-- ----------------------------\r\n-- Table structure for `resreq`\r\n-- ----------------------------\r\nDROP TABLE IF EXISTS `resreq`;\r\nCREATE TABLE `resreq` (\r\n  `id` int(11) NOT NULL auto_increment,\r\n  `reqid` int(11) NOT NULL default ''0'',\r\n  `torrentid` int(11) NOT NULL default ''0'',\r\n  `chosen` enum(''yes'',''no'') NOT NULL default ''no'',\r\n  PRIMARY KEY  (`id`),\r\n  KEY `reqid` (`reqid`,`chosen`)\r\n) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;\r\n\r\n-- ----------------------------\r\n-- Records of resreq\r\n-- ----------------------------\r\n', 2000, 1, 2000, 0, 'cancel', '0000-00-00 00:00:00', '2016-11-19 17:18:29'),
+(3, 401, 'csd', '2016-11-19 17:20:42', '-- ----------------------------\r\n-- Table structure for `givebonus`\r\n-- ----------------------------\r\nDROP TABLE IF EXISTS `givebonus`;\r\nCREATE TABLE `givebonus` (\r\n  `id` int(10) unsigned NOT NULL auto_increment,\r\n  `bonusfromuserid` mediumint(8) unsigned NOT NULL,\r\n  `bonustotorrentid` mediumint(8) unsigned NOT NULL,\r\n  `bonus` decimal(10,1) unsigned NOT NULL,\r\n  `type` int(1) unsigned NOT NULL,\r\n  PRIMARY KEY  (`id`)\r\n) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;\r\n\r\n-- ----------------------------\r\n-- Records of givebonus\r\n-- ----------------------------', '-- ----------------------------\r\n-- Table structure for `givebonus`\r\n-- ----------------------------\r\nDROP TABLE IF EXISTS `givebonus`;\r\nCREATE TABLE `givebonus` (\r\n  `id` int(10) unsigned NOT NULL auto_increment,\r\n  `bonusfromuserid` mediumint(8) unsigned NOT NULL,\r\n  `bonustotorrentid` mediumint(8) unsigned NOT NULL,\r\n  `bonus` decimal(10,1) unsigned NOT NULL,\r\n  `type` int(1) unsigned NOT NULL,\r\n  PRIMARY KEY  (`id`)\r\n) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;\r\n\r\n-- ----------------------------\r\n-- Records of givebonus\r\n-- ----------------------------', 2000, 1, 2000, 0, 'cancel', '0000-00-00 00:00:00', '2016-11-19 17:20:42'),
+(4, 401, 'cdsac', '2016-11-19 17:23:11', '-- ----------------------------\r\n-- Table structure for `messages`\r\n-- ----------------------------\r\nDROP TABLE IF EXISTS `messages`;\r\nCREATE TABLE `messages` (\r\n  `id` int(10) unsigned NOT NULL auto_increment,\r\n  `sender` mediumint(8) unsigned NOT NULL default ''0'',\r\n  `receiver` mediumint(8) unsigned NOT NULL default ''0'',\r\n  `added` datetime NOT NULL default ''0000-00-00 00:00:00'',\r\n  `subject` varchar(128) NOT NULL default '''',\r\n  `msg` text,\r\n  `unread` enum(''yes'',''no'') NOT NULL default ''yes'',\r\n  `location` smallint(6) NOT NULL default ''1'',\r\n  `saved` enum(''no'',''yes'') NOT NULL default ''no'',\r\n  `goto` tinyint(1) unsigned zerofill NOT NULL default ''0'',\r\n  PRIMARY KEY  (`id`),\r\n  KEY `receiver` (`receiver`),\r\n  KEY `sender` (`sender`)\r\n) ENGINE=MyISAM DEFAULT CHARSET=utf8;\r\n\r\n-- ----------------------------\r\n-- Records of messages\r\n-- ----------------------------', '-- ----------------------------\r\n-- Table structure for `messages`\r\n-- ----------------------------\r\nDROP TABLE IF EXISTS `messages`;\r\nCREATE TABLE `messages` (\r\n  `id` int(10) unsigned NOT NULL auto_increment,\r\n  `sender` mediumint(8) unsigned NOT NULL default ''0'',\r\n  `receiver` mediumint(8) unsigned NOT NULL default ''0'',\r\n  `added` datetime NOT NULL default ''0000-00-00 00:00:00'',\r\n  `subject` varchar(128) NOT NULL default '''',\r\n  `msg` text,\r\n  `unread` enum(''yes'',''no'') NOT NULL default ''yes'',\r\n  `location` smallint(6) NOT NULL default ''1'',\r\n  `saved` enum(''no'',''yes'') NOT NULL default ''no'',\r\n  `goto` tinyint(1) unsigned zerofill NOT NULL default ''0'',\r\n  PRIMARY KEY  (`id`),\r\n  KEY `receiver` (`receiver`),\r\n  KEY `sender` (`sender`)\r\n) ENGINE=MyISAM DEFAULT CHARSET=utf8;\r\n\r\n-- ----------------------------\r\n-- Records of messages\r\n-- ----------------------------', 2000, 1, 2000, 0, 'cancel', '0000-00-00 00:00:00', '2016-11-19 17:23:11'),
+(5, 401, 'csd', '2016-11-19 17:24:16', '-- ----------------------------\r\n-- Table structure for `messages`\r\n-- ----------------------------\r\nDROP TABLE IF EXISTS `messages`;\r\nCREATE TABLE `messages` (\r\n  `id` int(10) unsigned NOT NULL auto_increment,\r\n  `sender` mediumint(8) unsigned NOT NULL default ''0'',\r\n  `receiver` mediumint(8) unsigned NOT NULL default ''0'',\r\n  `added` datetime NOT NULL default ''0000-00-00 00:00:00'',\r\n  `subject` varchar(128) NOT NULL default '''',\r\n  `msg` text,\r\n  `unread` enum(''yes'',''no'') NOT NULL default ''yes'',\r\n  `location` smallint(6) NOT NULL default ''1'',\r\n  `saved` enum(''no'',''yes'') NOT NULL default ''no'',\r\n  `goto` tinyint(1) unsigned zerofill NOT NULL default ''0'',\r\n  PRIMARY KEY  (`id`),\r\n  KEY `receiver` (`receiver`),\r\n  KEY `sender` (`sender`)\r\n) ENGINE=MyISAM DEFAULT CHARSET=utf8;\r\n\r\n-- ----------------------------\r\n-- Records of messages\r\n-- ----------------------------', '-- ----------------------------\r\n-- Table structure for `messages`\r\n-- ----------------------------\r\nDROP TABLE IF EXISTS `messages`;\r\nCREATE TABLE `messages` (\r\n  `id` int(10) unsigned NOT NULL auto_increment,\r\n  `sender` mediumint(8) unsigned NOT NULL default ''0'',\r\n  `receiver` mediumint(8) unsigned NOT NULL default ''0'',\r\n  `added` datetime NOT NULL default ''0000-00-00 00:00:00'',\r\n  `subject` varchar(128) NOT NULL default '''',\r\n  `msg` text,\r\n  `unread` enum(''yes'',''no'') NOT NULL default ''yes'',\r\n  `location` smallint(6) NOT NULL default ''1'',\r\n  `saved` enum(''no'',''yes'') NOT NULL default ''no'',\r\n  `goto` tinyint(1) unsigned zerofill NOT NULL default ''0'',\r\n  PRIMARY KEY  (`id`),\r\n  KEY `receiver` (`receiver`),\r\n  KEY `sender` (`sender`)\r\n) ENGINE=MyISAM DEFAULT CHARSET=utf8;\r\n\r\n-- ----------------------------\r\n-- Records of messages\r\n-- ----------------------------', 2000, 1, 2000, 0, 'cancel', '0000-00-00 00:00:00', '2016-11-19 17:24:16'),
+(6, 402, 'sadc', '2016-11-19 17:28:17', '-- ----------------------------\r\n-- Table structure for `messages`\r\n-- ----------------------------\r\nDROP TABLE IF EXISTS `messages`;\r\nCREATE TABLE `messages` (\r\n  `id` int(10) unsigned NOT NULL auto_increment,\r\n  `sender` mediumint(8) unsigned NOT NULL default ''0'',\r\n  `receiver` mediumint(8) unsigned NOT NULL default ''0'',\r\n  `added` datetime NOT NULL default ''0000-00-00 00:00:00'',\r\n  `subject` varchar(128) NOT NULL default '''',\r\n  `msg` text,\r\n  `unread` enum(''yes'',''no'') NOT NULL default ''yes'',\r\n  `location` smallint(6) NOT NULL default ''1'',\r\n  `saved` enum(''no'',''yes'') NOT NULL default ''no'',\r\n  `goto` tinyint(1) unsigned zerofill NOT NULL default ''0'',\r\n  PRIMARY KEY  (`id`),\r\n  KEY `receiver` (`receiver`),\r\n  KEY `sender` (`sender`)\r\n) ENGINE=MyISAM DEFAULT CHARSET=utf8;\r\n\r\n-- ----------------------------\r\n-- Records of messages\r\n-- ----------------------------', '-- ----------------------------\r\n-- Table structure for `messages`\r\n-- ----------------------------\r\nDROP TABLE IF EXISTS `messages`;\r\nCREATE TABLE `messages` (\r\n  `id` int(10) unsigned NOT NULL auto_increment,\r\n  `sender` mediumint(8) unsigned NOT NULL default ''0'',\r\n  `receiver` mediumint(8) unsigned NOT NULL default ''0'',\r\n  `added` datetime NOT NULL default ''0000-00-00 00:00:00'',\r\n  `subject` varchar(128) NOT NULL default '''',\r\n  `msg` text,\r\n  `unread` enum(''yes'',''no'') NOT NULL default ''yes'',\r\n  `location` smallint(6) NOT NULL default ''1'',\r\n  `saved` enum(''no'',''yes'') NOT NULL default ''no'',\r\n  `goto` tinyint(1) unsigned zerofill NOT NULL default ''0'',\r\n  PRIMARY KEY  (`id`),\r\n  KEY `receiver` (`receiver`),\r\n  KEY `sender` (`sender`)\r\n) ENGINE=MyISAM DEFAULT CHARSET=utf8;\r\n\r\n-- ----------------------------\r\n-- Records of messages\r\n-- ----------------------------', 2000, 1, 2000, 0, 'cancel', '0000-00-00 00:00:00', '2016-11-19 17:28:17'),
+(7, 401, 'cd', '2016-11-19 17:28:26', '-- ----------------------------\r\n-- Table structure for `messages`\r\n-- ----------------------------\r\nDROP TABLE IF EXISTS `messages`;\r\nCREATE TABLE `messages` (\r\n  `id` int(10) unsigned NOT NULL auto_increment,\r\n  `sender` mediumint(8) unsigned NOT NULL default ''0'',\r\n  `receiver` mediumint(8) unsigned NOT NULL default ''0'',\r\n  `added` datetime NOT NULL default ''0000-00-00 00:00:00'',\r\n  `subject` varchar(128) NOT NULL default '''',\r\n  `msg` text,\r\n  `unread` enum(''yes'',''no'') NOT NULL default ''yes'',\r\n  `location` smallint(6) NOT NULL default ''1'',\r\n  `saved` enum(''no'',''yes'') NOT NULL default ''no'',\r\n  `goto` tinyint(1) unsigned zerofill NOT NULL default ''0'',\r\n  PRIMARY KEY  (`id`),\r\n  KEY `receiver` (`receiver`),\r\n  KEY `sender` (`sender`)\r\n) ENGINE=MyISAM DEFAULT CHARSET=utf8;\r\n\r\n-- ----------------------------\r\n-- Records of messages\r\n-- ----------------------------', '-- ----------------------------\r\n-- Table structure for `messages`\r\n-- ----------------------------\r\nDROP TABLE IF EXISTS `messages`;\r\nCREATE TABLE `messages` (\r\n  `id` int(10) unsigned NOT NULL auto_increment,\r\n  `sender` mediumint(8) unsigned NOT NULL default ''0'',\r\n  `receiver` mediumint(8) unsigned NOT NULL default ''0'',\r\n  `added` datetime NOT NULL default ''0000-00-00 00:00:00'',\r\n  `subject` varchar(128) NOT NULL default '''',\r\n  `msg` text,\r\n  `unread` enum(''yes'',''no'') NOT NULL default ''yes'',\r\n  `location` smallint(6) NOT NULL default ''1'',\r\n  `saved` enum(''no'',''yes'') NOT NULL default ''no'',\r\n  `goto` tinyint(1) unsigned zerofill NOT NULL default ''0'',\r\n  PRIMARY KEY  (`id`),\r\n  KEY `receiver` (`receiver`),\r\n  KEY `sender` (`sender`)\r\n) ENGINE=MyISAM DEFAULT CHARSET=utf8;\r\n\r\n-- ----------------------------\r\n-- Records of messages\r\n-- ----------------------------', 2000, 1, 2000, 0, 'cancel', '0000-00-00 00:00:00', '2016-11-19 17:28:26'),
+(8, 401, 'acd', '2016-11-19 17:28:34', '-- ----------------------------\r\n-- Table structure for `messages`\r\n-- ----------------------------\r\nDROP TABLE IF EXISTS `messages`;\r\nCREATE TABLE `messages` (\r\n  `id` int(10) unsigned NOT NULL auto_increment,\r\n  `sender` mediumint(8) unsigned NOT NULL default ''0'',\r\n  `receiver` mediumint(8) unsigned NOT NULL default ''0'',\r\n  `added` datetime NOT NULL default ''0000-00-00 00:00:00'',\r\n  `subject` varchar(128) NOT NULL default '''',\r\n  `msg` text,\r\n  `unread` enum(''yes'',''no'') NOT NULL default ''yes'',\r\n  `location` smallint(6) NOT NULL default ''1'',\r\n  `saved` enum(''no'',''yes'') NOT NULL default ''no'',\r\n  `goto` tinyint(1) unsigned zerofill NOT NULL default ''0'',\r\n  PRIMARY KEY  (`id`),\r\n  KEY `receiver` (`receiver`),\r\n  KEY `sender` (`sender`)\r\n) ENGINE=MyISAM DEFAULT CHARSET=utf8;\r\n\r\n-- ----------------------------\r\n-- Records of messages\r\n-- ----------------------------', '-- ----------------------------\r\n-- Table structure for `messages`\r\n-- ----------------------------\r\nDROP TABLE IF EXISTS `messages`;\r\nCREATE TABLE `messages` (\r\n  `id` int(10) unsigned NOT NULL auto_increment,\r\n  `sender` mediumint(8) unsigned NOT NULL default ''0'',\r\n  `receiver` mediumint(8) unsigned NOT NULL default ''0'',\r\n  `added` datetime NOT NULL default ''0000-00-00 00:00:00'',\r\n  `subject` varchar(128) NOT NULL default '''',\r\n  `msg` text,\r\n  `unread` enum(''yes'',''no'') NOT NULL default ''yes'',\r\n  `location` smallint(6) NOT NULL default ''1'',\r\n  `saved` enum(''no'',''yes'') NOT NULL default ''no'',\r\n  `goto` tinyint(1) unsigned zerofill NOT NULL default ''0'',\r\n  PRIMARY KEY  (`id`),\r\n  KEY `receiver` (`receiver`),\r\n  KEY `sender` (`sender`)\r\n) ENGINE=MyISAM DEFAULT CHARSET=utf8;\r\n\r\n-- ----------------------------\r\n-- Records of messages\r\n-- ----------------------------', 2000, 1, 2000, 0, 'cancel', '0000-00-00 00:00:00', '2016-11-19 17:28:34'),
+(9, 401, 'dc', '2016-11-19 17:28:43', '-- ----------------------------\r\n-- Table structure for `messages`\r\n-- ----------------------------\r\nDROP TABLE IF EXISTS `messages`;\r\nCREATE TABLE `messages` (\r\n  `id` int(10) unsigned NOT NULL auto_increment,\r\n  `sender` mediumint(8) unsigned NOT NULL default ''0'',\r\n  `receiver` mediumint(8) unsigned NOT NULL default ''0'',\r\n  `added` datetime NOT NULL default ''0000-00-00 00:00:00'',\r\n  `subject` varchar(128) NOT NULL default '''',\r\n  `msg` text,\r\n  `unread` enum(''yes'',''no'') NOT NULL default ''yes'',\r\n  `location` smallint(6) NOT NULL default ''1'',\r\n  `saved` enum(''no'',''yes'') NOT NULL default ''no'',\r\n  `goto` tinyint(1) unsigned zerofill NOT NULL default ''0'',\r\n  PRIMARY KEY  (`id`),\r\n  KEY `receiver` (`receiver`),\r\n  KEY `sender` (`sender`)\r\n) ENGINE=MyISAM DEFAULT CHARSET=utf8;\r\n\r\n-- ----------------------------\r\n-- Records of messages\r\n-- ----------------------------', '-- ----------------------------\r\n-- Table structure for `messages`\r\n-- ----------------------------\r\nDROP TABLE IF EXISTS `messages`;\r\nCREATE TABLE `messages` (\r\n  `id` int(10) unsigned NOT NULL auto_increment,\r\n  `sender` mediumint(8) unsigned NOT NULL default ''0'',\r\n  `receiver` mediumint(8) unsigned NOT NULL default ''0'',\r\n  `added` datetime NOT NULL default ''0000-00-00 00:00:00'',\r\n  `subject` varchar(128) NOT NULL default '''',\r\n  `msg` text,\r\n  `unread` enum(''yes'',''no'') NOT NULL default ''yes'',\r\n  `location` smallint(6) NOT NULL default ''1'',\r\n  `saved` enum(''no'',''yes'') NOT NULL default ''no'',\r\n  `goto` tinyint(1) unsigned zerofill NOT NULL default ''0'',\r\n  PRIMARY KEY  (`id`),\r\n  KEY `receiver` (`receiver`),\r\n  KEY `sender` (`sender`)\r\n) ENGINE=MyISAM DEFAULT CHARSET=utf8;\r\n\r\n-- ----------------------------\r\n-- Records of messages\r\n-- ----------------------------', 2000, 1, 2000, 0, 'cancel', '0000-00-00 00:00:00', '2016-11-19 17:28:43'),
+(10, 401, 'asdca', '2016-11-19 17:34:59', '				echo "addd";\r\n				echo "addd";\r\n				echo "addd";\r\n				echo "addd";\r\n				echo "addd";\r\n				echo "addd";\r\n				echo "addd";\r\n				echo "addd";\r\n				echo "addd";\r\n				echo "addd";\r\n				echo "addd";\r\n', '				echo "addd";\r\n				echo "addd";\r\n				echo "addd";\r\n				echo "addd";\r\n				echo "addd";\r\n				echo "addd";\r\n				echo "addd";\r\n				echo "addd";\r\n				echo "addd";\r\n				echo "addd";\r\n				echo "addd";\r\n', 2000, 1, 2000, 0, 'cancel', '0000-00-00 00:00:00', '2016-11-19 17:34:59'),
+(11, 403, 'asdcsa', '2016-11-19 17:36:48', 'ascda					echo "sss";\r\n					echo "sss";\r\n					echo "sss";\r\n					echo "sss";\r\n					echo "sss";\r\n					echo "sss";\r\n					echo "sss";\r\n					echo "sss";\r\n					echo "sss";\r\n					echo "sss";\r\n					echo "sss";\r\n					echo "sss";\r\n', 'ascda					echo "sss";\r\n					echo "sss";\r\n					echo "sss";\r\n					echo "sss";\r\n					echo "sss";\r\n					echo "sss";\r\n					echo "sss";\r\n					echo "sss";\r\n					echo "sss";\r\n					echo "sss";\r\n					echo "sss";\r\n					echo "sss";\r\n', 2000, 1, 2000, 0, 'cancel', '0000-00-00 00:00:00', '2016-11-19 17:36:48'),
+(12, 401, 'casd', '2016-11-19 17:37:22', '				echo "ssssssss";\r\n				echo "ssssssss";\r\n				echo "ssssssss";\r\n				echo "ssssssss";\r\n				echo "ssssssss";\r\n				echo "ssssssss";\r\n				echo "ssssssss";\r\n				echo "ssssssss";\r\n				echo "ssssssss";\r\n				echo "ssssssss";\r\n				echo "ssssssss";\r\n				echo "ssssssss";\r\n', '				echo "ssssssss";\r\n				echo "ssssssss";\r\n				echo "ssssssss";\r\n				echo "ssssssss";\r\n				echo "ssssssss";\r\n				echo "ssssssss";\r\n				echo "ssssssss";\r\n				echo "ssssssss";\r\n				echo "ssssssss";\r\n				echo "ssssssss";\r\n				echo "ssssssss";\r\n				echo "ssssssss";\r\n', 2000, 1, 2000, 0, 'cancel', '0000-00-00 00:00:00', '2016-11-19 17:37:22'),
+(13, 401, 'acsd', '2016-11-19 17:37:35', '				echo "ssssssss";\r\n				echo "ssssssss";\r\n				echo "ssssssss";\r\n				echo "ssssssss";\r\n				echo "ssssssss";\r\n				echo "ssssssss";\r\n				echo "ssssssss";\r\n				echo "ssssssss";\r\n				echo "ssssssss";\r\n				echo "ssssssss";\r\n				echo "ssssssss";\r\n				echo "ssssssss";\r\n				echo "ssssssss";\r\n				echo "ssssssss";\r\n				echo "ssssssss";\r\n				echo "ssssssss";\r\n				echo "ssssssss";\r\n', '				echo "ssssssss";\r\n				echo "ssssssss";\r\n				echo "ssssssss";\r\n				echo "ssssssss";\r\n				echo "ssssssss";\r\n				echo "ssssssss";\r\n				echo "ssssssss";\r\n				echo "ssssssss";\r\n				echo "ssssssss";\r\n				echo "ssssssss";\r\n				echo "ssssssss";\r\n				echo "ssssssss";\r\n				echo "ssssssss";\r\n				echo "ssssssss";\r\n				echo "ssssssss";\r\n				echo "ssssssss";\r\n				echo "ssssssss";\r\n', 3000, 1, 2000, 0, 'yes', '2016-11-19 17:39:36', '2016-11-19 17:39:12'),
+(14, 403, 'cas', '2016-11-19 17:40:38', 'writeBonusCommentwriteBonusCommentwriteBonusCommentwriteBonusCommentwriteBonusCommentwriteBonusCommentwriteBonusCommentwriteBonusCommentwriteBonusCommentwriteBonusCommentwriteBonusCommentwriteBonusCommentwriteBonusCommentwriteBonusCommentwriteBonusCommentwriteBonusCommentwriteBonusCommentwriteBonusCommentwriteBonusCommentwriteBonusComment', 'writeBonusCommentwriteBonusCommentwriteBonusCommentwriteBonusCommentwriteBonusCommentwriteBonusCommentwriteBonusCommentwriteBonusCommentwriteBonusCommentwriteBonusCommentwriteBonusCommentwriteBonusCommentwriteBonusCommentwriteBonusCommentwriteBonusCommentwriteBonusCommentwriteBonusCommentwriteBonusCommentwriteBonusCommentwriteBonusComment', 3000, 1, 2000, 0, 'yes', '2016-11-19 17:41:06', '2016-11-19 17:40:52'),
+(16, 401, 'daadsfasdf', '2016-11-22 16:49:26', 'asdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdf', 'asdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdf', 4000, 1, 2000, 0, 'cancel', '0000-00-00 00:00:00', '2016-12-05 13:26:53'),
+(18, 404, '悬赏', '2017-02-09 07:27:31', '', '', 2000, 1, 2000, 0, 'no', '0000-00-00 00:00:00', '2017-02-09 07:27:31'),
+(19, 402, '传递', '2017-02-09 07:27:54', '擦上档次', '擦上档次', 2000, 1, 2000, 0, 'no', '0000-00-00 00:00:00', '2017-02-09 07:27:54');
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `requests`
+--
+
+CREATE TABLE `requests` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `request` char(1) NOT NULL DEFAULT '',
+  `userid` int(10) UNSIGNED NOT NULL DEFAULT '0',
+  `comments` char(1) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `resreq`
+--
+
+CREATE TABLE `resreq` (
+  `id` int(11) NOT NULL,
+  `reqid` int(11) NOT NULL DEFAULT '0',
+  `torrentid` int(11) NOT NULL DEFAULT '0',
+  `chosen` enum('yes','no') NOT NULL DEFAULT 'no'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+--
+-- 转存表中的数据 `resreq`
+--
+
+INSERT INTO `resreq` (`id`, `reqid`, `torrentid`, `chosen`) VALUES
+(2, 14, 12, 'yes');
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `rules`
+--
+
+CREATE TABLE `rules` (
+  `id` smallint(5) UNSIGNED NOT NULL,
+  `lang_id` smallint(5) UNSIGNED NOT NULL DEFAULT '6',
   `title` varchar(255) NOT NULL,
-  `text` text,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=56 ;
+  `text` text
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `rules`
+-- 转存表中的数据 `rules`
 --
 
 INSERT INTO `rules` (`id`, `lang_id`, `title`, `text`) VALUES
@@ -1797,11 +3391,10 @@ INSERT INTO `rules` (`id`, `lang_id`, `title`, `text`) VALUES
 (27, 6, 'Funbox Rules - <font class=striking>Get bonus with fun!</font>', '[*]Users can submit anything funny (e.g. stories, pictures, flash, video) except things that is pornographic, taboo, political sensitive or forbidden by local laws.\r\n[*]Normally a newly-submitted funbox item would be outdated after 24 hours. However, if there are 20 or more votes on a funbox item, among which votes for ''funny'' is less than 25%, the funbox item would be outdated ahead of its due time.\r\n[*]New funbox item can be submitted [b]only[/b] when the old one is outdated.\r\n[*]User, whose funbox item is voted as [b]funny[/b], would be rewarded based on the following rules:\r\n           [*]More than 25 votes, among which votes for [i]funny[/i] exceed 50%. User gets 5 bonus.\r\n           [*]More than 50 votes, among which votes for [i]funny[/i] exceed 50%. User gets another 5 bonus.\r\n           [*]More than 100 votes, among which votes for [i]funny[/i] exceed 50%. User gets another 5 bonus.\r\n           [*]More than 200 votes, among which votes for [i]funny[/i] exceed 50%. User gets another 5 bonus.\r\n           [*]More than 25 votes, among which votes for [i]funny[/i] exceed 75%. User gets 10 bonus.\r\n           [*]More than 50 votes, among which votes for [i]funny[/i] exceed 75%. User gets another 10 bonus.\r\n           [*]More than 100 votes, among which votes for [i]funny[/i] exceed 75%. User gets another 10 bonus.\r\n           [*]More than 200 votes, among which votes for [i]funny[/i] exceed 75%. User gets another 10 bonus.'),
 (22, 6, 'Downloading rules - <font class=striking>By not following these rules you will lose download privileges!</font>', '[*]Low ratios may result in severe consequences, including banning accounts. See [url=faq.php#22]FAQ[/url].\r\n[*]Rules for torrent promotion:\r\n        [*]Random promotion (torrents promoted randomly by system upon uploading):\r\n                [*]10% chance becoming [color=#7c7ff6][b]50% Leech[/b][/color],\r\n                [*]5% chance becoming [color=#f0cc00][b]Free Leech[/b][/color],\r\n                [*]5% chance becoming [color=#aaaaaa][b]2X up[/b][/color],\r\n                [*]3% chance becoming [color=#7ad6ea][b]50% Leech and 2X up[/b][/color],\r\n                [*]1% chance becoming [color=#99cc66][b]Free Leech and 2X up[/b][/color].\r\n        [*]Torrents larger than 20GB will automatically be [color=#f0cc00][b]Free Leech[/b][/color].\r\n        [*]Raw Blu-ray, HD DVD Discs will be [color=#f0cc00][b]Free Leech[/b][/color].\r\n        [*]First episode of every season of TV Series, etc. will be [color=#f0cc00][b]Free Leech[/b][/color].\r\n        [*]Highly popular torrents will be on promotion (decided by admins).\r\n        [*]Promotion timeout:\r\n                [*]Except [color=#aaaaaa][b]2X up[/b][/color], all the other types of promotion will be due after 7 days (counted from the time when the torrent is uploaded).\r\n                [*][color=#aaaaaa][b]2X up[/b][/color] will never become due.\r\n        [*]ALL the torrents will be [color=#aaaaaa][b]2X up[/b][/color] forever when they are on the site for over 1 month.\r\n        [*]On special occasions, we would set the whole site [color=#f0cc00][b]Free Leech[/b][/color]. Grab as much as you can. :mml:  :mml:  :mml:\r\n[*]You may [b]only[/b] use allowed bittorrent clients at [site]. See [url=faq.php#29]FAQ[/url].'),
 (24, 6, 'General Forum Guidelines - <font class=stiking>Please follow these guidelines or else you might end up with a warning!</font>', '[*]No aggressive behavior or flaming in the forums.\r\n[*]No trashing of any topics (i.e. SPAM). Do not submit meaningless topics or posts (e.g. smiley only) in any forum except Water Jar.\r\n[*]Do not flood any forum in order to get bonus.\r\n[*]No foul language on title or text.\r\n[*]Do not discuss topics that are taboo, political sensitive or forbidden by local laws.\r\n[*]No language of discrimination based on race, national or ethnic origin, color, religion, gender, age, sexual preference or mental or physical disability. Violating this rule would result in permanent ban.\r\n[*]No bumping... (All bumped threads will be deleted.)\r\n[*]No double posting. \r\n[*]Please ensure all questions are posted in the correct section!\r\n[*]Topics without new reply in 365 days would be locked automatically by system.'),
-(26, 6, 'Avatar Guidelines - <font class=striking>Please try to follow these guidelines</font>', '[*]The allowed formats are .gif, .jpg and .png. \r\n[*]Be considerate. Resize your images to a width of 150 px and a size of no more than 150 KB. (Browsers will rescale them anyway: smaller images will be expanded and will not look good; larger images will just waste bandwidth and CPU cycles.)\r\n[*]Do not use potentially offensive material involving porn, religious material, animal / human cruelty or ideologically charged images. Staff members have wide discretion on what is acceptable. If in doubt PM one. ');
-INSERT INTO `rules` (`id`, `lang_id`, `title`, `text`) VALUES
+(26, 6, 'Avatar Guidelines - <font class=striking>Please try to follow these guidelines</font>', '[*]The allowed formats are .gif, .jpg and .png. \r\n[*]Be considerate. Resize your images to a width of 150 px and a size of no more than 150 KB. (Browsers will rescale them anyway: smaller images will be expanded and will not look good; larger images will just waste bandwidth and CPU cycles.)\r\n[*]Do not use potentially offensive material involving porn, religious material, animal / human cruelty or ideologically charged images. Staff members have wide discretion on what is acceptable. If in doubt PM one. '),
 (23, 6, 'Uploading rules - <font class=striking>Torrents violating these rules may be deleted without notice</font>', 'Please respect the rules, and if you have any questions about something unclear or not understandable, please [url=contactstaff.php]consult the staff[/url]. Staff reserves the rights to adjudicate.\r\n\r\n[b]GENERAL[/b]\r\n        [*]You must have legal rights to the file you upload.\r\n        [*]Make sure your torrents are well-seeded. If you fail to seed for at least 24 hours or till someone else completes, or purposely keep a low uploading speed, you can be warned and your privilege to upload can be removed.\r\n        [*]You would get 2 times as much of uploading credit for torrents uploaded by yourself.\r\n        [*]If you have something interesting that somehow violates these rules, [url=contactstaff.php]ask the staff[/url] with a detailed description and we might make an exception.\r\n\r\n[b]PRIVILEGE[/b]\r\n        [*]Everyone can upload.\r\n        [*]However, some must go through the [url=offers.php]Offer section[/url]. See [url=faq.php#22]FAQ[/url] for details.\r\n        [*]ONLY users in the class [color=#DC143C][b]Uploader[/b][/color] or above, or users specified by staff can freely upload games. Others should go through the [url=offers.php]Offer section[/url].\r\n\r\n[b]ALLOWED CONTENTS[/b]\r\n        [*]High Definition (HD) videos, including\r\n                [*]complete HD media, e.g. Blu-ray disc, HD DVD disc, etc. or remux,\r\n                [*]captured HDTV streams,\r\n                [*]encodes from above listed sources in HD resolution (at least 720p),\r\n                [*]other HD videos such as HD DV.\r\n        [*]Standard Definition (SD) videos, only\r\n                [*]SD encodes from HD media (at least 480p),\r\n                [*]DVDR/DVDISO,\r\n                [*]DVDRip, CNDVDRip.\r\n        [*]Lossless audio tracks (and corresponding cue sheets), e.g. FLAC, Monkey''s Audio, etc.\r\n        [*]5.1-channel (or higher) movie dubs and music tracks (DTS, DTS CD Image, etc.), and commentary tracks.\r\n        [*]PC games (must be original images).\r\n        [*]HD trailers released within 7 days.\r\n        [*]HD-related software and documents.\r\n\r\n[b]NOT ALLOWED CONTENTS[/b]\r\n        [*]Contents less than 100 MB in total.\r\n        [*]Upscaled/partially upscaled in Standard Definition mastered/produced content.\r\n        [*]Videos in SD resolution but with low quality, including CAM, TC, TS, SCR, DVDSCR, R5, R5.Line, HalfCD, etc.\r\n        [*]RealVideo encoded videos (usually contained in RMVB or RM), flv files.\r\n        [*]Individual samples (to be included in the "Main torrent").\r\n        [*]Lossy audios that are not 5.1-channel (or higher), e.g. common lossy MP3''s, lossy WMAs, etc.\r\n        [*]Multi-track audio files without proper cue sheets.\r\n        [*]Installation-free or highly compressed games, unofficial game images, third-party mods, collection of tiny games, individual game cracks or patches.\r\n        [*]RAR, etc. archived files.\r\n        [*]Dupe releases. (see beneath for dupe rules.)\r\n        [*]Taboo or sensitive contents (such as porn or politically sensitive topics).\r\n        [*]Damaged files, i.e. files that are erroneous upon reading or playback.\r\n        [*]Spam files, such as viruses, trojans, website links, advertisements, torrents in torrent, etc., or irrelevant files.\r\n\r\n[b]DUPE RULES: QUALITY OVER QUANTITY[/b]\r\n        [*]Video releases are prioritized according to their source media, and mainly: Blu-ray/HD DVD > HDTV > DVD > TV. High prioritized versions will dupe other versions with low priorities of the same video.\r\n        [*]HD releases will dupe SD releases of the same video.\r\n        [*]For animes, HDTV versions are equal in priority to DVD versions. This is an exception.\r\n        [*]Encodes from the same type of media and in the same resolution \r\n                [*]They are prioritized based on "[url=forums.php?action=viewtopic&forumid=6&topicid=1520]Scene & Internal, from Group to Quality-Degree. ONLY FOR HD-resources[/url]".\r\n                [*]Releases from preferred groups will dupe releases from groups with the same or lower priority.\r\n                [*]However, one DVD5 sized (i.e. approx. 4.38 GB) release from the best available source will always be allowed.\r\n                [*]Based on lossless screenshots comparison, releases with higher quality will dupe those with low quality.\r\n        [*]Blu-ray Disk/HD DVD Original Copy releases from another region containing different dubbing and/or subtitle aren''t considered to be dupe.\r\n        [*]Only one copy of the same lossless audio contents will be preserved, and copies of other formats will be duped. FLAC (in separate tracks) is most preferred.\r\n        [*]For contents already on the site\r\n                [*]If new release doesn''t contain the confirmed errors/glitches/problems of the old release or is based on a better source, then it''s allowed to be uploaded and the old release is duped.\r\n                [*]If the old release is dead for 45 days or longer, or exists for 18 months or longer, then the new release is free from the dupe rules.\r\n        [*]After uploading the new release, old releases won''t be removed until they''re dead of inactivity.\r\n\r\n[b]PACKING RULES (ON TRIAL)[/b]\r\n        ONLY the following contents are allowed to be packed in principle:\r\n        [*]HD movie collections sold as box set (e.g. [i]The Ultimate Matrix Collection Blu-ray Box[/i]).\r\n        [*]Complete season(s) of TV Series/TV shows/animes.\r\n        [*]Documentaries on the same specific subject matter.\r\n        [*]HD trailers released within 7 days.\r\n        [*]MVs of the same artist\r\n                [*]SD MVs are allowed to be packed according to DVD discs only, and no upload of individual songs is allowed.\r\n                [*]HD MVs in the same resolution.\r\n        [*]Music of the same artist\r\n                [*]Only 5 or more albums can be packed.\r\n                [*]Albums released within 2 years can be individually uploaded.\r\n                [*]Generally, contents that are already on the site should be removed from the pack upon uploading, otherwise include them all together in the pack.\r\n        [*]Animes, character songs, dramas, etc. that are released in separate volumes.\r\n        [*]Contents packed by formal groups.\r\n        Packed video contents must be from media of the same type (e.g. Blu-ray discs), in the same resolution standard (e.g. 720p), and encoded in the same video codec (e.g. x264). However, trailer are exceptions. Moreover, a movie collection should be released from the same group. Packed audio contents must be encoded in the same audio codec (e.g. all in FLAC). Corresponding individual torrents can be removed upon packing, depending on actual situation.\r\n        If you are not clear of anything about packing, please [url=contactstaff.php]consult the staff[/url]. Staff reserve all the rights to interpret and deal with packing-related issues.\r\n\r\n[b]EXCEPTIONS[/b]\r\n        [*]ALLOWED: SD videos from TV/DSR in the category "Sports".\r\n        [*]ALLOWED: contents less than 100 MB but related to software and documents.\r\n        [*]ALLOWED: single albums that are less than 100 MB.\r\n        [*]ALLOWED: 2.0-channel (or higher) Mandarin/Cantonese dubs.\r\n        [*]ALLOWED: attached subtitles, game cracks and patches, fonts, scans (of packages, etc.). These files must be all either archived or unarchived.\r\n        [*]ALLOWED: when uploading CD releases, attaching contents from the DVD given with the CD.\r\n\r\n[b]TORRENT INFORMATION[/b]\r\n        All torrents shall have descriptive titles, necessary descriptions and other information. Following is a brief regulation. Please refer to "[url=forums.php?action=viewtopic&topicid=3438&page=0#56711]Standard and Guidance of Torrent Information[/url]" (in Chinese) for complete and detailed instructions.\r\n        [*]Title\r\n                [*]Movies: [i]Name [Year] [Cut] [Release Info] Resolution Source [Audio/]Video Codec-Tag[/i]\r\n                      e.g. [i]The Dark Knight 2008 PROPER 720p BluRay x264-SiNNERS[/i]\r\n                [*]TV Series/Mini-serie: [i]Name [Year] S**E** [Release Info] Resolution Source [Audio/]Video Codec-Tag[/i]\r\n                      e.g. [i]Prison Break S04E01 PROPER 720p HDTV x264-CTU[/i]\r\n                [*]Musics: [i]Artist - Album [Year] [Version] [Release Info] Audio Codec[-Tag][/i]\r\n                      e.g. [i]Enya - And Winter Came 2008 FLAC[/i]\r\n                [*]Games: [i]Name [Year] [Version] [Release Info][-Tag][/i]\r\n                      e.g. [i]Command And Conquer Red Alert 3 Uprising-RELOADED[/i]\r\n        [*]Small description\r\n                [*]No advertisements or asking for a reseed/requests.\r\n        [*]External Info\r\n                [*]URL of external info for Movies and TV Series is required (if available).\r\n        [*]Description\r\n                [*]Do not use the description for your NFO-artwork! Limit those artistic expressions to the NFO only.\r\n                [*]For Movies, TV Series/Mini-series and animes:\r\n                        [*]Poster, banner or BD/HDDVD/DVD cover is required (If available).\r\n                        [*]Adding screenshots or thumbnails and links to the screenshots is encouraged.\r\n                        [*]Adding detailed file information regarding format, runtime, codec, bitrate, resolution, language, subtitle, etc. is encouraged.\r\n                        [*]Adding a list of staff and cast and plot outline is encouraged.\r\n                [*]For Sports:\r\n                        [*]Don''t spoil the results trough text/screenshots/filenames/obvious filesize/detailed runtime.\r\n                [*]For Music:\r\n                        [*]The CD cover and the track list are required (if available).\r\n                [*]For PC Games:\r\n                        [*]Poster, banner or BD/HDDVD/DVD cover is required (If available).\r\n                        [*]Adding screenshots or thumbnails and links to the screenshots is encouraged.\r\n        [*]Misc\r\n                [*]Please correctly specify the category and quality info.\r\n        [*]NOTES\r\n                [*]Moderators will edit the torrent info according to the standard.\r\n                [*]Do NOT remove or alter changes done by the staff (but some mistakes can be fixed by the uploader).\r\n                [*]Torrents without required information can be deleted, depending on how they meet the standard.\r\n                [*]The original torrent information can be used if it basically meets the standard.\r\n'),
 (28, 6, 'Moderating Rules - <font class=striking>Use your better judgement!</font>', '[*]The most important rule: Use your better judgment!\r\n[*]Don''t be afraid to say [b]NO[/b]!\r\n[*]Don''t defy another staff member in public, instead send a PM or through IM.\r\n[*]Be tolerant! Give the user(s) a chance to reform.\r\n[*]Don''t act prematurely, let the users make their mistakes and THEN correct them.\r\n[*]Try correcting any "off topics" rather then closing a thread.\r\n[*]Move topics rather than locking them.\r\n[*]Be tolerant when moderating the chat section (give them some slack).\r\n[*]If you lock a topic, give a brief explanation as to why you''re locking it.\r\n[*]Before you disable a user account, send him/her a PM and if they reply, put them on a 2 week trial.\r\n[*]Don''t disable a user account until he or she has been a member for at least 4 weeks.\r\n[*]Convince people by reasoning rather than authority.'),
-(54, 25, '管理组成员退休待遇', '满足以下条件可获得的退休待遇: \r\n\r\n[code]\r\n[b]对于 [color=#DC143C]上传员 (Uploaders)[/color]: [/b]\r\n\r\n成为 [color=#1cc6d5][b]养老族 (Retiree) [/b]: [/color]\r\n      升职一年以上; 上传过200个以上的种子资源 (特殊情况如原碟发布, 0day更新等可以由管理组投票表决; 须被认定为作出过重大及持久的贡献).\r\n\r\n成为 [color=#009F00][b]VIP[/b]: [/color]\r\n      升职6个月以上; 上传过100个以上的种子资源 (特殊情况如原碟发布, 0day更新等可以由管理组投票表决).\r\n\r\n其他:\r\n      成为 [color=#F88C00][b]Extreme User[/b][/color] (如果你的条件满足 [color=#F88C00][b]Extreme User[/b][/color] 及以上, 则成为 [color=#38ACEC][b]Nexus Master[/b][/color]) .\r\n[/code]\r\n\r\n[code]\r\n[b]对于 [color=#6495ED]管理员 (Moderators)[/color]: [/b]\r\n\r\n成为 [color=#1cc6d5][b]养老族 (Retiree)[/b]: [/color]\r\n      升职一年以上; 参加过至少2次站务组正式会议; 参与过 规则/答疑 的修订工作.\r\n\r\n成为 [color=#009F00][b]VIP[/b]: [/color]\r\n      若不满足成为 [color=#1cc6d5][b]养老族 (Retiree)[/b][/color] 的条件, 你可以[b]无条件[/b]成为 [color=#009F00][b]VIP[/b][/color] .\r\n[/code]\r\n\r\n[code]\r\n[b]对于 [color=#4b0082]总管理员 (Administrators)[/color] 及 以上等级: [/b]\r\n\r\n      可以[b]直接[/b]成为 [color=#1cc6d5][b]养老族 (Retiree)[/b][/color] .\r\n[/code]'),
+(54, 25, '管理组成员退休待遇', '满足以下条件可获得的退休待遇: \r\n\r\n[*][b]对于 [color=#DC143C]上传员 (Uploaders)[/color]: [/b]\r\n\r\n[*]成为 [color=#1cc6d5][b]养老族 (Retiree) [/b]: [/color]\r\n    [*]  升职一年以上; 上传过200个以上的种子资源 (特殊情况如原碟发布, 0day更新等可以由管理组投票表决; 须被认定为作出过重大及持久的贡献).\r\n\r\n[*]成为 [color=#009F00][b]VIP[/b]: [/color]\r\n[*]      升职6个月以上; 上传过100个以上的种子资源 (特殊情况如原碟发布, 0day更新等可以由管理组投票表决).\r\n\r\n[*]其他:\r\n    [*]  成为 [color=#F88C00][b]Extreme User[/b][/color] (如果你的条件满足 [color=#F88C00][b]Extreme User[/b][/color] 及以上, 则成为 [color=#38ACEC][b]Nexus Master[/b][/color]) .\r\n\r\n\r\n\r\n[*][b]对于 [color=#6495ED]管理员 (Moderators)[/color]: [/b]\r\n\r\n[*]成为 [color=#1cc6d5][b]养老族 (Retiree)[/b]: [/color]\r\n    [*]  升职一年以上; 参加过至少2次站务组正式会议; 参与过 规则/答疑 的修订工作.\r\n\r\n[*]成为 [color=#009F00][b]VIP[/b]: [/color]\r\n      [*]若不满足成为 [color=#1cc6d5][b]养老族 (Retiree)[/b][/color] 的条件, 你可以[b]无条件[/b]成为 [color=#009F00][b]VIP[/b][/color] .\r\n\r\n\r\n\r\n[*][b]对于 [color=#4b0082]总管理员 (Administrators)[/color] 及 以上等级: [/b]\r\n\r\n      [*]可以[b]直接[/b]成为 [color=#1cc6d5][b]养老族 (Retiree)[/b][/color] .\r\n'),
 (55, 28, '管理組成員退休待遇', '滿足以下條件可獲得的退休待遇: \r\n[code]\r\n[b]對於 [color=#DC143C]上傳員 (Uploaders)[/color]: [/b]\r\n成為 [color=#1cc6d5][b]養老族 (Retiree) [/b]: [/color]\r\n      升職一年以上; 上傳過200個以上的種子資源 (特殊情況如原碟發佈, 0day更新等可以由管理組投票表決; 須被認定為作出過重大及持久的貢獻).\r\n成為 [color=#009F00][b]VIP[/b]: [/color]\r\n      升職6個月以上; 上傳過100個以上的種子資源 (特殊情況如原碟發佈, 0day更新等可以由管理組投票表決).\r\n其他:\r\n      成為 [color=#F88C00][b]Extreme User[/b][/color] (如果你的條件滿足 [color=#F88C00][b]Extreme User[/b][/color] 及以上, 則成為 [color=#38ACEC][b]Nexus Master[/b][/color]) .\r\n[/code]\r\n[code]\r\n[b]對於 [color=#6495ED]管理員 (Moderators)[/color]: [/b]\r\n成為 [color=#1cc6d5][b]養老族 (Retiree)[/b]: [/color]\r\n      升職一年以上; 參加過至少2次站務組正式會議; 參與過 規則/答疑 的修訂工作.\r\n成為 [color=#009F00][b]VIP[/b]: [/color]\r\n      若不滿足成為 [color=#1cc6d5][b]養老族 (Retiree)[/b][/color] 的條件, 你可以[b]無條件[/b]成為 [color=#009F00][b]VIP[/b][/color] .\r\n[/code]\r\n[code]\r\n[b]對於 [color=#4b0082]總管理員 (Administrators)[/color] 及 以上等級: [/b]\r\n      可以[b]直接[/b]成為 [color=#1cc6d5][b]養老族 (Retiree)[/b][/color] .\r\n[/code]'),
 (50, 6, 'Rules for Subtitles - <font class=striking>Subtitles violating these rules will be deleted</font>', '(This text is translated from the Chinese version. In case of discrepancy, the original version in Chinese shall prevail.)\r\n\r\n[b]GENERAL PRINCIPLE:[/b]\r\n    [*]All subtitles uploaded must conform to the rules (i.e. proper or qualified). Unqualified subtitles will be deleted.\r\n    [*]Allowed file formats are srt/ssa/ass/cue/zip/rar.\r\n    [*]If you''re uploading Vobsub (idx+sub) subtitles or subtitles of other types, or a collection (e.g. subtitles for a season pack of some TV series), please zip/rar them before uploading.\r\n    [*]Cue sheet of audio tracks is allowed as well. If there are several cue sheets, please pack them all.\r\n    [*]Uploading lrc lyrics or other non-subtitle/non-cue files is not permitted. Irrelevant files if uploaded will be directly deleted.\r\n\r\n[b]QUALIFYING SUBTITLE/CUE FILES: improper subtitle/cue files will be directly deleted.[/b]\r\n    In any of the following cases, a subtitle/cue file will be judged as improper:\r\n    [*]Fail to match the corresponding torrent.\r\n    [*]Fail to be in sync with the corresponding video/audio file.\r\n    [*]Packed Improperly.\r\n    [*]Contain irrelevant or spam stuff.\r\n    [*]Encoded incorrectly.\r\n    [*]Wrong cue file.\r\n    [*]Wrong language mark.\r\n    [*]The title is indefinite or contains redundant info/characters.\r\n    [*]Duplicate.\r\n    [*]Reported by several users and confirmed with other problems.\r\n    [b]The staff group reserves rights to judge and deal with improper subtitles.[/b]\r\n    Please refer to [url=http://www.nexushd.org/forums.php?action=viewtopic&forumid=13&topicid=2848][i]this thread[/i][/url] in the forum for detailed regulations on qualifying subtitle/cue files, other notes and suggestions on uploading subtitles, and subtitle naming and entitling guidance.\r\n\r\n[b]IMPLEMENTING REGULATIONS OF REWARDS AND PENALTIES [/b]\r\n    [*]Reporting against improper subtitles and the uploaders who purposely upload improper subtitles is always welcomed. To report an improper subtitle, please click on the [i]REPORT[/i] button of the corresponding subtitle in the subtitle section. To report a user, please click on the [i]REPORT[/i] button at the bottom of the user details page.\r\n    [*]The reporter will be rewarded 50 karma points (delivered in three days) for each case after confirmation.\r\n    [*]Improper subtitles will be deleted and the corresponding uploader will be fined 100 karma points in each case.\r\n    [*]Users who recklessly uploading improper subtitles for karma points or other purposes, or users who maliciously report, will be fined karma points or warned depending on the seriousness of the case.\r\n'),
 (49, 25, '字幕区规则 - <font class=striking>违规字幕将被删除</font>', '[b]总则：[/b]\r\n    [*]所有上传的字幕必须符合规则（即合格的）。不合格的字幕将被删除。\r\n    [*]允许上传的文件格式为srt/ssa/ass/cue/zip/rar。\r\n    [*]如果你打算上传的字幕是Vobsub格式（idx+sub）或其它格式，或者是合集（如电视剧整季的字幕），请将它们打包为zip/rar后再上传。\r\n    [*]字幕区开放音轨对应cue表单文件的上传。如有多个cue，请将它们打包起来。\r\n    [*]不允许lrc歌词或其它非字幕/cue文件的上传。上传的无关文件将被直接删除。\r\n\r\n[b]不合格字幕/cue文件判定：被判定为不合格的字幕/cue文件将被直接删除。[/b]\r\n    出现以下情况之一的字幕/cue文件将被判定为不合格：\r\n    [*]与相应种子不匹配。\r\n    [*]与相应的视频/音频文件不同步。\r\n    [*]打包错误。\r\n    [*]包含无关文件或垃圾信息。\r\n    [*]编码错误。\r\n    [*]cue文件错误。\r\n    [*]语种标识错误。\r\n    [*]标题命名不明确或包含冗余信息或字符。\r\n    [*]被判定为重复。\r\n    [*]接到多个用户举报并被证实有其它问题的。\r\n    [b]管理组保留裁定和处理不合格字幕的权力。[/b]\r\n    不合格字幕/cue文件判定细则、字幕上传的其它注意事项以及命名指引请参阅论坛的[url=http://www.nexushd.org/forums.php?action=viewtopic&forumid=13&topicid=2848]这个帖子[/url]。\r\n\r\n[b]字幕奖惩：[/b]\r\n    [*]欢迎举报不合格的字幕和恶意发布不合格字幕的用户。举报不合格字幕请在字幕区点击相应字幕的“举报”按钮。举报用户请点击相应用户详细信息页面底部的“举报”按钮。\r\n    [*]对每一例不合格字幕的举报，确认后将奖励举报者50点魔力值（三天内发放）。\r\n    [*]被确定为不合格的字幕将被删除，而在每一例中，相应的字幕上传者将被扣除100点魔力值。\r\n    [*]对为赚取积分等目的恶意上传不合格字幕的用户，或是恶意举报的用户，将视情节轻重扣除额外的魔力值甚至给予警告。\r\n'),
@@ -1811,17 +3404,16 @@ INSERT INTO `rules` (`id`, `lang_id`, `title`, `text`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `schools`
+-- 表的结构 `schools`
 --
 
-CREATE TABLE IF NOT EXISTS `schools` (
-  `id` smallint(5) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(50) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=101 ;
+CREATE TABLE `schools` (
+  `id` smallint(5) UNSIGNED NOT NULL,
+  `name` varchar(50) DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `schools`
+-- 转存表中的数据 `schools`
 --
 
 INSERT INTO `schools` (`id`, `name`) VALUES
@@ -1929,11 +3521,11 @@ INSERT INTO `schools` (`id`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `searchbox`
+-- 表的结构 `searchbox`
 --
 
-CREATE TABLE IF NOT EXISTS `searchbox` (
-  `id` smallint(5) unsigned NOT NULL AUTO_INCREMENT,
+CREATE TABLE `searchbox` (
+  `id` smallint(5) UNSIGNED NOT NULL,
   `name` varchar(30) DEFAULT NULL,
   `showsubcat` tinyint(1) NOT NULL DEFAULT '0',
   `showsource` tinyint(1) NOT NULL DEFAULT '0',
@@ -1943,41 +3535,39 @@ CREATE TABLE IF NOT EXISTS `searchbox` (
   `showprocessing` tinyint(1) NOT NULL DEFAULT '0',
   `showteam` tinyint(1) NOT NULL DEFAULT '0',
   `showaudiocodec` tinyint(1) NOT NULL DEFAULT '0',
-  `catsperrow` smallint(5) unsigned NOT NULL DEFAULT '7',
-  `catpadding` smallint(5) unsigned NOT NULL DEFAULT '25',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
+  `catsperrow` smallint(5) UNSIGNED NOT NULL DEFAULT '7',
+  `catpadding` smallint(5) UNSIGNED NOT NULL DEFAULT '25'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `searchbox`
+-- 转存表中的数据 `searchbox`
 --
 
 INSERT INTO `searchbox` (`id`, `name`, `showsubcat`, `showsource`, `showmedium`, `showcodec`, `showstandard`, `showprocessing`, `showteam`, `showaudiocodec`, `catsperrow`, `catpadding`) VALUES
-(4, 'chd', 1, 0, 1, 1, 1, 0, 1, 0, 10, 7);
+(4, 'default', 0, 0, 0, 0, 0, 0, 0, 0, 10, 7);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `secondicons`
+-- 表的结构 `secondicons`
 --
 
-CREATE TABLE IF NOT EXISTS `secondicons` (
-  `id` smallint(5) unsigned NOT NULL AUTO_INCREMENT,
-  `source` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  `medium` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  `codec` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  `standard` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  `processing` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  `team` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  `audiocodec` tinyint(3) unsigned NOT NULL DEFAULT '0',
+CREATE TABLE `secondicons` (
+  `id` smallint(5) UNSIGNED NOT NULL,
+  `source` tinyint(3) UNSIGNED NOT NULL DEFAULT '0',
+  `medium` tinyint(3) UNSIGNED NOT NULL DEFAULT '0',
+  `codec` tinyint(3) UNSIGNED NOT NULL DEFAULT '0',
+  `standard` tinyint(3) UNSIGNED NOT NULL DEFAULT '0',
+  `processing` tinyint(3) UNSIGNED NOT NULL DEFAULT '0',
+  `team` tinyint(3) UNSIGNED NOT NULL DEFAULT '0',
+  `audiocodec` tinyint(3) UNSIGNED NOT NULL DEFAULT '0',
   `name` varchar(30) NOT NULL,
   `class_name` varchar(255) DEFAULT NULL,
-  `image` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=23 ;
+  `image` varchar(255) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `secondicons`
+-- 转存表中的数据 `secondicons`
 --
 
 INSERT INTO `secondicons` (`id`, `source`, `medium`, `codec`, `standard`, `processing`, `team`, `audiocodec`, `name`, `class_name`, `image`) VALUES
@@ -2007,89 +3597,423 @@ INSERT INTO `secondicons` (`id`, `source`, `medium`, `codec`, `standard`, `proce
 -- --------------------------------------------------------
 
 --
--- Table structure for table `shoutbox`
+-- 表的结构 `shoutbox`
 --
 
-CREATE TABLE IF NOT EXISTS `shoutbox` (
-  `id` int(10) NOT NULL AUTO_INCREMENT,
-  `userid` mediumint(8) unsigned NOT NULL DEFAULT '0',
-  `date` int(10) unsigned NOT NULL DEFAULT '0',
+CREATE TABLE `shoutbox` (
+  `id` int(10) NOT NULL,
+  `userid` mediumint(8) UNSIGNED NOT NULL DEFAULT '0',
+  `date` int(10) UNSIGNED NOT NULL DEFAULT '0',
   `text` text NOT NULL,
-  `type` enum('sb','hb') NOT NULL DEFAULT 'sb',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  `type` enum('sb','hb') NOT NULL DEFAULT 'sb'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `shoutbox`
+-- 转存表中的数据 `shoutbox`
 --
 
+INSERT INTO `shoutbox` (`id`, `userid`, `date`, `text`, `type`) VALUES
+(280, 1, 1487836665, 'casdc', 'sb'),
+(279, 29, 1487836636, '[em4]', 'sb'),
+(278, 29, 1487836629, '成都市', 'sb'),
+(277, 29, 1487825737, 'csacdadcacdasdcsadcasdc [em24]', 'sb'),
+(276, 29, 1487825325, 'ccccccc', 'sb'),
+(275, 29, 1487825314, 'casdc', 'sb'),
+(274, 29, 1487825298, 'casd', 'sb'),
+(273, 29, 1487825271, 'casdc', 'sb'),
+(272, 29, 1487825064, '[em6]', 'sb'),
+(271, 29, 1487824673, '[em2]', 'sb'),
+(267, 29, 1487775654, 'casd', 'sb'),
+(268, 29, 1487775696, 'cd', 'sb'),
+(269, 29, 1487775703, 'casdcascasc', 'sb'),
+(270, 29, 1487775708, '[em3]', 'sb'),
+(266, 29, 1487775638, 'casdca', 'sb'),
+(265, 29, 1487775583, 'casdca', 'sb'),
+(264, 29, 1487775566, '323', 'sb'),
+(263, 29, 1487775566, '323', 'sb'),
+(262, 29, 1487775566, '323', 'sb'),
+(261, 29, 1487775565, '323', 'sb'),
+(260, 29, 1487775565, '323', 'sb'),
+(259, 29, 1487775565, '323', 'sb'),
+(258, 29, 1487775564, '323', 'sb'),
+(257, 29, 1487775564, '323', 'sb'),
+(256, 29, 1487775562, '323', 'sb'),
+(255, 29, 1487775557, '323', 'sb'),
+(254, 1, 1486799333, '[em4]', 'sb'),
+(253, 1, 1486799319, 'scad', 'sb'),
+(252, 1, 1486706950, '[em19]', 'sb'),
+(251, 1, 1486113374, 'dd', 'sb'),
+(250, 1, 1486113253, '成都市', 'sb'),
+(249, 1, 1486112723, 'csdc', 'sb'),
+(248, 1, 1486112717, 'csdcs', 'sb'),
+(247, 1, 1486112534, 'kjjk\r\nxsaxa', 'sb'),
+(246, 1, 1486112533, 'kjjk', 'sb'),
+(244, 1, 1486112067, 'ssd', 'sb'),
+(243, 1, 1486111842, 'dsds', 'sb'),
+(245, 1, 1486112527, 'kjjk', 'sb'),
+(241, 1, 1486111776, 'ssa', 'sb'),
+(240, 1, 1486106799, '[em9]', 'sb'),
+(239, 1, 1486106681, '[em3]', 'sb'),
+(238, 1, 1486106676, 'dsdsd', 'sb'),
+(237, 1, 1486106674, 'sd', 'sb'),
+(236, 1, 1486002904, '[em1]', 'sb'),
+(235, 1, 1486002897, '[em4]', 'hb'),
+(234, 1, 1481972307, '[em2]', 'sb'),
+(233, 1, 1481972306, '[em2]', 'sb'),
+(232, 1, 1481972306, '[em1]', 'sb'),
+(231, 1, 1481972305, '[em1]', 'sb'),
+(230, 1, 1481972305, '[em1]', 'sb'),
+(229, 1, 1481972304, '[em1]', 'sb'),
+(228, 1, 1481972303, '[em2]', 'sb'),
+(227, 1, 1481972303, '[em2]', 'sb'),
+(226, 1, 1481972302, '[em7]', 'sb'),
+(225, 1, 1481972301, '[em7]', 'sb'),
+(224, 1, 1481972300, '[em8]  [em8]', 'sb'),
+(223, 1, 1481972299, '[em8]', 'sb'),
+(222, 1, 1481972298, '[em34]', 'sb'),
+(214, 1, 1481972289, '[em3]', 'sb'),
+(215, 1, 1481972290, '[em3]', 'sb'),
+(216, 1, 1481972291, '[em2]', 'sb'),
+(217, 1, 1481972292, '[em1]', 'sb'),
+(218, 1, 1481972293, '[em2]', 'sb'),
+(219, 1, 1481972294, '[em3]', 'sb'),
+(220, 1, 1481972294, '[em3]', 'sb'),
+(221, 1, 1481972297, '[em32]', 'sb'),
+(213, 1, 1481972288, '[em1]', 'sb'),
+(212, 1, 1481972288, '[em1]', 'sb'),
+(211, 1, 1481972287, '[em29]', 'sb'),
+(210, 1, 1481972286, '[em2]', 'sb'),
+(209, 1, 1481972285, '[em2]', 'sb'),
+(208, 1, 1481972285, '[em2]', 'sb'),
+(207, 1, 1481972284, '[em2]', 'sb'),
+(206, 1, 1481972284, '[em29]', 'sb'),
+(205, 1, 1481972283, '[em1]', 'sb'),
+(204, 1, 1481972282, '[em29]', 'sb'),
+(203, 1, 1481972263, '[em4]', 'sb'),
+(202, 1, 1481972263, '[em4]', 'sb'),
+(201, 1, 1481972262, '[em32]', 'sb'),
+(200, 1, 1481972261, '[em5]', 'sb'),
+(198, 1, 1481972260, '[em3]', 'sb'),
+(199, 1, 1481972261, '[em4]', 'sb'),
+(196, 1, 1481972259, '[em1]', 'sb'),
+(197, 1, 1481972259, '[em30]', 'sb'),
+(194, 1, 1481972257, '[em2]', 'sb'),
+(195, 1, 1481972258, '[em1]', 'sb'),
+(192, 1, 1481972256, '[em30]', 'sb'),
+(193, 1, 1481972256, '[em3]', 'sb'),
+(190, 1, 1481972255, '[em30]', 'sb'),
+(191, 1, 1481972255, '[em2]', 'sb'),
+(188, 1, 1481972253, '[em2]', 'sb'),
+(189, 1, 1481972254, '[em30]', 'sb'),
+(186, 1, 1481972250, '[em31]', 'sb'),
+(187, 1, 1481972252, '[em2]', 'sb'),
+(184, 1, 1481972248, '[em4]', 'sb'),
+(185, 1, 1481972250, '[em4]  [em30]', 'sb'),
+(182, 1, 1481972247, '[em30]', 'sb'),
+(183, 1, 1481972247, '[em31]', 'sb'),
+(180, 1, 1481972245, '[em29]', 'sb'),
+(181, 1, 1481972246, '[em1]', 'sb'),
+(178, 1, 1481972243, '[em1]', 'sb'),
+(179, 1, 1481972244, '[em1]', 'sb'),
+(176, 1, 1481972242, '[em1]', 'sb'),
+(177, 1, 1481972243, '[em1]', 'sb'),
+(174, 1, 1481972240, 'jj', 'sb'),
+(175, 1, 1481972241, '[em1]', 'sb'),
+(172, 1, 1481972236, 'jj', 'sb'),
+(173, 1, 1481972238, 'nn', 'sb'),
+(170, 1, 1481972233, 'yy', 'sb'),
+(171, 1, 1481972234, 'yy', 'sb'),
+(168, 1, 1481972230, 'ss', 'sb'),
+(169, 1, 1481972232, 'ff', 'sb'),
+(166, 1, 1481972228, 'ss', 'sb'),
+(167, 1, 1481972229, 'ss', 'sb'),
+(164, 1, 1481972225, 'cc', 'sb'),
+(165, 1, 1481972226, 'ss', 'sb'),
+(162, 1, 1481972222, 'cc', 'sb'),
+(163, 1, 1481972224, 'cc', 'sb'),
+(160, 1, 1481972219, 'aa', 'sb'),
+(161, 1, 1481972221, 'vv', 'sb'),
+(158, 1, 1481972215, 'ss', 'sb'),
+(159, 1, 1481972217, 'aa', 'sb'),
+(156, 1, 1481972212, 'cc', 'sb'),
+(157, 1, 1481972214, 'cc', 'sb'),
+(154, 1, 1481972210, 'cc', 'sb'),
+(155, 1, 1481972211, 'cc', 'sb'),
+(152, 1, 1481972207, 'cc', 'sb'),
+(153, 1, 1481972208, 'cc', 'sb'),
+(150, 1, 1481972204, 'cc', 'sb'),
+(151, 1, 1481972206, 'cc', 'sb'),
+(148, 1, 1481972201, 'cc', 'sb'),
+(149, 1, 1481972202, 'cc', 'sb'),
+(146, 1, 1481972198, 'sd', 'sb'),
+(147, 1, 1481972199, 'cf', 'sb'),
+(144, 1, 1481972195, 'sd', 'sb'),
+(145, 1, 1481972197, 'sd', 'sb'),
+(142, 1, 1481972192, 'sd', 'sb'),
+(143, 1, 1481972194, 'sd', 'sb'),
+(141, 1, 1481972190, 'sd', 'sb'),
+(140, 1, 1481972189, 'sx', 'sb'),
+(138, 1, 1481972184, '吃的', 'sb'),
+(139, 1, 1481972188, 'as', 'sb'),
+(136, 1, 1481972180, '吃的', 'sb'),
+(137, 1, 1481972182, '吃的', 'sb'),
+(135, 1, 1481972178, '从撒到初三', 'sb'),
+(134, 1, 1481972177, '擦拭大', 'sb'),
+(133, 1, 1481972175, '撒调查', 'sb'),
+(132, 1, 1481872089, 'casdc', 'sb'),
+(131, 1, 1481871293, '成都三', 'sb'),
+(130, 1, 1481871229, '上次说的', 'sb'),
+(129, 1, 1481871225, '储存', 'sb'),
+(128, 1, 1481871221, '擦拭', 'sb'),
+(281, 1, 1487836668, '[em8]', 'sb'),
+(282, 1, 1487836682, '打算', 'sb'),
+(283, 1, 1487836686, '[em9]', 'sb'),
+(284, 1, 1487857839, '[em4]', 'sb'),
+(285, 29, 1487860288, 'csdac', 'sb'),
+(286, 29, 1488073311, 'cds', 'sb'),
+(287, 29, 1488073803, 'cd', 'sb');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `sitelog`
+-- 表的结构 `sitelog`
 --
 
-CREATE TABLE IF NOT EXISTS `sitelog` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+CREATE TABLE `sitelog` (
+  `id` int(10) UNSIGNED NOT NULL,
   `added` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `txt` text NOT NULL,
-  `security_level` enum('normal','mod') NOT NULL DEFAULT 'normal',
-  PRIMARY KEY (`id`),
-  KEY `added` (`added`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  `security_level` enum('normal','mod') NOT NULL DEFAULT 'normal'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `sitelog`
+-- 转存表中的数据 `sitelog`
 --
 
+INSERT INTO `sitelog` (`id`, `added`, `txt`, `security_level`) VALUES
+(1, '2016-11-01 11:07:35', 'Torrent 1 (windows_10_multiple_editions_x64_dvd_6848463 iso) was uploaded by root', 'normal'),
+(2, '2016-11-04 13:44:32', 'Torrent 2 (SugarCRM docx) was uploaded by root', 'normal'),
+(3, '2016-11-18 14:10:35', 'Torrent 3 (clonezilla-live-20160210-wily-amd64 iso) was uploaded by root', 'normal'),
+(4, '2016-11-18 14:10:57', 'Torrent 4 (install sys) was uploaded by root', 'normal'),
+(5, '2016-11-18 14:11:10', 'Torrent 5 (portcheck php) was uploaded by root', 'normal'),
+(6, '2016-11-18 14:11:34', 'Torrent 6 (xamppserver inc) was uploaded by root', 'normal'),
+(7, '2016-11-18 14:20:39', 'Tracker MAIN settings updated by root. November 18, 2016, 2:20 pm', 'mod'),
+(8, '2016-11-18 14:22:11', 'Tracker TWEAK settings updated by root. November 18, 2016, 2:22 pm', 'mod'),
+(9, '2016-11-18 14:22:29', 'Tracker bonus settings updated by root. November 18, 2016, 2:22 pm', 'mod'),
+(10, '2016-11-18 14:23:23', 'Tracker account settings updated by root. November 18, 2016, 2:23 pm', 'mod'),
+(11, '2016-11-18 14:24:25', 'Tracker torrent settings updated by root. November 18, 2016, 2:24 pm', 'mod'),
+(12, '2016-11-18 14:24:51', 'Tracker ATTACHMENT settings updated by root. November 18, 2016, 2:24 pm', 'mod'),
+(13, '2016-11-18 14:25:02', 'Tracker ADVERTISEMENT settings updated by root. November 18, 2016, 2:25 pm', 'mod'),
+(14, '2016-11-18 14:25:13', 'Tracker code settings updated by root. November 18, 2016, 2:25 pm', 'mod'),
+(15, '2016-11-18 14:38:47', 'Tracker MAIN settings updated by root. November 18, 2016, 2:38 pm', 'mod'),
+(16, '2016-11-18 14:47:16', 'Tracker MAIN settings updated by root. November 18, 2016, 2:47 pm', 'mod'),
+(17, '2016-11-18 15:37:56', 'Tracker MAIN settings updated by root. November 18, 2016, 3:37 pm', 'mod'),
+(18, '2016-11-19 05:26:24', 'Invalid ID Attempt: Username: root - UserID: 1 - UserIP : 127.0.0.1', 'mod'),
+(19, '2016-11-19 05:58:43', 'offer acsdca was added by root', 'normal'),
+(20, '2016-11-19 10:13:23', 'Torrent 7 (printenv pl) was uploaded by root', 'normal'),
+(21, '2016-11-19 10:14:18', 'Torrent 8 (cgi cgi) was uploaded by root', 'normal'),
+(22, '2016-11-19 10:16:49', 'Torrent 9 (onefile html) was uploaded by root', 'normal'),
+(23, '2016-11-19 10:20:23', 'Torrent 10 (onefile html) was uploaded by root', 'normal'),
+(24, '2016-11-19 10:22:16', 'Torrent 11 (onefile html) was uploaded by root', 'normal'),
+(25, '2016-11-19 10:23:55', 'Torrent 12 (cgi cgi) was uploaded by root', 'normal'),
+(26, '2016-11-19 10:38:56', 'Torrent 13 (clonezilla-live-20160210-wily-amd64 iso) was uploaded by root', 'normal'),
+(27, '2016-11-19 11:10:45', 'Tracker MAIN settings updated by root. November 19, 2016, 11:10 am', 'mod'),
+(28, '2016-11-19 11:11:29', 'Tracker MAIN settings updated by root. November 19, 2016, 11:11 am', 'mod'),
+(29, '2016-11-19 16:58:06', '求种：用户 root 新增了求种 1''asdc''', 'normal'),
+(30, '2016-11-19 17:13:38', '求种：用户 root 新增了求种 2''accsdcasc''', 'normal'),
+(31, '2016-11-19 17:15:02', '求种：用户 root 新增了求种 3''adas''', 'normal'),
+(32, '2016-11-19 17:15:08', '求种：管理员 root 删除了求种 3 ( adas ) ,理由：长时间无人应求', 'normal'),
+(33, '2016-11-19 17:15:19', '求种：用户 root 新增了求种 4''adc''', 'normal'),
+(34, '2016-11-19 17:16:44', '求种：用户 root 新增了求种 1''acsd''', 'normal'),
+(35, '2016-11-19 17:18:29', '求种：用户 root 新增了求种 2''cdsa''', 'normal'),
+(36, '2016-11-19 17:20:42', '求种：用户 root 新增了求种 3''csd''', 'normal'),
+(37, '2016-11-19 17:23:11', '求种：用户 root 新增了求种 4''cdsac''', 'normal'),
+(38, '2016-11-19 17:24:16', '求种：用户 root 新增了求种 5''csd''', 'normal'),
+(39, '2016-11-19 17:28:17', '求种：用户 root 新增了求种 6''sadc''', 'normal'),
+(40, '2016-11-19 17:28:26', '求种：用户 root 新增了求种 7''cd''', 'normal'),
+(41, '2016-11-19 17:28:34', '求种：用户 root 新增了求种 8''acd''', 'normal'),
+(42, '2016-11-19 17:28:43', '求种：用户 root 新增了求种 9''dc''', 'normal'),
+(43, '2016-11-19 17:34:59', '求种：用户 root 新增了求种 10''asdca''', 'normal'),
+(44, '2016-11-19 17:36:48', '求种：用户 root 新增了求种 11''asdcsa''', 'normal'),
+(45, '2016-11-19 17:37:22', '求种：用户 root 新增了求种 12''casd''', 'normal'),
+(46, '2016-11-19 17:37:25', '求种：求种人 root 撤销了求种 12', 'normal'),
+(47, '2016-11-19 17:37:35', '求种：用户 root 新增了求种 13''acsd''', 'normal'),
+(48, '2016-11-19 17:39:36', '求种：求种人 root 确认了求种 13', 'normal'),
+(49, '2016-11-19 17:40:38', '求种：用户 root 新增了求种 14''cas''', 'normal'),
+(50, '2016-11-19 17:41:06', '求种：求种人 root 确认了求种 14', 'normal'),
+(51, '2016-11-19 18:08:48', '求种：用户 root 新增了求种 15''casd''', 'normal'),
+(52, '2016-11-20 05:27:07', 'Torrent 14 (xamppserver inc) was uploaded by root', 'normal'),
+(53, '2016-11-20 17:26:28', 'Tracker MAIN settings updated by root. November 20, 2016, 5:26 pm', 'mod'),
+(54, '2016-11-21 04:33:37', 'Torrent 15 (xamppserver inc) was uploaded by root', 'normal'),
+(55, '2016-11-21 10:29:17', 'Torrent 16 (portcheck php) was uploaded by root', 'normal'),
+(56, '2016-11-21 11:04:38', 'Torrent 17 (xamppserver inc) was uploaded by root', 'normal'),
+(57, '2016-11-21 11:04:56', 'Torrent 18 (printenv pl) was uploaded by root', 'normal'),
+(58, '2016-11-21 11:05:12', 'Torrent 19 ( version) was uploaded by root', 'normal'),
+(59, '2016-11-21 11:05:32', 'Torrent 20 (clonezilla-live-20160210-wily-amd64 iso) was uploaded by root', 'normal'),
+(60, '2016-11-22 10:59:23', 'Offer: 1 (acsdca) was deleted by root (sdcasd)', 'normal'),
+(61, '2016-11-22 16:49:08', '求种：管理员 root 删除了求种 15 ( casd )', 'normal'),
+(62, '2016-11-22 16:49:26', '求种：用户 root 新增了求种 16''daadsfasdf''', 'normal'),
+(63, '2016-11-23 10:50:48', 'Tracker SMTP settings updated by root. November 23, 2016, 10:50 am', 'mod'),
+(64, '2016-11-23 10:53:57', 'Tracker basic settings updated by root. November 23, 2016, 10:53 am', 'mod'),
+(65, '2016-11-23 10:55:56', 'Tracker MAIN settings updated by root. November 23, 2016, 10:55 am', 'mod'),
+(66, '2016-11-23 10:57:40', 'Tracker TWEAK settings updated by root. November 23, 2016, 10:57 am', 'mod'),
+(67, '2016-11-23 13:21:25', 'Tracker MAIN settings updated by root. November 23, 2016, 1:21 pm', 'mod'),
+(68, '2016-11-23 14:03:06', 'Tracker SMTP settings updated by root. November 23, 2016, 2:03 pm', 'mod'),
+(69, '2016-11-25 16:46:52', 'Tracker MAIN settings updated by root. November 25, 2016, 4:46 pm', 'mod'),
+(70, '2016-11-26 16:24:39', 'Tracker SMTP settings updated by root. November 26, 2016, 4:24 pm', 'mod'),
+(71, '2016-11-26 17:47:00', 'Torrent 21 ([JM] CentOS-6 3-i386-bin-DVD1 iso) was uploaded by root', 'normal'),
+(72, '2016-12-02 03:08:25', 'offer 阿什顿参加了 was added by root', 'normal'),
+(73, '2016-12-02 03:08:48', 'offer  现在 was added by root', 'normal'),
+(74, '2016-12-02 14:18:05', 'Tracker MAIN settings updated by root. December 2, 2016, 2:18 pm', 'mod'),
+(75, '2016-12-02 14:20:25', 'Tracker MAIN settings updated by root. December 2, 2016, 2:20 pm', 'mod'),
+(76, '2016-12-02 14:20:28', 'Tracker MAIN settings updated by root. December 2, 2016, 2:20 pm', 'mod'),
+(77, '2016-12-02 14:20:49', 'Tracker MAIN settings updated by root. December 2, 2016, 2:20 pm', 'mod'),
+(78, '2016-12-03 03:44:29', 'Tracker MAIN settings updated by root. December 3, 2016, 3:44 am', 'mod'),
+(79, '2016-12-03 03:46:42', 'Torrent 22 ([JM] 星际穿越 IMAX版 BD1280超清国英双语特效中英双字 mp4) was uploaded by root', 'normal'),
+(80, '2016-12-03 03:47:28', 'Torrent 23 ( version) was uploaded by root', 'normal'),
+(81, '2016-12-03 04:05:37', 'Torrent 24 (cgi cgi) was uploaded by root', 'normal'),
+(82, '2016-12-03 04:16:59', 'Torrent 25 (portcheck php) was uploaded by root', 'normal'),
+(83, '2016-12-03 04:55:13', 'Tracker MAIN settings updated by root. December 3, 2016, 4:55 am', 'mod'),
+(84, '2016-12-03 12:45:40', 'Tracker code settings updated by root. December 3, 2016, 12:45 pm', 'mod'),
+(85, '2016-12-03 12:47:55', 'Tracker MAIN settings updated by root. December 3, 2016, 12:47 pm', 'mod'),
+(86, '2016-12-03 07:26:31', 'Torrent 26 (onefile html) was uploaded by root', 'normal'),
+(87, '2016-12-03 07:27:07', 'Torrent 26 (onefile html) was deleted by root', 'normal'),
+(88, '2016-12-03 07:27:37', 'Torrent 27 ([JM] install sys) was uploaded by root', 'normal'),
+(89, '2016-12-03 07:28:09', 'Torrent 27 ([JM] install sys) was deleted by root', 'normal'),
+(90, '2016-12-03 07:28:40', 'Torrent 28 (xamppserver inc) was uploaded by root', 'normal'),
+(91, '2016-12-03 07:43:54', 'Torrent 29 (xamppserver inc) was uploaded by root', 'normal'),
+(92, '2016-12-03 07:44:16', 'Torrent 30 ([JM] 星际穿越 IMAX版 BD1280超清国英双语特效中英双字 mp4查收的擦拭传达室调查收到擦上档次) was uploaded by root', 'normal'),
+(93, '2016-12-03 08:43:07', 'Torrent 31 (Fedora-Workstation-Live-x86_64-24-1 2 iso) was uploaded by root', 'normal'),
+(94, '2016-12-03 17:15:37', 'Torrent 32 ([JM] Fedora-Workstation-Live-x86_64-24-1 2 iso) was uploaded by lwen', 'normal'),
+(95, '2016-12-04 17:07:05', 'Torrent 33 ([JM] CentOS-6 3-i386-bin-DVD1 iso) was uploaded by root', 'normal'),
+(96, '2016-12-04 17:21:44', 'root allowed offer  现在', 'normal'),
+(97, '2016-12-05 10:18:41', 'Offer 2 (阿什顿参加了) was deleted by system (vote timeout)', 'normal'),
+(98, '2016-12-07 02:56:31', 'Offer 3 ( 现在) was deleted by system (upload timeout)', 'normal'),
+(99, '2016-12-07 11:07:51', 'Tracker MAIN settings updated by root. December 7, 2016, 11:07 am', 'mod'),
+(100, '2016-12-07 06:36:40', 'Torrent 34 ([JM] 星际穿越 IMAX版 BD1280超清国英双语特效中英双字 mp4) was uploaded by root', 'normal'),
+(101, '2016-12-08 21:53:51', 'Tracker MAIN settings updated by root. December 8, 2016, 9:53 pm', 'mod'),
+(102, '2016-12-09 10:09:07', 'Torrent 35 ([无极电影-www wujidy com] 六弄咖啡馆 HD 720p 国语中字 rmvb) was uploaded by root', 'normal'),
+(103, '2016-12-10 03:24:47', 'Tracker SECURITY settings updated by root. December 10, 2016, 3:24 am', 'mod'),
+(104, '2016-12-10 03:26:29', 'Tracker SECURITY settings updated by root. December 10, 2016, 3:26 am', 'mod'),
+(105, '2016-12-10 14:44:48', 'Tracker MAIN settings updated by root. December 10, 2016, 2:44 pm', 'mod'),
+(106, '2016-12-10 07:48:54', 'Torrent 36 ([阳光电影www ygdy8 com] 爱宠大机密 BD 720p 英国粤三语 中英双字幕 mkv) was uploaded by root', 'normal'),
+(107, '2016-12-10 07:49:04', 'Torrent 37 (The Shawshank Redemption 1994 BluRay iPad 720p x264 AAC-BYRPAD mp4 mp4) was uploaded by aaaa', 'normal'),
+(108, '2016-12-10 07:52:14', 'Torrent 38 ([阳光电影www ygdy8 com] 谍影重重5 HD 720p 中英双字幕 rmvb) was uploaded by root', 'normal'),
+(109, '2016-12-10 08:07:55', 'Torrent 39 (SoulMate 2016 WEB-DL 1080p H264 AAC-npuer mp4) was uploaded by aaaa', 'normal'),
+(110, '2016-12-15 18:15:32', 'Tracker SMTP settings updated by root. December 15, 2016, 6:15 pm', 'mod'),
+(111, '2016-12-18 16:53:24', 'Tracker MAIN settings updated by root. December 18, 2016, 4:53 pm', 'mod'),
+(112, '2016-12-26 07:42:41', 'Tracker MAIN settings updated by root. December 26, 2016, 7:42 am', 'mod'),
+(113, '2016-12-28 09:27:33', 'Torrent 40 ([JM] [阳光电影www ygdy8 com] 机械师2：复活 BD 720p 中英双字幕 rmvb) was uploaded by root', 'normal'),
+(114, '2016-12-28 16:38:28', 'Tracker MAIN settings updated by root. December 28, 2016, 4:38 pm', 'mod'),
+(115, '2016-12-28 16:45:48', 'Tracker MAIN settings updated by root. December 28, 2016, 4:45 pm', 'mod'),
+(116, '2016-12-28 16:46:42', 'Tracker MAIN settings updated by root. December 28, 2016, 4:46 pm', 'mod'),
+(117, '2016-12-30 15:03:42', 'Torrent 41 ([JM] Photoshop_CS6 exe) was uploaded by root', 'normal'),
+(118, '2017-02-02 14:23:13', 'Torrent 42 ([JM] [阳光电影www ygdy8 com] 谍影重重5 HD 720p 中英双字幕 rmvb) was uploaded by root', 'normal'),
+(119, '2017-02-02 15:33:32', 'Torrent 43 ([JM] [阳光电影www ygdy8 com] 使徒行者 BD 720p 国粤双语中字 mkv) was uploaded by root', 'normal'),
+(120, '2017-02-02 15:33:58', 'Torrent 44 ([JM] 【番剧】秒速五厘米) was uploaded by root', 'normal'),
+(121, '2017-02-03 07:08:34', 'Invalid ID Attempt: Username: root - UserID: 1 - UserIP : 127.0.0.1', 'mod'),
+(122, '2017-02-03 07:08:39', 'Invalid ID Attempt: Username: root - UserID: 1 - UserIP : 127.0.0.1', 'mod'),
+(123, '2017-02-07 04:35:53', '繁體中文 Subtitle 1 (20120522094758371) was uploaded by root', 'normal'),
+(124, '2017-02-09 06:32:54', 'Torrent 45 ([JM] [阳光电影www ygdy8 com] 机械师2：复活 BD 720p 中英双字幕 rmvb) was uploaded by root', 'normal'),
+(125, '2017-02-09 07:18:37', '求种：求种人 root 撤销了求种 16', 'normal'),
+(126, '2017-02-09 07:18:58', '求种：用户 root 新增了求种 17''擦上档次''', 'normal'),
+(127, '2017-02-09 07:27:16', '求种：管理员 root 删除了求种 17 ( 擦上档次 )', 'normal'),
+(128, '2017-02-09 07:27:31', '求种：用户 root 新增了求种 18''悬赏''', 'normal'),
+(129, '2017-02-09 07:27:54', '求种：用户 root 新增了求种 19''传递''', 'normal'),
+(130, '2017-02-09 07:34:05', 'offer 常在线 was added by root', 'normal'),
+(131, '2017-02-10 02:36:24', 'offer 阿斯达 was added by root', 'normal'),
+(132, '2017-02-10 02:36:27', 'root allowed offer 阿斯达', 'normal'),
+(133, '2017-02-10 05:19:44', 'offer 传递 was added by root', 'normal'),
+(134, '2017-02-10 06:41:27', 'offer vs地方 was added by root', 'normal'),
+(135, '2017-02-10 07:17:55', 'Torrent 46 ([JM] [阳光电影www ygdy8 com] 久保与二弦琴 BD 720p 中英双字幕 rmvb) was uploaded by root', 'normal'),
+(136, '2017-02-10 08:11:34', 'Torrent 47 ([JM] VS2012_ULT_chs iso) was uploaded by 2015117164lwenxu', 'normal'),
+(137, '2017-02-10 14:43:25', 'Torrent 48 ([JM] [阳光电影www ygdy8 com] 谍影重重5 HD 720p 中英双字幕 rmvb) was uploaded by 2015117164lwenxu', 'normal'),
+(138, '2017-02-11 05:19:56', 'Torrent 49 ([JM] [阳光电影www ygdy8 com] 机械师2：复活 BD 720p 中英双字幕 rmvb) was uploaded by 2015117164lwenxu', 'normal'),
+(139, '2017-02-11 06:04:37', 'Invalid ID Attempt: Username: 2015117164lwenxu - UserID: 29 - UserIP : 127.0.0.1', 'mod'),
+(140, '2017-02-11 06:07:46', 'Invalid ID Attempt: Username: 2015117164lwenxu - UserID: 29 - UserIP : 127.0.0.1', 'mod'),
+(141, '2017-02-11 06:28:14', 'Invalid ID Attempt: Username: 2015117164lwenxu - UserID: 29 - UserIP : 127.0.0.1', 'mod'),
+(142, '2017-02-11 06:28:25', 'Invalid ID Attempt: Username: 2015117164lwenxu - UserID: 29 - UserIP : 127.0.0.1', 'mod'),
+(143, '2017-02-11 06:29:35', 'Czech Subtitle 2 (csadc) was uploaded by 2015117164lwenxu', 'normal'),
+(144, '2017-02-11 07:14:08', 'Invalid ID Attempt: Username: 2015117164lwenxu - UserID: 29 - UserIP : 127.0.0.1', 'mod'),
+(145, '2017-02-11 07:23:55', 'Invalid ID Attempt: Username: 2015117164lwenxu - UserID: 29 - UserIP : 127.0.0.1', 'mod'),
+(146, '2017-02-22 15:06:36', 'Offer 6 (传递) was deleted by system (vote timeout)', 'normal'),
+(147, '2017-02-22 15:06:36', 'Offer 4 (常在线) was deleted by system (vote timeout)', 'normal'),
+(148, '2017-02-22 15:06:36', 'Offer 7 (vs地方) was deleted by system (vote timeout)', 'normal'),
+(149, '2017-02-23 13:55:11', 'Torrent 50 (【51CTO学院】Python编程基础) was uploaded by 2015117164lwenxu', 'normal'),
+(150, '2017-02-24 11:49:13', 'Torrent 51 (CentOS-6 3-i386-bin-DVD1 iso) was uploaded by 2015117164lwenxu', 'normal'),
+(151, '2017-02-24 11:49:17', 'Invalid ID Attempt: Username: 2015117164lwenxu - UserID: 29 - UserIP : 127.0.0.1', 'mod'),
+(152, '2017-02-24 11:49:27', 'Invalid ID Attempt: Username: 2015117164lwenxu - UserID: 29 - UserIP : 127.0.0.1', 'mod'),
+(153, '2017-02-24 12:29:33', 'Invalid ID Attempt: Username: 2015117164lwenxu - UserID: 29 - UserIP : 127.0.0.1', 'mod'),
+(154, '2017-02-24 12:30:02', 'Invalid ID Attempt: Username: 2015117164lwenxu - UserID: 29 - UserIP : 127.0.0.1', 'mod'),
+(155, '2017-02-24 12:37:22', 'Invalid ID Attempt: Username: 2015117164lwenxu - UserID: 29 - UserIP : 127.0.0.1', 'mod'),
+(156, '2017-02-24 12:40:23', 'Invalid ID Attempt: Username: 2015117164lwenxu - UserID: 29 - UserIP : 127.0.0.1', 'mod'),
+(157, '2017-02-24 12:42:03', 'Invalid ID Attempt: Username: 2015117164lwenxu - UserID: 29 - UserIP : 127.0.0.1', 'mod'),
+(158, '2017-02-24 12:42:33', 'Invalid ID Attempt: Username: 2015117164lwenxu - UserID: 29 - UserIP : 127.0.0.1', 'mod'),
+(159, '2017-02-24 12:42:44', 'Invalid ID Attempt: Username: 2015117164lwenxu - UserID: 29 - UserIP : 127.0.0.1', 'mod'),
+(160, '2017-02-24 12:42:52', 'Invalid ID Attempt: Username: 2015117164lwenxu - UserID: 29 - UserIP : 127.0.0.1', 'mod'),
+(161, '2017-02-26 04:15:08', 'Torrent 51 (CentOS-6 3-i386-bin-DVD1 iso) was edited by 2015117164lwenxu', 'normal');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `snatched`
+-- 表的结构 `snatched`
 --
 
-CREATE TABLE IF NOT EXISTS `snatched` (
-  `id` int(10) NOT NULL AUTO_INCREMENT,
-  `torrentid` mediumint(8) unsigned NOT NULL DEFAULT '0',
-  `userid` mediumint(8) unsigned NOT NULL DEFAULT '0',
+CREATE TABLE `snatched` (
+  `id` int(10) NOT NULL,
+  `torrentid` mediumint(8) UNSIGNED NOT NULL DEFAULT '0',
+  `userid` mediumint(8) UNSIGNED NOT NULL DEFAULT '0',
   `ip` varchar(64) NOT NULL DEFAULT '',
-  `port` smallint(5) unsigned NOT NULL DEFAULT '0',
-  `uploaded` bigint(20) unsigned NOT NULL DEFAULT '0',
-  `downloaded` bigint(20) unsigned NOT NULL DEFAULT '0',
-  `to_go` bigint(20) unsigned NOT NULL DEFAULT '0',
-  `seedtime` int(10) unsigned NOT NULL DEFAULT '0',
-  `leechtime` int(10) unsigned NOT NULL DEFAULT '0',
+  `port` smallint(5) UNSIGNED NOT NULL DEFAULT '0',
+  `uploaded` bigint(20) UNSIGNED NOT NULL DEFAULT '0',
+  `downloaded` bigint(20) UNSIGNED NOT NULL DEFAULT '0',
+  `to_go` bigint(20) UNSIGNED NOT NULL DEFAULT '0',
+  `seedtime` int(10) UNSIGNED NOT NULL DEFAULT '0',
+  `leechtime` int(10) UNSIGNED NOT NULL DEFAULT '0',
   `last_action` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `startdat` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `completedat` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `finished` enum('yes','no') NOT NULL DEFAULT 'no',
-  PRIMARY KEY (`id`),
-  KEY `torrentid_userid` (`torrentid`,`userid`),
-  KEY `userid` (`userid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  `finished` enum('yes','no') NOT NULL DEFAULT 'no'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `snatched`
+-- 转存表中的数据 `snatched`
 --
 
+INSERT INTO `snatched` (`id`, `torrentid`, `userid`, `ip`, `port`, `uploaded`, `downloaded`, `to_go`, `seedtime`, `leechtime`, `last_action`, `startdat`, `completedat`, `finished`) VALUES
+(1, 12, 1, '127.0.0.1', 61188, 0, 0, 87, 0, 25205, '2016-11-19 11:14:49', '2016-11-19 11:14:44', '0000-00-00 00:00:00', 'no'),
+(2, 14, 1, '127.0.0.1', 61188, 0, 0, 149, 0, 436095, '2016-11-20 14:35:39', '2016-11-20 05:27:23', '0000-00-00 00:00:00', 'no'),
+(3, 17, 1, '127.0.0.1', 61188, 0, 0, 149, 0, 1435967, '2016-11-27 04:51:38', '2016-11-23 11:33:14', '0000-00-00 00:00:00', 'no'),
+(4, 19, 1, '127.0.0.1', 61188, 0, 0, 41, 0, 1435967, '2016-11-27 04:51:38', '2016-11-23 11:33:15', '0000-00-00 00:00:00', 'no'),
+(5, 31, 1, '127.0.0.1', 62223, 0, 0, 0, 26090, 0, '2016-12-03 09:30:06', '2016-12-03 08:45:15', '0000-00-00 00:00:00', 'no'),
+(6, 36, 1, '111.114.113.178', 62098, 0, 0, 0, 25377, 0, '2016-12-10 08:22:20', '2016-12-10 07:49:23', '0000-00-00 00:00:00', 'no'),
+(7, 37, 27, '111.114.112.233', 49010, 0, 0, 0, 77501, 0, '2016-12-10 09:21:50', '2016-12-10 07:49:25', '0000-00-00 00:00:00', 'no'),
+(8, 36, 27, '111.114.112.233', 49010, 0, 1261733452, 0, 25201, 50696, '2016-12-10 08:56:04', '2016-12-10 07:50:05', '2016-12-10 07:56:01', 'yes'),
+(9, 36, 26, '111.114.113.25', 11137, 40353792, 1261733452, 0, 160777, 25312, '2016-12-11 15:18:55', '2016-12-10 07:51:19', '2016-12-10 07:53:11', 'yes'),
+(10, 37, 26, '111.114.113.25', 11137, 0, 0, 0, 187791, 25313, '2016-12-11 15:18:55', '2016-12-10 07:52:12', '0000-00-00 00:00:00', 'no'),
+(11, 38, 1, '111.114.113.178', 62098, 0, 0, 0, 0, 0, '2016-12-10 08:22:20', '2016-12-10 07:52:32', '0000-00-00 00:00:00', 'no'),
+(12, 37, 1, '111.114.113.178', 62098, 113180672, 0, 0, 26517, 25227, '2016-12-10 08:22:20', '2016-12-10 07:52:36', '0000-00-00 00:00:00', 'no'),
+(15, 39, 27, '111.114.112.233', 47761, 5095121291, 0, 0, 52202, 0, '2016-12-10 09:08:20', '2016-12-10 08:08:17', '0000-00-00 00:00:00', 'no'),
+(13, 38, 26, '111.114.113.25', 11137, 1452823933, 0, 0, 187775, 0, '2016-12-11 15:18:52', '2016-12-10 07:54:08', '0000-00-00 00:00:00', 'no'),
+(14, 38, 27, '111.114.112.233', 47761, 352878592, 2905647866, 0, 52201, 50840, '2016-12-10 09:17:15', '2016-12-10 07:54:29', '2016-12-10 08:17:15', 'yes'),
+(16, 39, 1, '111.114.113.178', 62098, 466378722, 3794395531, 1333788672, 0, 184876, '2016-12-10 11:02:26', '2016-12-10 08:11:03', '0000-00-00 00:00:00', 'no'),
+(17, 39, 26, '111.114.113.25', 11137, 2113159168, 3741319168, 506970112, 0, 187779, '2016-12-11 15:18:55', '2016-12-10 08:11:30', '0000-00-00 00:00:00', 'no'),
+(18, 51, 1, '127.0.0.1', 57998, 0, 0, 0, 5625679, 0, '2017-03-04 04:44:19', '2017-02-24 13:17:23', '0000-00-00 00:00:00', 'no');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `sources`
+-- 表的结构 `sources`
 --
 
-CREATE TABLE IF NOT EXISTS `sources` (
-  `id` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,
+CREATE TABLE `sources` (
+  `id` tinyint(3) UNSIGNED NOT NULL,
   `name` varchar(30) NOT NULL,
-  `sort_index` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
+  `sort_index` tinyint(3) UNSIGNED NOT NULL DEFAULT '0'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `sources`
+-- 转存表中的数据 `sources`
 --
 
 INSERT INTO `sources` (`id`, `name`, `sort_index`) VALUES
@@ -2103,41 +4027,43 @@ INSERT INTO `sources` (`id`, `name`, `sort_index`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `staffmessages`
+-- 表的结构 `staffmessages`
 --
 
-CREATE TABLE IF NOT EXISTS `staffmessages` (
-  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
-  `sender` mediumint(8) unsigned NOT NULL DEFAULT '0',
+CREATE TABLE `staffmessages` (
+  `id` mediumint(8) UNSIGNED NOT NULL,
+  `sender` mediumint(8) UNSIGNED NOT NULL DEFAULT '0',
   `added` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `msg` text,
   `subject` varchar(128) NOT NULL DEFAULT '',
-  `answeredby` mediumint(8) unsigned NOT NULL DEFAULT '0',
+  `answeredby` mediumint(8) UNSIGNED NOT NULL DEFAULT '0',
   `answered` tinyint(1) NOT NULL DEFAULT '0',
-  `answer` text,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  `answer` text
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `staffmessages`
+-- 转存表中的数据 `staffmessages`
 --
 
+INSERT INTO `staffmessages` (`id`, `sender`, `added`, `msg`, `subject`, `answeredby`, `answered`, `answer`) VALUES
+(1, 1, '2016-11-23 09:53:21', 'casdcascasdcasdcasdcasdc', 'asdfcsadfasdfsaf', 1, 1, NULL),
+(2, 2, '2016-11-23 10:17:23', 'fasdfasfasdfasdfasdf', 'sdfasdfasdf', 0, 0, NULL),
+(3, 1, '2017-02-04 11:46:23', '城市到处撒', '传递', 1, 1, NULL);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `standards`
+-- 表的结构 `standards`
 --
 
-CREATE TABLE IF NOT EXISTS `standards` (
-  `id` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,
+CREATE TABLE `standards` (
+  `id` tinyint(3) UNSIGNED NOT NULL,
   `name` varchar(30) NOT NULL,
-  `sort_index` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+  `sort_index` tinyint(3) UNSIGNED NOT NULL DEFAULT '0'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `standards`
+-- 转存表中的数据 `standards`
 --
 
 INSERT INTO `standards` (`id`, `name`, `sort_index`) VALUES
@@ -2149,21 +4075,20 @@ INSERT INTO `standards` (`id`, `name`, `sort_index`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `stylesheets`
+-- 表的结构 `stylesheets`
 --
 
-CREATE TABLE IF NOT EXISTS `stylesheets` (
-  `id` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,
+CREATE TABLE `stylesheets` (
+  `id` tinyint(3) UNSIGNED NOT NULL,
   `uri` varchar(255) NOT NULL DEFAULT '',
   `name` varchar(64) NOT NULL DEFAULT '',
   `addicode` text,
   `designer` varchar(50) NOT NULL DEFAULT '',
-  `comment` varchar(255) NOT NULL DEFAULT '',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=14 ;
+  `comment` varchar(255) NOT NULL DEFAULT ''
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `stylesheets`
+-- 转存表中的数据 `stylesheets`
 --
 
 INSERT INTO `stylesheets` (`id`, `uri`, `name`, `addicode`, `designer`, `comment`) VALUES
@@ -2176,67 +4101,59 @@ INSERT INTO `stylesheets` (`id`, `uri`, `name`, `addicode`, `designer`, `comment
 -- --------------------------------------------------------
 
 --
--- Table structure for table `subs`
+-- 表的结构 `subs`
 --
 
-CREATE TABLE IF NOT EXISTS `subs` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `torrent_id` mediumint(8) unsigned NOT NULL,
-  `lang_id` smallint(5) unsigned NOT NULL,
+CREATE TABLE `subs` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `torrent_id` mediumint(8) UNSIGNED NOT NULL,
+  `lang_id` smallint(5) UNSIGNED NOT NULL,
   `title` varchar(255) NOT NULL DEFAULT '',
   `filename` varchar(255) NOT NULL DEFAULT '',
   `added` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `size` bigint(20) unsigned NOT NULL DEFAULT '0',
-  `uppedby` mediumint(8) unsigned NOT NULL DEFAULT '0',
+  `size` bigint(20) UNSIGNED NOT NULL DEFAULT '0',
+  `uppedby` mediumint(8) UNSIGNED NOT NULL DEFAULT '0',
   `anonymous` enum('yes','no') NOT NULL DEFAULT 'no',
-  `hits` mediumint(8) unsigned NOT NULL DEFAULT '0',
-  `ext` varchar(10) NOT NULL DEFAULT '',
-  PRIMARY KEY (`id`),
-  KEY `torrentid_langid` (`torrent_id`,`lang_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  `hits` mediumint(8) UNSIGNED NOT NULL DEFAULT '0',
+  `ext` varchar(10) NOT NULL DEFAULT ''
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `subs`
+-- 转存表中的数据 `subs`
 --
 
+INSERT INTO `subs` (`id`, `torrent_id`, `lang_id`, `title`, `filename`, `added`, `size`, `uppedby`, `anonymous`, `hits`, `ext`) VALUES
+(1, 43, 28, '20120522094758371', '20120522094758371.rar', '2017-02-07 04:35:53', 259734, 1, 'no', 3, 'rar'),
+(2, 49, 3, 'csadc', '20120713110240777.zip', '2017-02-11 06:29:35', 29190, 29, 'no', 0, 'zip');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `suggest`
+-- 表的结构 `suggest`
 --
 
-CREATE TABLE IF NOT EXISTS `suggest` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+CREATE TABLE `suggest` (
+  `id` int(10) UNSIGNED NOT NULL,
   `keywords` varchar(255) NOT NULL DEFAULT '',
-  `userid` mediumint(8) unsigned NOT NULL DEFAULT '0',
-  `adddate` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  PRIMARY KEY (`id`),
-  KEY `keywords` (`keywords`(4)),
-  KEY `adddate` (`adddate`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
---
--- Dumping data for table `suggest`
---
-
+  `userid` mediumint(8) UNSIGNED NOT NULL DEFAULT '0',
+  `adddate` datetime NOT NULL DEFAULT '0000-00-00 00:00:00'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `sysoppanel`
+-- 表的结构 `sysoppanel`
 --
 
-CREATE TABLE IF NOT EXISTS `sysoppanel` (
-  `id` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,
+CREATE TABLE `sysoppanel` (
+  `id` tinyint(3) UNSIGNED NOT NULL,
   `name` varchar(128) NOT NULL DEFAULT '',
   `url` varchar(255) NOT NULL DEFAULT '',
-  `info` varchar(255) NOT NULL DEFAULT '',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3028 ;
+  `info` varchar(255) NOT NULL DEFAULT ''
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `sysoppanel`
+-- 转存表中的数据 `sysoppanel`
 --
 
 INSERT INTO `sysoppanel` (`id`, `name`, `url`, `info`) VALUES
@@ -2256,18 +4173,17 @@ INSERT INTO `sysoppanel` (`id`, `name`, `url`, `info`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `teams`
+-- 表的结构 `teams`
 --
 
-CREATE TABLE IF NOT EXISTS `teams` (
-  `id` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,
+CREATE TABLE `teams` (
+  `id` tinyint(3) UNSIGNED NOT NULL,
   `name` varchar(30) NOT NULL,
-  `sort_index` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC AUTO_INCREMENT=6 ;
+  `sort_index` tinyint(3) UNSIGNED NOT NULL DEFAULT '0'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 --
--- Dumping data for table `teams`
+-- 转存表中的数据 `teams`
 --
 
 INSERT INTO `teams` (`id`, `name`, `sort_index`) VALUES
@@ -2280,60 +4196,81 @@ INSERT INTO `teams` (`id`, `name`, `sort_index`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `thanks`
+-- 表的结构 `thanks`
 --
 
-CREATE TABLE IF NOT EXISTS `thanks` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `torrentid` mediumint(8) unsigned NOT NULL DEFAULT '0',
-  `userid` mediumint(8) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `torrentid_id` (`torrentid`,`id`),
-  KEY `torrentid_userid` (`torrentid`,`userid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+CREATE TABLE `thanks` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `torrentid` mediumint(8) UNSIGNED NOT NULL DEFAULT '0',
+  `userid` mediumint(8) UNSIGNED NOT NULL DEFAULT '0'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `thanks`
+-- 转存表中的数据 `thanks`
 --
 
+INSERT INTO `thanks` (`id`, `torrentid`, `userid`) VALUES
+(1, 35, 1);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `topics`
+-- 表的结构 `topics`
 --
 
-CREATE TABLE IF NOT EXISTS `topics` (
-  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
-  `userid` mediumint(8) unsigned NOT NULL DEFAULT '0',
+CREATE TABLE `topics` (
+  `id` mediumint(8) UNSIGNED NOT NULL,
+  `userid` mediumint(8) UNSIGNED NOT NULL DEFAULT '0',
   `subject` varchar(128) NOT NULL,
   `locked` enum('yes','no') NOT NULL DEFAULT 'no',
-  `forumid` smallint(5) unsigned NOT NULL DEFAULT '0',
-  `firstpost` int(10) unsigned NOT NULL DEFAULT '0',
-  `lastpost` int(10) unsigned NOT NULL DEFAULT '0',
+  `forumid` smallint(5) UNSIGNED NOT NULL DEFAULT '0',
+  `firstpost` int(10) UNSIGNED NOT NULL DEFAULT '0',
+  `lastpost` int(10) UNSIGNED NOT NULL DEFAULT '0',
   `sticky` enum('no','yes') NOT NULL DEFAULT 'no',
-  `hlcolor` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  `views` int(10) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`),
-  KEY `userid` (`userid`),
-  KEY `subject` (`subject`),
-  KEY `forumid_lastpost` (`forumid`,`lastpost`),
-  KEY `forumid_sticky_lastpost` (`forumid`,`sticky`,`lastpost`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  `hlcolor` tinyint(3) UNSIGNED NOT NULL DEFAULT '0',
+  `views` int(10) UNSIGNED NOT NULL DEFAULT '0'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `topics`
+-- 转存表中的数据 `topics`
 --
 
+INSERT INTO `topics` (`id`, `userid`, `subject`, `locked`, `forumid`, `firstpost`, `lastpost`, `sticky`, `hlcolor`, `views`) VALUES
+(1, 1, '爱是当你从那时你的从', 'no', 2, 1, 22, 'no', 9, 268),
+(6, 1, '是的擦拭打', 'no', 6, 0, 0, 'no', 0, 0),
+(5, 1, 'casdcasd', 'no', 2, 23, 23, 'no', 0, 3),
+(4, 1, 'njn', 'no', 2, 17, 17, 'no', 0, 2),
+(7, 1, '是的擦拭打', 'no', 6, 0, 0, 'no', 0, 22),
+(8, 1, '出撒旦', 'no', 1, 0, 0, 'no', 0, 2),
+(9, 29, 'casdcasc', 'no', 3, 0, 0, 'no', 0, 0),
+(10, 29, 'casdcasc', 'no', 3, 0, 0, 'no', 0, 0),
+(11, 29, '大', 'no', 3, 0, 0, 'no', 0, 0),
+(12, 29, '擦上档次', 'no', 1, 0, 0, 'no', 0, 0),
+(13, 29, 'ccccccc', 'no', 1, 0, 0, 'no', 0, 0),
+(14, 29, 'casdc', 'no', 1, 0, 0, 'no', 0, 0),
+(15, 29, 'cccccccasdfasdcasc', 'no', 1, 0, 0, 'no', 0, 0),
+(16, 29, 'cccccccasdfasdcasc', 'no', 1, 0, 0, 'no', 0, 0),
+(17, 29, '擦伤程度上擦伤', 'no', 1, 0, 0, 'no', 0, 0),
+(18, 29, 'v刹vvv', 'no', 1, 0, 0, 'no', 0, 0),
+(19, 29, 'v刹vvv', 'no', 1, 0, 0, 'no', 0, 0),
+(20, 29, 'v刹vvv', 'no', 1, 0, 0, 'no', 0, 0),
+(21, 29, 'v刹vvv', 'no', 1, 0, 0, 'no', 0, 0),
+(22, 29, 'v刹vvv', 'no', 1, 0, 0, 'no', 0, 0),
+(23, 29, 'v刹vvv', 'no', 1, 0, 0, 'no', 0, 0),
+(24, 29, 'v刹vvv', 'no', 1, 0, 0, 'no', 0, 0),
+(25, 29, 'v刹vvv', 'no', 1, 0, 0, 'no', 0, 0),
+(26, 29, 'v刹vvv', 'no', 1, 0, 47, 'no', 0, 2),
+(27, 29, 'v刹vvv', 'no', 1, 44, 46, 'no', 0, 11),
+(28, 29, '擦擦擦', 'no', 1, 48, 56, 'no', 0, 53);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `torrents`
+-- 表的结构 `torrents`
 --
 
-CREATE TABLE IF NOT EXISTS `torrents` (
-  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+CREATE TABLE `torrents` (
+  `id` mediumint(8) UNSIGNED NOT NULL,
   `info_hash` binary(20) NOT NULL,
   `name` varchar(255) NOT NULL DEFAULT '',
   `filename` varchar(255) NOT NULL DEFAULT '',
@@ -2341,65 +4278,64 @@ CREATE TABLE IF NOT EXISTS `torrents` (
   `descr` text,
   `small_descr` varchar(255) NOT NULL DEFAULT '',
   `ori_descr` text,
-  `category` smallint(5) unsigned NOT NULL DEFAULT '0',
-  `source` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  `medium` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  `codec` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  `standard` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  `processing` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  `team` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  `audiocodec` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  `size` bigint(20) unsigned NOT NULL DEFAULT '0',
+  `category` smallint(5) UNSIGNED NOT NULL DEFAULT '0',
+  `source` tinyint(3) UNSIGNED NOT NULL DEFAULT '0',
+  `medium` tinyint(3) UNSIGNED NOT NULL DEFAULT '0',
+  `codec` tinyint(3) UNSIGNED NOT NULL DEFAULT '0',
+  `standard` tinyint(3) UNSIGNED NOT NULL DEFAULT '0',
+  `processing` tinyint(3) UNSIGNED NOT NULL DEFAULT '0',
+  `team` tinyint(3) UNSIGNED NOT NULL DEFAULT '0',
+  `audiocodec` tinyint(3) UNSIGNED NOT NULL DEFAULT '0',
+  `size` bigint(20) UNSIGNED NOT NULL DEFAULT '0',
   `added` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `type` enum('single','multi') NOT NULL DEFAULT 'single',
-  `numfiles` smallint(5) unsigned NOT NULL DEFAULT '0',
-  `comments` mediumint(8) unsigned NOT NULL DEFAULT '0',
-  `views` int(10) unsigned NOT NULL DEFAULT '0',
-  `hits` int(10) unsigned NOT NULL DEFAULT '0',
-  `times_completed` mediumint(8) unsigned NOT NULL DEFAULT '0',
-  `leechers` mediumint(8) unsigned NOT NULL DEFAULT '0',
-  `seeders` mediumint(8) unsigned NOT NULL DEFAULT '0',
+  `numfiles` smallint(5) UNSIGNED NOT NULL DEFAULT '0',
+  `comments` mediumint(8) UNSIGNED NOT NULL DEFAULT '0',
+  `views` int(10) UNSIGNED NOT NULL DEFAULT '0',
+  `hits` int(10) UNSIGNED NOT NULL DEFAULT '0',
+  `times_completed` mediumint(8) UNSIGNED NOT NULL DEFAULT '0',
+  `leechers` mediumint(8) UNSIGNED NOT NULL DEFAULT '0',
+  `seeders` mediumint(8) UNSIGNED NOT NULL DEFAULT '0',
   `last_action` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `visible` enum('yes','no') NOT NULL DEFAULT 'yes',
   `banned` enum('yes','no') NOT NULL DEFAULT 'no',
-  `owner` mediumint(8) unsigned NOT NULL DEFAULT '0',
+  `owner` mediumint(8) UNSIGNED NOT NULL DEFAULT '0',
   `nfo` blob,
-  `sp_state` tinyint(3) unsigned NOT NULL DEFAULT '1',
+  `sp_state` tinyint(3) UNSIGNED NOT NULL DEFAULT '1',
+  `promotion_time_type` tinyint(3) UNSIGNED NOT NULL DEFAULT '0',
+  `promotion_until` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `anonymous` enum('yes','no') NOT NULL DEFAULT 'no',
-  `url` int(10) unsigned DEFAULT NULL,
+  `url` int(10) UNSIGNED DEFAULT NULL,
   `pos_state` enum('normal','sticky') NOT NULL DEFAULT 'normal',
-  `cache_stamp` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `cache_stamp` tinyint(3) UNSIGNED NOT NULL DEFAULT '0',
   `picktype` enum('hot','classic','recommended','normal') NOT NULL DEFAULT 'normal',
   `picktime` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `sp_state_temp` enum('2up_free','2up','free','half_down','normal') NOT NULL DEFAULT 'normal',
   `last_reseed` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `info_hash` (`info_hash`),
-  KEY `owner` (`owner`),
-  KEY `visible_pos_id` (`visible`,`pos_state`,`id`),
-  KEY `url` (`url`),
-  KEY `category_visible_banned` (`category`,`visible`,`banned`),
-  KEY `visible_banned_pos_id` (`visible`,`banned`,`pos_state`,`id`),
-  FULLTEXT KEY `name` (`name`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  `secondcate` int(255) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `torrents`
+-- 转存表中的数据 `torrents`
 --
 
+INSERT INTO `torrents` (`id`, `info_hash`, `name`, `filename`, `save_as`, `descr`, `small_descr`, `ori_descr`, `category`, `source`, `medium`, `codec`, `standard`, `processing`, `team`, `audiocodec`, `size`, `added`, `type`, `numfiles`, `comments`, `views`, `hits`, `times_completed`, `leechers`, `seeders`, `last_action`, `visible`, `banned`, `owner`, `nfo`, `sp_state`, `promotion_time_type`, `promotion_until`, `anonymous`, `url`, `pos_state`, `cache_stamp`, `picktype`, `picktime`, `last_reseed`, `secondcate`) VALUES
+(49, 0x1803fa43c37af27b90cd033fd48c9f8248d09efb, '[JM] [阳光电影www ygdy8 com] 机械师2：复活 BD 720p 中英双字幕 rmvb', '[JM].[阳光电影www.ygdy8.com].机械师2：复活.BD.720p.中英双字幕.rmvb.torrent', '[阳光电影www.ygdy8.com].机械师2：复活.BD.720p.中英双字幕.rmvb', '瞎说', '瞎说', '瞎说', 401, 0, 0, 0, 0, 0, 0, 0, 1157636151, '2017-02-11 05:19:56', 'single', 1, 9, 68, 46, 0, 0, 0, '2017-02-11 05:19:56', 'no', 'no', 29, '', 1, 0, '0000-00-00 00:00:00', 'no', 0, 'normal', 0, 'normal', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 4011),
+(50, 0x1c42bec885406365ec12d9ef1c51790da64a5d9e, '【51CTO学院】Python编程基础', '【51CTO学院】Python编程基础.torrent', '【51CTO学院】Python编程基础', 'asdcasc', 'cassadcasdcsa', 'asdcasc', 401, 0, 0, 0, 0, 0, 0, 0, 1638763657, '2017-02-23 13:55:11', 'multi', 60, 0, 0, 1, 0, 0, 0, '2017-02-23 13:55:11', 'no', 'no', 29, '', 1, 0, '0000-00-00 00:00:00', 'no', 0, 'normal', 0, 'normal', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 4011),
+(51, 0xc18fa071efc0516d7fc9ad813bf4f76f9432261a, 'CentOS-6 3-i386-bin-DVD1 iso', 'CentOS-6.3-i386-bin-DVD1.iso.torrent', 'CentOS-6.3-i386-bin-DVD1.iso', 'fsadf', '', 'fsadf', 401, 0, 0, 0, 0, 0, 0, 0, 3713204224, '2017-02-24 11:49:13', 'single', 1, 0, 44, 4, 0, 0, 1, '2017-03-04 03:59:18', 'yes', 'no', 29, '', 1, 0, '0000-00-00 00:00:00', 'no', 0, 'normal', 0, 'normal', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 4012),
+(48, 0x27058b07cad6825452bd218de0fe673e9658fa5f, '[JM] [阳光电影www ygdy8 com] 谍影重重5 HD 720p 中英双字幕 rmvb', '[JM].[阳光电影www.ygdy8.com].谍影重重5.HD.720p.中英双字幕.rmvb.torrent', '[阳光电影www.ygdy8.com].谍影重重5.HD.720p.中英双字幕.rmvb', '擦拭的擦拭但是[attach]7ef3f3ca61ff94ee870c167bd6ae5261[/attach]', '阿双方大师傅', '擦拭的擦拭但是[attach]7ef3f3ca61ff94ee870c167bd6ae5261[/attach]', 401, 0, 0, 0, 0, 0, 0, 0, 1452823933, '2017-02-10 14:43:25', 'single', 1, 0, 79, 1, 0, 0, 0, '2017-02-10 14:43:25', 'no', 'no', 29, '', 1, 0, '0000-00-00 00:00:00', 'no', 0, 'normal', 0, 'normal', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 4011);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `torrents_state`
+-- 表的结构 `torrents_state`
 --
 
-CREATE TABLE IF NOT EXISTS `torrents_state` (
-  `global_sp_state` tinyint(3) unsigned NOT NULL DEFAULT '1'
+CREATE TABLE `torrents_state` (
+  `global_sp_state` tinyint(3) UNSIGNED NOT NULL DEFAULT '1'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `torrents_state`
+-- 转存表中的数据 `torrents_state`
 --
 
 INSERT INTO `torrents_state` (`global_sp_state`) VALUES
@@ -2408,17 +4344,16 @@ INSERT INTO `torrents_state` (`global_sp_state`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `uploadspeed`
+-- 表的结构 `uploadspeed`
 --
 
-CREATE TABLE IF NOT EXISTS `uploadspeed` (
-  `id` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(50) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=19 ;
+CREATE TABLE `uploadspeed` (
+  `id` tinyint(3) UNSIGNED NOT NULL,
+  `name` varchar(50) DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `uploadspeed`
+-- 转存表中的数据 `uploadspeed`
 --
 
 INSERT INTO `uploadspeed` (`id`, `name`) VALUES
@@ -2444,11 +4379,11 @@ INSERT INTO `uploadspeed` (`id`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `users`
+-- 表的结构 `users`
 --
 
-CREATE TABLE IF NOT EXISTS `users` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+CREATE TABLE `users` (
+  `id` int(10) UNSIGNED NOT NULL,
   `username` varchar(40) NOT NULL DEFAULT '',
   `passhash` varchar(32) NOT NULL DEFAULT '',
   `secret` varbinary(20) NOT NULL,
@@ -2464,27 +4399,27 @@ CREATE TABLE IF NOT EXISTS `users` (
   `last_pm` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `last_comment` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `last_post` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `last_browse` int(10) unsigned NOT NULL DEFAULT '0',
-  `last_music` int(10) unsigned NOT NULL DEFAULT '0',
-  `last_catchup` int(10) unsigned NOT NULL DEFAULT '0',
+  `last_browse` int(10) UNSIGNED NOT NULL DEFAULT '0',
+  `last_music` int(10) UNSIGNED NOT NULL DEFAULT '0',
+  `last_catchup` int(10) UNSIGNED NOT NULL DEFAULT '0',
   `editsecret` varbinary(20) NOT NULL,
   `privacy` enum('strong','normal','low') NOT NULL DEFAULT 'normal',
-  `stylesheet` tinyint(3) unsigned NOT NULL DEFAULT '1',
-  `caticon` tinyint(3) unsigned NOT NULL DEFAULT '1',
+  `stylesheet` tinyint(3) UNSIGNED NOT NULL DEFAULT '1',
+  `caticon` tinyint(3) UNSIGNED NOT NULL DEFAULT '1',
   `fontsize` enum('small','medium','large') NOT NULL DEFAULT 'medium',
   `info` text,
   `acceptpms` enum('yes','friends','no') NOT NULL DEFAULT 'yes',
   `commentpm` enum('yes','no') NOT NULL DEFAULT 'yes',
   `ip` varchar(64) NOT NULL DEFAULT '',
-  `class` tinyint(3) unsigned NOT NULL DEFAULT '1',
+  `class` tinyint(3) UNSIGNED NOT NULL DEFAULT '1',
   `max_class_once` tinyint(3) NOT NULL DEFAULT '1',
   `avatar` varchar(255) NOT NULL DEFAULT '',
-  `uploaded` bigint(20) unsigned NOT NULL DEFAULT '0',
-  `downloaded` bigint(20) unsigned NOT NULL DEFAULT '0',
-  `seedtime` bigint(20) unsigned NOT NULL DEFAULT '0',
-  `leechtime` bigint(20) unsigned NOT NULL DEFAULT '0',
+  `uploaded` bigint(20) UNSIGNED NOT NULL DEFAULT '0',
+  `downloaded` bigint(20) UNSIGNED NOT NULL DEFAULT '0',
+  `seedtime` bigint(20) UNSIGNED NOT NULL DEFAULT '0',
+  `leechtime` bigint(20) UNSIGNED NOT NULL DEFAULT '0',
   `title` varchar(30) NOT NULL DEFAULT '',
-  `country` smallint(5) unsigned NOT NULL DEFAULT '107',
+  `country` smallint(5) UNSIGNED NOT NULL DEFAULT '107',
   `notifs` varchar(500) DEFAULT NULL,
   `modcomment` text,
   `enabled` enum('yes','no') NOT NULL DEFAULT 'yes',
@@ -2497,9 +4432,9 @@ CREATE TABLE IF NOT EXISTS `users` (
   `warneduntil` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `noad` enum('yes','no') NOT NULL DEFAULT 'no',
   `noaduntil` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `torrentsperpage` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  `topicsperpage` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  `postsperpage` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `torrentsperpage` tinyint(3) UNSIGNED NOT NULL DEFAULT '0',
+  `topicsperpage` tinyint(3) UNSIGNED NOT NULL DEFAULT '0',
+  `postsperpage` tinyint(3) UNSIGNED NOT NULL DEFAULT '0',
   `clicktopic` enum('firstpage','lastpage') NOT NULL DEFAULT 'firstpage',
   `deletepms` enum('yes','no') NOT NULL DEFAULT 'yes',
   `savepms` enum('yes','no') NOT NULL DEFAULT 'no',
@@ -2516,16 +4451,16 @@ CREATE TABLE IF NOT EXISTS `users` (
   `uploadpos` enum('yes','no') NOT NULL DEFAULT 'yes',
   `forumpost` enum('yes','no') NOT NULL DEFAULT 'yes',
   `downloadpos` enum('yes','no') NOT NULL DEFAULT 'yes',
-  `clientselect` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `clientselect` tinyint(3) UNSIGNED NOT NULL DEFAULT '0',
   `signatures` enum('yes','no') NOT NULL DEFAULT 'yes',
   `signature` varchar(800) NOT NULL DEFAULT '',
-  `lang` smallint(5) unsigned NOT NULL DEFAULT '6',
+  `lang` smallint(5) UNSIGNED NOT NULL DEFAULT '6',
   `cheat` smallint(6) NOT NULL DEFAULT '0',
-  `download` int(10) unsigned NOT NULL DEFAULT '0',
-  `upload` int(10) unsigned NOT NULL DEFAULT '0',
-  `isp` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  `invites` smallint(5) unsigned NOT NULL DEFAULT '0',
-  `invited_by` mediumint(8) unsigned NOT NULL DEFAULT '0',
+  `download` int(10) UNSIGNED NOT NULL DEFAULT '0',
+  `upload` int(10) UNSIGNED NOT NULL DEFAULT '0',
+  `isp` tinyint(3) UNSIGNED NOT NULL DEFAULT '0',
+  `invites` smallint(5) UNSIGNED NOT NULL DEFAULT '0',
+  `invited_by` mediumint(8) UNSIGNED NOT NULL DEFAULT '0',
   `gender` enum('Male','Female','N/A') NOT NULL DEFAULT 'N/A',
   `vip_added` enum('yes','no') NOT NULL DEFAULT 'no',
   `vip_until` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
@@ -2536,10 +4471,10 @@ CREATE TABLE IF NOT EXISTS `users` (
   `leechwarn` enum('yes','no') NOT NULL DEFAULT 'no',
   `leechwarnuntil` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `lastwarned` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `timeswarned` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  `warnedby` mediumint(8) unsigned NOT NULL DEFAULT '0',
-  `sbnum` tinyint(3) unsigned NOT NULL DEFAULT '70',
-  `sbrefresh` smallint(5) unsigned NOT NULL DEFAULT '120',
+  `timeswarned` tinyint(3) UNSIGNED NOT NULL DEFAULT '0',
+  `warnedby` mediumint(8) UNSIGNED NOT NULL DEFAULT '0',
+  `sbnum` smallint(5) UNSIGNED NOT NULL DEFAULT '70',
+  `sbrefresh` smallint(5) UNSIGNED NOT NULL DEFAULT '120',
   `hidehb` enum('yes','no') DEFAULT 'no',
   `showimdb` enum('yes','no') DEFAULT 'yes',
   `showdescription` enum('yes','no') DEFAULT 'yes',
@@ -2559,82 +4494,971 @@ CREATE TABLE IF NOT EXISTS `users` (
   `showcomnum` enum('yes','no') DEFAULT 'yes',
   `showlastcom` enum('yes','no') DEFAULT 'no',
   `showlastpost` enum('yes','no') NOT NULL DEFAULT 'no',
-  `pmnum` tinyint(3) unsigned NOT NULL DEFAULT '10',
-  `school` smallint(5) unsigned NOT NULL DEFAULT '35',
-  `showfb` enum('yes','no') NOT NULL DEFAULT 'yes',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `username` (`username`),
-  KEY `status_added` (`status`,`added`),
-  KEY `ip` (`ip`),
-  KEY `uploaded` (`uploaded`),
-  KEY `downloaded` (`downloaded`),
-  KEY `country` (`country`),
-  KEY `last_access` (`last_access`),
-  KEY `enabled` (`enabled`),
-  KEY `warned` (`warned`),
-  KEY `cheat` (`cheat`),
-  KEY `class` (`class`),
-  KEY `passkey` (`passkey`(8))
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  `pmnum` tinyint(3) UNSIGNED NOT NULL DEFAULT '10',
+  `school` smallint(5) UNSIGNED NOT NULL DEFAULT '35',
+  `showfb` enum('yes','no') NOT NULL DEFAULT 'yes'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `users`
+-- 转存表中的数据 `users`
 --
--- 2010-06-03
-ALTER TABLE `users` CHANGE `sbnum` `sbnum` SMALLINT UNSIGNED NOT NULL DEFAULT '70' ;
-DELETE FROM `adminpanel` WHERE `adminpanel`.`id` = 5 LIMIT 1;
--- 2009.11.17
-CREATE TABLE IF NOT EXISTS `adclicks` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `adid` int(11) unsigned DEFAULT NULL,
-  `userid` int(11) unsigned DEFAULT NULL,
-  `added` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
--- 2010-06-15
-ALTER TABLE `torrents` ADD `promotion_time_type` TINYINT UNSIGNED NOT NULL DEFAULT '0' AFTER `sp_state` ;
-ALTER TABLE `torrents` ADD `promotion_until` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00' AFTER `promotion_time_type` ;
--- 2010-09-05
- ALTER TABLE `friends` CHANGE `id` `id` INT( 10 ) UNSIGNED NOT NULL AUTO_INCREMENT  ;
-ALTER TABLE `torrents` DROP `sp_state_temp`;
--- 2011-12-02
-INSERT INTO `agent_allowed_family` (
-`id` ,
-`family` ,
-`start_name` ,
-`peer_id_pattern` ,
-`peer_id_match_num` ,
-`peer_id_matchtype` ,
-`peer_id_start` ,
-`agent_pattern` ,
-`agent_match_num` ,
-`agent_matchtype` ,
-`agent_start` ,
-`exception` ,
-`allowhttps` ,
-`comment` ,
-`hits`
-)
-VALUES (
-NULL , 'Transmission2.x', 'Transmission 2.0', '/^-TR2([0-9])([0-9])([0-9])-/', '3', 'dec', '-TR2000-', '/^Transmission\\/2\\.([0-9])([0-9])/', '3', 'dec', 'Transmission/2.00', 'no', 'yes', '', '0'
-);
-INSERT INTO `agent_allowed_family` (
-`id` ,
-`family` ,
-`start_name` ,
-`peer_id_pattern` ,
-`peer_id_match_num` ,
-`peer_id_matchtype` ,
-`peer_id_start` ,
-`agent_pattern` ,
-`agent_match_num` ,
-`agent_matchtype` ,
-`agent_start` ,
-`exception` ,
-`allowhttps` ,
-`comment` ,
-`hits`
-)
-VALUES (
-NULL , 'uTorrent 3.x', 'uTorrent/3000', '/^-UT3([0-9])([0-9])([0-9])-/', '3', 'dec', '-UT3000-', '/^uTorrent\\/3([0-9])([0-9])([0-9])/', '3', 'dec', 'uTorrent/3000', 'no', 'yes', '', '0'
-);
+
+INSERT INTO `users` (`id`, `username`, `passhash`, `secret`, `email`, `status`, `added`, `last_login`, `last_access`, `last_home`, `last_offer`, `forum_access`, `last_staffmsg`, `last_pm`, `last_comment`, `last_post`, `last_browse`, `last_music`, `last_catchup`, `editsecret`, `privacy`, `stylesheet`, `caticon`, `fontsize`, `info`, `acceptpms`, `commentpm`, `ip`, `class`, `max_class_once`, `avatar`, `uploaded`, `downloaded`, `seedtime`, `leechtime`, `title`, `country`, `notifs`, `modcomment`, `enabled`, `avatars`, `donor`, `donated`, `donated_cny`, `donoruntil`, `warned`, `warneduntil`, `noad`, `noaduntil`, `torrentsperpage`, `topicsperpage`, `postsperpage`, `clicktopic`, `deletepms`, `savepms`, `showhot`, `showclassic`, `support`, `picker`, `stafffor`, `supportfor`, `pickfor`, `supportlang`, `passkey`, `promotion_link`, `uploadpos`, `forumpost`, `downloadpos`, `clientselect`, `signatures`, `signature`, `lang`, `cheat`, `download`, `upload`, `isp`, `invites`, `invited_by`, `gender`, `vip_added`, `vip_until`, `seedbonus`, `charity`, `bonuscomment`, `parked`, `leechwarn`, `leechwarnuntil`, `lastwarned`, `timeswarned`, `warnedby`, `sbnum`, `sbrefresh`, `hidehb`, `showimdb`, `showdescription`, `showcomment`, `showclienterror`, `showdlnotice`, `tooltip`, `shownfo`, `timetype`, `appendsticky`, `appendnew`, `appendpromotion`, `appendpicked`, `dlicon`, `bmicon`, `showsmalldescr`, `showcomnum`, `showlastcom`, `showlastpost`, `pmnum`, `school`, `showfb`) VALUES
+(1, 'root', 'fb5d9b2ba23c330f5bd42e8dff5e2fac', 0x6f7664716d736b7578756a716f72726c6a686869, 'asdc@qq.com', 'confirmed', '2016-11-01 10:38:55', '2017-02-23 15:57:35', '2017-02-10 07:17:56', '2017-02-02 03:32:26', '2016-12-28 17:05:32', '2017-02-02 03:32:35', '2017-02-04 18:46:23', '0000-00-00 00:00:00', '2016-12-09 17:53:09', '2016-12-12 03:14:21', 1482941128, 0, 26, '', 'normal', 7, 1, 'medium', '', 'yes', 'yes', '127.0.0.1', 16, 1, 'http://127.0.0.1/nwupt/bitbucket/58373aae-8de4-4b32-95dc-8b2f8ebb91e6x840.jpg', 579559394, 3794395531, 5260543, 3543337, '超级管理员', 8, NULL, NULL, 'yes', 'yes', 'no', '0.00', '0.00', '0000-00-00 00:00:00', 'no', '0000-00-00 00:00:00', 'no', '0000-00-00 00:00:00', 0, 0, 0, 'firstpage', 'yes', 'no', 'yes', 'yes', 'yes', 'yes', '', '', '', '', '75c5920f451b79eb634fdc85dcd7bca4', '1b5d5409a505757cf209eaa0c18b7ea7', 'yes', 'yes', 'yes', 17, 'yes', '', 25, 0, 0, 0, 0, 10000, 0, 'Male', 'no', '0000-00-00 00:00:00', '99942415.2', '0.0', '2016-11-23 - 5000 Points for custom title. Old title is  and new title is ''超级管理员''\n ', 'no', 'no', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 0, 0, 70, 120, 'no', 'yes', 'yes', 'yes', 'no', 0, 'off', 'yes', 'timealive', 'yes', 'yes', 'icon', 'yes', 'yes', 'yes', 'yes', 'yes', 'no', 'no', 10, 0, 'yes'),
+(28, 'lwenxu', 'fb5d9b2ba23c330f5bd42e8dff5e2fac', 0x6f7664716d736b7578756a716f72726c6a686869, 'asdc@qq.com', 'confirmed', '2016-11-01 10:38:55', '2017-02-07 11:50:35', '2017-02-02 03:32:35', '2017-02-02 03:32:26', '2016-12-28 17:05:32', '2017-02-02 03:32:35', '2016-11-23 16:53:21', '0000-00-00 00:00:00', '2016-12-09 17:53:09', '2016-12-12 03:14:21', 1482941128, 0, 0, '', 'normal', 7, 1, 'medium', '', 'yes', 'yes', '127.0.0.1', 1, 1, 'http://127.0.0.1/nwupt/bitbucket/58373aae-8de4-4b32-95dc-8b2f8ebb91e6x840.jpg', 579559394, 3794395531, 0, 0, '超级管理员', 8, NULL, NULL, 'yes', 'yes', 'no', '0.00', '0.00', '0000-00-00 00:00:00', 'no', '0000-00-00 00:00:00', 'no', '0000-00-00 00:00:00', 0, 0, 0, 'firstpage', 'yes', 'no', 'yes', 'yes', 'no', 'no', '', '', '', '', '75c5920f451b79eb634fdc85dcd7bca4', '1b5d5409a505757cf209eaa0c18b7ea7', 'yes', 'yes', 'yes', 19, 'yes', '', 25, 0, 0, 0, 0, 10000, 0, 'Male', 'no', '0000-00-00 00:00:00', '99948625.5', '0.0', '2016-11-23 - 5000 Points for custom title. Old title is  and new title is ''超级管理员''\r\n ', 'no', 'no', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 0, 0, 70, 120, 'no', 'yes', 'yes', 'yes', 'no', 0, 'off', 'yes', 'timealive', 'yes', 'yes', 'icon', 'yes', 'yes', 'yes', 'yes', 'yes', 'no', 'no', 10, 0, 'yes'),
+(26, 'lwen', '83b328dd147424d89ce0dc98da8f7ad2', 0x64656d6f67696d6f706b71756c666d76736a6c76, '123@qq.com', 'confirmed', '2016-12-10 03:25:27', '2017-02-02 19:46:36', '2016-12-28 17:17:13', '2016-12-28 17:17:13', '2016-12-28 17:15:50', '2016-12-28 17:17:09', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1482941828, 0, 0, '', 'normal', 3, 1, 'medium', NULL, 'yes', 'yes', '127.0.0.1', 1, 1, '', 3606336893, 5003052620, 536343, 238404, '', 8, NULL, NULL, 'yes', 'yes', 'no', '0.00', '0.00', '0000-00-00 00:00:00', 'no', '0000-00-00 00:00:00', 'no', '0000-00-00 00:00:00', 0, 0, 0, 'firstpage', 'yes', 'no', 'yes', 'yes', 'no', 'no', '', '', '', '', 'fa15978aa68ced440ebb1720e0985ea6', NULL, 'yes', 'yes', 'yes', 17, 'yes', '', 25, 0, 0, 0, 0, 0, 0, 'Male', 'no', '0000-00-00 00:00:00', '0.0', '0.0', NULL, 'no', 'no', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 0, 0, 70, 120, 'no', 'yes', 'yes', 'yes', 'no', 0, 'off', 'yes', 'timealive', 'yes', 'yes', 'icon', 'yes', 'yes', 'yes', 'yes', 'yes', 'no', 'no', 10, 35, 'yes'),
+(27, 'aaaa', '2df8ef776c2e86317153fa16b1b07feb', 0x666d767572696672786969697369696f696c7765, 'blacklad@stumail.nwu.edu.cn', 'confirmed', '2016-12-10 07:46:42', '2016-12-10 14:51:43', '2016-12-10 08:14:08', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 0, 0, 0, '', 'normal', 7, 1, 'medium', NULL, 'yes', 'yes', '111.114.112.233', 16, 1, '', 5447999883, 4167381318, 207105, 101536, '', 8, NULL, NULL, 'yes', 'yes', 'no', '0.00', '0.00', '0000-00-00 00:00:00', 'no', '0000-00-00 00:00:00', 'no', '0000-00-00 00:00:00', 0, 0, 0, 'firstpage', 'yes', 'no', 'yes', 'yes', 'no', 'no', '', '', '', '', '50043563dedb0487d35293fb3a23e7df', NULL, 'yes', 'yes', 'yes', 17, 'yes', '', 25, 0, 0, 0, 0, 0, 0, 'Male', 'no', '0000-00-00 00:00:00', '30.0', '0.0', NULL, 'no', 'no', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 0, 0, 70, 120, 'no', 'yes', 'yes', 'yes', 'no', 0, 'off', 'yes', 'timealive', 'yes', 'yes', 'icon', 'yes', 'yes', 'yes', 'yes', 'yes', 'no', 'no', 10, 35, 'yes'),
+(29, '2015117164lwenxu', 'fb5d9b2ba23c330f5bd42e8dff5e2fac', 0x6f7664716d736b7578756a716f72726c6a686869, 'asdc@qq.com', 'confirmed', '2016-11-01 10:38:55', '2017-02-10 15:10:25', '2017-02-24 13:16:05', '2017-02-02 03:32:26', '2016-12-28 17:05:32', '2017-02-02 03:32:35', '2016-11-23 16:53:21', '0000-00-00 00:00:00', '2017-02-11 15:34:29', '2017-02-25 03:54:28', 1482941128, 0, 26, '', 'normal', 7, 1, 'medium', '', 'yes', 'yes', '127.0.0.1', 16, 1, 'http://127.0.0.1/nwupt/bitbucket/58373aae-8de4-4b32-95dc-8b2f8ebb91e6x840.jpg', 579559394, 3794395531, 0, 0, '超级管理员', 8, NULL, NULL, 'yes', 'yes', 'no', '0.00', '0.00', '0000-00-00 00:00:00', 'no', '0000-00-00 00:00:00', 'no', '0000-00-00 00:00:00', 0, 0, 0, 'firstpage', 'yes', 'no', 'yes', 'yes', 'no', 'no', '', '', '', '', '75c5920f451b79eb634fdc85dcd7bca4', '1b5d5409a505757cf209eaa0c18b7ea7', 'yes', 'yes', 'yes', 19, 'yes', '', 25, 0, 0, 0, 0, 10000, 0, 'Male', 'no', '0000-00-00 00:00:00', '99948765.5', '0.0', '2016-11-23 - 5000 Points for custom title. Old title is  and new title is ''超级管理员''\r\n ', 'no', 'no', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 0, 0, 70, 120, 'no', 'yes', 'yes', 'yes', 'no', 0, 'off', 'yes', 'timealive', 'yes', 'yes', 'icon', 'yes', 'yes', 'yes', 'yes', 'yes', 'no', 'no', 10, 0, 'yes');
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `adclicks`
+--
+ALTER TABLE `adclicks`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `address`
+--
+ALTER TABLE `address`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `adminpanel`
+--
+ALTER TABLE `adminpanel`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `advertisements`
+--
+ALTER TABLE `advertisements`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `agent_allowed_exception`
+--
+ALTER TABLE `agent_allowed_exception`
+  ADD KEY `family_id` (`family_id`);
+
+--
+-- Indexes for table `agent_allowed_family`
+--
+ALTER TABLE `agent_allowed_family`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `allowedemails`
+--
+ALTER TABLE `allowedemails`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `attachments`
+--
+ALTER TABLE `attachments`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `pid` (`userid`,`id`),
+  ADD KEY `dateline` (`added`,`isimage`,`downloads`);
+
+--
+-- Indexes for table `audiocodecs`
+--
+ALTER TABLE `audiocodecs`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `avps`
+--
+ALTER TABLE `avps`
+  ADD PRIMARY KEY (`arg`);
+
+--
+-- Indexes for table `bannedemails`
+--
+ALTER TABLE `bannedemails`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `bans`
+--
+ALTER TABLE `bans`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `first_last` (`first`,`last`);
+
+--
+-- Indexes for table `bitbucket`
+--
+ALTER TABLE `bitbucket`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `blocks`
+--
+ALTER TABLE `blocks`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `userfriend` (`userid`,`blockid`);
+
+--
+-- Indexes for table `bookmarks`
+--
+ALTER TABLE `bookmarks`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `userid_torrentid` (`userid`,`torrentid`);
+
+--
+-- Indexes for table `categories`
+--
+ALTER TABLE `categories`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `mode_sort` (`mode`,`sort_index`);
+
+--
+-- Indexes for table `categoriessecond`
+--
+ALTER TABLE `categoriessecond`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `caticons`
+--
+ALTER TABLE `caticons`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `cheaters`
+--
+ALTER TABLE `cheaters`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `chronicle`
+--
+ALTER TABLE `chronicle`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `added` (`added`);
+
+--
+-- Indexes for table `codecs`
+--
+ALTER TABLE `codecs`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `comment`
+--
+ALTER TABLE `comment`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `comments`
+--
+ALTER TABLE `comments`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user` (`user`),
+  ADD KEY `torrent_id` (`torrent`,`id`),
+  ADD KEY `offer_id` (`offer`,`id`);
+ALTER TABLE `comments` ADD FULLTEXT KEY `text` (`text`);
+
+--
+-- Indexes for table `countries`
+--
+ALTER TABLE `countries`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `downloadspeed`
+--
+ALTER TABLE `downloadspeed`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `faq`
+--
+ALTER TABLE `faq`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `files`
+--
+ALTER TABLE `files`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `torrent` (`torrent`);
+
+--
+-- Indexes for table `forummods`
+--
+ALTER TABLE `forummods`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `forumid` (`forumid`);
+
+--
+-- Indexes for table `forums`
+--
+ALTER TABLE `forums`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `friends`
+--
+ALTER TABLE `friends`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `userfriend` (`userid`,`friendid`);
+
+--
+-- Indexes for table `fun`
+--
+ALTER TABLE `fun`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `funds`
+--
+ALTER TABLE `funds`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `funvotes`
+--
+ALTER TABLE `funvotes`
+  ADD PRIMARY KEY (`funid`,`userid`);
+
+--
+-- Indexes for table `givebonus`
+--
+ALTER TABLE `givebonus`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `invites`
+--
+ALTER TABLE `invites`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `hash` (`hash`(3));
+
+--
+-- Indexes for table `iplog`
+--
+ALTER TABLE `iplog`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `userid` (`userid`);
+
+--
+-- Indexes for table `isp`
+--
+ALTER TABLE `isp`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `language`
+--
+ALTER TABLE `language`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `links`
+--
+ALTER TABLE `links`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `locations`
+--
+ALTER TABLE `locations`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `loginattempts`
+--
+ALTER TABLE `loginattempts`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `media`
+--
+ALTER TABLE `media`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `messages`
+--
+ALTER TABLE `messages`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `receiver` (`receiver`),
+  ADD KEY `sender` (`sender`);
+
+--
+-- Indexes for table `modpanel`
+--
+ALTER TABLE `modpanel`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `news`
+--
+ALTER TABLE `news`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `added` (`added`);
+
+--
+-- Indexes for table `offers`
+--
+ALTER TABLE `offers`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `userid` (`userid`);
+
+--
+-- Indexes for table `offervotes`
+--
+ALTER TABLE `offervotes`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `userid` (`userid`);
+
+--
+-- Indexes for table `overforums`
+--
+ALTER TABLE `overforums`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `peers`
+--
+ALTER TABLE `peers`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `userid` (`userid`),
+  ADD KEY `torrent` (`torrent`);
+
+--
+-- Indexes for table `pmboxes`
+--
+ALTER TABLE `pmboxes`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `pollanswers`
+--
+ALTER TABLE `pollanswers`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `pollid` (`pollid`),
+  ADD KEY `selection` (`selection`),
+  ADD KEY `userid` (`userid`);
+
+--
+-- Indexes for table `polls`
+--
+ALTER TABLE `polls`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `posts`
+--
+ALTER TABLE `posts`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `userid` (`userid`),
+  ADD KEY `topicid_id` (`topicid`,`id`),
+  ADD KEY `added` (`added`);
+ALTER TABLE `posts` ADD FULLTEXT KEY `body` (`body`);
+
+--
+-- Indexes for table `processings`
+--
+ALTER TABLE `processings`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `prolinkclicks`
+--
+ALTER TABLE `prolinkclicks`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `readposts`
+--
+ALTER TABLE `readposts`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `topicid` (`topicid`),
+  ADD KEY `userid` (`userid`);
+
+--
+-- Indexes for table `regimages`
+--
+ALTER TABLE `regimages`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `reports`
+--
+ALTER TABLE `reports`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `req`
+--
+ALTER TABLE `req`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `finish` (`finish`,`name`,`added`,`amount`,`introduce`(10));
+
+--
+-- Indexes for table `requests`
+--
+ALTER TABLE `requests`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `resreq`
+--
+ALTER TABLE `resreq`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `reqid` (`reqid`,`chosen`);
+
+--
+-- Indexes for table `rules`
+--
+ALTER TABLE `rules`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `schools`
+--
+ALTER TABLE `schools`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `searchbox`
+--
+ALTER TABLE `searchbox`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `secondicons`
+--
+ALTER TABLE `secondicons`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `shoutbox`
+--
+ALTER TABLE `shoutbox`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `sitelog`
+--
+ALTER TABLE `sitelog`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `added` (`added`);
+
+--
+-- Indexes for table `snatched`
+--
+ALTER TABLE `snatched`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `torrentid_userid` (`torrentid`,`userid`),
+  ADD KEY `userid` (`userid`);
+
+--
+-- Indexes for table `sources`
+--
+ALTER TABLE `sources`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `staffmessages`
+--
+ALTER TABLE `staffmessages`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `standards`
+--
+ALTER TABLE `standards`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `stylesheets`
+--
+ALTER TABLE `stylesheets`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `subs`
+--
+ALTER TABLE `subs`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `torrentid_langid` (`torrent_id`,`lang_id`);
+
+--
+-- Indexes for table `suggest`
+--
+ALTER TABLE `suggest`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `keywords` (`keywords`(4)),
+  ADD KEY `adddate` (`adddate`);
+
+--
+-- Indexes for table `sysoppanel`
+--
+ALTER TABLE `sysoppanel`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `teams`
+--
+ALTER TABLE `teams`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `thanks`
+--
+ALTER TABLE `thanks`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `torrentid_id` (`torrentid`,`id`),
+  ADD KEY `torrentid_userid` (`torrentid`,`userid`);
+
+--
+-- Indexes for table `topics`
+--
+ALTER TABLE `topics`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `userid` (`userid`),
+  ADD KEY `subject` (`subject`),
+  ADD KEY `forumid_lastpost` (`forumid`,`lastpost`),
+  ADD KEY `forumid_sticky_lastpost` (`forumid`,`sticky`,`lastpost`);
+
+--
+-- Indexes for table `torrents`
+--
+ALTER TABLE `torrents`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `info_hash` (`info_hash`),
+  ADD KEY `owner` (`owner`),
+  ADD KEY `visible_pos_id` (`visible`,`pos_state`,`id`),
+  ADD KEY `url` (`url`),
+  ADD KEY `category_visible_banned` (`category`,`visible`,`banned`),
+  ADD KEY `visible_banned_pos_id` (`visible`,`banned`,`pos_state`,`id`);
+ALTER TABLE `torrents` ADD FULLTEXT KEY `name` (`name`);
+
+--
+-- Indexes for table `uploadspeed`
+--
+ALTER TABLE `uploadspeed`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `username` (`username`),
+  ADD KEY `status_added` (`status`,`added`),
+  ADD KEY `ip` (`ip`),
+  ADD KEY `uploaded` (`uploaded`),
+  ADD KEY `downloaded` (`downloaded`),
+  ADD KEY `country` (`country`),
+  ADD KEY `last_access` (`last_access`),
+  ADD KEY `enabled` (`enabled`),
+  ADD KEY `warned` (`warned`),
+  ADD KEY `cheat` (`cheat`),
+  ADD KEY `class` (`class`),
+  ADD KEY `passkey` (`passkey`(8));
+
+--
+-- 在导出的表使用AUTO_INCREMENT
+--
+
+--
+-- 使用表AUTO_INCREMENT `adclicks`
+--
+ALTER TABLE `adclicks`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
+--
+-- 使用表AUTO_INCREMENT `address`
+--
+ALTER TABLE `address`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+--
+-- 使用表AUTO_INCREMENT `adminpanel`
+--
+ALTER TABLE `adminpanel`
+  MODIFY `id` tinyint(3) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+--
+-- 使用表AUTO_INCREMENT `advertisements`
+--
+ALTER TABLE `advertisements`
+  MODIFY `id` mediumint(8) UNSIGNED NOT NULL AUTO_INCREMENT;
+--
+-- 使用表AUTO_INCREMENT `agent_allowed_family`
+--
+ALTER TABLE `agent_allowed_family`
+  MODIFY `id` tinyint(3) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+--
+-- 使用表AUTO_INCREMENT `allowedemails`
+--
+ALTER TABLE `allowedemails`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+--
+-- 使用表AUTO_INCREMENT `attachments`
+--
+ALTER TABLE `attachments`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
+--
+-- 使用表AUTO_INCREMENT `audiocodecs`
+--
+ALTER TABLE `audiocodecs`
+  MODIFY `id` tinyint(3) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+--
+-- 使用表AUTO_INCREMENT `bannedemails`
+--
+ALTER TABLE `bannedemails`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+--
+-- 使用表AUTO_INCREMENT `bans`
+--
+ALTER TABLE `bans`
+  MODIFY `id` smallint(5) UNSIGNED NOT NULL AUTO_INCREMENT;
+--
+-- 使用表AUTO_INCREMENT `bitbucket`
+--
+ALTER TABLE `bitbucket`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+--
+-- 使用表AUTO_INCREMENT `blocks`
+--
+ALTER TABLE `blocks`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+--
+-- 使用表AUTO_INCREMENT `bookmarks`
+--
+ALTER TABLE `bookmarks`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+--
+-- 使用表AUTO_INCREMENT `categories`
+--
+ALTER TABLE `categories`
+  MODIFY `id` smallint(5) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4091;
+--
+-- 使用表AUTO_INCREMENT `categoriessecond`
+--
+ALTER TABLE `categoriessecond`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4027;
+--
+-- 使用表AUTO_INCREMENT `caticons`
+--
+ALTER TABLE `caticons`
+  MODIFY `id` tinyint(3) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+--
+-- 使用表AUTO_INCREMENT `cheaters`
+--
+ALTER TABLE `cheaters`
+  MODIFY `id` mediumint(8) UNSIGNED NOT NULL AUTO_INCREMENT;
+--
+-- 使用表AUTO_INCREMENT `chronicle`
+--
+ALTER TABLE `chronicle`
+  MODIFY `id` mediumint(8) UNSIGNED NOT NULL AUTO_INCREMENT;
+--
+-- 使用表AUTO_INCREMENT `codecs`
+--
+ALTER TABLE `codecs`
+  MODIFY `id` tinyint(3) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+--
+-- 使用表AUTO_INCREMENT `comment`
+--
+ALTER TABLE `comment`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
+-- 使用表AUTO_INCREMENT `comments`
+--
+ALTER TABLE `comments`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+--
+-- 使用表AUTO_INCREMENT `countries`
+--
+ALTER TABLE `countries`
+  MODIFY `id` smallint(5) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=108;
+--
+-- 使用表AUTO_INCREMENT `downloadspeed`
+--
+ALTER TABLE `downloadspeed`
+  MODIFY `id` tinyint(3) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+--
+-- 使用表AUTO_INCREMENT `faq`
+--
+ALTER TABLE `faq`
+  MODIFY `id` smallint(5) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=476;
+--
+-- 使用表AUTO_INCREMENT `files`
+--
+ALTER TABLE `files`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=112;
+--
+-- 使用表AUTO_INCREMENT `forummods`
+--
+ALTER TABLE `forummods`
+  MODIFY `id` smallint(5) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+--
+-- 使用表AUTO_INCREMENT `forums`
+--
+ALTER TABLE `forums`
+  MODIFY `id` smallint(5) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+--
+-- 使用表AUTO_INCREMENT `friends`
+--
+ALTER TABLE `friends`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+--
+-- 使用表AUTO_INCREMENT `fun`
+--
+ALTER TABLE `fun`
+  MODIFY `id` mediumint(8) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+--
+-- 使用表AUTO_INCREMENT `funds`
+--
+ALTER TABLE `funds`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+--
+-- 使用表AUTO_INCREMENT `givebonus`
+--
+ALTER TABLE `givebonus`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+--
+-- 使用表AUTO_INCREMENT `invites`
+--
+ALTER TABLE `invites`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+--
+-- 使用表AUTO_INCREMENT `iplog`
+--
+ALTER TABLE `iplog`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1408;
+--
+-- 使用表AUTO_INCREMENT `isp`
+--
+ALTER TABLE `isp`
+  MODIFY `id` tinyint(3) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+--
+-- 使用表AUTO_INCREMENT `language`
+--
+ALTER TABLE `language`
+  MODIFY `id` smallint(5) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+--
+-- 使用表AUTO_INCREMENT `links`
+--
+ALTER TABLE `links`
+  MODIFY `id` tinyint(3) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
+-- 使用表AUTO_INCREMENT `locations`
+--
+ALTER TABLE `locations`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+--
+-- 使用表AUTO_INCREMENT `loginattempts`
+--
+ALTER TABLE `loginattempts`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+--
+-- 使用表AUTO_INCREMENT `media`
+--
+ALTER TABLE `media`
+  MODIFY `id` tinyint(3) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+--
+-- 使用表AUTO_INCREMENT `messages`
+--
+ALTER TABLE `messages`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63;
+--
+-- 使用表AUTO_INCREMENT `modpanel`
+--
+ALTER TABLE `modpanel`
+  MODIFY `id` tinyint(3) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1020;
+--
+-- 使用表AUTO_INCREMENT `news`
+--
+ALTER TABLE `news`
+  MODIFY `id` mediumint(8) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+--
+-- 使用表AUTO_INCREMENT `offers`
+--
+ALTER TABLE `offers`
+  MODIFY `id` mediumint(8) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+--
+-- 使用表AUTO_INCREMENT `offervotes`
+--
+ALTER TABLE `offervotes`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+--
+-- 使用表AUTO_INCREMENT `overforums`
+--
+ALTER TABLE `overforums`
+  MODIFY `id` smallint(5) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
+-- 使用表AUTO_INCREMENT `peers`
+--
+ALTER TABLE `peers`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+--
+-- 使用表AUTO_INCREMENT `pmboxes`
+--
+ALTER TABLE `pmboxes`
+  MODIFY `id` mediumint(8) UNSIGNED NOT NULL AUTO_INCREMENT;
+--
+-- 使用表AUTO_INCREMENT `pollanswers`
+--
+ALTER TABLE `pollanswers`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
+-- 使用表AUTO_INCREMENT `polls`
+--
+ALTER TABLE `polls`
+  MODIFY `id` mediumint(8) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+--
+-- 使用表AUTO_INCREMENT `posts`
+--
+ALTER TABLE `posts`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
+--
+-- 使用表AUTO_INCREMENT `processings`
+--
+ALTER TABLE `processings`
+  MODIFY `id` tinyint(3) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
+-- 使用表AUTO_INCREMENT `prolinkclicks`
+--
+ALTER TABLE `prolinkclicks`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+--
+-- 使用表AUTO_INCREMENT `readposts`
+--
+ALTER TABLE `readposts`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+--
+-- 使用表AUTO_INCREMENT `regimages`
+--
+ALTER TABLE `regimages`
+  MODIFY `id` mediumint(8) UNSIGNED NOT NULL AUTO_INCREMENT;
+--
+-- 使用表AUTO_INCREMENT `reports`
+--
+ALTER TABLE `reports`
+  MODIFY `id` mediumint(8) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+--
+-- 使用表AUTO_INCREMENT `req`
+--
+ALTER TABLE `req`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+--
+-- 使用表AUTO_INCREMENT `requests`
+--
+ALTER TABLE `requests`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+--
+-- 使用表AUTO_INCREMENT `resreq`
+--
+ALTER TABLE `resreq`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
+-- 使用表AUTO_INCREMENT `rules`
+--
+ALTER TABLE `rules`
+  MODIFY `id` smallint(5) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
+--
+-- 使用表AUTO_INCREMENT `schools`
+--
+ALTER TABLE `schools`
+  MODIFY `id` smallint(5) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=101;
+--
+-- 使用表AUTO_INCREMENT `searchbox`
+--
+ALTER TABLE `searchbox`
+  MODIFY `id` smallint(5) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+--
+-- 使用表AUTO_INCREMENT `secondicons`
+--
+ALTER TABLE `secondicons`
+  MODIFY `id` smallint(5) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+--
+-- 使用表AUTO_INCREMENT `shoutbox`
+--
+ALTER TABLE `shoutbox`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=288;
+--
+-- 使用表AUTO_INCREMENT `sitelog`
+--
+ALTER TABLE `sitelog`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=162;
+--
+-- 使用表AUTO_INCREMENT `snatched`
+--
+ALTER TABLE `snatched`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+--
+-- 使用表AUTO_INCREMENT `sources`
+--
+ALTER TABLE `sources`
+  MODIFY `id` tinyint(3) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+--
+-- 使用表AUTO_INCREMENT `staffmessages`
+--
+ALTER TABLE `staffmessages`
+  MODIFY `id` mediumint(8) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+--
+-- 使用表AUTO_INCREMENT `standards`
+--
+ALTER TABLE `standards`
+  MODIFY `id` tinyint(3) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+--
+-- 使用表AUTO_INCREMENT `stylesheets`
+--
+ALTER TABLE `stylesheets`
+  MODIFY `id` tinyint(3) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+--
+-- 使用表AUTO_INCREMENT `subs`
+--
+ALTER TABLE `subs`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
+-- 使用表AUTO_INCREMENT `suggest`
+--
+ALTER TABLE `suggest`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+--
+-- 使用表AUTO_INCREMENT `sysoppanel`
+--
+ALTER TABLE `sysoppanel`
+  MODIFY `id` tinyint(3) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3028;
+--
+-- 使用表AUTO_INCREMENT `teams`
+--
+ALTER TABLE `teams`
+  MODIFY `id` tinyint(3) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+--
+-- 使用表AUTO_INCREMENT `thanks`
+--
+ALTER TABLE `thanks`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+--
+-- 使用表AUTO_INCREMENT `topics`
+--
+ALTER TABLE `topics`
+  MODIFY `id` mediumint(8) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+--
+-- 使用表AUTO_INCREMENT `torrents`
+--
+ALTER TABLE `torrents`
+  MODIFY `id` mediumint(8) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
+--
+-- 使用表AUTO_INCREMENT `uploadspeed`
+--
+ALTER TABLE `uploadspeed`
+  MODIFY `id` tinyint(3) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+--
+-- 使用表AUTO_INCREMENT `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
