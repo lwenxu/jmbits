@@ -73,7 +73,7 @@ $lang_index = array
 									如果您对其他用户提供的文件没有使用许可，那么请不要下载和传播这些文件以及材料，由此引起的后果和纠纷要由您个人承担。 <br>
 									本站内容仅供高校内部进行科研，教育，学习，培训使用，禁止用于其他目的，否则法律及版权纠纷由用户个人承担，嘉木PT站不承担连带责任。<br>",
 	'text_service_for' => "本站仅对西北大学在校师生提供内网ipv4以及ipv6资源下载服务，不具有任何商业盈利目的。",
-	'text_browser_note' => "获得本站最佳效果，请使用<a href=\"https://www.baidu.com/link?url=K8EEanhbHX9XtOdNkE5tL69n9xv5RRvfwjMI9MLjAvEyXyGAIx2Rn_Tvag7zn2lyGS5lYxLa5NQkzFJXMQCivMl8NZ806o6CBGOvCKb3A1a&wd=&eqid=b4f902bb000a825600000003580afdac\" target=\"_blank\"><img  class=\"ie\" src=\"pic/chrome.jpg\" title=\"下载Chrome\" /></a>或<a href=\"http://www.mozilla.com/en-US/firefox/\" target=\"_blank\"><img class=\"ie\" src=\"pic/firefox.jpg\" alt=\"Firefox\" title=\"下载Firefox\" /></a>且使用大于1024*768的分辨率。推荐BT客户端为<a href=\"http://jm.nwu.edu.cn/assets/utorrent_2.2.1.exe\" target=\"_blank\"><img class=\"ie\" src=\"pic/utorrent.jpg\" alt=\"uTorrent\" title=\"下载uTorrent\" /></a>",
+	'text_browser_note' => "获得本站最佳效果，请使用<a href=\"https://www.baidu.com/link?url=K8EEanhbHX9XtOdNkE5tL69n9xv5RRvfwjMI9MLjAvEyXyGAIx2Rn_Tvag7zn2lyGS5lYxLa5NQkzFJXMQCivMl8NZ806o6CBGOvCKb3A1a&wd=&eqid=b4f902bb000a825600000003580afdac\" target=\"_blank\"><img  class=\"ie\" src=\"pic/chrome.jpg\" title=\"下载Chrome\" /></a>或<a href=\"http://www.mozilla.com/en-US/firefox/\" target=\"_blank\"><img class=\"ie\" src=\"pic/firefox.jpg\" alt=\"Firefox\" title=\"下载Firefox\" /></a>且使用大于1024*768的分辨率。推荐BT客户端为<a href=\"http://jm.nwu.edu.cn/assets/utorrent2.2.1—JMPT.zip\" target=\"_blank\"><img class=\"ie\" src=\"pic/utorrent.jpg\" alt=\"uTorrent\" title=\"下载uTorrent\" /></a>",
 	'title_show_or_hide' => "显示/隐藏",
 	'text_links' => "友情链接",
 	'text_manage_links' => "管理链接",

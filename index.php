@@ -740,7 +740,7 @@ echo "
                                            <a data-toggle=\"modal\" data-target=\"#uploadModel\" ><img src='./assets/img/upload.png'/ style='height:70px'></a>
                                            <br><br>
                                            <a class=\"btn green\" data-dismiss=\"alert\"> 暂时隐藏 </a>
-                                           <a class=\"btn green\" href='./assets/utorrent_2.2.1.exe'> 下载客户端 </a>
+                                           <a class=\"btn green\" href='./assets/utorrent2.2.1—JMPT.zip'> 下载客户端 </a>
                                        </p>
                                    </div>
     </div>";
