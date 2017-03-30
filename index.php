@@ -35,7 +35,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 	}
 }
 
+echo "<script>
 
+
+</script>";
 // ------------------------------------------  index strat ---------------------------------------------------------------
 stdhead($lang_index['head_home']);
 begin_main_frame();
@@ -139,6 +142,8 @@ while ($Cache->next_row()) {
 }
 echo $Cache->next_row();
 // ------------- end : new box  ------------------//
+
+// ------------- start: latest torrents ------------------//
 echo "            <div class='portlet light bordered '>
                                     <div class=\"portlet-title\">
                                         <div class=\"caption\">
@@ -149,7 +154,7 @@ echo "            <div class='portlet light bordered '>
                                         </div>
                                     </div>
                                         ";
-// ------------- start: latest torrents ------------------//
+
 if ($showlastxtorrents_main == "yes") {
 	$result = sql_query("SELECT * FROM torrents where visible='yes' ORDER BY added DESC LIMIT 5") or sqlerr(__FILE__, __LINE__);
 	if (mysql_num_rows($result) != 0) {
@@ -185,6 +190,10 @@ echo "<table  class='table' width=\"100%\">
 }
 echo "</div>";
 // ------------- end: latest torrents ------------------//
+
+
+
+
 
 echo "            <div class='portlet light bordered '>
                         <div class=\"portlet-title\">
@@ -397,41 +406,12 @@ if (get_user_class() >= $pollmanage_class) {
 }
 echo "</div>";
 // ------------- end: polls ------------------//
-echo "          <div class=\"portlet light bordered \">
-                        <div class=\"portlet-title\">
-                                        <div class=\"caption font-red-sunglo\">
-                                            <h3><i class=\"icon-tasks\"></i>
-                                            <span class=\"caption-subject font-red-sunglo bold uppercase\"> 免责声明 </span></h3>
-                                        </div>
-                        </div>
-                    ";
-// ------------- start: disclaimer  免责声明   ----------//-->
-echo "
-<table width=\"100%\">
-    <tr>
-        <td style=\"border: 0px\">
-";
-echo "<blockquote style='font-size: 15px'>" . $lang_index['text_disclaimer_content'].$lang_index['text_service_for'] . "</blockquote></td>
-    </tr>
-</table>";
-echo "</div>";
-// ------------- end: disclaimer ------------------//-->
 
-echo "          <div class=\"portlet light bordered \">
-                        <div class=\"portlet-title\">
-                                        <div class=\"caption font - purple - plum\">
-                                            <h3><i class=\"glyphicon glyphicon-list font-green-meadow\"></i>
-                                            <span class=\"caption-subject font-green-meadow bold uppercase\"> 温馨提示 </span></h3>
-                                        </div>
-                        </div>
-                    ";
-echo "
-<table style=\"margin-left: 5%\" width=\"90%\" class=\"main\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\"><tr ><td class=\"embedded\" >
-<div align=\"center\"><br /><font class=\"medium\">";
-echo $lang_index['text_browser_note'] ."</font></div>
-</td></tr></table>
-";
-echo "</div>";
+
+//新版块在此添加
+
+
+
 echo "</div>";  //-------------col-md-6 end------------------------//
 
 
@@ -500,196 +480,48 @@ if ($showshoutbox_main == "yes") {
 }
 echo "</div>";
 // ------------- end: shut box ------------------//
-    echo "
-    <div class=\"portlet light bordered \">
-    <div class=\"portlet-title\">
-        <div class=\"caption font - purple - plum\">
-        <h3><i class=\"icon-comments\"></i>
-            <span class=\"caption-subject font-red-sunglo bold uppercase\"> 站点数据 </span></h3>
-        </div>
-    </div>
-    ";
-if ($showstats_main == "yes") {
-?>
-        <table width="100%" class="table">
-            <tr>
-				<?php
-				$Cache->new_page('stats_users', 3000, true);
-				if (!$Cache->get_page()) {
-				$Cache->add_whole_row();
-				$registered = number_format(get_row_count("users"));
-				$unverified = number_format(get_row_count("users", "WHERE status='pending'"));
-				$totalonlinetoday = number_format(get_row_count("users", "WHERE last_access >= " . sqlesc(date("Y-m-d H:i:s", (TIMENOW - 86400)))));
-				$totalonlineweek = number_format(get_row_count("users", "WHERE last_access >= " . sqlesc(date("Y-m-d H:i:s", (TIMENOW - 604800)))));
-				$VIP = number_format(get_row_count("users", "WHERE class=" . UC_VIP));
-				$donated = number_format(get_row_count("users", "WHERE donor = 'yes'"));
-				$warned = number_format(get_row_count("users", "WHERE warned='yes'"));
-				$disabled = number_format(get_row_count("users", "WHERE enabled='no'"));
-				$registered_male = number_format(get_row_count("users", "WHERE gender='Male'"));
-				$registered_female = number_format(get_row_count("users", "WHERE gender='Female'"));
-				?>
-            <tr>
-				<?php
-				twotd($lang_index['row_users_active_today'], $totalonlinetoday);
-				twotd($lang_index['row_users_active_this_week'], $totalonlineweek);
-				?>
-            </tr>
-            <tr>
-				<?php
-				twotd($lang_index['row_registered_users'], $registered . " / " . number_format($maxusers));
-				twotd($lang_index['row_unconfirmed_users'], $unverified);
-				?>
-            </tr>
-            <tr>
-				<?php
-				twotd(get_user_class_name(UC_VIP, false, false, true), $VIP);
-				twotd($lang_index['row_donors'], $donated);
-				?>
-            </tr>
-            <tr>
-				<?php
-				twotd($lang_index['row_warned_users'], $warned);
-				twotd($lang_index['row_banned_users'], $disabled);
-				?>
-            </tr>
-            <tr>
-				<?php
-				twotd($lang_index['row_male_users'], $registered_male);
-				twotd($lang_index['row_female_users'], $registered_female);
-				?>
-            </tr>
-			<?php
-			$Cache->end_whole_row();
-			$Cache->cache_page();
-			}
-			echo $Cache->next_row();
-			?>
-            <tr>
-                <td colspan="4" class="rowhead">&nbsp;</td>
-            </tr>
-			<?php
-			$Cache->new_page('stats_torrents', 1800, true);
-			if (!$Cache->get_page()) {
-				$Cache->add_whole_row();
-				$torrents = number_format(get_row_count("torrents"));
-				$dead = number_format(get_row_count("torrents", "WHERE visible='no'"));
-				$seeders = get_row_count("peers", "WHERE seeder='yes'");
-				$leechers = get_row_count("peers", "WHERE seeder='no'");
-				if ($leechers == 0)
-					$ratio = 0;
-				else
-					$ratio = round($seeders / $leechers * 100);
-				$activewebusernow = get_row_count("users", "WHERE last_access >= " . sqlesc(date("Y-m-d H:i:s", (TIMENOW - 900))));
-				$activewebusernow = number_format($activewebusernow);
-				$activetrackerusernow = number_format(get_single_value("peers", "COUNT(DISTINCT(userid))"));
-				$peers = number_format($seeders + $leechers);
-				$seeders = number_format($seeders);
-				$leechers = number_format($leechers);
-				$totaltorrentssize = mksize(get_row_sum("torrents", "size"));
-				$totaluploaded = get_row_sum("users", "uploaded");
-				$totaldownloaded = get_row_sum("users", "downloaded");
-				$totaldata = $totaldownloaded + $totaluploaded;
-				?>
-                <tr>
-					<?php
-					twotd($lang_index['row_torrents'], $torrents);
-					twotd($lang_index['row_dead_torrents'], $dead);
-					?>
-                </tr>
-                <tr>
-					<?php
-					twotd($lang_index['row_seeders'], $seeders);
-					twotd($lang_index['row_leechers'], $leechers);
-					?>
-                </tr>
-                <tr>
-					<?php
-					twotd($lang_index['row_peers'], $peers);
-					twotd($lang_index['row_seeder_leecher_ratio'], $ratio . "%");
-					?>
-                </tr>
-                <tr>
-					<?php
-					twotd($lang_index['row_active_browsing_users'], $activewebusernow);
-					twotd($lang_index['row_tracker_active_users'], $activetrackerusernow);
-					?>
-                </tr>
-                <tr>
-					<?php
-					twotd($lang_index['row_total_size_of_torrents'], $totaltorrentssize);
-					twotd($lang_index['row_total_uploaded'], mksize($totaluploaded));
-					?>
-                </tr>
-                <tr>
-					<?php
-					twotd($lang_index['row_total_downloaded'], mksize($totaldownloaded));
-					twotd($lang_index['row_total_data'], mksize($totaldata));
-					?>
-                </tr>
-				<?php
-				$Cache->end_whole_row();
-				$Cache->cache_page();
-			}
-			echo $Cache->next_row();
-			?>
-            <tr>
-                <td colspan="4" class="rowhead">&nbsp;</td>
-            </tr>
-			<?php
-			$Cache->new_page('stats_classes', 4535, true);
-			if (!$Cache->get_page()) {
-				$Cache->add_whole_row();
-				$peasants = number_format(get_row_count("users", "WHERE class=" . UC_PEASANT));
-				$users = number_format(get_row_count("users", "WHERE class=" . UC_USER));
-				$powerusers = number_format(get_row_count("users", "WHERE class=" . UC_POWER_USER));
-				$eliteusers = number_format(get_row_count("users", "WHERE class=" . UC_ELITE_USER));
-				$crazyusers = number_format(get_row_count("users", "WHERE class=" . UC_CRAZY_USER));
-				$insaneusers = number_format(get_row_count("users", "WHERE class=" . UC_INSANE_USER));
-				$veteranusers = number_format(get_row_count("users", "WHERE class=" . UC_VETERAN_USER));
-				$extremeusers = number_format(get_row_count("users", "WHERE class=" . UC_EXTREME_USER));
-				$ultimateusers = number_format(get_row_count("users", "WHERE class=" . UC_ULTIMATE_USER));
-				$nexusmasters = number_format(get_row_count("users", "WHERE class=" . UC_NEXUS_MASTER));
-				?>
-                <tr>
-					<?php
-					twotd(get_user_class_name(UC_PEASANT, false, false, true), $peasants);
-					twotd(get_user_class_name(UC_USER, false, false, true), $users);
-					?>
-                </tr>
-                <tr>
-					<?php
-					twotd(get_user_class_name(UC_POWER_USER, false, false, true), $powerusers);
-					twotd(get_user_class_name(UC_ELITE_USER, false, false, true), $eliteusers);
-					?>
-                </tr>
-                <tr>
-					<?php
-					twotd(get_user_class_name(UC_CRAZY_USER, false, false, true), $crazyusers);
-					twotd(get_user_class_name(UC_INSANE_USER, false, false, true), $insaneusers);
-					?>
-                </tr>
-                <tr>
-					<?php
-					twotd(get_user_class_name(UC_VETERAN_USER, false, false, true), $veteranusers);
-					twotd(get_user_class_name(UC_EXTREME_USER, false, false, true), $extremeusers);
-					?>
-                </tr>
-                <tr>
-					<?php
-					twotd(get_user_class_name(UC_ULTIMATE_USER, false, false, true), $ultimateusers);
-					twotd(get_user_class_name(UC_NEXUS_MASTER, false, false, true), $nexusmasters);
-					?>
-                </tr>
-				<?php
-				$Cache->end_whole_row();
-				$Cache->cache_page();
-			}
-			echo $Cache->next_row();
-			}
-			?>
 
-            </td></tr></table>
-    </div>
+
+
+
+echo "          <div class=\"portlet light bordered \">
+                        <div class=\"portlet-title\">
+                                        <div class=\"caption font-red-sunglo\">
+                                            <h3><i class=\"icon-tasks\"></i>
+                                            <span class=\"caption-subject font-red-sunglo bold uppercase\"> 免责声明 </span></h3>
+                                        </div>
+                        </div>
+                    ";
+// ------------- start: disclaimer  免责声明   ----------//-->
+echo "
+<table width=\"100%\">
+    <tr>
+        <td style=\"border: 0px\">
+";
+echo "<blockquote style='font-size: 15px'>" . $lang_index['text_disclaimer_content'].$lang_index['text_service_for'] . "</blockquote></td>
+    </tr>
+</table>";
+echo "</div>";
+// ------------- end: disclaimer ------------------//-->
+
+echo "          <div class=\"portlet light bordered \">
+                        <div class=\"portlet-title\">
+                                        <div class=\"caption font - purple - plum\">
+                                            <h3><i class=\"glyphicon glyphicon-list font-green-meadow\"></i>
+                                            <span class=\"caption-subject font-green-meadow bold uppercase\"> 温馨提示 </span></h3>
+                                        </div>
+                        </div>
+                    ";
+echo "
+<table style=\"margin-left: 5%\" width=\"90%\" class=\"main\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\"><tr ><td class=\"embedded\" >
+<div align=\"center\"><br /><font class=\"medium\">";
+echo $lang_index['text_browser_note'] ."</font></div>
+</td></tr></table>
+";
+echo "</div>";
+
+
+?>
 </div>
 </div>
 <!--row end -->

@@ -54,6 +54,25 @@ function get_row_sum($table, $field, $suffix = "")
 	return $a[0];
 }
 
+function dump($var){
+    echo "<pre>";
+    print_r($var);
+    echo "</pre>";
+}
+
+function get_last_site_date($type,$id){
+    $r=sql_query("SELECT $type FROM site_data WHERE id=$id");
+    $a=mysql_affected_rows($r);
+    return $a[0];
+}
+
+function get_row_sum_all($table, $field, $suffix = "")
+{
+	$r = sql_query("SELECT SUM($field) FROM $table") or sqlerr(__FILE__, __LINE__);
+	$a = mysql_fetch_row($r) or die(mysql_error());
+	return $a[0];
+}
+
 function get_single_value($table, $field, $suffix = ""){
 	$r = sql_query("SELECT $field FROM $table $suffix LIMIT 1") or sqlerr(__FILE__, __LINE__);
 	$a = mysql_fetch_row($r) or die(mysql_error());
@@ -2689,6 +2708,11 @@ function menu ($selected = "home") {
                                     <li>
                                         <a href=\"users.php\">
                                             <i class=\"glyphicon glyphicon-list\"></i> 用户列表
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href=\"users.php\">
+                                            <i class=\"icon-comments\"></i> 站点信息
                                         </a>
                                     </li>
                                      <li>
