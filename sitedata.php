@@ -10,8 +10,20 @@ dbconn(true);
 require_once(get_langfile_path());
 loggedinorreturn(true);
 stdhead($lang_index['head_home']);
+echo "<script src='./styles/BambooGreen/echarts.min.js'></script>";
 begin_main_frame();
 main_content_start();
+
+$peasants = number_format(get_row_count("users", "WHERE class=" . UC_PEASANT));
+$users = number_format(get_row_count("users", "WHERE class=" . UC_USER));
+$powerusers = number_format(get_row_count("users", "WHERE class=" . UC_POWER_USER));
+$eliteusers = number_format(get_row_count("users", "WHERE class=" . UC_ELITE_USER));
+$crazyusers = number_format(get_row_count("users", "WHERE class=" . UC_CRAZY_USER));
+$insaneusers = number_format(get_row_count("users", "WHERE class=" . UC_INSANE_USER));
+$veteranusers = number_format(get_row_count("users", "WHERE class=" . UC_VETERAN_USER));
+$extremeusers = number_format(get_row_count("users", "WHERE class=" . UC_EXTREME_USER));
+$ultimateusers = number_format(get_row_count("users", "WHERE class=" . UC_ULTIMATE_USER));
+$nexusmasters = number_format(get_row_count("users", "WHERE class=" . UC_NEXUS_MASTER));
 $registered = number_format(get_row_count("users"));
 $unverified = number_format(get_row_count("users", "WHERE status='pending'"));
 $totalonlinetoday = number_format(get_row_count("users", "WHERE last_access >= " . sqlesc(date("Y-m-d H:i:s", (TIMENOW - 86400)))));
@@ -26,9 +38,6 @@ $all_uploaded=get_row_sum_all("users","uploaded");
 $all_download=get_row_sum_all("users","downloaded");
 $last_uploaded=get_last_site_date("upload",$lid);
 $last_downloaded=get_last_site_date("download",$lid);
-static $count=0;
-
-
 
 //获得最后一条记录
 $sql=sql_query("SELECT * FROM site_data ORDER BY date DESC LIMIT 2");
@@ -37,17 +46,9 @@ while($last[]=mysql_fetch_assoc($sql));
 
 //判断时间，从而判断是否插入
 $today_date=strtotime(date('Y-m-d'));
-if (isset($_POST['hits'])){
-    if ($today_date==$last[0]['date']){
-        $count++;
-    }else{
-        $count=0;
-        $count++;
-    }
-}
-$pv=$count;
-
-echo($today_date!=$last[0]['date']);
+$data=file_get_contents('./counter');
+$data=json_decode($data,true);
+$pv=$data[0]['count'];
 
 if ($today_date!=$last[0]['date']){
     $user=intval($register);
@@ -59,25 +60,29 @@ while($last[]=mysql_fetch_assoc($sql));
 //更新本天的数据
 $t_upload=$all_uploaded-$last[1]['upload'];
 $t_download=$all_download-last[1]['download'];
-sql_query("UPDATE site_data  SET t_upload=$t_upload ,t_download=$t_download ORDER BY date DESC LIMIT 1");
-$sql=sql_query("SELECT t_upload,t_download FROM site_data ORDER BY date DESC LIMIT 30");
+sql_query("UPDATE site_data  SET t_upload=$t_upload ,t_download=$t_download,pv=$pv ORDER BY date DESC LIMIT 1");
+$sql=sql_query("SELECT t_upload,t_download,date FROM site_data ORDER BY date DESC LIMIT 30");
 while($var=mysql_fetch_row($sql)){
     $up_down[]=$var;
 }
 $up_down=array_reverse($up_down);
 foreach ($up_down as $item){
-    $ups[]=$item[0];
-    $downs[]=$item[1];
+    $ups[]=number_format($item[0]/(1024*1024*1024),3,'.','');
+    $downs[]=number_format($item[1]/(1024*1024*1024),3,'.','');
+    $date[]=date('Y/m/d',$item[2]);
 }
 $new_user=$last[0]['user']-$last[1]['user'];
+$old_user=$last[1]['user'];
+$date=json_encode($date,true);
+$ups=json_encode($ups,true);
+$downs=json_encode($downs,true);
 
-dump($ups);
-dump($downs);
-echo $new_user;
-
-
-
-
+$month_start=strtotime(date('Y-m'));
+$month_end=strtotime(date('Y-m-d'));
+$res=sql_query("SELECT SUM(t_upload),SUM(t_download) FROM site_data WHERE date BETWEEN $month_start AND $month_end");
+$sums=mysql_fetch_row($res);
+$month_upload=number_format($sums[0]/(1024*1024*1024*1024),4,'.','');
+$month_download=number_format($sums[1]/(1024*1024*1024*1024),4,'.','');
 echo "
     <div class=\"portlet light bordered \">
     <div class=\"portlet-title\">
@@ -86,19 +91,182 @@ echo "
             <span class=\"caption-subject font-red-sunglo bold uppercase\"> 站点数据 </span></h3>
         </div>
     </div>
+    
+    <div class='container'>
+        <div class='row'>
+            <div class='col-sm-12'>
+                <div id='upload' style='height: 300px;width: 100%'></div>
+                <div id='download' style='height: 300px;width: 100%'></div>
+            </div>
+        </div>
+        <div class='row'>
+            <div class='col-sm-4'>
+                 <div id='user' style='height: 300px;width: 100%' ></div>
+            </div>
+            <div class='col-sm-4'>
+                <div id='updown' style='height: 300px;width: 100%'></div>
+            </div>
+            <div class='col-sm-4'>
+                <div id='user_type' style='height: 300px;width: 100%'></div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        var upload=echarts.init(document.getElementById('upload'));
+        var   option_up = {
+                title: {
+                    text: '近30天每日上传量',
+                 
+                },
+                tooltip: {
+                    axisPointer:{
+                        show:true,
+                        type:'line'
+                    },
+                    formatter:'日期:{b}<br>{a}:{c} GB'
+                },
+                xAxis: {
+                    data: $date
+                },
+                yAxis: {},
+                series: [{
+                    name: '上传量',
+                    type: 'line',
+                    data: $ups
+                }]
+            }
+         upload.setOption(option_up);
+        
+        var download=echarts.init(document.getElementById('download'));
+        var   option_down = {
+                title: {
+                    text: '近30天每日下载量'
+                },
+                tooltip: {
+                    formatter:'日期:{b}<br>{a}:{c} GB'
+                },
+                legend: {
+                    data:['销量']
+                },
+                xAxis: {
+                    data: $date
+                },
+                yAxis: {},
+                series: [{
+                    name: '下载量',
+                    type: 'line',
+                    data: $downs
+                }]
+            }
+         download.setOption(option_down);
+        
+        
+        var user=echarts.init(document.getElementById('user'));
+        var   option_user = {
+                title: {
+                    text: '用户分析'
+                },
+                tooltip: {
+                },
+                xAxis: {
+                    data: ['老用户','新用户']
+                },
+                yAxis: {},
+                series: [{
+                    name: '用户人数',
+                    type: 'bar',
+                    data: [$old_user,$new_user]
+                }]
+            }
+         user.setOption(option_user);
+        
+        
+        var updown=echarts.init(document.getElementById('updown'));
+        var   option_updown = {
+                title: {
+                    text: '本月数据总量分析'
+                },
+                tooltip: {
+                    formatter:'{a}:{c} TB'
+                },
+                xAxis: {
+                    data: ['上传','下载']
+                },
+                yAxis: {},
+                series: [{
+                    name: '数据量',
+                    type: 'bar',
+                    data: [$month_upload,$month_download]
+                }]
+            }
+         updown.setOption(option_updown);
+        
+        
+        var user_type=echarts.init(document.getElementById('user_type'));
+        var   option_user_type = {
+            
+             title: {
+                    text: '用户类型分析'
+                },
+                tooltip: {
+                },
+                xAxis: {
+                  data: ['Peasant','User','Power User','Elite User','Crazy User','Insane User']
+
+                },
+                yAxis: {},
+                series: [{
+                    name: '用户类型',
+                    type: 'bar',
+                    data:[
+                                $peasants,
+                                $users,
+                                $powerusers,
+                                $eliteusers,
+                                $crazyusers,
+                                $insaneusers,
+                                $veteranusers,
+                                $extremeusers,
+                                $ultimateusers,
+                                $nexusmasters,
+                            ]
+                }]
+        }
+                
+         user_type.setOption(option_user_type);
+    </script>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     ";
+
+
+
 ?>
 
-<table class="table table-bordered">
-    <tr>
-        <td>今日上传</td>
-        <td>今日下载</td>
-    </tr>
-    <tr>
-        <td></td>
-        <td></td>
-    </tr>
-</table>
+
+
+
+
+
+
+
+
+
+
 
 <table width="100%" class="table">
     <tr>
@@ -196,16 +364,6 @@ echo "
         <td colspan="4" class="rowhead">&nbsp;</td>
     </tr>
     <?php
-        $peasants = number_format(get_row_count("users", "WHERE class=" . UC_PEASANT));
-        $users = number_format(get_row_count("users", "WHERE class=" . UC_USER));
-        $powerusers = number_format(get_row_count("users", "WHERE class=" . UC_POWER_USER));
-        $eliteusers = number_format(get_row_count("users", "WHERE class=" . UC_ELITE_USER));
-        $crazyusers = number_format(get_row_count("users", "WHERE class=" . UC_CRAZY_USER));
-        $insaneusers = number_format(get_row_count("users", "WHERE class=" . UC_INSANE_USER));
-        $veteranusers = number_format(get_row_count("users", "WHERE class=" . UC_VETERAN_USER));
-        $extremeusers = number_format(get_row_count("users", "WHERE class=" . UC_EXTREME_USER));
-        $ultimateusers = number_format(get_row_count("users", "WHERE class=" . UC_ULTIMATE_USER));
-        $nexusmasters = number_format(get_row_count("users", "WHERE class=" . UC_NEXUS_MASTER));
         ?>
         <tr>
             <?php

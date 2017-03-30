@@ -35,10 +35,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 	}
 }
 
-echo "<script>
-
-
-</script>";
 // ------------------------------------------  index strat ---------------------------------------------------------------
 stdhead($lang_index['head_home']);
 begin_main_frame();
@@ -578,4 +574,9 @@ echo "
     </div>";
 end_main_frame();
 stdfoot();
+echo "<script>
+$(function() {
+  $.post('gethits.php',{'hits':true});
+});
+</script>";
 ?>
