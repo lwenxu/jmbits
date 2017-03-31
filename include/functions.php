@@ -2711,7 +2711,7 @@ function menu ($selected = "home") {
                                         </a>
                                     </li>
                                     <li>
-                                        <a href=\"users.php\">
+                                        <a href=\"sitedata.php\">
                                             <i class=\"icon-comments\"></i> 站点信息
                                         </a>
                                     </li>
