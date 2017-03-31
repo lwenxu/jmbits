@@ -51,16 +51,15 @@ $data=json_decode($data,true);
 $pv=$data[0]['count'];
 
 if ($today_date!=$last[0]['date']){
-    $user=intval($register);
     $totalonlinetoday=intval($totalonlinetoday);
-    sql_query("INSERT INTO site_data(user,ip,date,pv,upload,download) VALUES ($user,$totalonlinetoday,$today_date,$pv,$all_uploaded,$all_download)") or sqlerr();
+    sql_query("INSERT INTO site_data(user,ip,date,pv,upload,download) VALUES ($registered,$totalonlinetoday,$today_date,$pv,$all_uploaded,$all_download)") or sqlerr();
 }
 $sql=sql_query("SELECT * FROM site_data ORDER BY date DESC LIMIT 2");
 while($last[]=mysql_fetch_assoc($sql));
 //更新本天的数据
 $t_upload=$all_uploaded-$last[1]['upload'];
-$t_download=$all_download-last[1]['download'];
-sql_query("UPDATE site_data  SET t_upload=$t_upload ,t_download=$t_download,pv=$pv ORDER BY date DESC LIMIT 1");
+$t_download=$all_download-$last[1]['download'];
+$am=sql_query("UPDATE site_data  SET user=$registered, upload=$all_uploaded,download=$all_download, t_upload=$t_upload ,t_download=$t_download,pv=$pv ORDER BY date DESC LIMIT 1") or sqlerr();
 $sql=sql_query("SELECT t_upload,t_download,date FROM site_data ORDER BY date DESC LIMIT 30");
 while($var=mysql_fetch_row($sql)){
     $up_down[]=$var;
