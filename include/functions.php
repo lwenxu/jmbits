@@ -2599,6 +2599,11 @@ function menu ($selected = "home") {
 //	echo "<li><a href='messages.php'>"."<span class='icon-bell'></span>&nbsp;<span class='badge'>$unread</span></a></li>";
 //	echo "<li><a href='logout.php'><span class='glyphicon glyphicon-log-out'></span></a></li>";
     $avatar= $CURUSER['avatar']? $CURUSER['avatar']: 'pic/default_avatar.png';
+    if ($unread){
+	    echo "<audio  controls=\"controls\" autoplay=\"autoplay\" id=\"audio_player\" src=\"./assets/music/1.mp3\" style=\"display:none;\">  
+    </audio>  ";
+    }
+
 	echo "</ul>
 
 
@@ -2607,7 +2612,7 @@ function menu ($selected = "home") {
                             <li class=\"dropdown dropdown-extended dropdown-notification\" id=\"header_notification_bar\">
                                 <a href=\"messages.php\">
                                     <i class=\"icon-bell\"></i>
-                                    <span class=\"badge badge-default\"> $unread </span>
+                                    <span class=\"badge badge-danger\"> $unread </span>
                                 </a>
                             </li>
                             
