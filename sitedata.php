@@ -13,7 +13,7 @@ stdhead($lang_index['head_home']);
 echo "<script src='./styles/BambooGreen/echarts.min.js'></script>";
 begin_main_frame();
 main_content_start();
-
+date_default_timezone_set("Asia/Shanghai");
 $peasants = number_format(get_row_count("users", "WHERE class=" . UC_PEASANT));
 $users = number_format(get_row_count("users", "WHERE class=" . UC_USER));
 $powerusers = number_format(get_row_count("users", "WHERE class=" . UC_POWER_USER));
@@ -36,6 +36,10 @@ $registered_male = number_format(get_row_count("users", "WHERE gender='Male'"));
 $registered_female = number_format(get_row_count("users", "WHERE gender='Female'"));
 $all_uploaded=get_row_sum_all("users","uploaded");
 $all_download=get_row_sum_all("users","downloaded");
+//获得最后一条记录的id
+$result = sql_query("SELECT id FROM site_data ORDER BY id DESC LIMIT 1");
+$arr = mysql_fetch_assoc($result);
+$lid = $arr['id'];
 $last_uploaded=get_last_site_date("upload",$lid);
 $last_downloaded=get_last_site_date("download",$lid);
 
@@ -68,11 +72,13 @@ $up_down=array_reverse($up_down);
 foreach ($up_down as $item){
     $ups[]=number_format($item[0]/(1024*1024*1024),3,'.','');
     $downs[]=number_format($item[1]/(1024*1024*1024),3,'.','');
-    $date[]=date('Y/m/d',$item[2]);
+    $date[]=date('d',$item[2]);
+    $date_complete[]= date('Y-m-d', $item[2]);
 }
 $new_user=$last[0]['user']-$last[1]['user'];
 $old_user=$last[1]['user'];
 $date=json_encode($date,true);
+$date_complete=json_encode($date_complete,true);
 $ups=json_encode($ups,true);
 $downs=json_encode($downs,true);
 
@@ -82,6 +88,54 @@ $res=sql_query("SELECT SUM(t_upload),SUM(t_download) FROM site_data WHERE date B
 $sums=mysql_fetch_row($res);
 $month_upload=number_format($sums[0]/(1024*1024*1024*1024),4,'.','');
 $month_download=number_format($sums[1]/(1024*1024*1024*1024),4,'.','');
+
+
+//获取当天的day_id
+$today_date = strtotime(date('Y-m-d'));
+$result = sql_query("SELECT id FROM site_data WHERE date=$today_date");
+$arr = mysql_fetch_assoc($result);
+$day_id = $arr['id'];
+
+//获得最后一条记录的upload总量
+$result = sql_query("SELECT upload FROM site_data ORDER BY id DESC LIMIT 1");
+$arr = mysql_fetch_assoc($result);
+$upload_ye = $arr['upload'];
+
+if (isset($_GET['hour_id'])){
+	$today_date =strtotime(date("Y-m-$_GET[hour_id]"));
+	$result = sql_query("SELECT id FROM site_data WHERE date=$today_date");
+	$arr = mysql_fetch_assoc($result);
+	$day_id = $arr['id'];
+}
+//取出今天的数据
+$res = sql_query("SELECT * FROM hour_data WHERE day_id=$day_id ORDER BY data");
+while($hour_data[] = mysql_fetch_row($res)){
+}
+$hours=array();
+foreach ($hour_data as $keys=>$columns){
+    if(is_array($columns)){
+        $hours[date('H', $columns[1])]=$columns[2];
+    }
+}
+
+for ($j=0;$j<24;$j++){
+    $time_fmate[]=(string)$j;
+}
+$time_fmate=json_encode($time_fmate);
+
+$hours_add=array();
+
+$hour_keys=array_keys($hours);
+for ($hk = 0; $hk < count($hours)-1; $hk++){
+    if ($hour_keys[$hk]==0){
+
+        $hours_add[]= number_format(($hours[$hour_keys[$hk]] - $last_uploaded) / (1024 * 1024 * 1024), 3, '.', '');
+    }else{
+	    $hours_add[] = number_format(($hours[$hour_keys[$hk+1]] - $hours[$hour_keys[$hk]]) / (1024 * 1024 * 1024), 3, '.', '');
+    }
+}
+$hours_add=json_encode($hours_add);
+
 echo "
     <div class=\"portlet light bordered \">
     <div class=\"portlet-title\">
@@ -95,6 +149,7 @@ echo "
         <div class='row'>
             <div class='col-sm-12'>
                 <div id='upload' style='height: 300px;width: 100%'></div>
+                <div id='upload_time' style='height: 300px;width: 100%'></div>
                 <div id='download' style='height: 300px;width: 100%'></div>
             </div>
         </div>
@@ -115,7 +170,7 @@ echo "
         var upload=echarts.init(document.getElementById('upload'));
         var   option_up = {
                 title: {
-                    text: '近30天每日上传量',
+                    text: '近30天每日上传量(可点击查看每天各个小时详情)',
                  
                 },
                 tooltip: {
@@ -123,7 +178,7 @@ echo "
                         show:true,
                         type:'line'
                     },
-                    formatter:'日期:{b}<br>{a}:{c} GB'
+                    formatter:'{a}:{c} GB'
                 },
                 xAxis: {
                     data: $date
@@ -136,6 +191,44 @@ echo "
                 }]
             }
          upload.setOption(option_up);
+        upload.on('click', function (params) {
+            window.open('http://127.0.0.1/nwupt/sitedata.php?hour_id='+params.name,'_self');
+        });
+        
+        var upload_time=echarts.init(document.getElementById('upload_time'));
+        var   option_up_time = {
+                title: {
+                    text: '每小时实时上传',
+                 
+                },
+                tooltip: {
+                    axisPointer:{
+                        show:true,
+                        type:'line'
+                    },
+                    formatter:'{a}:{c} GB'
+                },
+                xAxis: {
+                    data: $time_fmate
+                },
+                yAxis: {},
+                series: [{
+                    name: '上传量',
+                    type: 'bar',
+                    data: $hours_add
+                }]
+            }
+         upload_time.setOption(option_up_time);
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         
         var download=echarts.init(document.getElementById('download'));
         var   option_down = {
