@@ -7,7 +7,7 @@ set_time_limit(0);
 ignore_user_abort(1);
 
 
-for ($i=0;$i<10;$i++){
+for(;true;){
 	$date = date('H');
 	//获取当天的day_id
 	$today_date = strtotime(date('Y-m-d'));

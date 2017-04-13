@@ -117,7 +117,6 @@ foreach ($hour_data as $keys=>$columns){
         $hours[date('H', $columns[1])]=$columns[2];
     }
 }
-
 for ($j=0;$j<24;$j++){
     $time_fmate[]=(string)$j;
 }
@@ -126,14 +125,33 @@ $time_fmate=json_encode($time_fmate);
 $hours_add=array();
 
 $hour_keys=array_keys($hours);
-for ($hk = 0; $hk < count($hours)-1; $hk++){
-    if ($hour_keys[$hk]==0){
-
-        $hours_add[]= number_format(($hours[$hour_keys[$hk]] - $last_uploaded) / (1024 * 1024 * 1024), 3, '.', '');
-    }else{
-	    $hours_add[] = number_format(($hours[$hour_keys[$hk+1]] - $hours[$hour_keys[$hk]]) / (1024 * 1024 * 1024), 3, '.', '');
+$test=0;
+$flag=0;
+for ($hk=0;$hk<intval($hour_keys[count($hour_keys)-1]);$hk++) {
+    for ($m = 0; $m < count($hours) - 1; $m++) {
+        if (intval($hour_keys[$hk]) == $hk) {
+            if ($hour_keys[$hk] == 0) {
+                $hours_add[] = number_format(($hours[$hour_keys[$m]] - $last_uploaded) / (1024 * 1024 * 1024), 3, '.', '');
+            } else {
+                $hours_add[] = number_format(($hours[$hour_keys[$m + 1]] - $hours[$hour_keys[$m]]) / (1024 * 1024 * 1024), 3, '.', '');
+            }
+            break;
+        }else{
+            $test++;
+            $flag=1;
+        }
+    }
+    if ($test==count($hours)-1&&$flag==1){
+        $hours_add[]=0;
     }
 }
+//for ($hk = 0; $hk < count($hours)-1; $hk++){
+//    if ($hour_keys[$hk]==0){
+//        $hours_add[]= number_format(($hours[$hour_keys[$hk]] - $last_uploaded) / (1024 * 1024 * 1024), 3, '.', '');
+//    }else{
+//	    $hours_add[] = number_format(($hours[$hour_keys[$hk+1]] - $hours[$hour_keys[$hk]]) / (1024 * 1024 * 1024), 3, '.', '');
+//    }
+//}
 $hours_add=json_encode($hours_add);
 
 echo "
