@@ -5,6 +5,7 @@
  * Date: 2017/3/30
  * Time: 16:06
  */
+die("暂时无法访问");
 date_default_timezone_set("Asia/Shanghai");
 require "include/bittorrent.php";
 dbconn(true);
