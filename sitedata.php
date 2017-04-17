@@ -5,7 +5,7 @@
  * Date: 2017/3/30
  * Time: 16:06
  */
-//date_default_timezone_set("Asia/Shanghai");
+date_default_timezone_set("Asia/Shanghai");
 require "include/bittorrent.php";
 dbconn(true);
 require_once(get_langfile_path());
@@ -111,11 +111,32 @@ if (isset($_GET['hour_id'])){
 $res = sql_query("SELECT * FROM hour_data WHERE day_id=$day_id ORDER BY data");
 while($hour_data[] = mysql_fetch_row($res)){
 }
+
+
+
+$hour_data[0][0]=24;
+$hour_data[0][1]=1492444800;
+$hour_data[0][2]=28826913876160;
+$hour_data[0][3]=24;
+$hour_data[0][4]=9;
+$hour_data[1][0]=25;
+$hour_data[1][1]=1492444800;
+$hour_data[1][2]=28826913876160;
+$hour_data[1][3]=24;
+$hour_data[1][4]=10;
+$hour_data[2][0]=26;
+$hour_data[2][1]=1492444800;
+$hour_data[2][2]=28826913876160;
+$hour_data[2][3]=24;
+$hour_data[2][4]=11;
+
+
+
 $hours=array();
+
 foreach ($hour_data as $columns){
     if(is_array($columns)){
-        $hours[date('H', $columns[1])]=$columns[2];
-        echo date('H', $columns[1]);
+        $hours[$columns[4]]=$columns[2];
     }
 }
 for ($j=0;$j<24;$j++){
@@ -123,29 +144,50 @@ for ($j=0;$j<24;$j++){
 }
 $time_fmate=json_encode($time_fmate);
 
-$hours_add=array();
+$hours_all=array();
 
-$hour_keys=array_keys($hours);
-$test=0;
-$flag=0;
-for ($hk=0;$hk<intval($hour_keys[count($hour_keys)-1]);$hk++) {
-    for ($m = 0; $m < count($hours) - 1; $m++) {
-        if (intval($hour_keys[$hk]) == $hk) {
-            if ($hour_keys[$hk] == 0) {
-                $hours_add[] = number_format(($hours[$hour_keys[$m]] - $last_uploaded) / (1024 * 1024 * 1024), 3, '.', '');
-            } else {
-                $hours_add[] = number_format(($hours[$hour_keys[$m + 1]] - $hours[$hour_keys[$m]]) / (1024 * 1024 * 1024), 3, '.', '');
-            }
-            break;
-        }else{
-            $test++;
-            $flag=1;
+for ($i = 0; $i < 25; $i++) {
+    $hours_all[$i]=0;
+}
+foreach ($hours as $k=>$downbit) {
+    for ($i = 0; $i < 24; $i++) {
+        if ($i == $k) {
+            $hours_all[$k] = $downbit;
         }
     }
-    if ($test==count($hours)-1&&$flag==1){
-        $hours_add[]=0;
+}
+for ($j = 0; $j < 24; $j++){
+    if ($hours_all[$j]!=0){
+        if($j==0){
+            $hours_add[$j]=$hours_all[$j]-$last_downloaded;
+        }else{
+            $hours_add[$j]=$hours_all[$j]-$hours_all[$j-1];
+        }
+    }else{
+        $hours_add[$j]=0;
     }
 }
+//$hour_keys=array_keys($hours);
+//$test=0;
+//$flag=0;
+//for ($hk=0;$hk<intval($hour_keys[count($hour_keys)-1]);$hk++) {
+//    for ($m = 0; $m < count($hours) - 1; $m++) {
+//        if (intval($hour_keys[$hk]) == $hk) {
+//            if ($hour_keys[$hk] == 0) {
+//                $hours_add[] = number_format(($hours[$hour_keys[$m]] - $last_uploaded) / (1024 * 1024 * 1024), 3, '.', '');
+//            } else {
+//                $hours_add[] = number_format(($hours[$hour_keys[$m + 1]] - $hours[$hour_keys[$m]]) / (1024 * 1024 * 1024), 3, '.', '');
+//            }
+//            break;
+//        }else{
+//            $test++;
+//            $flag=1;
+//        }
+//    }
+//    if ($test==count($hours)-1&&$flag==1){
+//        $hours_add[]=0;
+//    }
+//}
 //for ($hk = 0; $hk < count($hours)-1; $hk++){
 //    if ($hour_keys[$hk]==0){
 //        $hours_add[]= number_format(($hours[$hour_keys[$hk]] - $last_uploaded) / (1024 * 1024 * 1024), 3, '.', '');
@@ -154,7 +196,6 @@ for ($hk=0;$hk<intval($hour_keys[count($hour_keys)-1]);$hk++) {
 //    }
 //}
 $hours_add=json_encode($hours_add);
-
 echo "
     <div class=\"portlet light bordered \">
     <div class=\"portlet-title\">
