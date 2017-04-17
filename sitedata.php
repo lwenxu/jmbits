@@ -5,6 +5,7 @@
  * Date: 2017/3/30
  * Time: 16:06
  */
+//date_default_timezone_set("Asia/Shanghai");
 require "include/bittorrent.php";
 dbconn(true);
 require_once(get_langfile_path());
@@ -13,7 +14,6 @@ stdhead($lang_index['head_home']);
 echo "<script src='./styles/BambooGreen/echarts.min.js'></script>";
 begin_main_frame();
 main_content_start();
-date_default_timezone_set("Asia/Shanghai");
 $peasants = number_format(get_row_count("users", "WHERE class=" . UC_PEASANT));
 $users = number_format(get_row_count("users", "WHERE class=" . UC_USER));
 $powerusers = number_format(get_row_count("users", "WHERE class=" . UC_POWER_USER));
@@ -112,9 +112,10 @@ $res = sql_query("SELECT * FROM hour_data WHERE day_id=$day_id ORDER BY data");
 while($hour_data[] = mysql_fetch_row($res)){
 }
 $hours=array();
-foreach ($hour_data as $keys=>$columns){
+foreach ($hour_data as $columns){
     if(is_array($columns)){
         $hours[date('H', $columns[1])]=$columns[2];
+        echo date('H', $columns[1]);
     }
 }
 for ($j=0;$j<24;$j++){

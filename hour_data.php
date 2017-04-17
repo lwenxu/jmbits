@@ -1,13 +1,13 @@
 <?php
 require "include/bittorrent.php";
 dbconn(true);
-date_default_timezone_set("Asia/Shanghai");
+//date_default_timezone_set("Asia/Shanghai");
 
 set_time_limit(0);
 ignore_user_abort(1);
 
 
-for(;true;){
+while(true){
 	$date = date('H');
 	//获取当天的day_id
 	$today_date = strtotime(date('Y-m-d'));
@@ -16,7 +16,6 @@ for(;true;){
 	$day_id = $arr['id'];
 
 	$today_stamp = strtotime(date('Y-m-d-H'));
-	echo $today_stamp;
 	//当前的upload总量
 	$all_uploaded = get_row_sum_all("users", "uploaded");
 
