@@ -64,30 +64,31 @@ else{
 ?>
 <div style="margin-top: 8px">
 <?php
-	print("<table  cellspacing=\"0\" cellpadding=\"5\" align=\"center\" width=\"940\"><tr>");
-	print("<td class=\"colhead\">".$lang_uploaders['col_username']."</td>");
-	print("<td class=\"colhead\">".$lang_uploaders['col_torrents_size']."</td>");
-	print("<td class=\"colhead\">".$lang_uploaders['col_torrents_num']."</td>");
-	print("<td class=\"colhead\">".$lang_uploaders['col_last_upload_time']."</td>");
-	print("<td class=\"colhead\">".$lang_uploaders['col_last_upload']."</td>");
+    $user_class=1;
+	print("<table class='table table-bordered'><tr>");
+	print("<td >".$lang_uploaders['col_username']."</td>");
+	print("<td >".$lang_uploaders['col_torrents_size']."</td>");
+	print("<td >".$lang_uploaders['col_torrents_num']."</td>");
+	print("<td >".$lang_uploaders['col_last_upload_time']."</td>");
+	print("<td>".$lang_uploaders['col_last_upload']."</td>");
 	print("</tr>");
-	$res = sql_query("SELECT users.id AS userid, users.username AS username, COUNT(torrents.id) AS torrent_count, SUM(torrents.size) AS torrent_size FROM torrents LEFT JOIN users ON torrents.owner=users.id WHERE users.class >= ".UC_UPLOADER." AND torrents.added > ".sqlesc($sqlstarttime)." AND torrents.added < ".sqlesc($sqlendtime)." GROUP BY userid ORDER BY ".$order);
+	$res = sql_query("SELECT users.id AS userid, users.username AS username, COUNT(torrents.id) AS torrent_count, SUM(torrents.size) AS torrent_size FROM torrents LEFT JOIN users ON torrents.owner=users.id WHERE users.class >= ".$user_class." AND torrents.added > ".sqlesc($sqlstarttime)." AND torrents.added < ".sqlesc($sqlendtime)." GROUP BY userid ORDER BY ".$order);
 	$hasupuserid=array();
 	while($row = mysql_fetch_array($res))
 	{
 		$res2 = sql_query("SELECT torrents.id, torrents.name, torrents.added FROM torrents WHERE owner=".$row['userid']." ORDER BY id DESC LIMIT 1");
 		$row2 = mysql_fetch_array($res2);
 		print("<tr>");
-		print("<td class=\"colfollow\">".get_username($row['userid'], false, true, true, false, false, true)."</td>");
-		print("<td class=\"colfollow\">".($row['torrent_size'] ? mksize($row['torrent_size']) : "0")."</td>");
-		print("<td class=\"colfollow\">".$row['torrent_count']."</td>");
-		print("<td class=\"colfollow\">".($row2['added'] ? gettime($row2['added']) : $lang_uploaders['text_not_available'])."</td>");
-		print("<td class=\"colfollow\">".($row2['name'] ? "<a href=\"details.php?id=".$row2['id']."\">".htmlspecialchars($row2['name'])."</a>" : $lang_uploaders['text_not_available'])."</td>");
+		print("<td >".get_username($row['userid'], false, true, true, false, false, true)."</td>");
+		print("<td >".($row['torrent_size'] ? mksize($row['torrent_size']) : "0")."</td>");
+		print("<td >".$row['torrent_count']."</td>");
+		print("<td >".($row2['added'] ? gettime($row2['added']) : $lang_uploaders['text_not_available'])."</td>");
+		print("<td>".($row2['name'] ? "<a href=\"details.php?id=".$row2['id']."\">".htmlspecialchars($row2['name'])."</a>" : $lang_uploaders['text_not_available'])."</td>");
 		print("</tr>");
 		$hasupuserid[]=$row['userid'];
 		unset($row2);
 	}
-	$res3=sql_query("SELECT users.id AS userid, users.username AS username, 0 AS torrent_count, 0 AS torrent_size FROM users WHERE class >= ".UC_UPLOADER.(count($hasupuserid) ? " AND users.id NOT IN (".implode(",",$hasupuserid).")" : "")." ORDER BY username ASC") or sqlerr(__FILE__, __LINE__);
+	$res3=sql_query("SELECT users.id AS userid, users.username AS username, 0 AS torrent_count, 0 AS torrent_size FROM users WHERE class >= ".$user_class.(count($hasupuserid) ? " AND users.id NOT IN (".implode(",",$hasupuserid).")" : "")." ORDER BY username ASC") or sqlerr(__FILE__, __LINE__);
 	while($row = mysql_fetch_array($res3))
 	{
 		$res2 = sql_query("SELECT torrents.id, torrents.name, torrents.added FROM torrents WHERE owner=".$row['userid']." ORDER BY id DESC LIMIT 1");
