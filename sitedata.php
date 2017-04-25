@@ -5,6 +5,8 @@
  * Date: 2017/3/30
  * Time: 16:06
  */
+
+date_default_timezone_set("Asia/Shanghai");
 require "include/bittorrent.php";
 dbconn(true);
 require_once(get_langfile_path());
@@ -13,7 +15,6 @@ stdhead($lang_index['head_home']);
 echo "<script src='./styles/BambooGreen/echarts.min.js'></script>";
 begin_main_frame();
 main_content_start();
-date_default_timezone_set("Asia/Shanghai");
 $peasants = number_format(get_row_count("users", "WHERE class=" . UC_PEASANT));
 $users = number_format(get_row_count("users", "WHERE class=" . UC_USER));
 $powerusers = number_format(get_row_count("users", "WHERE class=" . UC_POWER_USER));
@@ -36,7 +37,100 @@ $registered_male = number_format(get_row_count("users", "WHERE gender='Male'"));
 $registered_female = number_format(get_row_count("users", "WHERE gender='Female'"));
 $all_uploaded=get_row_sum_all("users","uploaded");
 $all_download=get_row_sum_all("users","downloaded");
-//获得最后一条记录的id
+//获取每天每小时的数据
+$year=date('Y');
+$month=date('m');
+if (isset($_GET['hour_id'])){
+    $day=$_GET['hour_id'];
+}else{
+    $day=date('d');
+}
+$last_day=date('d',time()-3600*24);
+$hour=date('H');
+$res=sql_query("SELECT * FROM site WHERE year=$year and month=$month and day=$last_day and hour=23");
+$result_last=mysql_fetch_assoc($res);
+$last_download=$result_last['download'];
+$res=sql_query("SELECT * FROM site WHERE year=$year and month=$month and day=1 and hour=0");
+$result_last=mysql_fetch_assoc($res);
+$last_month_download=$result_last['download'];
+$res=sql_query("SELECT * FROM site WHERE year=$year and month=$month and day=$day");
+while ($result[]=mysql_fetch_assoc($res)){
+
+}
+foreach ($result as $key=>$item){
+    $hours_download[$item['hour']]=$item['download'];
+}
+array_pop($hours_download);
+//获得24元素的数组  每个元素代表download值
+for ($i=0;$i<24;$i++){
+    foreach ($hours_download as $key=>$item){
+        if ($i==$key){
+            $hours[$i]=$item;
+            break;
+        }else{
+            $hours[$i]=0;
+        }
+    }
+}
+//转化出每小时实际的下载量
+for ($i=0;$i<24;$i++){
+    if ($i==0){
+        $hours_real[$i]=number_format(($hours[$i]-$last_download)/(1024*1024*1024),4,'.','');
+    }else{
+        $hours_real[$i]=number_format(($hours[$i]-$hours[$i-1])/(1024*1024*1024),4,'.','');
+    }
+    if ($hours_real[$i]<0){
+        $hours_real[$i]=0;
+    }
+}
+$hours_real=json_encode($hours_real,1);
+
+//获取每天的数据
+$res=sql_query("SELECT * FROM site WHERE year=$year and month=$month and hour=23");
+while ($days[]=mysql_fetch_assoc($res)){
+
+}
+foreach ($days as $key=>$item){
+    $days_download[$item['day']]=$item['download'];
+}
+array_pop($days_download);
+//获得当前所有天元素的数组  每个元素代表download值
+for ($i=0;$i<count($days_download);$i++){
+    foreach ($days_download as $key=>$item){
+        if ($i==$key){
+            $every_day[$i]=$item;
+            break;
+        }else{
+            $every_day[$i]=0;
+        }
+    }
+}
+//转化出每天实际的下载量
+for ($i=0;$i<count($days_download);$i++){
+    if ($i==0){
+        $day_real[$i]=number_format(($every_day[$i]-$last_month_download)/(1024*1024*1024*1024),4,'.','');
+    }else{
+        $day_real[$i]=number_format(($every_day[$i]-$every_day[$i-1])/(1024*1024*1024*1024),4,'.','');
+    }
+    if ($day_real[$i]<0){
+        $day_real[$i]=0;
+    }
+}
+$first_day=date('Y-m-01');
+$last_month_day=date('Y-m-d',strtotime("$first_day - 1 day"));
+$date_info=explode('-',$last_month_day);
+$last_year_int=intval($date_info[0]);
+$last_month_int=intval($date_info[1]);
+$last_day_int=intval($date_info[2]);
+
+$res=sql_query("SELECT * FROM site WHERE year=$last_year_int and month=$last_month_int and day=$last_day_int and hour=23");
+$result_last=mysql_fetch_assoc($res);
+//上个月下载总量
+$last_month_downloaded=$result_last['download'];
+$this_month_download=$all_download-$last_month_downloaded;
+
+
+
 $result = sql_query("SELECT id FROM site_data ORDER BY id DESC LIMIT 1");
 $arr = mysql_fetch_assoc($result);
 $lid = $arr['id'];
@@ -63,7 +157,7 @@ while($last[]=mysql_fetch_assoc($sql));
 //更新本天的数据
 $t_upload=$all_uploaded-$last[1]['upload'];
 $t_download=$all_download-$last[1]['download'];
-$am=sql_query("UPDATE site_data  SET user=$registered, upload=$all_uploaded,download=$all_download, t_upload=$t_upload ,t_download=$t_download,pv=$pv ORDER BY date DESC LIMIT 1") or sqlerr();
+$am=sql_query("UPDATE site_data  SET user=$registered, upload=$all_uploaded,download=$all_download, t_upload=$t_upload ,t_download=$t_download,pv=$pv WHERE date=$today_date") or sqlerr();
 $sql=sql_query("SELECT t_upload,t_download,date FROM site_data ORDER BY date DESC LIMIT 30");
 while($var=mysql_fetch_row($sql)){
     $up_down[]=$var;
@@ -111,10 +205,31 @@ if (isset($_GET['hour_id'])){
 $res = sql_query("SELECT * FROM hour_data WHERE day_id=$day_id ORDER BY data");
 while($hour_data[] = mysql_fetch_row($res)){
 }
+
+
+
+//$hour_data[0][0]=24;
+//$hour_data[0][1]=1492444800;
+//$hour_data[0][2]=28826913876160;
+//$hour_data[0][3]=24;
+//$hour_data[0][4]=9;
+//$hour_data[1][0]=25;
+//$hour_data[1][1]=1492444800;
+//$hour_data[1][2]=28826913876160;
+//$hour_data[1][3]=24;
+//$hour_data[1][4]=10;
+//$hour_data[2][0]=26;
+//$hour_data[2][1]=1492444800;
+//$hour_data[2][2]=28826913876160;
+//$hour_data[2][3]=24;
+//$hour_data[2][4]=11;
+
+
 $hours=array();
-foreach ($hour_data as $keys=>$columns){
+
+foreach ($hour_data as $columns){
     if(is_array($columns)){
-        $hours[date('H', $columns[1])]=$columns[2];
+        $hours[$columns[4]]=$columns[2];
     }
 }
 for ($j=0;$j<24;$j++){
@@ -122,29 +237,50 @@ for ($j=0;$j<24;$j++){
 }
 $time_fmate=json_encode($time_fmate);
 
-$hours_add=array();
+$hours_all=array();
 
-$hour_keys=array_keys($hours);
-$test=0;
-$flag=0;
-for ($hk=0;$hk<intval($hour_keys[count($hour_keys)-1]);$hk++) {
-    for ($m = 0; $m < count($hours) - 1; $m++) {
-        if (intval($hour_keys[$hk]) == $hk) {
-            if ($hour_keys[$hk] == 0) {
-                $hours_add[] = number_format(($hours[$hour_keys[$m]] - $last_uploaded) / (1024 * 1024 * 1024), 3, '.', '');
-            } else {
-                $hours_add[] = number_format(($hours[$hour_keys[$m + 1]] - $hours[$hour_keys[$m]]) / (1024 * 1024 * 1024), 3, '.', '');
-            }
-            break;
-        }else{
-            $test++;
-            $flag=1;
+for ($i = 0; $i < 25; $i++) {
+    $hours_all[$i]=0;
+}
+foreach ($hours as $k=>$downbit) {
+    for ($i = 0; $i < 24; $i++) {
+        if ($i == $k) {
+            $hours_all[$k] = $downbit;
         }
     }
-    if ($test==count($hours)-1&&$flag==1){
-        $hours_add[]=0;
+}
+for ($j = 0; $j < 24; $j++){
+    if ($hours_all[$j]!=0){
+        if($j==0){
+            $hours_add[$j]=$hours_all[$j]-$last_downloaded;
+        }else{
+            $hours_add[$j]=$hours_all[$j]-$hours_all[$j-1];
+        }
+    }else{
+        $hours_add[$j]=0;
     }
 }
+//$hour_keys=array_keys($hours);
+//$test=0;
+//$flag=0;
+//for ($hk=0;$hk<intval($hour_keys[count($hour_keys)-1]);$hk++) {
+//    for ($m = 0; $m < count($hours) - 1; $m++) {
+//        if (intval($hour_keys[$hk]) == $hk) {
+//            if ($hour_keys[$hk] == 0) {
+//                $hours_add[] = number_format(($hours[$hour_keys[$m]] - $last_uploaded) / (1024 * 1024 * 1024), 3, '.', '');
+//            } else {
+//                $hours_add[] = number_format(($hours[$hour_keys[$m + 1]] - $hours[$hour_keys[$m]]) / (1024 * 1024 * 1024), 3, '.', '');
+//            }
+//            break;
+//        }else{
+//            $test++;
+//            $flag=1;
+//        }
+//    }
+//    if ($test==count($hours)-1&&$flag==1){
+//        $hours_add[]=0;
+//    }
+//}
 //for ($hk = 0; $hk < count($hours)-1; $hk++){
 //    if ($hour_keys[$hk]==0){
 //        $hours_add[]= number_format(($hours[$hour_keys[$hk]] - $last_uploaded) / (1024 * 1024 * 1024), 3, '.', '');
@@ -153,7 +289,6 @@ for ($hk=0;$hk<intval($hour_keys[count($hour_keys)-1]);$hk++) {
 //    }
 //}
 $hours_add=json_encode($hours_add);
-
 echo "
     <div class=\"portlet light bordered \">
     <div class=\"portlet-title\">
@@ -224,7 +359,7 @@ echo "
                         show:true,
                         type:'line'
                     },
-                    formatter:'{a}:{c} GB'
+                    formatter:'{a}:{c} MB'
                 },
                 xAxis: {
                     data: $time_fmate
@@ -233,7 +368,7 @@ echo "
                 series: [{
                     name: '上传量',
                     type: 'bar',
-                    data: $hours_add
+                    data: $hours_real
                 }]
             }
          upload_time.setOption(option_up_time);
@@ -509,3 +644,5 @@ echo "
     </tr>
 </table>
 </div>
+<?php
+stdfoot();
