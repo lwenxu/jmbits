@@ -99,7 +99,7 @@ if (empty($wantusername) || empty($wantpassword) || empty($email) || empty($coun
 	bark($lang_takesignup['std_blank_field']);
 
 	
-if (strlen($wantusername) > 12)
+if (strlen($wantusername) > 24)//12->24
 	bark($lang_takesignup['std_username_too_long']);
 
 if ($wantpassword != $passagain)

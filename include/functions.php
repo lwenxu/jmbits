@@ -4020,13 +4020,18 @@ function validusername($username)
 	return false;
 
 	// The following characters are allowed in user names
-	$allowedchars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+//	$allowedchars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+//
+//	for ($i = 0; $i < strlen($username); ++$i)
+//	if (strpos($allowedchars, $username[$i]) === false)
+//	return false;
+//
+//	return true;
+    $allowedchars = "/^([\x{4e00}-\x{9fa5}A-Za-z0-9]*$)/u";
+    if (preg_match($allowedchars,$username))
+        return true;
 
-	for ($i = 0; $i < strlen($username); ++$i)
-	if (strpos($allowedchars, $username[$i]) === false)
-	return false;
-
-	return true;
+    return false;
 }
 
 //Code for Viewing NFO file

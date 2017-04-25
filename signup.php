@@ -73,18 +73,20 @@ print("<input type=hidden name=type value='invite'><input type=hidden name=invit
 		<form class="register-form" method="post" action="takesignup.php" novalidate="novalidate" style="display: block;">
 			<h3 class="font-green">注 册</h3>
 			<p class="hint"> 在下面输入账号信息: </p>
-			<div class="form-group">
+			<div class="form-group has-success">
 				<label class="control-label visible-ie8 visible-ie9">Username</label>
 				<input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="用户名"
-				       name="wantusername"></div>
+				       name="wantusername" id="wantusername">
+                <span class="help-block" style="display:none"><span style="color:red; font-size: large"> * </span>中英文数字均可,不超过24个字节(汉字占3个字节)</span>
+            </div>
 			<div class="form-group">
 				<label class="control-label visible-ie8 visible-ie9">Password</label>
 				<input class="form-control placeholder-no-fix" type="password" autocomplete="off" id="register_password"
-				       placeholder="密码" name="wantpassword"></div>
+				       placeholder="密码" name="wantpassword" id="wantpassword"></div>
 			<div class="form-group">
 				<label class="control-label visible-ie8 visible-ie9">Re-type Your Password</label>
 				<input class="form-control placeholder-no-fix" type="password" autocomplete="off"
-				       placeholder="再次输入密码" name="passagain"></div>
+				       placeholder="再次输入密码" name="passagain" id="passagain"></div>
 
 
 
@@ -94,8 +96,10 @@ print("<input type=hidden name=type value='invite'><input type=hidden name=invit
 				<!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
 				<label class="control-label visible-ie8 visible-ie9">Email</label>
 <!--				<label class="control-label visible-ie8 visible-ie9">(格式example@stumail.nwu.edu.cn)</label>-->
-				<input class="form-control placeholder-no-fix" type="text" placeholder="Email  目前只支持西大邮箱注册" name="email"></div>
-			<div class="form-group">
+				<input class="form-control placeholder-no-fix" type="text" placeholder="Email" name="email" id="email">
+                <span class="help-block" style="display:none"><span style="color:red; font-size: large"> * </span>目前只支持<a href="http://stumail.nwu.edu.cn">西大邮箱</a></span>
+                <div class="form-group">
+            </div>
 				<label class="control-label visible-ie8 visible-ie9">Country</label>
 <?php
 
@@ -112,11 +116,11 @@ while ($ct_a = mysql_fetch_array($ct_r))
 
 			<div class="form-group margin-top-20 margin-bottom-20">
 				<label class="mt-checkbox mt-checkbox-outline" style="margin-left: 20%">
-					<input type="radio" name="gender" value="Male"> 男
+					<input type="radio" name="gender" id="genderMale" value="Male"> 男
 					<span></span>
 				</label>
 				<label class="mt-checkbox mt-checkbox-outline" style="margin-left: 30%">
-					<input type="radio" name="gender" value="Female"> 女
+					<input type="radio" name="gender" id="genderFemale" value="Female"> 女
 					<span></span>
 				</label>
 				<div id="register_tnc_error"></div>
@@ -124,15 +128,15 @@ while ($ct_a = mysql_fetch_array($ct_r))
 			<p class="hint"> 请同意以下协议: </p>
 			<div class="form-group margin-top-20 margin-bottom-20">
 			<label class="mt-checkbox mt-checkbox-outline" style="margin-left: 20%">
-				<input type="checkbox" name="rulesverify" value="yes"> 我已阅读并同意遵守站点
+				<input type="checkbox" name="rulesverify" id="rulesverify" value="yes"> 我已阅读并同意遵守站点
 				<span></span>
 			</label>
 			<label class="mt-checkbox mt-checkbox-outline" style="margin-left: 20%">
-					<input type="checkbox" name="faqverify" value="yes"> 我会在提问前先查看常见问题
+					<input type="checkbox" name="faqverify" id="faqverify" value="yes"> 我会在提问前先查看常见问题
 					<span></span>
 			</label>
 			<label class="mt-checkbox mt-checkbox-outline" style="margin-left: 20%">
-					<input type="checkbox" name="ageverify" value="yes"> 我已满13周岁。
+					<input type="checkbox" name="ageverify" id="ageverify" value="yes"> 我已满13周岁。
 					<span></span>
 			</label>
 			</div>
@@ -195,3 +199,13 @@ while ($ct_a = mysql_fetch_array($ct_r))
 <?php
 gethelptips();
 stdfoot();
+?>
+<script src="styles/js/jquery-3.1.1.min.js"></script>
+<!--<script src="styles/bootstrap/js/bootstrap.min.js"></script>-->
+<script type="text/javascript" rel="stylesheet" src="styles/js/signup.js">
+</script>
+?>
+<script src="styles/js/jquery-3.1.1.min.js"></script>
+<!--<script src="styles/bootstrap/js/bootstrap.min.js"></script>-->
+<script type="text/javascript" rel="stylesheet" src="styles/js/signup.js">
+</script>
