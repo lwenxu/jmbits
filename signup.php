@@ -200,17 +200,5 @@ while ($ct_a = mysql_fetch_array($ct_r))
 gethelptips();
 stdfoot();
 ?>
-<script src="styles/js/jquery-3.1.1.min.js"></script>
-<!--<script src="styles/bootstrap/js/bootstrap.min.js"></script>-->
-<script type="text/javascript" rel="stylesheet" src="styles/js/signup.js">
-</script>
-?>
-<script src="styles/js/jquery-3.1.1.min.js"></script>
-<!--<script src="styles/bootstrap/js/bootstrap.min.js"></script>-->
-<script type="text/javascript" rel="stylesheet" src="styles/js/signup.js">
-</script>
-?>
-<script src="styles/js/jquery-3.1.1.min.js"></script>
-<!--<script src="styles/bootstrap/js/bootstrap.min.js"></script>-->
 <script type="text/javascript" rel="stylesheet" src="styles/js/signup.js">
 </script>
