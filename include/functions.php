@@ -2455,14 +2455,59 @@ function tr($x,$y,$noesc=0,$relation='') {
 	print("<tr".( $relation ? " relation = \"$relation\"" : "")."><td class=\"embedded-head\" style='width:100px;margin-left:2%'  align=\"center\" >$x</td><td class=\"embedded-head\" valign=\"top\" >".$a."</td></tr>\n");
 }
 
-function tr_small($x,$y,$noesc=0,$relation='') {
+function tr_small($x,$y,$noesc=0,$relation='',$method=0) {
+    if($method)//新增参数method,控制行的列数
+    {
+        if($method===1)
+        {
+            tr_small_start($x,$y,$noesc,$relation);
+        }
+        else if($method===2)
+        {
+            tr_small_end($x,$y,$noesc,$relation);
+        }
+        else
+        {
+            tr_small_td($x,$y,$noesc,$relation);
+        }
+        return;
+    }
+
 	if ($noesc)
 	$a = $y;
 	else {
 		$a = htmlspecialchars($y);
 		$a = str_replace("\n", "<br />\n", $a);
 	}
-	print("<tr".( $relation ? " relation = \"$relation\"" : "")."><td width=\"10%\" class=\"embedded-head\" valign=\"top\" >".$x."</td><td width=\"90%\" class=\"rowfollow\" valign=\"top\" >".$a."</td></tr>\n");
+	print("<tr".( $relation ? " relation = \"$relation\"" : "")."><td width=\"10%\" class=\"embedded-head\" valign=\"top\" >".$x."</td><td width=\"80%\" class=\"rowfollow\" valign=\"top\" >".$a."</td></tr>\n");
+}
+
+function tr_small_start($x,$y,$noesc=0,$relation='') {
+    if ($noesc)
+        $a = $y;
+    else {
+        $a = htmlspecialchars($y);
+        $a = str_replace("\n", "<br />\n", $a);
+    }
+    print("<tr".( $relation ? " relation = \"$relation\"" : "")."><td width=\"10%\" class=\"embedded-head\" valign=\"top\" style=\"text-align:center;\" >".$x."</td><td width=\"40%\" class=\"rowfollow\" valign=\"top\" >".$a."</td>\n");
+}
+function tr_small_end($x,$y,$noesc=0,$relation='') {
+    if ($noesc)
+        $a = $y;
+    else {
+        $a = htmlspecialchars($y);
+        $a = str_replace("\n", "<br />\n", $a);
+    }
+    print(( $relation ? " relation = \"$relation\"" : "")."><td width=\"10%\" class=\"embedded-head\" valign=\"top\" style=\"text-align:center;\" >".$x."</td><td width=\"40%\" class=\"rowfollow\" valign=\"top\" >".$a."</td></tr>\n");
+}
+function tr_small_td($x,$y,$noesc=0,$relation='') {
+    if ($noesc)
+        $a = $y;
+    else {
+        $a = htmlspecialchars($y);
+        $a = str_replace("\n", "<br />\n", $a);
+    }
+    print(( $relation ? " relation = \"$relation\"" : "")."><td width=\"10%\" class=\"embedded-head\" valign=\"top\" style=\"text-align:center;\" >".$x."</td><td width=\"40%\" class=\"rowfollow\" valign=\"top\" >".$a."</td>\n");
 }
 
 function twotd($x,$y,$nosec=0){

@@ -164,7 +164,13 @@ if (($user["privacy"] != "strong") OR (get_user_class() >= $prfmanage_class) || 
 		print("<tr><td class=rowhead width=13%>".$lang_userdetails['row_compatibility']."</td><td class=rowfollow align=left width=87%>". $compatibility_info ."</td></tr>\n");
 	}
 */
-
+    if ($user["avatar"])
+        tr_small($lang_userdetails['row_avatar'], return_avatar_image(htmlspecialchars(trim($user["avatar"]))), 1,'',1);
+    tr_small("用户名", $user['username'],0,'',2);//新增-显示用户名
+    ?>
+</table>
+    <table width="100%"  cellspacing="0" cellpadding="5" class="table table-striped">
+        <?php
 	if ($CURUSER[id] == $user[id] || get_user_class() >= $viewinvite_class){
 	if ($user["invites"] <= 0)
 	tr_small($lang_userdetails['row_invitation'], $lang_userdetails['text_no_invitation'], 1);
@@ -257,8 +263,8 @@ tr_small($lang_userdetails['row_gender'], $gender, 1);
 if (($user['donated'] > 0 || $user['donated_cny'] > 0 )&& (get_user_class() >= $userprofile_class || $CURUSER["id"] == $user["id"]))
 tr_small($lang_userdetails['row_donated'], "$".htmlspecialchars($user[donated])."&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;".htmlspecialchars($user[donated_cny]), 1);
 
-if ($user["avatar"])
-tr_small($lang_userdetails['row_avatar'], return_avatar_image(htmlspecialchars(trim($user["avatar"]))), 1);
+//if ($user["avatar"])
+//tr_small($lang_userdetails['row_avatar'], return_avatar_image(htmlspecialchars(trim($user["avatar"]))), 1);
 $uclass = get_user_class_image($user["class"]);
 tr_small($lang_userdetails['row_class'], "<img alt=\"".get_user_class_name($user["class"],false,false,true)."\" title=\"".get_user_class_name($user["class"],false,false,true)."\" src=\"".$uclass."\" /> ".($user[title]!=="" ? "&nbsp;".htmlspecialchars(trim($user["title"]))."" :  ""), 1);
 
