@@ -51,13 +51,21 @@
 //d($hours_add);
 
 date_default_timezone_set("Asia/Shanghai");
-require "include/bittorrent.php";
-dbconn(true);
+//require "include/bittorrent.php";
+//dbconn(true);
+//
+//$re=sql_query("select count(*) from site_data");
+//$k=mysql_fetch_row($re);
+//print_r($k);
+//for ($i=76;$i>=1;$i--){
+//    $time= date('Y-m-d',time()-3600*24*$i);
+//    sql_query("update site_date set date=$time WHERE id=$i");
+//}
 
-$re=sql_query("select count(*) from site_data");
-$k=mysql_fetch_row($re);
-print_r($k);
-for ($i=76;$i>=1;$i--){
-    $time= date('Y-m-d',time()-3600*24*$i);
-    sql_query("update site_date set date=$time WHERE id=$i");
+for ($i=1;$i<19;$i++){
+    echo strtotime("2017/04/$i");
+    echo "<br>";
 }
+
+echo "----------------<br>";
+echo date('Y-m-d',1492444800);

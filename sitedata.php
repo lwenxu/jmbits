@@ -345,21 +345,20 @@ echo "
             }
          upload.setOption(option_up);
         upload.on('click', function (params) {
-            window.open('http://127.0.0.1/nwupt/sitedata.php?hour_id='+params.name,'_self');
+            window.open('http://jm.nwu.edu.cn/nwupt/sitedata.php?hour_id='+params.name,'_self');
         });
         
         var upload_time=echarts.init(document.getElementById('upload_time'));
         var   option_up_time = {
                 title: {
                     text: '每小时实时上传',
-                 
                 },
                 tooltip: {
                     axisPointer:{
                         show:true,
                         type:'line'
                     },
-                    formatter:'{a}:{c} MB'
+                    formatter:'{a}:{c} GB'
                 },
                 xAxis: {
                     data: $time_fmate
