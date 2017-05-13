@@ -3828,25 +3828,13 @@ while ($row = mysql_fetch_assoc($res))
 		$dispname=mb_substr($dispname, 0, $max_length_of_torrent_name-2,"UTF-8") . "..";
 
 	if ($row['pos_state'] == 'sticky' && $CURUSER['appendsticky'] == 'yes')
-		$stickyicon = "<img class=\"sticky\" src=\"pic/trans.gif\" alt=\"Sticky\" title=\"".$lang_functions['title_sticky']."\" />&nbsp;";
+		$stickyicon = "<font class='label label-danger'>置顶</font>&nbsp;";
 	else $stickyicon = "";
 //标题
 	print("<td class=\"rowfollow\" width=\"48%\" align=\"center\"><table class=\"sans\" width=\"100%\"><tr" . $sphighlight . "><td class=\"sans\">".$stickyicon."<a $short_torrent_name_alt $mouseovertorrent href=\"details.php?id=".$id."&amp;hit=1\">".htmlspecialchars($dispname)."</a>");
 	$sp_torrent = get_torrent_promotion_append($row['sp_state'],"",true,$row["added"], $row['promotion_time_type'], $row['promotion_until']);
 	$picked_torrent = "";
-	if ($CURUSER['appendpicked'] != 'no'){
-	if($row['picktype']=="hot")
-	$picked_torrent = " <font class='label label-danger'>".$lang_functions['text_hot']."</font>";
-	elseif($row['picktype']=="classic")
-	$picked_torrent = " <font class='label label-info'>".$lang_functions['text_classic']."</font>";
-	elseif($row['picktype']=="recommended")
-	$picked_torrent = " <font class='label label-default'>".$lang_functions['text_recommended']."</font>";
-	}
-	if ($CURUSER['appendnew'] != 'no' && strtotime($row["added"]) >= $last_browse)
-		print(" <font class='label label-success'>".$lang_functions['text_new_uppercase']."</font>");
 
-	$banned_torrent = ($row["banned"] == 'yes' ? " <font class=\"label label-danger\">".$lang_functions['text_banned']."</font>" : "");
-	print($banned_torrent.$picked_torrent.$sp_torrent);
 	if ($displaysmalldescr){
 		//small descr
 		$dissmall_descr = trim($row["small_descr"]);
@@ -3858,6 +3846,24 @@ while ($row = mysql_fetch_assoc($res))
 		}
 		print($dissmall_descr == "" ? "" : "<br />".htmlspecialchars($dissmall_descr));
 	}
+    if ($CURUSER['appendpicked'] != 'no'){
+        if($row['picktype']=="hot")
+            $picked_torrent = " <font class='label label-danger'>".$lang_functions['text_hot']."</font>";
+        elseif($row['picktype']=="classic")
+            $picked_torrent = " <font class='label label-info'>".$lang_functions['text_classic']."</font>";
+        elseif($row['picktype']=="recommended")
+            $picked_torrent = " <font class='label label-default'>".$lang_functions['text_recommended']."</font>";
+    }
+//	if ($CURUSER['appendnew'] != 'no' && strtotime($row["added"]) >= $last_browse)
+//		print(" <font class='label label-success'>".$lang_functions['text_new_uppercase']."</font>");
+    if ($row["recommend"]){
+        print(" <font class='label label-warning'>荐</font>");
+    }
+    if ($row["conservation"]){
+        print(" <font class='label label-info'>保</font>");
+    }
+    $banned_torrent = ($row["banned"] == 'yes' ? " <font class=\"label label-danger\">".$lang_functions['text_banned']."</font>" : "");
+    print($banned_torrent.$picked_torrent.$sp_torrent);
 	print("</td>");
 
 		$act = "";

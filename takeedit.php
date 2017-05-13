@@ -84,15 +84,32 @@ $updateset[] = "standard = " . sqlesc(0 + $_POST["standard_sel"]);
 $updateset[] = "processing = " . sqlesc(0 + $_POST["processing_sel"]);
 $updateset[] = "team = " . sqlesc(0 + $_POST["team_sel"]);
 $updateset[] = "audiocodec = " . sqlesc(0 + $_POST["audiocodec_sel"]);
+$updateset[] = "recommend = " . sqlesc(0 + $_POST["recommend"]);
+$updateset[] = "conservation = " . sqlesc(0 + $_POST["conservation"]);
+if (get_user_class() >= $torrentmanage_class) {
+    if ($_POST["recommend"]) {
+        $updateset[] = "recommend = 1";
+    }
+    else
+        $updateset[] = "recommend = 0";
+}
 
 if (get_user_class() >= $torrentmanage_class) {
-	if ($_POST["banned"]) {
-		$updateset[] = "banned = 'yes'";
-		$_POST["visible"] = 0;
-	}
-	else
-		$updateset[] = "banned = 'no'";
+    if ($_POST["conservation"]) {
+        $updateset[] = "conservation = 1";
+    }
+    else
+        $updateset[] = "conservation = 0";
 }
+//if (get_user_class() >= $torrentmanage_class) {
+//	if ($_POST[""]) {
+//		$updateset[] = " = 'yes'";
+//		$_POST["visible"] = 0;
+//	}
+//	else
+//		$updateset[] = " = 'no'";
+//}
+
 $updateset[] = "visible = '" . ($_POST["visible"] ? "yes" : "no") . "'";
 if(get_user_class()>=$torrentonpromotion_class)
 {
@@ -168,8 +185,8 @@ if(get_user_class()>=$torrentmanage_class && $CURUSER['picker'] == 'yes')
 		$updateset[] = "picktime = ". sqlesc(date("Y-m-d H:i:s"));
 	}
 }
-sql_query("UPDATE torrents SET " . join(",", $updateset) . " WHERE id = $id") or sqlerr(__FILE__, __LINE__);
 
+sql_query("UPDATE torrents SET " . join(",", $updateset) . " WHERE id = $id") or sqlerr(__FILE__, __LINE__);
 if($CURUSER["id"] == $row["owner"])
 {
 	if ($row["anonymous"]=='yes')

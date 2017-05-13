@@ -129,7 +129,13 @@ else {
 
 		tr($lang_edit['row_content'],$team_select,1);
 	}
-	tr($lang_edit['row_check'], "<input type=\"checkbox\" name=\"visible\"" . ($row["visible"] == "yes" ? " checked=\"checked\"" : "" ) . " value=\"1\" /> ".$lang_edit['checkbox_visible']."&nbsp;&nbsp;&nbsp;".(get_user_class() >= $beanonymous_class || get_user_class() >= $torrentmanage_class ? "<input type=\"checkbox\" name=\"anonymous\"" . ($row["anonymous"] == "yes" ? " checked=\"checked\"" : "" ) . " value=\"1\" />".$lang_edit['checkbox_anonymous_note']."&nbsp;&nbsp;&nbsp;" : "").(get_user_class() >= $torrentmanage_class ? "<input type=\"checkbox\" name=\"banned\"" . (($row["banned"] == "yes") ? " checked=\"checked\"" : "" ) . " value=\"yes\" /> ".$lang_edit['checkbox_banned'] : ""), 1);
+	tr($lang_edit['row_check'],
+        "<input type=\"checkbox\" name=\"visible\"" . ($row["visible"] == "yes" ? " checked=\"checked\"" : "" ) . " value=\"1\" /> ".$lang_edit['checkbox_visible']."&nbsp;&nbsp;&nbsp;".(get_user_class() >= $beanonymous_class || get_user_class() >= $torrentmanage_class ?
+            "<input type=\"checkbox\" name=\"anonymous\"" . ($row["anonymous"] == "yes" ? " checked=\"checked\"" : "" ) . " value=\"1\" />".$lang_edit['checkbox_anonymous_note']."&nbsp;&nbsp;&nbsp;" : "").(get_user_class() >= $torrentmanage_class ?
+            "<input type=\"checkbox\" name=\"banned\"" . (($row["banned"] == "yes") ? " checked=\"checked\"" : "" ) . " value=\"yes\" /> ".$lang_edit['checkbox_banned']."&nbsp;&nbsp;&nbsp;" : "").(get_user_class() >= $torrentmanage_class ?
+            "<input type=\"checkbox\" name=\"recommend\"" . (($row["recommend"] == 1) ? " checked=\"checked\"" : "" ) . " value=1 /> 推荐&nbsp;&nbsp;&nbsp;": "").(get_user_class() >= $torrentmanage_class ?
+            "<input type=\"checkbox\" name=\"conservation\"" . (($row["conservation"] == 1) ? " checked=\"checked\"" : "" ) . " value=1 /> 保种" : "")
+        , 1);
 	if (get_user_class()>= $torrentsticky_class || (get_user_class() >= $torrentmanage_class && $CURUSER["picker"] == 'yes')){
 		$pickcontent = "";
 	
@@ -140,6 +146,8 @@ else {
 			"<option" . (($row["pos_state"] == "normal") ? " selected=\"selected\"" : "" ) . " value=\"0\">".$lang_edit['select_normal']."</option>" .
 			"<option" . (($row["pos_state"] == "sticky") ? " selected=\"selected\"" : "" ) . " value=\"1\">".$lang_edit['select_sticky']."</option>" .
 			"</select>&nbsp;&nbsp;&nbsp;";
+            $pickcontent .= "<b>是否为推荐&nbsp;:&nbsp;</b><input type='radio' name='recommend' value='0'>否 <input type='radio' name='recommend' value='1'>是 &nbsp;&nbsp;&nbsp;&nbsp;";
+            $pickcontent .= "<b>是否为保种&nbsp;:&nbsp;</b><input type='radio' name='conservation' value='0'>否 <input type='radio' name='conservation' value='1'>是";
 		}
 		if(get_user_class()>=$torrentmanage_class && $CURUSER["picker"] == 'yes')
 		{
@@ -149,8 +157,10 @@ else {
 			"<option" . (($row["picktype"] == "classic") ? " selected=\"selected\"" : "" ) . " value=\"2\">".$lang_edit['select_classic']."</option>" .
 			"<option" . (($row["picktype"] == "recommended") ? " selected=\"selected\"" : "" ) . " value=\"3\">".$lang_edit['select_recommended']."</option>" .
 			"</select>";
+
 		}
-		tr($lang_edit['row_pick'], $pickcontent, 1);
+
+		tr($lang_edit['row_pick'], $pickcontent,1);
 	}
 
 	print("<tr><td class=\"toolbox\" colspan=\"2\" align=\"center\"><input class='btn btn-success' id=\"qr\" type=\"submit\" value=\"".$lang_edit['submit_edit_it']."\" /> <input class='btn btn-danger' type=\"reset\" value=\"".$lang_edit['submit_revert_changes']."\" /></td></tr>\n");

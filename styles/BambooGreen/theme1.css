@@ -1501,3 +1501,6 @@ h1,h2,h3,h4{
     z-index: 10000;
 }
 
+.label .label-blue {
+    background-color: #00a2d4;
+}
