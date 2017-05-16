@@ -25,7 +25,7 @@ function yesorno($title, $name, $value, $note="")
 }
 
 $action = isset($_POST['action']) ? $_POST['action'] : 'showmenu';
-$allowed_actions = array('basicsettings','mainsettings','smtpsettings','securitysettings','authoritysettings','tweaksettings', 'botsettings','codesettings','bonussettings','accountsettings','torrentsettings', 'attachmentsettings', 'advertisementsettings', 'savesettings_basic', 'savesettings_main','savesettings_smtp','savesettings_security','savesettings_authority','savesettings_tweak','savesettings_bot','savesettings_code','savesettings_bonus', 'savesettings_account','savesettings_torrent', 'savesettings_attachment', 'savesettings_advertisement', 'showmenu');
+$allowed_actions = array('basicsettings','mainsettings','smtpsettings','securitysettings','authoritysettings','tweaksettings', 'botsettings','codesettings','bonussettings','accountsettings','torrentsettings', 'attachmentsettings', 'advertisementsettings', 'savesettings_basic', 'savesettings_main','savesettings_smtp','savesettings_security','savesettings_authority','savesettings_tweak','savesettings_bot','savesettings_code','savesettings_bonus', 'savesettings_account','savesettings_torrent', 'savesettings_attachment', 'savesettings_advertisement', 'showmenu','change_banner');
 if (!in_array($action, $allowed_actions))
 $action = 'showmenu';
 $notice = "<h1 align=\"center\"><a class=\"faqlink\" href=\"settings.php\">".$lang_settings['text_website_settings']."</a></h1>
@@ -621,7 +621,47 @@ elseif ($action == 'showmenu')	// settings main page
 	tr($lang_settings['row_attachment_settings'], "<form method='post' action='".$_SERVER["SCRIPT_NAME"]."'><input type='hidden' name='action' value='attachmentsettings'><input type='submit' class='btn btn-success' value=\"".$lang_settings['submit_attachment_settings']."\"> ".$lang_settings['text_attachment_settings_note']."</form>", 1);
 	tr($lang_settings['row_advertisement_settings'], "<form method='post' action='".$_SERVER["SCRIPT_NAME"]."'><input type='hidden' name='action' value='advertisementsettings'><input type='submit' class='btn btn-success' value=\"".$lang_settings['submit_advertisement_settings']."\"> ".$lang_settings['text_advertisement_settings_note']."</form>", 1);
 	tr($lang_settings['row_code_settings'], "<form method='post' action='".$_SERVER["SCRIPT_NAME"]."'><input type='hidden' name='action' value='codesettings'><input type='submit' class='btn btn-success' value=\"".$lang_settings['submit_code_settings']."\"> ".$lang_settings['text_code_settings_note']."</form>", 1);
+	tr("Banner设定", "<form method='post' action='".$_SERVER["SCRIPT_NAME"]."'><input type='hidden' name='action' value='change_banner'><input type='submit' class='btn btn-success' value=\"banner设定\"> 配置网页首部的图片</form>", 1);
 }
+elseif ($action == 'change_banner')	// settings main page
+{
+	stdhead($lang_settings['head_website_settings']);
+	print ($notice);
+	$time=time();
+	$hashCode=md5(sha1($time)."GHacdsnjlJKHad2317498");
+	echo "
+	<form action=\"changebanner.php\" enctype=\"multipart/form-data\" method=\"post\" class=\"form-horizontal\" role=\"form\">
+		<div class=\"form-group\">
+			<legend>上传图片</legend>
+		</div>
+		<div class=\"form-group\">
+			<div class=\"col-sm-10 col-sm-offset-2\">
+				<input type='file' class='form-control' name='banner'>
+			</div>
+		</div>
+		<div class=\"form-group\">
+			<div class=\"col-sm-10 col-sm-offset-2\">
+				<input type='hidden' class='form-control' name='time' value=\"$time\">
+			</div>
+		</div>
+		<div class=\"form-group\">
+			<div class=\"col-sm-10 col-sm-offset-2\">
+				<input type='hidden' class='form-control' name='hashCode' value=\"$hashCode\" >
+			</div>
+		</div>
+		<br>
+		<br>
+		<div class=\"form-group\">
+			<div class=\"col-sm-10 col-sm-offset-2 \">
+				<button type=\"submit\" class=\"btn btn-primary pull-right\">Submit</button>
+			</div>
+		</div>
+	</form>
+	
+	
+	";
+}
+
 print("</table>");
 stdfoot();
 ?>
