@@ -136,6 +136,7 @@ elseif ($inclbookmarked == 2)		//not bookmarked
 if (!isset($CURUSER) || get_user_class() < $seebanned_class)
 	$wherea[] = "banned != 'yes'";
 // ----------------- start include dead ---------------------//
+
 if (isset($_GET["incldead"]))
 	$include_dead = 0 + $_GET["incldead"];
 elseif ($CURUSER['notifs']){
@@ -149,7 +150,7 @@ elseif ($CURUSER['notifs']){
 }
 else $include_dead = 1;
 
-if (!in_array($include_dead,array(0,1,2)))
+if (!in_array($include_dead,array(0,1,2,3,4)))
 {
 	$include_dead = 0;
 	write_log("User " . $CURUSER["username"] . "," . $CURUSER["ip"] . " is hacking incldead field in" . $_SERVER['SCRIPT_NAME'], 'mod');
@@ -167,6 +168,14 @@ elseif ($include_dead == 2)		//dead
 {
 	$addparam .= "incldead=2&";
 	$wherea[] = "visible = 'no'";
+}elseif ($include_dead == 3)		//conservation
+{
+	$addparam .= "incldead=2&";
+	$wherea[] = "conservation = 1";
+}elseif ($include_dead == 4)		//recommend
+{
+	$addparam .= "incldead=2&";
+	$wherea[] = "recommend = 1";
 }
 // ----------------- end include dead ---------------------//
 if ($_GET)
@@ -926,13 +935,15 @@ if ($allsec != 1 || $enablespecial != 'yes'){ //do not print searchbox if showin
                 </div>
             </div>
             <div class='form-group'>
-                <label class='control-label col-md-3'>断种/活种 </label>
+                <label class='control-label col-md-3'>种子筛选 </label>
                 <div class=col-md-9>
                     <div class='input-group'>
                         <select class="form-control" name="incldead">
                             <option value="0"><?php echo $lang_torrents['select_including_dead'] ?></option>
                             <option value="1"<?php print($include_dead == 1 ? " selected=\"selected\"" : ""); ?>><?php echo $lang_torrents['select_active'] ?> </option>
                             <option value="2"<?php print($include_dead == 2 ? " selected=\"selected\"" : ""); ?>><?php echo $lang_torrents['select_dead'] ?></option>
+                            <option value="3"<?php print($include_dead == 3 ? " selected=\"selected\"" : ""); ?>>保种</option>
+                            <option value="4"<?php print($include_dead == 4 ? " selected=\"selected\"" : ""); ?>>推荐</option>
                         </select>
                     </div>
                 </div>

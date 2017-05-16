@@ -66,4 +66,5 @@ $(function () {
         $('#comment_short_text').val("");
         $('#comment_short_text').val($('#comment_short_select').val());
     });
+
 });

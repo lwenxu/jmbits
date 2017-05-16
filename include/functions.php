@@ -1310,8 +1310,7 @@ function simpletag(thetag)
 <tr style="border: 0px"><td  colspan="2" style="border: 0px">
 <table cellspacing="1" cellpadding="2" border="0">
 <tr>
-<td class="embedded-add"><inpu
-        t class="btn " style="font-weight: bold;font-size:11px; margin:7px" type="button" name="b" value="B"
+<td class="embedded-add"><input class="btn " style="font-weight: bold;font-size:11px; margin:7px" type="button" name="b" value="B"
         onclick="javascript: simpletag('b')" /></td>
     <td class="embedded-add"><input class="btn " style="font-style: italic;font-size:11px;margin-right:3px"
                                     type="button" name="i" value="I" onclick="javascript: simpletag('i')"/></td>
@@ -3000,6 +2999,7 @@ if ($CURUSER){
 }
 ?>
 <link rel="alternate" type="application/rss+xml" title="Latest Torrents" href="torrentrss.php" />
+<script type="text/javascript" src="./styles/js/jquery-1.8.js"></script>
 <script type="text/javascript" src="curtain_imageresizer.js<?php echo $cssupdatedate?>"></script>
 <script type="text/javascript" src="ajaxbasic.js<?php echo $cssupdatedate?>"></script>
 <script type="text/javascript" src="common.js<?php echo $cssupdatedate?>"></script>
@@ -3007,7 +3007,7 @@ if ($CURUSER){
 <script type="text/javascript" src="domTT.js<?php echo $cssupdatedate?>"></script>
 <script type="text/javascript" src="domTT_drag.js<?php echo $cssupdatedate?>"></script>
 <script type="text/javascript" src="fadomatic.js<?php echo $cssupdatedate?>"></script>
-<script type="text/javascript" src="./styles/js/jquery-1.8.js"></script>
+
 </head>
 
 
