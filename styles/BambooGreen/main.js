@@ -66,5 +66,18 @@ $(function () {
         $('#comment_short_text').val("");
         $('#comment_short_text').val($('#comment_short_select').val());
     });
-
+    $(window).scroll(function () {
+        var sc = window.scrollTop();
+        var rwidth = $(window).width;
+        if (sc > 400) {
+            $("#gotop").css("display", "block");
+            $("#gotop").css("left", (rwidth - 60) + "px")
+        } else {
+            $("#gotop").css("display", "none");
+        }
+    });
+    $("#gotop").click(function () {
+        var sc = $(window).scrollTop();
+        $('body html').animate({sc: 0}, 500);
+    });
 });

@@ -3146,7 +3146,7 @@ function stdhead($title = "", $msgalert = true, $script = "", $place = "")
         }
         ?>
         <link rel="alternate" type="application/rss+xml" title="Latest Torrents" href="torrentrss.php"/>
-        <script type="text/javascript" src="./styles/js/jquery.js"></script>
+        <script type="text/javascript" src="./styles/js/jquery.min.js"></script>
         <script type="text/javascript" src="curtain_imageresizer.js<?php echo $cssupdatedate ?>"></script>
         <script type="text/javascript" src="ajaxbasic.js<?php echo $cssupdatedate ?>"></script>
         <script type="text/javascript" src="common.js<?php echo $cssupdatedate ?>"></script>
@@ -3160,22 +3160,24 @@ function stdhead($title = "", $msgalert = true, $script = "", $place = "")
 
     <body class="container-fluid">
     <!-- // add goto top  by lwenxu-->
-    <i id="gotop" class="icon-arrow-up"></i>
+<!--    <i id="gotop" class="icon-arrow-up"></i>-->
     <!--<script type="text/javascript" src="http://code.jquery.com/jquery-1.8.3.min.js"></script>-->
     <script type="text/javascript">
-        $(window).bind('scroll',function () {
-            var sc = window.scrollTop();
-            var rwidth = $(window).width;
-            if (sc > 400) {
-                $("#gotop").css("display", "block");
-                $("#gotop").css("left", (rwidth - 60) + "px")
-            } else {
-                $("#gotop").css("display", "none");
-            }
-        });
-        $("#gotop").click(function () {
-            var sc = $(window).scrollTop();
-            $('body html').animate({sc: 0}, 500);
+        $(function () {
+//            $(window).scroll(function () {
+//                var sc = window.scrollTop();
+//                var rwidth = $(window).width;
+//                if (sc > 400) {
+//                    $("#gotop").css("display", "block");
+//                    $("#gotop").css("left", (rwidth - 60) + "px")
+//                } else {
+//                    $("#gotop").css("display", "none");
+//                }
+//            });
+//            $("#gotop").click(function () {
+//                var sc = $(window).scrollTop();
+//                $('body html').animate({sc: 0}, 500);
+//            });
         });
     </script>
     <div class="container" id="main_content">
