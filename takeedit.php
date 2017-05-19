@@ -87,6 +87,14 @@ $updateset[] = "audiocodec = " . sqlesc(0 + $_POST["audiocodec_sel"]);
 $updateset[] = "recommend = " . sqlesc(0 + $_POST["recommend"]);
 $updateset[] = "conservation = " . sqlesc(0 + $_POST["conservation"]);
 if (get_user_class() >= $torrentmanage_class) {
+    if ($_POST["banned"]) {
+        $updateset[] = "banned = 'yes'";
+        $_POST["visible"] = 0;
+    }
+    else
+        $updateset[] = "banned = 'no'";
+}
+if (get_user_class() >= $torrentmanage_class) {
     if ($_POST["recommend"]) {
         $updateset[] = "recommend = 1";
     }

@@ -18,7 +18,6 @@ $refresh = ($CURUSER['sbrefresh'] ? $CURUSER['sbrefresh'] : 120)
     <meta http-equiv="Refresh"
           content="<?php echo $refresh ?>; url=<?php echo get_protocol_prefix() . $BASEURL ?>/shoutbox.php?type=<?php echo $where ?>">
     <link rel="stylesheet" href="<?php echo get_font_css_uri() ?>" type="text/css">
-    <link rel="stylesheet" href="<?php echo get_css_uri() . "theme.css" ?>" type="text/css">
     <link rel="stylesheet" href="styles/curtain_imageresizer.css" type="text/css">
     <link href="./styles/awesome/css/font-awesome.min.css" rel="stylesheet">
     <link href="./styles/bootstrap/css/bootstrap.min.css" rel="stylesheet">
