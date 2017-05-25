@@ -847,7 +847,9 @@ $rules="<div align=\"left\">
 <ol style='margin-left: 22%;font-size: 15px'>
 <li >" . $lang_offers['text_rule_one_one'] . get_user_class_name($upload_class, false, true, true) . $lang_offers['text_rule_one_two'] . get_user_class_name($addoffer_class, false, true, true) . $lang_offers['text_rule_one_three'] . "</li>
 <li>" . $lang_offers['text_rule_two_one'] . "<b>" . $minoffervotes . "</b>" . $lang_offers['text_rule_two_two'] . "</li>"
-.$rule_three.$rule_four."</ol></div>";
+.$rule_three.$rule_four.
+	"<li>添加候选前请先阅读对应版块<a class='faqlink' href='http://jm.nwu.edu.cn/forums.php?action=viewtopic&amp;forumid=10&amp;topicid=58'>规则</a></li>".
+	"</ol></div>";
 success_msg('<span class=\'icon-bullhorn\'></span>候选区',$rules);
 
 echo "<div class='row'>
