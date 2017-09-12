@@ -286,7 +286,7 @@ if ($largesize_torrent && $totallen > ($largesize_torrent * 1073741824)) //Large
 	}
 }
 else{ //ramdom torrent promotion
-	$sp_id = mt_rand(1,100);
+	$sp_id = mt_rand(1,30);
 	if($sp_id <= ($probability = $randomtwoupfree_torrent)) //2X Free
 		$sp_state = 4;
 	elseif($sp_id <= ($probability += $randomtwoup_torrent)) //2X
