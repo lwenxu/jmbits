@@ -88,15 +88,15 @@ if ($_GET["add_offer"]){
             </div>
           </div>
 ";
+//	echo "<div class='form-group' >
+//            <label class='control-label col-md-3'>海报或图片  </label>
+//            <div class=\"col-md-9\" >
+//            <input class='form-control' type=text name=picture data-toggle='tooltip' id='piclink' style='color: white' title='图片的链接,不要添加代码标签'>
+//			</div>
+//         </div>
+//";
 	echo "<div class='form-group' >
-            <label class='control-label col-md-3'>海报或图片  </label>
-            <div class=\"col-md-9\" >
-            <input class='form-control' type=text name=picture data-toggle='tooltip' id='piclink' style='color: white' title='图片的链接,不要添加代码标签'>
-			</div>
-         </div>
-";
-	echo "<div class='form-group' >
-            <label class='control-label col-md-3'>简介  <font style='color=red'> *</font></label>
+            <label class='control-label col-md-3'>简介  <font style='color=red'> *</font>&nbsp;&nbsp;请至少添加一张海报或图片</label>
             <div class=\"col-md-9\" >";
             textbbcode("compose", "body", $body, false);
 echo	"		</div>
