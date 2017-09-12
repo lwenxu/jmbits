@@ -96,7 +96,7 @@ if ($_GET["add_offer"]){
 //         </div>
 //";
 	echo "<div class='form-group' >
-            <label class='control-label col-md-3'>简介  <font style='color=red'> *</font>&nbsp;&nbsp;请至少添加一张海报或图片</label>
+            <label class='control-label col-md-3'>简介  <font style='color=red'> *</font></label>
             <div class=\"col-md-9\" >";
             textbbcode("compose", "body", $body, false);
 echo	"		</div>
