@@ -103,7 +103,8 @@ else $limit = "";
 $announce_wait = 30;
 
 $fields = "seeder, peer_id, ip, port, uploaded, downloaded, (".TIMENOW." - UNIX_TIMESTAMP(last_action)) AS announcetime, UNIX_TIMESTAMP(prev_action) AS prevts";
-$peerlistsql = "SELECT ".$fields." FROM peers WHERE torrent = ".$torrentid." AND connectable = 'yes' ".$only_leech_query.$limit;
+//$peerlistsql = "SELECT ".$fields." FROM peers WHERE torrent = ".$torrentid." AND connectable = 'yes' ".$only_leech_query.$limit;
+$peerlistsql = "SELECT ".$fields." FROM peers WHERE torrent = ".$torrentid.$only_leech_query.$limit;
 $res = sql_query($peerlistsql);
 
 $real_annnounce_interval = $announce_interval;
