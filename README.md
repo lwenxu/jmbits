@@ -37,3 +37,24 @@
 * 有时间了我会考虑使用 python 或者 php 来重写全部的代码
 * 添加爬虫自动抓取视频网站的视频并做种
 * 把以前写的一个 auto-seed 自动发种机器人添加上，改成图形界面的方便管理人员（auto-seed 是借鉴的北邮人的一位开发者写的，然后做了一些新的功能比如一开始那个代码是不能爬取北邮人的网站的，然后就是自动下载，自动上传，自动做种）
+
+# 下面是一些试演截图
+
+## 首页
+![](http://ojrw3x8j2.bkt.clouddn.com/17-12-13/8080371.jpg)
+
+## 论坛
+![](http://ojrw3x8j2.bkt.clouddn.com/17-12-13/91260987.jpg)
+
+## 求种
+![](http://ojrw3x8j2.bkt.clouddn.com/17-12-13/60345558.jpg)
+## 种子
+![](http://ojrw3x8j2.bkt.clouddn.com/17-12-13/34839383.jpg)
+## 字幕
+![](http://ojrw3x8j2.bkt.clouddn.com/17-12-13/5950000.jpg)
+## 排行榜
+![](http://ojrw3x8j2.bkt.clouddn.com/17-12-13/22385867.jpg)
+## FAQ
+![](http://ojrw3x8j2.bkt.clouddn.com/17-12-13/59311551.jpg)
+
+# 最后欢迎大家Fork和Star  : )
