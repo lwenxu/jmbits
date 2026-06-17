@@ -1,60 +1,202 @@
-[![Travis](https://img.shields.io/travis/rust-lang/rust.svg)]()
-[![Jenkins tests](https://img.shields.io/jenkins/t/https/jenkins.qa.ubuntu.com/view/Precise/view/All%20Precise/job/precise-desktop-amd64_default.svg)]()
-[![Dockbit](https://img.shields.io/dockbit/DockbitStatus/health.svg?token=TvavttxFHJ4qhnKstDxrvBXM)]()
-[![Bower](https://img.shields.io/bower/v/bootstrap.svg)]()
-[![Packagist](https://img.shields.io/packagist/l/doctrine/orm.svg)]()
+# jmbits
 
+jmbits 是一个基于 [NexusPHP](https://github.com/ZJUT/NexusPHP) v1.5 beta 二次开发的 PT（Private Tracker）站点系统。项目最初用于探索校园 PT 社区的搭建方式，并作为一个完整 PHP Web 项目的实践样例。
 
-# Description
+该项目在原 NexusPHP 的基础上，对界面风格、站点首页、种子发布、资源浏览、论坛等模块进行了定制化改造，目标是构建一个具有社区属性的 PT 站点。
 
-### 1. jmbits 介绍
-   jmbits 是一个基于 nexusphp v1.5beta 版本的二次开发的 pt 系统
-### 2. 开发成员
-   只有本人一个，惭愧惭愧 ：(
-### 3. 开发这个的目的
-   * 首先就是为了西北大学能有一个自己的 pt 站，但是我不想直接使用别人的原生的代码，毕竟要有一点自己的特色
-   * 为了能有一个真正的 PHP 项目去练手
-   * 本来 nexusphp 开放源码的目的就是为了让大家把这份代码发扬一下，但是目前的 pt 圈子大部分都是修改后的代码全部闭源，我觉得并不是一个好现象。想改出来让大家一起改，虽然有的时候恨不得直接用个框架重写 nexusphp 最后还是没能落实，时间有点紧。毕竟已经是大三老狗了。
-   
-# Change Log
+> 说明：这是一个较早期的历史项目，代码风格、PHP 版本兼容性和安全实现方式可能不适用于现代生产环境。若用于学习或二次开发，建议先完成依赖升级、安全加固和本地测试环境隔离。
 
-## v0.1.0 (2016/12/22)
-* 使用一种灰色的格调完成前端的编写
-* 做了大量的修改，并且把个人感觉不比要的功能删除了
+## 项目背景
 
-## v0.2.0 (2017/2/20)
-* 全部重写修改成扁平风格
-* 其他的有点多记不清了
+开发这个项目的主要目的：
 
+- 为校园场景探索一个定制化 PT 站点方案；
+- 在 NexusPHP 开源代码基础上进行二次开发，而不是直接使用原生界面和默认功能；
+- 通过一个真实 PHP 项目练习 Web 开发、数据库设计、权限控制、文件上传和社区系统实现；
+- 尝试将 PT 站点从单纯资源索引扩展为带有公告、论坛、投票、排行榜等功能的社区系统。
 
-# Install 
-1. 安装 LAMP 开发环境
-2. 导入 db 里面的 sql 文件
-3. 修改 config 目录下的配置文件 主要调整数据库  以及发件邮箱等等
+## 主要功能
 
-# TODO
-* 目前的阶段肯定没有 TODO 了，因为当前没有时间
-* 有时间了我会考虑使用 python 或者 php 来重写全部的代码
-* 添加爬虫自动抓取视频网站的视频并做种
-* 把以前写的一个 auto-seed 自动发种机器人添加上，改成图形界面的方便管理人员（auto-seed 是借鉴的北邮人的一位开发者写的，然后做了一些新的功能比如一开始那个代码是不能爬取北邮人的网站的，然后就是自动下载，自动上传，自动做种）
+### 站点首页
 
-# 下面是一些试演截图
+- 站点公告展示；
+- 最新种子列表；
+- 友情链接；
+- 投票模块；
+- 基础站点信息聚合。
 
-## 首页
-![](http://ojrw3x8j2.bkt.clouddn.com/17-12-13/8080371.jpg)
+### 种子系统
 
-## 论坛
-![](http://ojrw3x8j2.bkt.clouddn.com/17-12-13/91260987.jpg)
+- 种子列表浏览；
+- 分类、来源、媒介、编码、清晰度、制作组等多维筛选；
+- 活种 / 死种状态筛选；
+- 收藏筛选；
+- 免费、2X 上传、半价下载等 PT 促销状态；
+- 种子详情、评论、下载与统计。
 
-## 求种
-![](http://ojrw3x8j2.bkt.clouddn.com/17-12-13/60345558.jpg)
-## 种子
-![](http://ojrw3x8j2.bkt.clouddn.com/17-12-13/34839383.jpg)
-## 字幕
-![](http://ojrw3x8j2.bkt.clouddn.com/17-12-13/5950000.jpg)
-## 排行榜
-![](http://ojrw3x8j2.bkt.clouddn.com/17-12-13/22385867.jpg)
-## FAQ
-![](http://ojrw3x8j2.bkt.clouddn.com/17-12-13/59311551.jpg)
+### 种子发布
 
-# 最后欢迎大家Fork和Star  : )
+- `.torrent` 文件上传；
+- 发布权限校验；
+- 分类与二级分类选择；
+- 标题、副标题、简介填写；
+- 匿名发布支持；
+- torrent 文件解析、info hash 计算与 private tracker 标记处理。
+
+### 社区论坛
+
+- 论坛版块；
+- 主题发布；
+- 回复、引用、编辑；
+- 已读记录；
+- 论坛统计；
+- 用户活跃信息展示。
+
+### 站点运营功能
+
+- 公告管理；
+- 投票管理；
+- 友情链接管理；
+- 用户权限判断；
+- 缓存与基础统计；
+- 排行榜、FAQ、字幕、求种等页面模块。
+
+## 技术栈
+
+- PHP
+- MySQL
+- LAMP 环境
+- NexusPHP v1.5 beta
+- Bootstrap / jQuery 等前端资源
+
+## 快速开始
+
+### 1. 准备运行环境
+
+需要先准备一个基础 LAMP 环境：
+
+- Linux / Apache / MySQL / PHP；
+- PHP 版本建议使用与旧版 NexusPHP 兼容的环境；
+- MySQL 建议使用兼容旧版 `mysql_*` API 的配置或自行迁移到 `mysqli` / PDO。
+
+### 2. 导入数据库
+
+将 `db` 目录中的 SQL 文件导入 MySQL：
+
+```bash
+mysql -u root -p < db/your_database_file.sql
+```
+
+实际 SQL 文件名请以仓库中的 `db` 目录为准。
+
+### 3. 修改配置
+
+进入 `config` 目录，根据自己的环境修改配置项，重点包括：
+
+- 数据库地址；
+- 数据库用户名和密码；
+- 站点域名；
+- 邮件发送配置；
+- tracker announce 地址；
+- 文件上传目录；
+- 缓存相关配置。
+
+### 4. 配置目录权限
+
+确保 Web 服务进程对必要目录具备写入权限，例如：
+
+- torrent 文件保存目录；
+- 缓存目录；
+- 临时上传目录；
+- 日志目录。
+
+### 5. 启动站点
+
+将项目部署到 Apache Web 根目录后，通过浏览器访问站点域名或本地地址。
+
+## 目录结构说明
+
+由于本项目继承自 NexusPHP，整体仍采用传统 PHP 项目结构。常见目录和文件职责如下：
+
+```text
+.
+├── config/          # 站点配置文件
+├── db/              # 数据库初始化 SQL
+├── include/         # 公共函数、数据库连接、BT/torrent 相关逻辑
+├── lang/            # 多语言文案
+├── pic/             # 图片资源
+├── styles/          # 前端样式资源
+├── index.php        # 站点首页
+├── torrents.php     # 种子浏览与筛选
+├── upload.php       # 种子发布页面
+├── takeupload.php   # 种子上传处理逻辑
+├── forums.php       # 论坛模块
+└── README.md        # 项目说明文档
+```
+
+> 不同分支或历史版本中的目录名称可能略有差异，请以实际仓库内容为准。
+
+## 版本记录
+
+### v0.1.0 / 2016-12-22
+
+- 完成灰色调前端界面；
+- 删除部分不需要的功能；
+- 对原 NexusPHP 进行较大幅度定制。
+
+### v0.2.0 / 2017-02-20
+
+- 将整体界面重写为扁平化风格；
+- 继续调整站点页面和部分业务逻辑。
+
+## 后续可改进方向
+
+如果继续维护该项目，建议优先考虑以下方向：
+
+- 将旧版 `mysql_*` 数据库 API 迁移到 `mysqli` 或 PDO；
+- 增加参数绑定，系统性降低 SQL 注入风险；
+- 对用户输入、富文本内容和页面输出进行 XSS 加固；
+- 增加 CSRF 防护；
+- 整理配置模板，避免敏感信息进入仓库；
+- 增加 Docker / Docker Compose 本地开发环境；
+- 梳理安装脚本和数据库迁移脚本；
+- 补充自动化测试和基础 CI；
+- 将上传、搜索、论坛、用户权限等核心模块逐步拆分重构。
+
+## 项目截图
+
+### 首页
+
+![首页](http://ojrw3x8j2.bkt.clouddn.com/17-12-13/8080371.jpg)
+
+### 论坛
+
+![论坛](http://ojrw3x8j2.bkt.clouddn.com/17-12-13/91260987.jpg)
+
+### 求种
+
+![求种](http://ojrw3x8j2.bkt.clouddn.com/17-12-13/60345558.jpg)
+
+### 种子
+
+![种子](http://ojrw3x8j2.bkt.clouddn.com/17-12-13/34839383.jpg)
+
+### 字幕
+
+![字幕](http://ojrw3x8j2.bkt.clouddn.com/17-12-13/5950000.jpg)
+
+### 排行榜
+
+![排行榜](http://ojrw3x8j2.bkt.clouddn.com/17-12-13/22385867.jpg)
+
+### FAQ
+
+![FAQ](http://ojrw3x8j2.bkt.clouddn.com/17-12-13/59311551.jpg)
+
+## License
+
+本项目基于 NexusPHP 二次开发。具体授权请结合原始 NexusPHP 项目许可和本仓库代码实际情况确认。
+
+## 免责声明
+
+本项目仅用于技术学习、历史项目归档和合法合规的私有站点系统研究。使用者应遵守所在地法律法规以及相关内容版权要求。
